@@ -125,8 +125,18 @@ void CMario::Render()
 	int ani = -1;
 	if (state == MARIO_STATE_DIE)
 		ani = MARIO_ANI_DIE;
-	else
-	if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL_TAIL) 
+	{
+		if (vx == 0)
+		{
+			if (nx > 0) ani = MARIO_ANI_TAIL_IDLE_RIGHT;
+			else ani = MARIO_ANI_TAIL_IDLE_LEFT;
+		}
+		else if (vx > 0)
+			ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+		else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+	}
+	else if (level == MARIO_LEVEL_BIG)
 	{
 		if (vx == 0)
 		{
@@ -154,7 +164,7 @@ void CMario::Render()
 
 	animation_set->at(ani)->Render(x, y, alpha);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMario::SetState(int state)
@@ -169,6 +179,14 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_WALKING_LEFT: 
 		vx = -MARIO_WALKING_SPEED;
+		nx = -1;
+		break;
+	case MARIO_STATE_RUNNING_RIGHT:
+		vx = MARIO_RUNNING_SPEED;
+		nx = 1;
+		break;
+	case MARIO_STATE_RUNNING_LEFT:
+		vx = -MARIO_RUNNING_SPEED;
 		nx = -1;
 		break;
 	case MARIO_STATE_JUMP:
@@ -189,7 +207,12 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = x;
 	top = y; 
 
-	if (level==MARIO_LEVEL_BIG)
+	if (level == MARIO_LEVEL_TAIL)
+	{
+		right = x + MARIO_TAIL_BBOX_WIDTH;
+		bottom = y + MARIO_TAIL_BBOX_HEIGHT;
+	}
+	else if (level==MARIO_LEVEL_BIG)
 	{
 		right = x + MARIO_BIG_BBOX_WIDTH;
 		bottom = y + MARIO_BIG_BBOX_HEIGHT;
