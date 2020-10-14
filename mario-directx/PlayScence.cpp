@@ -253,6 +253,7 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
+	if (cx < 0.0f) cx = 0.0f;
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 
@@ -284,11 +285,25 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
+		/*float x, y;
+		mario->GetSpeed(x, y);
+		DebugOut(L"\nvelocity: %f", y);*/
+		mario->SetState(MARIO_STATE_JUMPING);
 		break;
 	case DIK_A: 
 		mario->Reset();
 		break;
+	case DIK_S:
+		mario->SetLevel(MARIO_LEVEL_SMALL);
+		break;
+	case DIK_B:
+		mario->SetLevel(MARIO_LEVEL_BIG);
+		break;
+	case DIK_T:
+		mario->SetLevel(MARIO_LEVEL_TAIL);
+		break;
+	case DIK_F:
+		mario->SetLevel(MARIO_LEVEL_FIRE);
 	}
 }
 
@@ -299,9 +314,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
-
-	if (game->IsKeyDown(DIK_T))
-		mario->SetLevel(MARIO_LEVEL_TAIL);
 
 	int shiftButtonPressed = 0;
 	if (game->IsKeyDown(DIK_LSHIFT) || game->IsKeyDown(DIK_RSHIFT))

@@ -7,6 +7,7 @@
 
 #include "Goomba.h"
 #include "Portal.h"
+#include "Brick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -123,8 +124,31 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CMario::Render()
 {
 	int ani = -1;
+
 	if (state == MARIO_STATE_DIE)
 		ani = MARIO_ANI_DIE;
+	else if (level == MARIO_LEVEL_FIRE)
+	{
+		if (vx == 0)
+		{
+			if (nx > 0) ani = MARIO_ANI_FIRE_IDLE_RIGHT;
+			else ani = MARIO_ANI_FIRE_IDLE_LEFT;
+		}
+		else if (vx > 0)
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_FIRE_WALKING_RIGHT;
+			else
+				ani = MARIO_ANI_FIRE_RUNNING_RIGHT;
+		}
+		else
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_FIRE_WALKING_LEFT;
+			else
+				ani = MARIO_ANI_FIRE_RUNNING_LEFT;
+		}
+	}
 	else if (level == MARIO_LEVEL_TAIL) 
 	{
 		if (vx == 0)
@@ -133,8 +157,19 @@ void CMario::Render()
 			else ani = MARIO_ANI_TAIL_IDLE_LEFT;
 		}
 		else if (vx > 0)
-			ani = MARIO_ANI_TAIL_WALKING_RIGHT;
-		else ani = MARIO_ANI_TAIL_WALKING_LEFT;
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_TAIL_WALKING_RIGHT;
+			else
+				ani = MARIO_ANI_TAIL_RUNNING_RIGHT;
+		}
+		else
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_TAIL_WALKING_LEFT;
+			else
+				ani = MARIO_ANI_TAIL_RUNNING_LEFT;
+		}
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
@@ -143,9 +178,20 @@ void CMario::Render()
 			if (nx>0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
 			else ani = MARIO_ANI_BIG_IDLE_LEFT;
 		}
-		else if (vx > 0) 
-			ani = MARIO_ANI_BIG_WALKING_RIGHT; 
-		else ani = MARIO_ANI_BIG_WALKING_LEFT;
+		else if (vx > 0)
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_BIG_WALKING_RIGHT;
+			else
+				ani = MARIO_ANI_BIG_RUNNING_RIGHT;
+		}
+		else
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_BIG_WALKING_LEFT;
+			else
+				ani = MARIO_ANI_BIG_RUNNING_LEFT;
+		}
 	}
 	else if (level == MARIO_LEVEL_SMALL)
 	{
@@ -155,8 +201,19 @@ void CMario::Render()
 			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
 		}
 		else if (vx > 0)
-			ani = MARIO_ANI_SMALL_WALKING_RIGHT;
-		else ani = MARIO_ANI_SMALL_WALKING_LEFT;
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_SMALL_WALKING_RIGHT;
+			else
+				ani = MARIO_ANI_SMALL_RUNNING_RIGHT;
+		}
+		else
+		{
+			if (vx * nx == MARIO_WALKING_SPEED)
+				ani = MARIO_ANI_SMALL_WALKING_LEFT;
+			else
+				ani = MARIO_ANI_SMALL_RUNNING_LEFT;
+		}
 	}
 
 	int alpha = 255;
@@ -189,8 +246,7 @@ void CMario::SetState(int state)
 		vx = -MARIO_RUNNING_SPEED;
 		nx = -1;
 		break;
-	case MARIO_STATE_JUMP:
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
+	case MARIO_STATE_JUMPING:
 		vy = -MARIO_JUMP_SPEED_Y;
 		break; 
 	case MARIO_STATE_IDLE: 
@@ -207,7 +263,12 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = x;
 	top = y; 
 
-	if (level == MARIO_LEVEL_TAIL)
+	if (level == MARIO_LEVEL_FIRE)
+	{
+		right = x + MARIO_FIRE_BBOX_WIDTH;
+		bottom = y + MARIO_FIRE_BBOX_HEIGHT;
+	}
+	else if (level == MARIO_LEVEL_TAIL)
 	{
 		right = x + MARIO_TAIL_BBOX_WIDTH;
 		bottom = y + MARIO_TAIL_BBOX_HEIGHT;
