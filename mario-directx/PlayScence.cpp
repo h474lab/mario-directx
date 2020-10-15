@@ -6,11 +6,12 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "Background.h"
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
-	CScene(id, filePath)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
+	CScene(id, filePath, minPixel, maxPixel)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
 }
@@ -27,10 +28,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
+#define OBJECT_TYPE_MARIO		0
+#define OBJECT_TYPE_BRICK		1
+#define OBJECT_TYPE_GOOMBA		2
+#define OBJECT_TYPE_KOOPAS		3
+#define OBJECT_TYPE_BACKGROUND	11
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -156,6 +158,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = atof(tokens[4].c_str());
@@ -245,7 +248,19 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
-	// Update camera to follow mario
+	// Reposition mario if needed
+	float px, py;
+	player->GetPosition(px, py);
+
+	float pLeft, pTop, pRight, pBottom;
+	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
+	float pWidth = pRight - pLeft;
+
+	if (px < minPixel) px = minPixel;
+	else if (px > maxPixel - pWidth) px = maxPixel - pWidth;
+
+	player->SetPosition(px, py);
+
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
@@ -253,7 +268,13 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	if (cx < 0.0f) cx = 0.0f;
+	int minPixel, maxPixel;
+	this->GetBounds(minPixel, maxPixel);
+
+
+	if (cx < minPixel) cx = minPixel;
+	else if (cx > maxPixel - game->GetScreenWidth()) cx = maxPixel - game->GetScreenWidth();
+
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
 

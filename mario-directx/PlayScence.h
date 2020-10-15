@@ -24,7 +24,7 @@ protected:
 
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath);
+	CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

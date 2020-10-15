@@ -9,9 +9,12 @@ protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneFilePath;
+	int minPixel, maxPixel;
 
 public: 
-	CScene(int id, LPCWSTR filePath);
+	CScene(int id, LPCWSTR filePath, int minPixel, int maxPixel);
+
+	void GetBounds(int& minPixel, int& maxPixel);
 
 	CKeyEventHandler * GetKeyEventHandler() { return key_handler; }
 	virtual void Load() = 0;
