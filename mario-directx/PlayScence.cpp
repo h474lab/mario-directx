@@ -7,6 +7,8 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Background.h"
+#include "ColoredCell.h"
+#include "Tube.h"
 
 using namespace std;
 
@@ -28,11 +30,13 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_MARIO		0
-#define OBJECT_TYPE_BRICK		1
-#define OBJECT_TYPE_GOOMBA		2
-#define OBJECT_TYPE_KOOPAS		3
-#define OBJECT_TYPE_BACKGROUND	11
+#define OBJECT_TYPE_MARIO			0
+#define OBJECT_TYPE_BRICK			1
+#define OBJECT_TYPE_GOOMBA			2
+#define OBJECT_TYPE_KOOPAS			3
+#define OBJECT_TYPE_COLORED_BLOCK	4
+#define OBJECT_TYPE_TUBE			5
+#define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -158,6 +162,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_COLORED_BLOCK: obj = new CColoredCell(); break;
+	case OBJECT_TYPE_TUBE: obj = new CTube(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -248,6 +254,11 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
+	/*if (player->IsOnTheFloor())
+		DebugOut(L"\nOn The Floor");
+	else
+		DebugOut(L"\nOff The Floor");*/
+
 	// Reposition mario if needed
 	float px, py;
 	player->GetPosition(px, py);
@@ -275,7 +286,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < minPixel) cx = minPixel;
 	else if (cx > maxPixel - game->GetScreenWidth()) cx = maxPixel - game->GetScreenWidth();
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos((int)cx, 0.0f /*cy*/);
 }
 
 void CPlayScene::Render()
@@ -306,10 +317,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		/*float x, y;
+		float x, y;
 		mario->GetSpeed(x, y);
-		DebugOut(L"\nvelocity: %f", y);*/
-		mario->SetState(MARIO_STATE_JUMPING);
+		//DebugOut(L"\nVelocity: %f %f", x, y);
+		if (mario->IsJumping())
+			mario->SetState(MARIO_STATE_JUMPING);
 		break;
 	case DIK_A: 
 		mario->Reset();

@@ -2,6 +2,8 @@
 
 CKoopas::CKoopas()
 {
+	background = 0;
+
 	SetState(KOOPAS_STATE_WALKING);
 }
 

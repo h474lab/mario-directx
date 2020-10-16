@@ -53,6 +53,8 @@ protected:
 	float vx;
 	float vy;
 
+	int background;
+
 	int nx;	 
 
 	int state;
@@ -68,6 +70,8 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
+
+	int isBackground() { return background; }
 
 	void RenderBoundingBox();
 

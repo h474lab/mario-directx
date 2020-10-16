@@ -68,14 +68,14 @@ void CGameObject::CalcPotentialCollisions(
 	vector<LPCOLLISIONEVENT> &coEvents)
 {
 	for (UINT i = 0; i < coObjects->size(); i++)
-	{
-		LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-
-		if (e->t > 0 && e->t <= 1.0f)
-			coEvents.push_back(e);
-		else
-			delete e;
-	}
+		if (!coObjects->at(i)->isBackground())
+		{
+			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
+			if (e->t >= 0.0f && e->t <= 1.0f)
+				coEvents.push_back(e);
+			else
+				delete e;
+		}
 
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
 }
@@ -108,6 +108,9 @@ void CGameObject::FilterCollision(
 			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 		}
 	}
+
+	//DebugOut(L"\nmin_tx=%f", min_tx);
+	//DebugOut(L"\nmin_ty=%f", min_ty);
 
 	if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
 	if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);

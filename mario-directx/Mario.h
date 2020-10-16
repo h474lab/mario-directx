@@ -45,10 +45,10 @@
 #define MARIO_ANI_FIRE_RUNNING_RIGHT		22
 #define MARIO_ANI_FIRE_RUNNING_LEFT			23
 
-#define MARIO_ANI_SMALL_JUMPING_RIGHT	24
-#define MARIO_ANI_SMALL_JUMPING_LEFT	25
-#define MARIO_ANI_BIG_JUMPING_RIGHT		26
-#define MARIO_ANI_BIG_JUMPING_LEFT		27
+#define MARIO_ANI_BIG_JUMPING_RIGHT		24
+#define MARIO_ANI_BIG_JUMPING_LEFT		25
+#define MARIO_ANI_SMALL_JUMPING_RIGHT	26
+#define MARIO_ANI_SMALL_JUMPING_LEFT	27
 #define MARIO_ANI_TAIL_JUMPING_RIGHT	28
 #define MARIO_ANI_TAIL_JUMPING_LEFT		29
 #define MARIO_ANI_FIRE_JUMPING_RIGHT	30
@@ -82,13 +82,17 @@ class CMario : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 
+	int jumping;
+
 	float start_x;			// initial position of Mario at scene
-	float start_y; 
-public: 
+	float start_y;
+public:
 	CMario(float x = 0.0f, float y = 0.0f);
 
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
+
+	int IsJumping() { return !jumping; }
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }

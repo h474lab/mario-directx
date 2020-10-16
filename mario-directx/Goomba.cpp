@@ -1,6 +1,7 @@
 #include "Goomba.h"
 CGoomba::CGoomba()
 {
+	background = 0;
 	SetState(GOOMBA_STATE_WALKING);
 }
 

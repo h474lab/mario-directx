@@ -1,13 +1,14 @@
 #pragma once
 #include "GameObject.h"
 
-#define BACKGROUND_WIDTH	16
-#define BACKGROUND_HEIGHT	16
+#define TUBE_CELL_WIDTH		16
+#define TUBE_CELL_HEIGHT	16
 
-class CBackground : public CGameObject
+class CTube : public CGameObject
 {
 public:
-	CBackground() { background = 1; }
+	CTube() { background = 0; }
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };
+

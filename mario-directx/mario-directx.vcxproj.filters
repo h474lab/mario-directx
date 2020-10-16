@@ -9,40 +9,42 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{83ee82e2-1732-4bdf-a1de-46a808d314cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Mario">
+      <UniqueIdentifier>{9d970086-c10d-40b2-9de3-bfa8e9f0c21b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Koopas">
+      <UniqueIdentifier>{6129849d-bb72-4a03-9842-1a0a0b1198b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Brick">
+      <UniqueIdentifier>{29d9fbad-a305-4875-a258-a469dfe5ea9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Goomba">
+      <UniqueIdentifier>{83cef783-4e07-4b7f-9c38-5e5bb58f5650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Portal">
+      <UniqueIdentifier>{820bb6b6-30eb-42f1-8ec6-027f7e21b577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\ColoredCell">
+      <UniqueIdentifier>{c508b5ac-f879-4788-890a-11043190f9cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Tube">
+      <UniqueIdentifier>{94df0891-8a91-4648-b953-a2a42b1099c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Koopas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayScence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scence.cpp">
@@ -60,39 +62,42 @@
     <ClCompile Include="Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Objects\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>Objects\Koopas</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Objects\Brick</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Objects\Goomba</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Objects\Portal</Filter>
+    </ClCompile>
+    <ClCompile Include="ColoredCell.cpp">
+      <Filter>Objects\ColoredCell</Filter>
+    </ClCompile>
+    <ClCompile Include="Tube.cpp">
+      <Filter>Objects\Tube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mario.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlayScence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scence.h">
@@ -110,13 +115,29 @@
     <ClInclude Include="Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="brick.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="mario.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClInclude Include="GameObject.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Objects\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Objects\Koopas</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Objects\Brick</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Objects\Goomba</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Objects\Portal</Filter>
+    </ClInclude>
+    <ClInclude Include="ColoredCell.h">
+      <Filter>Objects\ColoredCell</Filter>
+    </ClInclude>
+    <ClInclude Include="Tube.h">
+      <Filter>Objects\Tube</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
