@@ -7,8 +7,9 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Background.h"
-#include "ColoredCell.h"
+#include "ColoredBlock.h"
 #include "Tube.h"
+#include "QuestionBrick.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
 #define OBJECT_TYPE_KOOPAS			3
 #define OBJECT_TYPE_COLORED_BLOCK	4
 #define OBJECT_TYPE_TUBE			5
+#define OBJECT_TYPE_QUESTIONBRICK	6
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -162,8 +164,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-	case OBJECT_TYPE_COLORED_BLOCK: obj = new CColoredCell(); break;
+	case OBJECT_TYPE_COLORED_BLOCK:
+		{
+			int numRows = atoi(tokens[4].c_str());
+			int numColumns = atoi(tokens[5].c_str());
+			obj = new CColoredBlock(numRows, numColumns);
+			break;
+		}
 	case OBJECT_TYPE_TUBE: obj = new CTube(); break;
+	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	

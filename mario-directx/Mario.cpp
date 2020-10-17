@@ -77,7 +77,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
-		DebugOut(L"\nMario Velocity: %f %f", vx, vy);
+		//DebugOut(L"\nMario Velocity: %f %f", vx, vy);
 
 		//
 		// Collision logic with other objects

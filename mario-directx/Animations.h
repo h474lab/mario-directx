@@ -70,4 +70,5 @@ public:
 
 
 	static CAnimationSets * GetInstance();
+	static void SetInstance(CAnimationSets* instance) { __instance = instance; }
 };

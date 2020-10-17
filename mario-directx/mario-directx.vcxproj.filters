@@ -27,11 +27,14 @@
     <Filter Include="Objects\Portal">
       <UniqueIdentifier>{820bb6b6-30eb-42f1-8ec6-027f7e21b577}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\ColoredCell">
-      <UniqueIdentifier>{c508b5ac-f879-4788-890a-11043190f9cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\Tube">
       <UniqueIdentifier>{94df0891-8a91-4648-b953-a2a42b1099c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\ColoredBlock">
+      <UniqueIdentifier>{3fc47f76-3260-43c1-8579-9a4a8f6fa394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\QuestionBrick">
+      <UniqueIdentifier>{b995e059-157a-4d5d-a47a-8fda4e55b1ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,11 +83,14 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Objects\Portal</Filter>
     </ClCompile>
-    <ClCompile Include="ColoredCell.cpp">
-      <Filter>Objects\ColoredCell</Filter>
-    </ClCompile>
     <ClCompile Include="Tube.cpp">
       <Filter>Objects\Tube</Filter>
+    </ClCompile>
+    <ClCompile Include="ColoredBlock.cpp">
+      <Filter>Objects\ColoredBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>Objects\QuestionBrick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,11 +139,14 @@
     <ClInclude Include="Portal.h">
       <Filter>Objects\Portal</Filter>
     </ClInclude>
-    <ClInclude Include="ColoredCell.h">
-      <Filter>Objects\ColoredCell</Filter>
-    </ClInclude>
     <ClInclude Include="Tube.h">
       <Filter>Objects\Tube</Filter>
+    </ClInclude>
+    <ClInclude Include="ColoredBlock.h">
+      <Filter>Objects\ColoredBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Objects\QuestionBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
