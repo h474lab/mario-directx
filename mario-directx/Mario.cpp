@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "ColoredBlock.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -89,7 +90,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (e->ny < 0) jumping = 0;
 
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
 

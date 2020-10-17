@@ -27,7 +27,7 @@ void CColoredBlock::Render()
 		animation_set->at(COLORED_BLOCK_ANI_MID_RIGHT)->Render(lastX, i);
 	}
 
-	//RenderShadow();
+	RenderShadow();
 }
 
 void CColoredBlock::RenderShadow()
@@ -35,8 +35,8 @@ void CColoredBlock::RenderShadow()
 	float width = BRICK_SHADOW_WIDTH;
 	float height = BRICK_SHADOW_HEIGHT;
 
-	float bRight = x + 16 * COLORED_BLOCK_CELL_WIDTH;
-	float bBottom = y + 16 * COLORED_BLOCK_CELL_HEIGHT;
+	float bRight = x + numColumns * COLORED_BLOCK_CELL_WIDTH;
+	float bBottom = y + numRows * COLORED_BLOCK_CELL_HEIGHT;
 
 	float startX = x + width;
 	float startY = y + height;
@@ -44,25 +44,21 @@ void CColoredBlock::RenderShadow()
 	//float endX = bRight + width;
 	//float endY = bBottom + height;
 
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	if (!animation_sets) return;
+	animation_set->at(BRICK_SHADOW_TOP)->Render(bRight, startY);
+	animation_set->at(BRICK_SHADOW_LEFT)->Render(startX, bBottom);
+	animation_set->at(BRICK_SHADOW_RIGHT)->Render(bRight, bBottom);
 
-	LPANIMATION_SET ani_set = animation_sets->Get(BRICK_SHADOW_ANI_ID);
+	for (int i = startX + width; i < bRight; i += width)
+		animation_set->at(BRICK_SHADOW_MID)->Render(i, bBottom);
 
-	ani_set->at(BRICK_SHADOW_TOP)->Render(bRight, startY);
-	ani_set->at(BRICK_SHADOW_LEFT)->Render(startX, bBottom);
-	ani_set->at(BRICK_SHADOW_RIGHT)->Render(bRight, bBottom);
-
-	for (int i = startX; i < bRight; i += width)
-		ani_set->at(BRICK_SHADOW_MID)->Render(i, bBottom);
-
-	for (int i = startY; i < bBottom; i += height)
-		ani_set->at(BRICK_SHADOW_MID)->Render(bRight, i);
-
-	CAnimationSets::SetInstance(NULL);
+	for (int i = startY + height; i < bBottom; i += height)
+		animation_set->at(BRICK_SHADOW_MID)->Render(bRight, i);
 }
 
 void CColoredBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = t = r = b = 0;
+	l = x;
+	t = y;
+	r = x + numColumns * COLORED_BLOCK_CELL_WIDTH;
+	b = y + numRows * COLORED_BLOCK_CELL_HEIGHT;
 }

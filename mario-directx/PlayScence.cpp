@@ -10,6 +10,7 @@
 #include "ColoredBlock.h"
 #include "Tube.h"
 #include "QuestionBrick.h"
+#include "SquareBrick.h"
 
 using namespace std;
 
@@ -38,6 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
 #define OBJECT_TYPE_COLORED_BLOCK	4
 #define OBJECT_TYPE_TUBE			5
 #define OBJECT_TYPE_QUESTIONBRICK	6
+#define OBJECT_TYPE_SQUARE_BRICK	7
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -173,6 +175,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 	case OBJECT_TYPE_TUBE: obj = new CTube(); break;
 	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(); break;
+	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -295,7 +298,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < minPixel) cx = minPixel;
 	else if (cx > maxPixel - game->GetScreenWidth()) cx = maxPixel - game->GetScreenWidth();
 
-	CGame::GetInstance()->SetCamPos((int)cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos((int)cx, (int)0);
 }
 
 void CPlayScene::Render()

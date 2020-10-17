@@ -158,6 +158,7 @@
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="SquareBrick.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tube.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="SquareBrick.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="Utils.h" />

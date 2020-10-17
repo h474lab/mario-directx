@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Sprites.h"
+#include "ColoredBlock.h"
 
 CGameObject::CGameObject()
 {
@@ -71,7 +72,8 @@ void CGameObject::CalcPotentialCollisions(
 		if (!coObjects->at(i)->isBackground())
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
-			if (e->t >= 0.0f && e->t <= 1.0f)
+
+			if (e->t > 0.0f && e->t <= 1.0f)
 				coEvents.push_back(e);
 			else
 				delete e;
@@ -101,6 +103,8 @@ void CGameObject::FilterCollision(
 		LPCOLLISIONEVENT c = coEvents[i];
 
 		if (c->t < min_tx && c->nx != 0) {
+			if (dynamic_cast<CColoredBlock*>(c->obj))
+				continue;
 			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
 		}
 

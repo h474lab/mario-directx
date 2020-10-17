@@ -55,7 +55,7 @@ protected:
 
 	int background;
 
-	int nx;	 
+	int nx;
 
 	int state;
 

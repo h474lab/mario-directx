@@ -36,6 +36,9 @@
     <Filter Include="Objects\QuestionBrick">
       <UniqueIdentifier>{b995e059-157a-4d5d-a47a-8fda4e55b1ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\SquareBrick">
+      <UniqueIdentifier>{53a71e3a-f53f-4fda-a110-d7d2b25b62ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp">
@@ -92,6 +95,9 @@
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Objects\QuestionBrick</Filter>
     </ClCompile>
+    <ClCompile Include="SquareBrick.cpp">
+      <Filter>Objects\SquareBrick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h">
@@ -147,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="QuestionBrick.h">
       <Filter>Objects\QuestionBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareBrick.h">
+      <Filter>Objects\SquareBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
