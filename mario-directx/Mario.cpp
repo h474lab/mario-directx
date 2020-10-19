@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "ColoredBlock.h"
+#include "Coin.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -27,8 +28,14 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	//DebugOut(L"\n%d", untouchable);
+
 	// Simple fall down
 	vy += MARIO_GRAVITY * dt;
+
+
+	float lastX = x, lastY = y;
+	float lastVx = vx, lastVy = vy;
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -49,6 +56,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+		background = 0;
 	}
 
 	// No collision occured, proceed normally
@@ -78,7 +86,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
-		//DebugOut(L"\nMario Velocity: %f %f", vx, vy);
+		//DebugOut(L"\nMario Velocity: %f %f", nx, ny);
 
 		//
 		// Collision logic with other objects
@@ -90,9 +98,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (e->ny < 0) jumping = 0;
 
+			if (dynamic_cast<CCoin*>(e->obj))
+			{
+   				//DebugOut(L"\nCOIN GAINED");
+				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+
+				if (coin->GetState() == COIN_STATE_AVAILABLE)
+					coin->SetState(COIN_STATE_UNAVAILABLE);
+
+				x = lastX + dx;
+				y = lastY + dy;
+
+				vx = lastVx;
+				vy = lastVy;
+			}
 			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+
+				DebugOut(L"\n%d", untouchable);
 
 				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
@@ -105,7 +129,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->nx != 0)
 				{
-					if (untouchable==0)
+					if (untouchable == 0)
 					{
 						if (goomba->GetState()!=GOOMBA_STATE_DIE)
 						{
@@ -114,10 +138,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								level = MARIO_LEVEL_SMALL;
 								StartUntouchable();
 							}
-							else 
+							else {
+								DebugOut(L"\nDIE");
 								SetState(MARIO_STATE_DIE);
+							}
 						}
 					}
+					/*else
+					{
+						x = lastX + dx;
+						y = lastY + dy;
+
+						vx = lastVx;
+						vy = lastVy;
+					}*/
 				}
 			} // if Goomba
 			else if (dynamic_cast<CPortal *>(e->obj))

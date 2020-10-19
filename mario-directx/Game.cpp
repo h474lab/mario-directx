@@ -337,10 +337,12 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-	int minPixel = atoi(tokens[2].c_str());
-	int maxPixel = atoi(tokens[3].c_str());
+	int minPixelWidth = atoi(tokens[2].c_str());
+	int maxPixelWidth = atoi(tokens[3].c_str());
+	int minPixelHeight = atoi(tokens[4].c_str());
+	int maxPixelHeight = atoi(tokens[5].c_str());
 
-	LPSCENE scene = new CPlayScene(id, path, minPixel, maxPixel);
+	LPSCENE scene = new CPlayScene(id, path, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight);
 	scenes[id] = scene;
 }
 
@@ -387,11 +389,12 @@ void CGame::SwitchScene(int scene_id)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
-	scenes[current_scene]->Unload();;
+	scenes[current_scene]->Unload();
 
 	CTextures::GetInstance()->Clear();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
+	CAnimationSets::GetInstance()->Clear();
 
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];

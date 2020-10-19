@@ -71,7 +71,7 @@ public:
 
 	int GetState() { return this->state; }
 
-	int isBackground() { return background; }
+	int isBackground() { return this->background; }
 
 	void RenderBoundingBox();
 

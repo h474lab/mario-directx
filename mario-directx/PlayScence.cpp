@@ -11,11 +11,12 @@
 #include "Tube.h"
 #include "QuestionBrick.h"
 #include "SquareBrick.h"
+#include "Coin.h"
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
-	CScene(id, filePath, minPixel, maxPixel)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight):
+	CScene(id, filePath, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
 }
@@ -40,6 +41,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixel, int maxPixel):
 #define OBJECT_TYPE_TUBE			5
 #define OBJECT_TYPE_QUESTIONBRICK	6
 #define OBJECT_TYPE_SQUARE_BRICK	7
+#define OBJECT_TYPE_COIN			8
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -173,9 +175,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CColoredBlock(numRows, numColumns);
 			break;
 		}
-	case OBJECT_TYPE_TUBE: obj = new CTube(); break;
+	case OBJECT_TYPE_TUBE:
+		{
+			int numRows = atoi(tokens[4].c_str());
+			int hasLid = atoi(tokens[5].c_str());
+			obj = new CTube(numRows, hasLid);
+			break;
+		}
 	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(); break;
 	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
+	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -279,8 +288,8 @@ void CPlayScene::Update(DWORD dt)
 	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
 	float pWidth = pRight - pLeft;
 
-	if (px < minPixel) px = minPixel;
-	else if (px > maxPixel - pWidth) px = maxPixel - pWidth;
+	if (px < minPixelWidth) px = minPixelWidth;
+	else if (px > maxPixelWidth - pWidth) px = maxPixelWidth - pWidth;
 
 	player->SetPosition(px, py);
 
@@ -291,14 +300,17 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	int minPixel, maxPixel;
-	this->GetBounds(minPixel, maxPixel);
+	int minPixelWidth, maxPixelWidth;
+	this->GetBounds(minPixelWidth, maxPixelWidth);
 
 
-	if (cx < minPixel) cx = minPixel;
-	else if (cx > maxPixel - game->GetScreenWidth()) cx = maxPixel - game->GetScreenWidth();
+	if (cx < minPixelWidth) cx = minPixelWidth;
+	else if (cx > maxPixelWidth - game->GetScreenWidth()) cx = maxPixelWidth - game->GetScreenWidth();
 
-	CGame::GetInstance()->SetCamPos((int)cx, (int)0);
+	if (cy > maxPixelHeight) cy = maxPixelHeight;
+	else if (cy < minPixelHeight) cy = minPixelHeight;
+
+	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
 }
 
 void CPlayScene::Render()
@@ -332,7 +344,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		float x, y;
 		mario->GetSpeed(x, y);
 		//DebugOut(L"\nVelocity: %f %f", x, y);
-		if (mario->IsJumping())
+		//if (mario->IsJumping())
 			mario->SetState(MARIO_STATE_JUMPING);
 		break;
 	case DIK_A: 

@@ -1,14 +1,30 @@
 #include "Tube.h"
 
+CTube::CTube(int numRows, int hasLid)
+{
+	this->numRows = numRows;
+	this->hasLid = hasLid;
+}
+
 void CTube::Render()
 {
-	animation_set->at(0)->Render(x, y);
+	for (int i = 0; i < numRows; i++)
+	{
+		if (i == 0 && hasLid == 1)
+		{
+			animation_set->at(TUBE_ANI_UPPER_LID_LEFT)->Render(x, y + 16 * i);
+			animation_set->at(TUBE_ANI_UPPER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+			continue;
+		}
+		animation_set->at(TUBE_ANI_LEFT_EDGE)->Render(x, y + 16 * i);
+		animation_set->at(TUBE_ANI_RIGHT_EDGE)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+	}
 }
 
 void CTube::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = l + TUBE_CELL_WIDTH;
-	b = t + TUBE_CELL_HEIGHT;
+	r = l + TUBE_CELL_WIDTH * 2;
+	b = t + TUBE_CELL_HEIGHT * numRows;
 }

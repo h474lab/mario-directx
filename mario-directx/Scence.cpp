@@ -1,15 +1,17 @@
 #include "Scence.h"
 
-CScene::CScene(int id, LPCWSTR filePath, int minPixel, int maxPixel)
+CScene::CScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight)
 {
 	this->id = id;
 	this->sceneFilePath = filePath;
-	this->minPixel = minPixel;
-	this->maxPixel = maxPixel;
+	this->minPixelWidth = minPixelWidth;
+	this->maxPixelWidth = maxPixelWidth;
+	this->minPixelHeight = minPixelHeight;
+	this->maxPixelHeight = maxPixelHeight;
 }
 
-void CScene::GetBounds(int& minPixel, int& maxPixel)
+void CScene::GetBounds(int& minPixelWidth, int& maxPixelWidth)
 {
-	minPixel = this->minPixel;
-	maxPixel = this->maxPixel;
+	minPixelWidth = this->minPixelWidth;
+	maxPixelWidth = this->maxPixelWidth;
 }
