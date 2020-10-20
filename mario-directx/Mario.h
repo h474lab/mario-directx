@@ -54,7 +54,16 @@
 #define MARIO_ANI_FIRE_JUMPING_RIGHT	30
 #define MARIO_ANI_FIRE_JUMPING_LEFT		31
 
-#define MARIO_ANI_DIE					32
+#define MARIO_ANI_SMALL_TURNING_LEFT	32
+#define MARIO_ANI_SMALL_TURNING_RIGHT	33
+#define MARIO_ANI_BIG_TURNING_LEFT		34
+#define MARIO_ANI_BIG_TURNING_RIGHT		35
+#define MARIO_ANI_TAIL_TURNING_LEFT		36
+#define MARIO_ANI_TAIL_TURNING_RIGHT	37
+#define MARIO_ANI_FIRE_TURNING_LEFT		38
+#define MARIO_ANI_FIRE_TURNING_RIGHT	39
+
+#define MARIO_ANI_DIE					40
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -73,7 +82,8 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 15
 
-#define MARIO_UNTOUCHABLE_TIME 5000
+#define MARIO_UNTOUCHABLE_TIME	5000
+#define MARIO_TURNING_DELAY		150
 
 
 class CMario : public CGameObject
@@ -81,6 +91,11 @@ class CMario : public CGameObject
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
+
+	int lastState;
+
+	int turning;	// turn left - 1, turn right - 2
+	DWORD turning_start;
 
 	int jumping;
 
@@ -97,6 +112,7 @@ public:
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartTurning(int dir) { turning = dir; turning_start = GetTickCount64(); }
 
 	void Reset();
 

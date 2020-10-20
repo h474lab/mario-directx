@@ -16,6 +16,12 @@ void CTube::Render()
 			animation_set->at(TUBE_ANI_UPPER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
 			continue;
 		}
+		else if (i == numRows - 1 && hasLid == 2)
+		{
+			animation_set->at(TUBE_ANI_LOWER_LID_LEFT)->Render(x, y + 16 * i);
+			animation_set->at(TUBE_ANI_LOWER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+			continue;
+		}
 		animation_set->at(TUBE_ANI_LEFT_EDGE)->Render(x, y + 16 * i);
 		animation_set->at(TUBE_ANI_RIGHT_EDGE)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
 	}

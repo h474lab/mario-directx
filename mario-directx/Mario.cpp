@@ -15,6 +15,9 @@ CMario::CMario(float x, float y) : CGameObject()
 {
 	level = MARIO_LEVEL_BIG;
 	untouchable = 0;
+	turning = 0;
+
+	state = MARIO_STATE_IDLE;
 	SetState(MARIO_STATE_IDLE);
 
 	jumping = 0;
@@ -50,6 +53,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// turn off collision when die 
 	if (state!=MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
+
+	if (GetTickCount64() - turning_start > MARIO_TURNING_DELAY)
+	{
+		turning = 0;
+		turning_start = 0;
+	}
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -172,7 +181,42 @@ void CMario::Render()
 {
 	int ani = -1;
 
-	if (state == MARIO_STATE_DIE)
+	if (turning == 1)
+	{
+		switch (level)
+		{
+		case MARIO_LEVEL_FIRE:
+			ani = MARIO_ANI_FIRE_TURNING_LEFT;
+			break;
+		case MARIO_LEVEL_TAIL:
+			ani = MARIO_ANI_TAIL_TURNING_LEFT;
+			break;
+		case MARIO_LEVEL_BIG:
+			ani = MARIO_ANI_BIG_TURNING_LEFT;
+			break;
+		case MARIO_LEVEL_SMALL:
+			ani = MARIO_ANI_SMALL_TURNING_LEFT;
+			break;
+		}
+	} else if (turning == 2)
+	{
+		switch (level)
+		{
+		case MARIO_LEVEL_FIRE:
+			ani = MARIO_ANI_FIRE_TURNING_RIGHT;
+			break;
+		case MARIO_LEVEL_TAIL:
+			ani = MARIO_ANI_TAIL_TURNING_RIGHT;
+			break;
+		case MARIO_LEVEL_BIG:
+			ani = MARIO_ANI_BIG_TURNING_RIGHT;
+			break;
+		case MARIO_LEVEL_SMALL:
+			ani = MARIO_ANI_SMALL_TURNING_RIGHT;
+			break;
+		}
+	}
+	else if (state == MARIO_STATE_DIE)
 		ani = MARIO_ANI_DIE;
 	else if (level == MARIO_LEVEL_FIRE)
 	{
@@ -345,25 +389,45 @@ void CMario::Render()
 
 void CMario::SetState(int state)
 {
+	if (turning == 1) return;
+
+	lastState = GetState();
+
 	CGameObject::SetState(state);
 
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALKING_SPEED;
-		nx = 1;
+		if ((lastState != MARIO_STATE_WALKING_LEFT && lastState != MARIO_STATE_RUNNING_LEFT) || turning == 2)
+		{
+			vx = MARIO_WALKING_SPEED;
+			nx = 1;
+		}
+		else StartTurning(2);
 		break;
-	case MARIO_STATE_WALKING_LEFT: 
-		vx = -MARIO_WALKING_SPEED;
-		nx = -1;
+	case MARIO_STATE_WALKING_LEFT:
+		if ((lastState != MARIO_STATE_WALKING_RIGHT && lastState != MARIO_STATE_RUNNING_RIGHT) || turning == 1)
+		{
+			vx = -MARIO_WALKING_SPEED;
+			nx = -1;
+		}
+		else StartTurning(1);
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
-		vx = MARIO_RUNNING_SPEED;
-		nx = 1;
+		if ((lastState != MARIO_STATE_WALKING_LEFT && lastState != MARIO_STATE_RUNNING_LEFT) || turning == 2)
+		{
+			vx = MARIO_RUNNING_SPEED;
+			nx = 1;
+		}
+		else StartTurning(2);
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
-		vx = -MARIO_RUNNING_SPEED;
-		nx = -1;
+		if ((lastState != MARIO_STATE_WALKING_RIGHT && lastState != MARIO_STATE_RUNNING_RIGHT) || turning == 1)
+		{
+			vx = -MARIO_RUNNING_SPEED;
+			nx = -1;
+		}
+		else StartTurning(1);
 		break;
 	case MARIO_STATE_JUMPING:
 		vy = -MARIO_JUMP_SPEED_Y;

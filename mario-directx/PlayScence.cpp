@@ -344,7 +344,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		float x, y;
 		mario->GetSpeed(x, y);
 		//DebugOut(L"\nVelocity: %f %f", x, y);
-		//if (mario->IsJumping())
+		if (mario->IsJumping())
 			mario->SetState(MARIO_STATE_JUMPING);
 		break;
 	case DIK_A: 

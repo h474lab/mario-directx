@@ -8,6 +8,8 @@
 #define TUBE_ANI_UPPER_LID_RIGHT	1
 #define TUBE_ANI_LEFT_EDGE			2
 #define TUBE_ANI_RIGHT_EDGE			3
+#define TUBE_ANI_LOWER_LID_LEFT		4
+#define TUBE_ANI_LOWER_LID_RIGHT	5
 
 class CTube : public CGameObject
 {
