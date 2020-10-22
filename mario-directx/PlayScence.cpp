@@ -12,6 +12,7 @@
 #include "QuestionBrick.h"
 #include "SquareBrick.h"
 #include "Coin.h"
+#include "KoopaTroopa.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 #define OBJECT_TYPE_QUESTIONBRICK	6
 #define OBJECT_TYPE_SQUARE_BRICK	7
 #define OBJECT_TYPE_COIN			8
+#define OBJECT_TYPE_KOOPATROOPA		9
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -185,6 +187,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(); break;
 	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
+	case OBJECT_TYPE_KOOPATROOPA:
+		{
+			float leftEdge = atof(tokens[4].c_str());
+			float rightEdge = atof(tokens[5].c_str());
+			obj = new CKoopaTroopa(leftEdge, rightEdge);
+			break;
+		}
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
@@ -341,8 +350,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
-		float x, y;
-		mario->GetSpeed(x, y);
+		//float x, y;
+		//mario->GetSpeed(x, y);
 		//DebugOut(L"\nVelocity: %f %f", x, y);
 		if (mario->IsJumping())
 			mario->SetState(MARIO_STATE_JUMPING);

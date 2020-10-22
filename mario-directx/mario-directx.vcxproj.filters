@@ -64,6 +64,9 @@
     <Filter Include="Game Manager\Utils">
       <UniqueIdentifier>{b756dab2-c4f9-45ea-b37f-54fc37c4b843}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\KoopaTroopa">
+      <UniqueIdentifier>{dcdb3a4c-0571-4029-a116-d6eafe2625d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Game Manager\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="KoopaTroopa.cpp">
+      <Filter>Objects\KoopaTroopa</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -187,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Game Manager\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopaTroopa.h">
+      <Filter>Objects\KoopaTroopa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

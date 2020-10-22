@@ -10,6 +10,7 @@
 #include "Brick.h"
 #include "ColoredBlock.h"
 #include "Coin.h"
+#include "KoopaTroopa.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -162,11 +163,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						vy = lastVy;
 					}*/
 				}
-			} // if Goomba
+			}
+			else if (dynamic_cast<CKoopaTroopa*>(e->obj))
+			{
+				CKoopaTroopa* koopa = dynamic_cast<CKoopaTroopa*>(e->obj);
+
+				if (e->ny < 0)
+				{
+					int koopaState = koopa->GetState();
+					if (koopaState == KOOPATROOPA_STATE_WALKING_LEFT || koopaState == KOOPATROOPA_STATE_WALKING_RIGHT)
+						koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+				}
+				else if (e->nx != 0)
+				{
+
+				}
+			}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+				return;
 			}
 		}
 	}
