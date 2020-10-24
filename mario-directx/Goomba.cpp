@@ -5,7 +5,13 @@
 CGoomba::CGoomba()
 {
 	background = 0;
-	SetState(GOOMBA_STATE_WALKING);
+	SetState(GOOMBA_STATE_WALKING_LEFT);
+}
+
+void CGoomba::HitGoomba(float direction)
+{
+	nx = direction;
+	SetState(GOOMBA_STATE_DIE_AND_FLY);
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -40,7 +46,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 	else return;
 
-	if (coEvents.size() == 0)
+	if (coEvents.size() == 0 || state == GOOMBA_STATE_DIE_AND_FLY)
 	{
 		x += dx;
 		y += dy;
@@ -53,11 +59,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
-
-		//if (nx != 0) vx = 0;
+		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
+		
 
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
@@ -69,15 +73,21 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (e->nx != 0)
 				{
-					x = lastX + dx;
-					//y = lastY + dy;
+					SetState(state);
 				}
 			}
-			else if (!dynamic_cast<CBrick*>(e->obj) || e->t < 1.0f)
+			else if (!dynamic_cast<CBrick*>(e->obj) && e->nx != 0)
 			{
-				if (nx != 0) vx = -vx;
+				if (state == GOOMBA_STATE_WALKING_LEFT)
+					SetState(GOOMBA_STATE_WALKING_RIGHT);
+				else if (state == GOOMBA_STATE_WALKING_RIGHT)
+					SetState(GOOMBA_STATE_WALKING_LEFT);
 			}
 		}
+
+		CGameObject::Update(dt, coObjects);
+		x += dx;
+		y += dy;
 	}
 
 }
@@ -93,6 +103,7 @@ void CGoomba::Render()
 			background = 1;
 		}
 	}
+	else if (state == GOOMBA_STATE_DIE_AND_FLY) ani = GOOMBA_ANI_DIE_AND_FLY;
 
 	animation_set->at(ani)->Render(x,y);
 
@@ -110,7 +121,18 @@ void CGoomba::SetState(int state)
 			vy = 0;
 			StartDying();
 			break;
-		case GOOMBA_STATE_WALKING: 
+		case GOOMBA_STATE_DIE_AND_FLY:
+			if (nx > 0)
+				vx = GOOMBA_DEFLECT_SPEED_X;
+			else
+				vx = -GOOMBA_DEFLECT_SPEED_X;
+			vy = -GOOMBA_DEFLECT_SPEED_Y;
+			break;
+		case GOOMBA_STATE_WALKING_LEFT: 
 			vx = -GOOMBA_WALKING_SPEED;
+			break;
+		case GOOMBA_STATE_WALKING_RIGHT:
+			vx = GOOMBA_WALKING_SPEED;
+			break;
 	}
 }

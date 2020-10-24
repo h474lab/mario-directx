@@ -67,6 +67,9 @@
     <Filter Include="Objects\KoopaTroopa">
       <UniqueIdentifier>{dcdb3a4c-0571-4029-a116-d6eafe2625d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\GroundBricks">
+      <UniqueIdentifier>{02fe5a4e-1be0-4653-9eff-ea216beace4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -132,6 +135,9 @@
     <ClCompile Include="KoopaTroopa.cpp">
       <Filter>Objects\KoopaTroopa</Filter>
     </ClCompile>
+    <ClCompile Include="GroundBricks.cpp">
+      <Filter>Objects\GroundBricks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -196,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="KoopaTroopa.h">
       <Filter>Objects\KoopaTroopa</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundBricks.h">
+      <Filter>Objects\GroundBricks</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

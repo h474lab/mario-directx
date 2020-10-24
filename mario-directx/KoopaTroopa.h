@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define KOOPATROOPA_WALKING_SPEED			0.1f
-#define KOOPATROOPA_ROLLING_SPEED			0.2f
+#define KOOPATROOPA_WALKING_SPEED			0.038f
+#define KOOPATROOPA_ROLLING_SPEED			0.25f
 #define KOOPATROOPA_GRAVITY					0.002f
 #define KOOPATROOPA_PAUSING_TIME			2000
 
@@ -26,7 +26,7 @@
 #define KOOPATROOPA_STANDING_HEIGHT			27
 
 #define KOOPATROOPA_LYING_WIDTH				18
-#define KOOPATROOPA_LYING_HEIGHT			17
+#define KOOPATROOPA_LYING_HEIGHT			16
 
 #define KOOPATROOPA_ROLLING_WIDTH			16
 #define KOOPATROOPA_ROLLING_HEIGHT			16
@@ -35,15 +35,13 @@ class CKoopaTroopa : public CGameObject
 {
 private:
 	float leftEdge, rightEdge;
-
-	float isPausing;
-	DWORD pausingTime;
+	
+	int isHolden;
 public:
 	CKoopaTroopa(float leftEdge, float rightEdge);
 
 	virtual void SetState(int state);
-
-	void StartPausing() { isPausing = 1; pausingTime = GetTickCount64(); }
+	void SetHolden(int holdenState) { isHolden = holdenState; background = isHolden; }
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();

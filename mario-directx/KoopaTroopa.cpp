@@ -2,6 +2,7 @@
 #include "Mario.h"
 #include "Brick.h"
 #include "ColoredBlock.h"
+#include "Goomba.h"
 
 CKoopaTroopa::CKoopaTroopa(float leftEdge, float rightEdge)
 {
@@ -10,6 +11,7 @@ CKoopaTroopa::CKoopaTroopa(float leftEdge, float rightEdge)
 
 	background = 0;
 	SetState(KOOPATROOPA_STATE_WALKING_LEFT);
+	//SetState(KOOPATROOPA_STATE_LYING_DOWN);
 }
 
 void CKoopaTroopa::SetState(int state)
@@ -26,14 +28,25 @@ void CKoopaTroopa::SetState(int state)
 		vx = KOOPATROOPA_WALKING_SPEED;
 		nx = 1;
 		break;
-	case KOOPATROOPA_STATE_LYING_DOWN | KOOPATROOPA_STATE_LYING_UP:
+	case KOOPATROOPA_STATE_LYING_DOWN:
 		vx = 0.0f;
 		break;
-	case KOOPATROOPA_STATE_ROLLING_UP_LEFT | KOOPATROOPA_STATE_ROLLING_DOWN_LEFT:
+	case KOOPATROOPA_STATE_LYING_UP:
+		vx = 0.0f;
+		break;
+	case KOOPATROOPA_STATE_ROLLING_UP_LEFT:
 		vx = -KOOPATROOPA_ROLLING_SPEED;
 		nx = -1;
 		break;
-	case KOOPATROOPA_STATE_ROLLING_UP_RIGHT | KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT:
+	case KOOPATROOPA_STATE_ROLLING_DOWN_LEFT:
+		vx = -KOOPATROOPA_ROLLING_SPEED;
+		nx = -1;
+		break;
+	case KOOPATROOPA_STATE_ROLLING_UP_RIGHT:
+		vx = KOOPATROOPA_ROLLING_SPEED;
+		nx = 1;
+		break;
+	case KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT:
 		vx = KOOPATROOPA_ROLLING_SPEED;
 		nx = 1;
 		break;
@@ -42,11 +55,9 @@ void CKoopaTroopa::SetState(int state)
 
 void CKoopaTroopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isPausing) {
-		if (GetTickCount64() - pausingTime > KOOPATROOPA_PAUSING_TIME)
-			isPausing = 0;
-		else
-			return;
+	if (isHolden)
+	{
+		return;
 	}
 
 	float lastX, lastY;
@@ -75,9 +86,6 @@ void CKoopaTroopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		//x += min_tx * dx + nx * 0.4f;
-		//y += min_ty * dy + ny * 0.4f;
-
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
@@ -85,14 +93,45 @@ void CKoopaTroopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			
-
-			if (e->ny < 0 && (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CColoredBlock*>(e->obj)))
+			if (e->ny < 0 && (dynamic_cast<CColoredBlock*>(e->obj)))
 			{
 				float l, t, r, b;
 				e->obj->GetBoundingBox(l, t, r, b);
 
 				leftEdge = l;
 				rightEdge = r;
+			}
+			else if (e->nx != 0)
+			{
+				if (dynamic_cast<CGoomba*>(e->obj))
+				{
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+					if (state == KOOPATROOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPATROOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPATROOPA_STATE_ROLLING_UP_RIGHT)
+					{
+						goomba->HitGoomba(nx);
+					}
+					else if (state == KOOPATROOPA_STATE_WALKING_RIGHT)
+						SetState(KOOPATROOPA_STATE_WALKING_RIGHT);
+					else if (state == KOOPATROOPA_STATE_WALKING_LEFT)
+						SetState(KOOPATROOPA_STATE_WALKING_LEFT);
+				}
+				if (dynamic_cast<CMario*>(e->obj))
+				{
+					SetState(state);
+				}
+				else
+				{
+					if (state == KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT)
+						SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+					else if (state == KOOPATROOPA_STATE_ROLLING_DOWN_LEFT)
+						SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+					else if (state == KOOPATROOPA_STATE_ROLLING_UP_RIGHT)
+						SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+					else if (state == KOOPATROOPA_STATE_ROLLING_UP_LEFT)
+						SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+				}
 			}
 		}
 
@@ -102,16 +141,22 @@ void CKoopaTroopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		GetBoundingBox(l, t, r, b);
 		float width = r - l;
 
-		if (x < leftEdge) SetState(KOOPATROOPA_STATE_WALKING_RIGHT);
-		else if (x + width > rightEdge) SetState(KOOPATROOPA_STATE_WALKING_LEFT);
+		if (state == KOOPATROOPA_STATE_WALKING_LEFT || state == KOOPATROOPA_STATE_WALKING_RIGHT)
+		{
+			if (x < leftEdge) SetState(KOOPATROOPA_STATE_WALKING_RIGHT);
+			else if (x + width > rightEdge) SetState(KOOPATROOPA_STATE_WALKING_LEFT);
+		}
 		x += dx;
 		y += dy;
+
+		//DebugOut(L"\ndx, dy = %f, %f", dx, dy);
 	}
 }
 
 void CKoopaTroopa::Render()
 {
 	int ani = -1;
+
 	switch (state)
 	{
 	case KOOPATROOPA_STATE_WALKING_LEFT:
@@ -126,10 +171,16 @@ void CKoopaTroopa::Render()
 	case KOOPATROOPA_STATE_LYING_DOWN:
 		ani = KOOPATROOPA_ANI_LYING_DOWN;
 		break;
-	case KOOPATROOPA_STATE_ROLLING_UP_LEFT | KOOPATROOPA_STATE_ROLLING_UP_RIGHT:
+	case KOOPATROOPA_STATE_ROLLING_UP_LEFT:
 		ani = KOOPATROOPA_ANI_ROLLING_UP;
 		break;
-	case KOOPATROOPA_STATE_ROLLING_DOWN_LEFT | KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT:
+	case KOOPATROOPA_STATE_ROLLING_UP_RIGHT:
+		ani = KOOPATROOPA_ANI_ROLLING_UP;
+		break;
+	case KOOPATROOPA_STATE_ROLLING_DOWN_LEFT:
+		ani = KOOPATROOPA_ANI_ROLLING_DOWN;
+		break;
+	case KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT:
 		ani = KOOPATROOPA_ANI_ROLLING_DOWN;
 		break;
 	}

@@ -1,12 +1,13 @@
 #pragma once
 #include "GameObject.h"
+#include "KoopaTroopa.h"
 #include "Utils.h"
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 //0.1f
 #define MARIO_JUMP_SPEED_Y			0.5f
-#define MARIO_JUMP_DEFLECT_SPEED	0.5f
+#define MARIO_JUMP_DEFLECT_SPEED	0.3f
 #define MARIO_GRAVITY				0.002f
 #define MARIO_DIE_DEFLECT_SPEED		0.5f
 
@@ -16,7 +17,9 @@
 #define MARIO_STATE_RUNNING_RIGHT	300
 #define MARIO_STATE_RUNNING_LEFT	400
 #define MARIO_STATE_JUMPING			500
-#define MARIO_STATE_DIE				600
+#define MARIO_STATE_TURNING_LEFT	600
+#define MARIO_STATE_TURNING_RIGHT	700
+#define MARIO_STATE_DIE				800
 
 #define MARIO_ANI_BIG_IDLE_RIGHT		0
 #define MARIO_ANI_BIG_IDLE_LEFT			1
@@ -72,7 +75,36 @@
 #define MARIO_ANI_FIRE_KICKING_LEFT		46
 #define MARIO_ANI_FIRE_KICKING_RIGHT	47
 
-#define MARIO_ANI_DIE					48
+#define MARIO_ANI_SMALL_HOLD_KOOPA_IDLE_RIGHT			48
+#define MARIO_ANI_SMALL_HOLD_KOOPA_IDLE_LEFT			49
+#define MARIO_ANI_BIG_HOLD_KOOPA_IDLE_RIGHT				50
+#define MARIO_ANI_BIG_HOLD_KOOPA_IDLE_LEFT				51
+#define MARIO_ANI_TAIL_HOLD_KOOPA_IDLE_RIGHT			52
+#define MARIO_ANI_TAIL_HOLD_KOOPA_IDLE_LEFT				53
+#define MARIO_ANI_FIRE_HOLD_KOOPA_IDLE_RIGHT			54
+#define MARIO_ANI_FIRE_HOLD_KOOPA_IDLE_LEFT				55
+
+#define MARIO_ANI_SMALL_HOLD_KOOPA_WALKING_RIGHT		56
+#define MARIO_ANI_SMALL_HOLD_KOOPA_WALKING_LEFT			57
+#define MARIO_ANI_BIG_HOLD_KOOPA_WALKING_RIGHT			58
+#define MARIO_ANI_BIG_HOLD_KOOPA_WALKING_LEFT			59
+#define MARIO_ANI_TAIL_HOLD_KOOPA_WALKING_RIGHT			60
+#define MARIO_ANI_TAIL_HOLD_KOOPA_WALKING_LEFT			61
+#define MARIO_ANI_FIRE_HOLD_KOOPA_WALKING_RIGHT			62
+#define MARIO_ANI_FIRE_HOLD_KOOPA_WALKING_LEFT			63
+
+#define MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_RIGHT		64
+#define MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_LEFT			65
+#define MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_RIGHT			66
+#define MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_LEFT			67
+#define MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_RIGHT			68
+#define MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_LEFT			69
+#define MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_RIGHT			70
+#define MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_LEFT			71
+
+#define MARIO_ANI_SPINNING_LEFT			72
+#define MARIO_ANI_SPINNING_RIGHT		73
+#define MARIO_ANI_DIE					74
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -93,6 +125,8 @@
 
 #define MARIO_UNTOUCHABLE_TIME	5000
 #define MARIO_TURNING_DELAY		150
+#define MARIO_KICKING_TIME		1000
+#define MARIO_SPINNING_TIME		240
 
 
 class CMario : public CGameObject
@@ -101,12 +135,20 @@ class CMario : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 
+	CKoopaTroopa* holdenKoopa;
+
 	int lastState;
 
 	int turning;	// turn left - 1, turn right - 2
 	DWORD turning_start;
 
 	int jumping;
+
+	int kicking;
+	DWORD kicking_start;
+
+	int spinning;
+	DWORD spinning_start;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
@@ -118,10 +160,18 @@ public:
 
 	int IsJumping() { return !jumping; }
 
+	void setHoldenKoopa(CKoopaTroopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
+	void releaseKoopa();
+
+	void LevelDown();
+
 	void SetState(int state);
-	void SetLevel(int l) { level = l; }
+	void SetLevel(int l);
+
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartTurning(int dir) { turning = dir; turning_start = GetTickCount64(); }
+	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };
+	void StartSpinning();
 
 	void Reset();
 

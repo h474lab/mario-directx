@@ -13,6 +13,7 @@
 #include "SquareBrick.h"
 #include "Coin.h"
 #include "KoopaTroopa.h"
+#include "GroundBricks.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 
 #define OBJECT_TYPE_MARIO			0
 #define OBJECT_TYPE_BRICK			1
+#define OBJECT_TYPE_GROUNDBRICK		101
 #define OBJECT_TYPE_GOOMBA			2
 #define OBJECT_TYPE_KOOPAS			3
 #define OBJECT_TYPE_COLORED_BLOCK	4
@@ -169,6 +171,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_GROUNDBRICK:
+	{
+		int numRows = atoi(tokens[4].c_str());
+		int numColumns = atoi(tokens[5].c_str());
+		obj = new CGroundBricks(numRows, numColumns);
+		break;
+	}
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
 	case OBJECT_TYPE_COLORED_BLOCK:
 		{
@@ -355,6 +364,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		//DebugOut(L"\nVelocity: %f %f", x, y);
 		if (mario->IsJumping())
 			mario->SetState(MARIO_STATE_JUMPING);
+		break;
+	case DIK_LSHIFT:
+		mario->StartSpinning();
 		break;
 	case DIK_A: 
 		mario->Reset();
