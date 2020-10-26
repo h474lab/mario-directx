@@ -11,6 +11,7 @@
 #include "ColoredBlock.h"
 #include "Coin.h"
 #include "KoopaTroopa.h"
+#include "QuestionBrick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -111,7 +112,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
-		//DebugOut(L"\nMario Velocity: %f %f", nx, ny);
+		//DebugOut(L"\nMario Velocity: %f %f", vx, vy);
 
 		//
 		// Collision logic with other objects
@@ -200,7 +201,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (spinning)
 					{
-						koopa->SetState(KOOPATROOPA_STATE_LYING_UP);
+						koopa->HitKoopa(nx);
 					}
 					else if ((koopaState == KOOPATROOPA_STATE_LYING_UP || koopaState == KOOPATROOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_RIGHT)
 					{
@@ -225,7 +226,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (spinning)
 					{
-						koopa->SetState(KOOPATROOPA_STATE_LYING_UP);
+						koopa->HitKoopa(nx);
 					}
 					if ((koopaState == KOOPATROOPA_STATE_LYING_UP || koopaState == KOOPATROOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_LEFT)
 					{
@@ -245,6 +246,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						if (!untouchable) LevelDown();
 					}
+				}
+			}
+			else if (dynamic_cast<CQuestionBrick*>(e->obj))
+			{
+				CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(e->obj);
+				if (e->ny > 0)
+				{
+					brick->HitQuestionBrick();
 				}
 			}
 			else if (dynamic_cast<CPortal *>(e->obj))
@@ -616,7 +625,11 @@ void CMario::releaseKoopa()
 	
 	float l, t, r, b;
 	GetBoundingBox(l, t, r, b);
-	holdenKoopa->SetPosition(r + 0.01f, b - KOOPATROOPA_LYING_HEIGHT);
+
+	if (nx > 0)
+		holdenKoopa->SetPosition(r + 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
+	else
+		holdenKoopa->SetPosition(l - KOOPATROOPA_LYING_WIDTH - 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
 
 	holdenKoopa = NULL;
 }

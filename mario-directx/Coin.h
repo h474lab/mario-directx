@@ -7,10 +7,17 @@
 #define COIN_BBOX_WIDTH			16
 #define COIN_BBOX_HEIGHT		16
 
+#define COIN_FLYING_SPEED_Y		0.4f
+
 class CCoin : public CGameObject
 {
 public:
 	CCoin();
+	virtual void SetPosition(float x, float y);
+
+	virtual void SetDisappearingState();
+	virtual void SetAppearingState();
+
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);

@@ -10,7 +10,7 @@ CGoomba::CGoomba()
 
 void CGoomba::HitGoomba(float direction)
 {
-	nx = direction;
+	nx = -direction;
 	SetState(GOOMBA_STATE_DIE_AND_FLY);
 }
 

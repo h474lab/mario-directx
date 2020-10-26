@@ -53,15 +53,36 @@ void CKoopaTroopa::SetState(int state)
 	}
 }
 
+void CKoopaTroopa::HitKoopa(int direction)
+{
+	SetState(KOOPATROOPA_STATE_LYING_UP);
+
+	if (-direction > 0)
+		vx = KOOPATROOPA_DEFLECTING_X;
+	else
+		vx = -KOOPATROOPA_DEFLECTING_X;
+	vy = -KOOPATROOPA_DEFLECTING_Y;
+
+	StartFlying();
+}
+
 void CKoopaTroopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	//DebugOut(L"\nvx, vy: %f, %f", vx, vy);
+
 	if (isHolden)
 	{
 		return;
 	}
 
-	float lastX, lastY;
-	GetPosition(lastX, lastY);
+	if (flying == 1)
+	{
+		if (GetTickCount64() - flying_start > KOOPATROOPA_FLYING_TIME || vy == 0.0f)
+		{
+			flying = 0;
+			vx = 0.0f;
+		}
+	}
 
 	vy += KOOPATROOPA_GRAVITY * dt;
 

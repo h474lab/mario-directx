@@ -123,6 +123,44 @@ void CGameObject::FilterCollision(
 }
 
 
+void CGameObject::UpdateFlying(DWORD dt)
+{
+	if (flyingDirection == FLYING_DIRECTION_UP)
+	{
+		vy = -flyingSpeedY;
+		vx = 0;
+		CGameObject::Update(dt);
+		if (y + dy > minFlyingY)
+		{
+			y += dy;
+		}
+		else
+		{
+			y = minFlyingY;
+			flyingDirection = FLYING_DIRECTION_DOWN;
+		}
+	}
+	else if (flyingDirection == FLYING_DIRECTION_DOWN)
+	{
+		vy = flyingSpeedY;
+		vx = 0;
+		CGameObject::Update(dt);
+
+		if (y + dy < maxFlyingY)
+		{
+			y += dy;
+		}
+		else
+		{
+			if (disappear == 1)
+				SetDisappearingState();
+			y = maxFlyingY;
+			vy = 0;
+			flyingDirection = FLYING_DIRECTION_NOMOVE;
+		}
+	}
+}
+
 void CGameObject::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);

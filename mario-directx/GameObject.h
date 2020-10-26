@@ -12,6 +12,10 @@ using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 
+#define FLYING_DIRECTION_NOMOVE		0
+#define FLYING_DIRECTION_UP			1
+#define FLYING_DIRECTION_DOWN		2
+
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
 
@@ -55,6 +59,11 @@ protected:
 
 	int background;
 
+	int flyingDirection;	// 0 - no movement, 1 - move up, 2 - move down
+	float minFlyingY, maxFlyingY;
+	float flyingSpeedY;
+	int disappear;
+
 	int nx;
 
 	int state;
@@ -64,7 +73,7 @@ protected:
 	LPANIMATION_SET animation_set;
 
 public: 
-	void SetPosition(float x, float y) { this->x = x, this->y = y; }
+	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
@@ -72,6 +81,11 @@ public:
 	int GetState() { return this->state; }
 
 	int isBackground() { return this->background; }
+
+	void SetFlyingDirection(int direction) { flyingDirection = direction; }
+	void UpdateFlying(DWORD dt);
+	virtual void SetDisappearingState() {}
+	virtual void SetAppearingState() {}
 
 	void RenderBoundingBox();
 

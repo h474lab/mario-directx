@@ -5,11 +5,32 @@ CCoin::CCoin()
 {
 	background = 0;
 	SetState(COIN_STATE_AVAILABLE);
+
+	flyingSpeedY = COIN_FLYING_SPEED_Y;
+	disappear = 1;
+}
+
+void CCoin::SetPosition(float x, float y)
+{
+	CGameObject::SetPosition(x, y);
+	minFlyingY = y - 4 * COIN_BBOX_HEIGHT;
+	maxFlyingY = y - 2 * COIN_BBOX_HEIGHT;
+}
+
+void CCoin::SetDisappearingState()
+{
+	SetState(COIN_STATE_UNAVAILABLE);
+}
+
+void CCoin::SetAppearingState()
+{
+	SetState(COIN_STATE_AVAILABLE);
 }
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	if (state == COIN_STATE_UNAVAILABLE) background = 1;
+	UpdateFlying(dt);
 }
 
 void CCoin::Render()

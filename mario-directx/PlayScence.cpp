@@ -193,7 +193,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CTube(numRows, hasLid);
 			break;
 		}
-	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(); break;
+	case OBJECT_TYPE_QUESTIONBRICK: 
+		{
+			obj = new CQuestionBrick();
+			CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(obj);
+			for (int i = 4; i < tokens.size(); i += 2)
+			{
+				switch (atoi(tokens[i].c_str()))
+				{
+				case OBJECT_TYPE_COIN:
+					CCoin* coin = new CCoin();
+					coin->SetAnimationSet(
+						animation_sets->Get(atoi(tokens[i + 1].c_str()))
+					);
+					brick->AddNewObject(coin);
+					objects.push_back(coin);
+				}
+			}
+			break;
+		}
 	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
 	case OBJECT_TYPE_KOOPATROOPA:

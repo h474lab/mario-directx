@@ -4,7 +4,10 @@
 #define KOOPATROOPA_WALKING_SPEED			0.038f
 #define KOOPATROOPA_ROLLING_SPEED			0.25f
 #define KOOPATROOPA_GRAVITY					0.002f
-#define KOOPATROOPA_PAUSING_TIME			2000
+#define KOOPATROOPA_FLYING_TIME				2000
+
+#define KOOPATROOPA_DEFLECTING_X			0.15f
+#define KOOPATROOPA_DEFLECTING_Y			0.4f
 
 #define KOOPATROOPA_STATE_WALKING_LEFT			0
 #define KOOPATROOPA_STATE_WALKING_RIGHT			1
@@ -36,12 +39,19 @@ class CKoopaTroopa : public CGameObject
 private:
 	float leftEdge, rightEdge;
 	
+	int flying;
+	DWORD flying_start;
+
 	int isHolden;
 public:
 	CKoopaTroopa(float leftEdge, float rightEdge);
 
 	virtual void SetState(int state);
 	void SetHolden(int holdenState) { isHolden = holdenState; background = isHolden; }
+
+	void HitKoopa(int direction);
+
+	void StartFlying() { flying = 1; flying_start = GetTickCount64(); }
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
