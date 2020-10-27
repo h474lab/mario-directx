@@ -12,6 +12,7 @@
 #include "Coin.h"
 #include "KoopaTroopa.h"
 #include "QuestionBrick.h"
+#include "Mushroom.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -253,8 +254,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(e->obj);
 				if (e->ny > 0)
 				{
-					brick->HitQuestionBrick();
+					float ex, ey;
+					e->obj->GetPosition(ex, ey);
+					brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
 				}
+			}
+			else if (dynamic_cast<CMushroom*>(e->obj))
+			{
+				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+				mushroom->SetState(MUSHROOM_STATE_UNAVAILABLE);
+				LevelUp();
 			}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
@@ -632,6 +641,18 @@ void CMario::releaseKoopa()
 		holdenKoopa->SetPosition(l - KOOPATROOPA_LYING_WIDTH - 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
 
 	holdenKoopa = NULL;
+}
+
+void CMario::LevelUp()
+{
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		SetLevel(MARIO_LEVEL_BIG);
+	}
+	else if (level == MARIO_LEVEL_BIG)
+	{
+		SetLevel(MARIO_LEVEL_TAIL);
+	}
 }
 
 void CMario::LevelDown()

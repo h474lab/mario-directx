@@ -29,17 +29,16 @@ void CQuestionBrick::AddNewObject(CGameObject* obj)
 	objects.push_back(obj);
 }
 
-void CQuestionBrick::HitQuestionBrick()
+void CQuestionBrick::HitQuestionBrick(int side)
 {
-	SetFlyingDirection(FLYING_DIRECTION_UP);
+	SetFlyingDirection(FLYING_DIRECTION_UP, side);
 
 	if (objects.size() > 0)
 	{
 		CGameObject* obj = objects.back();
 		objects.pop_back();
 
-		obj->SetAppearingState();
-		obj->SetFlyingDirection(FLYING_DIRECTION_UP);
+		obj->SetFlyingDirection(FLYING_DIRECTION_UP, -side);
 	}
 }
 

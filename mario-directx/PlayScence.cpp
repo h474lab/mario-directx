@@ -14,6 +14,7 @@
 #include "Coin.h"
 #include "KoopaTroopa.h"
 #include "GroundBricks.h"
+#include "Mushroom.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 #define OBJECT_TYPE_SQUARE_BRICK	7
 #define OBJECT_TYPE_COIN			8
 #define OBJECT_TYPE_KOOPATROOPA		9
+#define OBJECT_TYPE_MUSHROOM		10
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -197,18 +199,35 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		{
 			obj = new CQuestionBrick();
 			CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(obj);
-			for (int i = 4; i < tokens.size(); i += 2)
+			int i = 4;
+			while (i < tokens.size())
 			{
+				CGameObject* includedObj = NULL;
+				
 				switch (atoi(tokens[i].c_str()))
 				{
 				case OBJECT_TYPE_COIN:
-					CCoin* coin = new CCoin();
-					coin->SetAnimationSet(
+					includedObj = new CCoin();
+					includedObj->SetAnimationSet(
 						animation_sets->Get(atoi(tokens[i + 1].c_str()))
 					);
-					brick->AddNewObject(coin);
-					objects.push_back(coin);
+					i += 2;
+					break;
+				case OBJECT_TYPE_MUSHROOM:
+					int ani_set = atoi(tokens[i + 1].c_str());
+					int mushroom_level = atoi(tokens[i + 2].c_str());
+
+					includedObj = new CMushroom(mushroom_level);
+					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
+
+					dynamic_cast<CMushroom*>(includedObj)->SetContainer(obj);
+
+					i += 3;
+					break;
 				}
+
+				brick->AddNewObject(includedObj);
+				objects.push_back(includedObj);
 			}
 			break;
 		}

@@ -127,6 +127,7 @@ void CGameObject::UpdateFlying(DWORD dt)
 {
 	if (flyingDirection == FLYING_DIRECTION_UP)
 	{
+		SetAppearingState();
 		vy = -flyingSpeedY;
 		vx = 0;
 		CGameObject::Update(dt);
@@ -142,6 +143,7 @@ void CGameObject::UpdateFlying(DWORD dt)
 	}
 	else if (flyingDirection == FLYING_DIRECTION_DOWN)
 	{
+		SetAppearingState();
 		vy = flyingSpeedY;
 		vx = 0;
 		CGameObject::Update(dt);
@@ -154,6 +156,7 @@ void CGameObject::UpdateFlying(DWORD dt)
 		{
 			if (disappear == 1)
 				SetDisappearingState();
+			SetMovingDirection(movingSideAfter);
 			y = maxFlyingY;
 			vy = 0;
 			flyingDirection = FLYING_DIRECTION_NOMOVE;

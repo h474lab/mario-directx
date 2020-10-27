@@ -16,6 +16,9 @@ using namespace std;
 #define FLYING_DIRECTION_UP			1
 #define FLYING_DIRECTION_DOWN		2
 
+#define MOVING_DIRECTION_LEFT		-1
+#define MOVING_DIRECTION_RIGHT		1
+
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
 
@@ -62,7 +65,8 @@ protected:
 	int flyingDirection;	// 0 - no movement, 1 - move up, 2 - move down
 	float minFlyingY, maxFlyingY;
 	float flyingSpeedY;
-	int disappear;
+	int disappear, movingSideAfter;
+	CGameObject* waitedObj;
 
 	int nx;
 
@@ -82,8 +86,11 @@ public:
 
 	int isBackground() { return this->background; }
 
-	void SetFlyingDirection(int direction) { flyingDirection = direction; }
-	void UpdateFlying(DWORD dt);
+	void SetFlyingDirection(int direction, int side) { flyingDirection = direction; movingSideAfter = side; }
+	int GetFlyingDirection() { return flyingDirection; }
+
+	virtual void UpdateFlying(DWORD dt);
+	virtual void SetMovingDirection(int movDirection) {}
 	virtual void SetDisappearingState() {}
 	virtual void SetAppearingState() {}
 

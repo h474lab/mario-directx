@@ -163,6 +163,7 @@ public:
 	void setHoldenKoopa(CKoopaTroopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 
+	void LevelUp();
 	void LevelDown();
 
 	void SetState(int state);

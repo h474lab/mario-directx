@@ -70,6 +70,9 @@
     <Filter Include="Objects\GroundBricks">
       <UniqueIdentifier>{02fe5a4e-1be0-4653-9eff-ea216beace4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Mushroom">
+      <UniqueIdentifier>{4905c670-437e-491d-adac-d0f087829809}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -138,6 +141,9 @@
     <ClCompile Include="GroundBricks.cpp">
       <Filter>Objects\GroundBricks</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Objects\Mushroom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -205,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="GroundBricks.h">
       <Filter>Objects\GroundBricks</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Objects\Mushroom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
