@@ -6,6 +6,26 @@ CTube::CTube(int numRows, int hasLid)
 	this->hasLid = hasLid;
 }
 
+void CTube::SetPosition(float x, float y)
+{
+	CGameObject::SetPosition(x, y);
+
+	if (object) object->SetPosition(x + TUBE_CELL_WIDTH / 2, y);
+}
+
+void CTube::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CGameObject::Update(dt);
+
+	if (object)
+	{
+		if (object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE)
+		{
+			object->SetFlyingDirection(FLYING_DIRECTION_UP, 1);
+		}
+	}
+}
+
 void CTube::Render()
 {
 	for (int i = 0; i < numRows; i++)

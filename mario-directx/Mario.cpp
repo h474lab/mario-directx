@@ -13,6 +13,7 @@
 #include "KoopaTroopa.h"
 #include "QuestionBrick.h"
 #include "Mushroom.h"
+#include "Bullet.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -271,6 +272,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 				return;
+			}
+			else if (dynamic_cast<CBullet*>(e->obj))
+			{
+				if (!untouchable)
+					this->LevelDown();
+			}
+			else if (dynamic_cast<CMushroom*>(e->obj))
+			{
+				if (!untouchable)
+					this->LevelDown();
 			}
 		}
 	}

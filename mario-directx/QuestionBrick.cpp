@@ -44,7 +44,8 @@ void CQuestionBrick::HitQuestionBrick(int side)
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	UpdateFlying(dt);
+	if (state != QUESTIONBRICK_STATE_NONE_OBJECTS && flyingDirection == FLYING_DIRECTION_NOMOVE)
+		UpdateFlying(dt);
 
 	if (objects.size() == 0)
 		SetState(QUESTIONBRICK_STATE_NONE_OBJECTS);

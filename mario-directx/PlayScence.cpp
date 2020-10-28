@@ -15,6 +15,7 @@
 #include "KoopaTroopa.h"
 #include "GroundBricks.h"
 #include "Mushroom.h"
+#include "VenusFireTrap.h"
 
 using namespace std;
 
@@ -41,6 +42,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 #define OBJECT_TYPE_GROUNDBRICK		101
 #define OBJECT_TYPE_GOOMBA			2
 #define OBJECT_TYPE_KOOPAS			3
+#define OBJECT_TYPE_VENUS_FIRE_TRAP	30
 #define OBJECT_TYPE_COLORED_BLOCK	4
 #define OBJECT_TYPE_TUBE			5
 #define OBJECT_TYPE_QUESTIONBRICK	6
@@ -193,6 +195,34 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int numRows = atoi(tokens[4].c_str());
 			int hasLid = atoi(tokens[5].c_str());
 			obj = new CTube(numRows, hasLid);
+			CTube* tube = dynamic_cast<CTube*>(obj);
+
+			if (tokens.size() > 6)
+			{
+				int obj_type = atoi(tokens[6].c_str());
+				int obj_ani_set = atoi(tokens[7].c_str());
+				int bullet_ani_set = atoi(tokens[8].c_str());
+				CGameObject* includedObj = NULL;
+
+				switch (obj_type)
+				{
+				case OBJECT_TYPE_VENUS_FIRE_TRAP:
+					includedObj = new CVenusFireTrap();
+
+					includedObj->SetAnimationSet(animation_sets->Get(obj_ani_set));
+					if (player)
+						dynamic_cast<CVenusFireTrap*>(includedObj)->SetFollowingObject(player);
+					CBullet* bullet = new CBullet();
+					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
+					dynamic_cast<CVenusFireTrap*>(includedObj)->SetBullet(bullet);
+					objects.push_back(bullet);
+					break;
+				}
+
+				tube->SetObject(includedObj);
+				objects.push_back(includedObj);
+			}
+
 			break;
 		}
 	case OBJECT_TYPE_QUESTIONBRICK: 

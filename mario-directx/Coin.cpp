@@ -7,6 +7,7 @@ CCoin::CCoin()
 	SetState(COIN_STATE_AVAILABLE);
 
 	flyingSpeedY = COIN_FLYING_SPEED_Y;
+	delayAfterMovingUp = 0;
 	disappear = 1;
 }
 

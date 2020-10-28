@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "Sprites.h"
 #include "ColoredBlock.h"
+#include "VenusFireTrap.h"
 
 CGameObject::CGameObject()
 {
@@ -73,7 +74,7 @@ void CGameObject::CalcPotentialCollisions(
 		{
 			LPCOLLISIONEVENT e = SweptAABBEx(coObjects->at(i));
 
-			if (e->t > 0.0f && e->t <= 1.0f)
+			if (e->t >= 0.0f && e->t <= 1.0f)
 				coEvents.push_back(e);
 			else
 				delete e;
@@ -139,27 +140,40 @@ void CGameObject::UpdateFlying(DWORD dt)
 		{
 			y = minFlyingY;
 			flyingDirection = FLYING_DIRECTION_DOWN;
+			if (delayAfterMovingUp)
+			{
+				vy = 0.0f;
+				StartDelayingFlying();
+			}
 		}
 	}
 	else if (flyingDirection == FLYING_DIRECTION_DOWN)
 	{
-		SetAppearingState();
-		vy = flyingSpeedY;
-		vx = 0;
-		CGameObject::Update(dt);
-
-		if (y + dy < maxFlyingY)
+		if (!delayAfterMovingUp || GetTickCount64() - delay_start > delay_time)
 		{
-			y += dy;
+			SetAppearingState();
+			vy = flyingSpeedY;
+			vx = 0;
+			CGameObject::Update(dt);
+
+			if (y + dy < maxFlyingY)
+			{
+				y += dy;
+			}
+			else
+			{
+				if (disappear == 1)
+					SetDisappearingState();
+				SetMovingDirection(movingSideAfter);
+				y = maxFlyingY;
+				vy = 0;
+				flyingDirection = FLYING_DIRECTION_NOMOVE;
+			}
 		}
 		else
 		{
-			if (disappear == 1)
-				SetDisappearingState();
-			SetMovingDirection(movingSideAfter);
-			y = maxFlyingY;
-			vy = 0;
-			flyingDirection = FLYING_DIRECTION_NOMOVE;
+			if (dynamic_cast<CVenusFireTrap*>(this))
+				dynamic_cast<CVenusFireTrap*>(this)->Firing();
 		}
 	}
 }

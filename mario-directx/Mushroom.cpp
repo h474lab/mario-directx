@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "Brick.h"
 #include "Tube.h"
+#include "Mario.h"
 
 CMushroom::CMushroom(int level)
 {
@@ -41,6 +42,7 @@ void CMushroom::SetPosition(float x, float y)
 	minFlyingY = y - MUSHROOM_BBOX_HEIGHT - 1;
 	maxFlyingY = y - MUSHROOM_BBOX_HEIGHT - 1;
 	flyingSpeedY = MUSHROOM_FLYING_SPEED_Y;
+	delayAfterMovingUp = 0;
 	disappear = 0;
 }
 
@@ -111,6 +113,13 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					SetState(MUSHROOM_STATE_MOVING_RIGHT);
 				else if (state == MUSHROOM_STATE_MOVING_RIGHT)
 					SetState(MUSHROOM_STATE_MOVING_LEFT);
+			}
+			if (dynamic_cast<CMario*>(e->obj))
+			{
+				CMario* mario = dynamic_cast<CMario*>(e->obj);
+
+				SetState(MUSHROOM_STATE_UNAVAILABLE);
+				mario->LevelUp();
 			}
 			else
 			{

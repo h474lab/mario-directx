@@ -25,6 +25,7 @@ public:
 
 	void SetLevel(int level) { this->level = level; }
 	void SetState(int state);
+
 	void SetContainer(CGameObject* container) { this->container = container; }
 
 	virtual void SetPosition(float x, float y);

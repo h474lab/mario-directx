@@ -15,8 +15,16 @@ class CTube : public CGameObject
 {
 	int numRows;
 	int hasLid;		// hasLid = 0 - no lid, 1 - upper lid, 2 - lower lid
+
+	CGameObject* object;
 public:
 	CTube(int numRows, int hasLid);
+
+	virtual void SetPosition(float x, float y);
+
+	void SetObject(CGameObject* obj) { object = obj; }
+
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

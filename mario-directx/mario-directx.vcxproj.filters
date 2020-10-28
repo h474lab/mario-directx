@@ -73,6 +73,12 @@
     <Filter Include="Objects\Mushroom">
       <UniqueIdentifier>{4905c670-437e-491d-adac-d0f087829809}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\VenusFireTrap">
+      <UniqueIdentifier>{81485a8f-61f0-4ed9-8e20-45059adcd078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Bullet">
+      <UniqueIdentifier>{eb8af6d0-b85e-44e9-b1ec-d37339877831}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -144,6 +150,12 @@
     <ClCompile Include="Mushroom.cpp">
       <Filter>Objects\Mushroom</Filter>
     </ClCompile>
+    <ClCompile Include="VenusFireTrap.cpp">
+      <Filter>Objects\VenusFireTrap</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Objects\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -214,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="Mushroom.h">
       <Filter>Objects\Mushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="VenusFireTrap.h">
+      <Filter>Objects\VenusFireTrap</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Objects\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
