@@ -1,7 +1,6 @@
-#include "VenusFireTrap.h"
-#include "Utils.h"
+#include "ShortFireTrap.h"
 
-void CVenusFireTrap::SetPosition(float x, float y)
+void CShortFireTrap::SetPosition(float x, float y)
 {
 	CFireTrap::SetPosition(x, y);
 
@@ -12,7 +11,7 @@ void CVenusFireTrap::SetPosition(float x, float y)
 	delay_time = FIRE_TRAP_DELAY_FLYING_TIME;
 }
 
-void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CShortFireTrap::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
@@ -20,12 +19,12 @@ void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float
 	bottom = y + FIRE_TRAP_BBOX_HEIGHT;
 }
 
-void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CShortFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CFireTrap::Update(dt, coObjects);
 }
 
-void CVenusFireTrap::Render()
+void CShortFireTrap::Render()
 {
 	CFireTrap::Render();
 }

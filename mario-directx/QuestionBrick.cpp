@@ -7,6 +7,7 @@ CQuestionBrick::CQuestionBrick()
 
 	flyingSpeedY = MOVEMENT_SPEED_Y;
 	SetState(QUESTIONBRICK_STATE_CONTAINING_OBJECTS);
+	delayAfterMovingUp = 0;
 	disappear = 0;
 }
 
@@ -44,7 +45,7 @@ void CQuestionBrick::HitQuestionBrick(int side)
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state != QUESTIONBRICK_STATE_NONE_OBJECTS && flyingDirection == FLYING_DIRECTION_NOMOVE)
+	if ((flyingDirection != FLYING_DIRECTION_NOMOVE || y != maxFlyingY) && !(y == maxFlyingY && state == QUESTIONBRICK_STATE_NONE_OBJECTS))
 		UpdateFlying(dt);
 
 	if (objects.size() == 0)

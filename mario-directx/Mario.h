@@ -169,6 +169,7 @@ public:
 	void SetState(int state);
 	void SetLevel(int l);
 
+	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartTurning(int dir) { turning = dir; turning_start = GetTickCount64(); }
 	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };

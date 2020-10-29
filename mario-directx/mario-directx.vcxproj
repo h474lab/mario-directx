@@ -147,6 +147,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="FireTrap.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="ColoredBlock.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -158,14 +159,17 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="ShortFireTrap.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="SquareBrick.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tube.cpp" />
+    <ClCompile Include="TubeEnemy.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VenusFireTrap.cpp" />
   </ItemGroup>
@@ -174,6 +178,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="FireTrap.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="ColoredBlock.h" />
     <ClInclude Include="Game.h" />
@@ -185,14 +190,17 @@
     <ClInclude Include="KoopaTroopa.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="ShortFireTrap.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="SquareBrick.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tube.h" />
+    <ClInclude Include="TubeEnemy.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="VenusFireTrap.h" />
   </ItemGroup>

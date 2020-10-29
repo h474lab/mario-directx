@@ -9,6 +9,7 @@
 #include "Sprites.h"
 #include "ColoredBlock.h"
 #include "VenusFireTrap.h"
+#include "ShortFireTrap.h"
 
 CGameObject::CGameObject()
 {
@@ -174,6 +175,8 @@ void CGameObject::UpdateFlying(DWORD dt)
 		{
 			if (dynamic_cast<CVenusFireTrap*>(this))
 				dynamic_cast<CVenusFireTrap*>(this)->Firing();
+			else if (dynamic_cast<CShortFireTrap*>(this))
+				dynamic_cast<CShortFireTrap*>(this)->Firing();
 		}
 	}
 }

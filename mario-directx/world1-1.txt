@@ -210,6 +210,7 @@
 30065	15	254	31	270	80
 
 # VENUS FIRE TRAP
+# HIGH
 # Right
 # --Closed Bottom Right (Up)
 30071	265	545	281	578	80
@@ -230,11 +231,36 @@
 # --Opened Up Left (Up)
 30078	65	545	81	578	80
 
+# SHORT
+# Right
+# --Closed Bottom Right (Up)
+300710	264	399	280	424	80
+# --Closed Up Right (Up)
+300720	215	399	231	424	80
+# --Opened Bottom Right (Up)
+300730	364	399	380	424	80
+# --Opened Up Right (Up)
+300740	315	399	331	424	80
+
+# Left
+# --Closed Bottom Left (Up)
+300750	115	399	131	424	80
+# --Closed Up Left (Up)
+300760	165	399	181	424	80
+# --Opened Bottom Left (Up)
+300770	15	399	31	424	80
+# --Opened Up Left (Up)
+300780	65	399	81	424	80
+
 #Bullet
 30081	114	657	122	666	80
 30082	134	658	142	666	80
 30083	154	657	162	666	80
 30084	174	658	182	666	80
+
+# PIRANHA PLANT
+30091	15	349	31	374	80
+30092	65	349	81	374	80	
 
 #brick with question mark animation
 40001	1140	1	1156	17	60
@@ -666,6 +692,7 @@
 926	30062	100	30063	100	30064	100	30065	100
 
 # ====== VENUS FIRE TRAP ======
+# HIGH
 # Point bottom left
 930	30075	150	30077	150
 # Fire bottom left
@@ -683,8 +710,29 @@
 # Fire up right
 937	30074	100
 
+# SHORT
+# Point bottom left
+9300	300750	150	300770	150
+# Fire bottom left
+9310	300770	100
+# Point bottom right
+9320	300710	150	300730	150
+# Fire bottom right
+9330	300730	100
+# Point up left
+9340	300760	150	300780	150
+# Fire up left
+9350	300780	100
+# Point up right
+9360	300720	150	300740	150
+# Fire up right
+9370	300740	100
+
 # Bullet
 938	30081	60	30082	60	30083	60	30084	60
+
+# ====== PIRANHA PLANT ======
+939	30091	150	30092	150
 
 # ========== BACKGROUND ==========
 # BIG BUSH
@@ -782,8 +830,11 @@
 32	921	922	923	924	925	926
 # VENUS FIRE TRAP
 33	930	931	932	933	934	935	936	937
+330	9300	9310	9320	9330	9340	9350	9360	9370
 # BULLET
 34	938
+# PIRANHA PLANT
+35	939
 # BACKGROUND
 # Big Bush
 110	1101
@@ -1874,10 +1925,10 @@
 5	352	138	2441	3	1	30	33	34
 
 # Tube - 5_1
-5	1792	154	2441	2	1
+5	1792	154	2441	2	1	32	35	
 
 # Tube - 5_2
-5	1856	138	2441	3	1
+5	1856	138	2441	3	1	31	330	34
 
 # Tube - 6_1
 5	2256	-118	2441	12	1

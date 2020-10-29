@@ -73,11 +73,23 @@
     <Filter Include="Objects\Mushroom">
       <UniqueIdentifier>{4905c670-437e-491d-adac-d0f087829809}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\VenusFireTrap">
-      <UniqueIdentifier>{81485a8f-61f0-4ed9-8e20-45059adcd078}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\Bullet">
       <UniqueIdentifier>{eb8af6d0-b85e-44e9-b1ec-d37339877831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\TubeEnemy">
+      <UniqueIdentifier>{39e7d325-4a4f-4b60-97ae-c80f7d961e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\TubeEnemy\PiranhaPlant">
+      <UniqueIdentifier>{97fd2a72-e373-40a5-bba3-30509104f14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\TubeEnemy\FireTrap">
+      <UniqueIdentifier>{7e62c6de-cfb4-4dfd-b48a-86bdd317b039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\TubeEnemy\FireTrap\ShortFireTrap">
+      <UniqueIdentifier>{d8cb3c5d-d272-4f50-b271-de8a4b035546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\TubeEnemy\FireTrap\VenusFireTrap">
+      <UniqueIdentifier>{81485a8f-61f0-4ed9-8e20-45059adcd078}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +163,22 @@
       <Filter>Objects\Mushroom</Filter>
     </ClCompile>
     <ClCompile Include="VenusFireTrap.cpp">
-      <Filter>Objects\VenusFireTrap</Filter>
+      <Filter>Objects\TubeEnemy\FireTrap\VenusFireTrap</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Objects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>Objects\TubeEnemy\PiranhaPlant</Filter>
+    </ClCompile>
+    <ClCompile Include="TubeEnemy.cpp">
+      <Filter>Objects\TubeEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="ShortFireTrap.cpp">
+      <Filter>Objects\TubeEnemy\FireTrap\ShortFireTrap</Filter>
+    </ClCompile>
+    <ClCompile Include="FireTrap.cpp">
+      <Filter>Objects\TubeEnemy\FireTrap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -228,10 +252,22 @@
       <Filter>Objects\Mushroom</Filter>
     </ClInclude>
     <ClInclude Include="VenusFireTrap.h">
-      <Filter>Objects\VenusFireTrap</Filter>
+      <Filter>Objects\TubeEnemy\FireTrap\VenusFireTrap</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Objects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
+      <Filter>Objects\TubeEnemy\PiranhaPlant</Filter>
+    </ClInclude>
+    <ClInclude Include="TubeEnemy.h">
+      <Filter>Objects\TubeEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ShortFireTrap.h">
+      <Filter>Objects\TubeEnemy\FireTrap\ShortFireTrap</Filter>
+    </ClInclude>
+    <ClInclude Include="FireTrap.h">
+      <Filter>Objects\TubeEnemy\FireTrap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
