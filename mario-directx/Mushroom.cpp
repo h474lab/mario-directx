@@ -48,7 +48,7 @@ void CMushroom::SetPosition(float x, float y)
 
 void CMushroom::UpdateFlying(DWORD dt)
 {
-	DebugOut(L"\nContainer flying direction: %d", container->GetFlyingDirection());
+	//DebugOut(L"\nContainer flying direction: %d", container->GetFlyingDirection());
 	if (container->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE && flyingDirection != FLYING_DIRECTION_NOMOVE)
 	{
 		CGameObject::UpdateFlying(dt);
@@ -75,10 +75,10 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"\nDisappear: %d", disappear);
 	//DebugOut(L"\nPosition: %f, %f", x, y);
-	DebugOut(L"\nFlying state: %d", flyingDirection);
+	//DebugOut(L"\nFlying state: %d", flyingDirection);
 	UpdateFlying(dt);
 
-	DebugOut(L"\nFlying Speed: %f", flyingSpeedY);
+	//DebugOut(L"\nFlying Speed: %f", flyingSpeedY);
 
 	if (state == MUSHROOM_STATE_UNAVAILABLE || flyingDirection != 0) return;
 

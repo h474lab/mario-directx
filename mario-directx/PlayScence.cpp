@@ -403,6 +403,8 @@ void CPlayScene::Update(DWORD dt)
 	if (px < minPixelWidth) px = minPixelWidth;
 	else if (px > maxPixelWidth - pWidth) px = maxPixelWidth - pWidth;
 
+	if (py < minPixelHeight) py = minPixelHeight;
+
 	player->SetPosition(px, py);
 
 	float cx, cy;
@@ -452,14 +454,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
+	case DIK_X:
 		//float x, y;
 		//mario->GetSpeed(x, y);
 		//DebugOut(L"\nVelocity: %f %f", x, y);
 		if (mario->IsJumping())
-			mario->SetState(MARIO_STATE_JUMPING);
+			mario->FlyJump();
+		else
+			mario->SetJumpingUp(1);
 		break;
-	case DIK_LSHIFT:
+	case DIK_Z:
 		mario->StartSpinning();
 		break;
 	case DIK_A: 
@@ -479,6 +483,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 }
 
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+{
+	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	mario->SetJumpingUp(0);
+}
+
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
@@ -487,9 +497,17 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 
+	if (game->IsKeyDown(DIK_X) && mario->GetJumpingUp())
+		mario->SetState(MARIO_STATE_JUMPING);
+
 	int shiftButtonPressed = 0;
-	if (game->IsKeyDown(DIK_LSHIFT) || game->IsKeyDown(DIK_RSHIFT))
+	if (game->IsKeyDown(DIK_Z))
 		shiftButtonPressed = 1;
+
+	if (game->IsKeyDown(DIK_DOWN))
+		mario->SetSittingState(1);
+	else
+		mario->SetSittingState(0);
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
