@@ -91,6 +91,9 @@
     <Filter Include="Objects\TubeEnemy\FireTrap\VenusFireTrap">
       <UniqueIdentifier>{81485a8f-61f0-4ed9-8e20-45059adcd078}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Fireball">
+      <UniqueIdentifier>{d355fcdd-d3c1-4c91-a21d-fb73236c5545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -180,6 +183,9 @@
     <ClCompile Include="FireTrap.cpp">
       <Filter>Objects\TubeEnemy\FireTrap</Filter>
     </ClCompile>
+    <ClCompile Include="Fireball.cpp">
+      <Filter>Objects\Fireball</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -268,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="FireTrap.h">
       <Filter>Objects\TubeEnemy\FireTrap</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>Objects\Fireball</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

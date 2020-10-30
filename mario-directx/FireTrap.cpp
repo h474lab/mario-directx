@@ -8,6 +8,11 @@ void CFireTrap::SetPosition(float x, float y)
 	state = TUBE_ENEMY_STATE_POINT;
 }
 
+void CFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CTubeEnemy::Update(dt, coObjects);
+}
+
 void CFireTrap::Render()
 {
 	if (state == TUBE_ENEMY_STATE_DIE) return;

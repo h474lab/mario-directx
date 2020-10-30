@@ -110,6 +110,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (state!=MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
+	if (throwing && GetTickCount64() - throwing_start > MARIO_THROW_TIME)
+	{
+		throwing = 0;
+		throwing_start = 0;
+		ThrowFireball();
+	}
+
 	if (GetTickCount64() - jumpingUp_start > MARIO_JUMP_UP_TIME)
 	{
 		jumpingUp = 0;
@@ -470,7 +477,14 @@ void CMario::Render()
 		ani = MARIO_ANI_DIE;
 	else if (level == MARIO_LEVEL_FIRE)
 	{
-		if (vx == 0)
+		if (throwing)
+		{
+			if (nx > 0)
+				ani = MARIO_ANI_FIRE_RIGHT;
+			else
+				ani = MARIO_ANI_FIRE_LEFT;
+		}
+		else if (vx == 0)
 		{
 			if (nx > 0)
 			{
@@ -918,6 +932,37 @@ void CMario::FlyJump()
 		flyJump_start = GetTickCount64();
 		flyJump = 1;
 	}
+}
+
+void CMario::SetThrowing()
+{
+	if (level != MARIO_LEVEL_FIRE) return;
+	throwing = 1;
+	throwing_start = GetTickCount64();
+}
+
+void CMario::ThrowFireball()
+{
+	if (level != MARIO_LEVEL_FIRE) return;
+
+	if (currentFireball + 1 > fireballs.size() - 1)
+		currentFireball = 0;
+	else
+		currentFireball++;
+
+	fireballs.at(currentFireball)->SetState(FIREBALL_STATE_ON_HOLD);
+	if (nx > 0)
+	{
+		fireballs.at(currentFireball)->SetPosition(x + MARIO_FIRE_BBOX_WIDTH, y + MARIO_FIRE_BBOX_HEIGHT * 0.3f);
+		fireballs.at(currentFireball)->SetDirection(FIREBALL_DIRECTION_RIGHT);
+	}
+	else
+	{
+		fireballs.at(currentFireball)->SetPosition(x - FIREBALL_BBOX_WIDTH, y + MARIO_FIRE_BBOX_HEIGHT * 0.3f);
+		fireballs.at(currentFireball)->SetDirection(FIREBALL_DIRECTION_LEFT);
+	}
+
+	fireballs.at(currentFireball)->SetState(FIREBALL_STATE_FLY);
 }
 
 void CMario::releaseKoopa()

@@ -163,17 +163,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
+	CFireball* fireball = NULL;
+	int nFireballs = 2;
+	int fireball_ani_set;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
+		fireball_ani_set = atoi(tokens[4].c_str());
 		if (player!=NULL) 
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
 		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		player = (CMario*)obj;
+
+		for (int i = 0; i < nFireballs; i++)
+		{
+			fireball = new CFireball();
+			fireball->SetAnimationSet(animation_sets->Get(fireball_ani_set));
+			player->AddFireball(fireball);
+			objects.push_back(fireball);
+		}
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -424,7 +436,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > maxPixelHeight) cy = maxPixelHeight;
 	else if (cy < minPixelHeight) cy = minPixelHeight;
 
-	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
+	CGame::GetInstance()->SetCamPos((int)cx, (int)cy + 34);
 }
 
 void CPlayScene::Render()
@@ -465,6 +477,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_Z:
 		mario->StartSpinning();
+		mario->SetThrowing();
 		break;
 	case DIK_A: 
 		mario->Reset();

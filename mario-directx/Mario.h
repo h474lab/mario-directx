@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "KoopaTroopa.h"
 #include "Utils.h"
+#include "Fireball.h"
 
 #define MARIO_WALKING_SPEED			0.1f
 #define MARIO_RUNNING_SPEED			0.2f
@@ -16,6 +17,8 @@
 
 #define MARIO_FLY_SPEED_Y			0.0021f
 #define MARIO_FLY_TIME				1000
+
+#define MARIO_THROW_TIME			200
 
 #define MARIO_JUMP_DEFLECT_SPEED	0.3f
 #define MARIO_GRAVITY				0.002f
@@ -204,6 +207,9 @@ class CMario : public CGameObject
 	DWORD flyJump_start;
 
 	int fly;
+
+	int throwing;
+	DWORD throwing_start;
 	
 	int lastRunning;
 	int running;
@@ -214,6 +220,9 @@ class CMario : public CGameObject
 
 	int spinning;
 	DWORD spinning_start;
+
+	vector<CFireball*> fireballs;
+	int currentFireball;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
@@ -231,6 +240,9 @@ public:
 
 	void FlyJump();
 
+	void SetThrowing();
+	void ThrowFireball();
+
 	void setHoldenKoopa(CKoopaTroopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 
@@ -246,6 +258,8 @@ public:
 	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };
 	void StartSpinning();
 	void StartRunning() { running_start = GetTickCount64(); }
+
+	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
 
 	void Reset();
 

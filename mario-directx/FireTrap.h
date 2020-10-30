@@ -18,7 +18,7 @@ public:
 	virtual void SetAppearingState(int state) { SetState(TUBE_ENEMY_STATE_POINT); }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) { CTubeEnemy::Update(dt, coObjects); }
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();
 };
 

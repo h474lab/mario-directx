@@ -18,6 +18,11 @@ void CPiranhaPlant::SetPosition(float x, float y)
 
 void CPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (state == TUBE_ENEMY_STATE_DIE)
+	{
+		background = 1;
+		return;
+	}
 	left = x;
 	top = y;
 	right = x + PIRANHA_PLANT_BBOX_WIDTH;
