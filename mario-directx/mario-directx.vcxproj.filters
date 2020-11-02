@@ -94,6 +94,27 @@
     <Filter Include="Objects\Fireball">
       <UniqueIdentifier>{d355fcdd-d3c1-4c91-a21d-fb73236c5545}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\HUD">
+      <UniqueIdentifier>{c5cc99ce-37a2-496e-81f3-75067270e37d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scoreboard">
+      <UniqueIdentifier>{df034a8d-1edd-4360-be36-bb7687292d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Number">
+      <UniqueIdentifier>{98579ec9-10c3-403d-b379-c8b7ddc37a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Letter">
+      <UniqueIdentifier>{36439fa6-cc6c-46a0-9d3b-184ba9f3ace7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\PowerObject">
+      <UniqueIdentifier>{b90a3096-3944-464b-aa52-71acd13a7c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\PowerObject\PowerSign">
+      <UniqueIdentifier>{a67a83e2-a4e9-4c18-b4d2-5738246efcc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\PowerObject\PowerArrow">
+      <UniqueIdentifier>{28efaa92-74f8-4111-a6d7-95851eb55326}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -186,6 +207,22 @@
     <ClCompile Include="Fireball.cpp">
       <Filter>Objects\Fireball</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Objects\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Scoreboard.cpp">
+      <Filter>Objects\Scoreboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Number.cpp">
+      <Filter>Objects\Number</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerArrow.cpp">
+      <Filter>Objects\PowerObject\PowerArrow</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerSign.cpp">
+      <Filter>Objects\PowerObject\PowerSign</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -278,5 +315,21 @@
     <ClInclude Include="Fireball.h">
       <Filter>Objects\Fireball</Filter>
     </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Objects\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Scoreboard.h">
+      <Filter>Objects\Scoreboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Number.h">
+      <Filter>Objects\Number</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerArrow.h">
+      <Filter>Objects\PowerObject\PowerArrow</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerSign.h">
+      <Filter>Objects\PowerObject\PowerSign</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerObject.h" />
   </ItemGroup>
 </Project>

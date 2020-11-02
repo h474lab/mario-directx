@@ -377,6 +377,9 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
+	CTextures::GetInstance()->Add(ID_HUD_BG, L"textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
+	HUD = new CHUD();
+
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
@@ -436,13 +439,17 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > maxPixelHeight) cy = maxPixelHeight;
 	else if (cy < minPixelHeight) cy = minPixelHeight;
 
-	CGame::GetInstance()->SetCamPos((int)cx, (int)cy + 34);
+	CGame::GetInstance()->SetCamPos((int)cx, (int)cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
+
+	HUD->SetPosition((int)cx, (int)cy + game->GetScreenHeight());
 }
 
 void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+
+	HUD->Render();
 }
 
 /*
@@ -455,6 +462,9 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	
+	delete HUD;
+	HUD = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
