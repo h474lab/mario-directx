@@ -12,10 +12,10 @@
 #define MARIO_JUMP_SPEED_Y			0.25f
 #define MARIO_JUMP_UP_TIME			300
 
-#define MARIO_FLY_JUMP_SPEED_Y		0.002f
+#define MARIO_FLY_JUMP_SPEED_Y		0.00199f
 #define MARIO_FLY_JUMP_TIME			300
 
-#define MARIO_FLY_SPEED_Y			0.0021f
+#define MARIO_FLY_SPEED_Y			0.00200001f
 #define MARIO_FLY_TIME				1000
 
 #define MARIO_THROW_TIME			200
@@ -214,6 +214,7 @@ class CMario : public CGameObject
 	int lastRunning;
 	int running;
 	DWORD running_start;
+	int powerLevel;
 
 	int kicking;
 	DWORD kicking_start;
@@ -254,10 +255,15 @@ public:
 
 	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+
 	void StartTurning(int dir) { turning = dir; turning_start = GetTickCount64(); running = 0; }
+
 	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };
+
 	void StartSpinning();
 	void StartRunning() { running_start = GetTickCount64(); }
+
+	int GetPowerLevel() { return powerLevel; }
 
 	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
 

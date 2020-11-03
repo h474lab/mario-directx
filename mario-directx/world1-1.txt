@@ -12,6 +12,7 @@
 90	textures\4230.png	68	145	190
 100	textures\font.png	0	224	142
 #110	textures\font.png	81	255	191
+120	textures\leaves.png	255	128	192
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -419,6 +420,12 @@
 70004	300	189	316	205	20
 # 1-UP MUSHROOM
 70005	318	189	334	205	20
+
+# LEAF
+# --Right
+7006	0	0	16	14	120
+# --Left
+7007	16	0	32	14	120
 
 # ========== BACKGROUND ==========
 # BIG BUSH
@@ -848,6 +855,10 @@
 862	70004	100
 863	70005	100
 
+# ========== LEAF ==========
+864	7006	100
+865	7007	100
+
 # ==== GOOMBA  =========
 # walk
 901	30001	100	30002	100
@@ -1082,6 +1093,8 @@
 2451	861
 # MUSHROOM
 2461	862	863
+# LEAF
+2462	864	865
 # GOOMBA
 3	901	902	903
 # KOOPA TROOPA
@@ -2127,29 +2140,6 @@
 # Coin Group - 10
 8	1856	-102	2451
 
-# Question Brick Group - 1_1
-6	176	122	22	8	2451
-6	192	122	22	8	2451
-
-# Question Brick Group - 1_2
-6	224	74	22	8	2451
-6	240	74	22	10	2461	0
-
-# Question Brick Group - 1_3
-6	416	90	22
-
-# Question Brick Group - 2_1
-6	656	154	22
-
-# Question Brick Group - 2_2
-6	704	122	22
-
-# Question Brick Group - 3_1
-6	1472	138	22
-
-# Question Brick Group - 3_2
-6	1440	-102	22
-
 # Square Brick Group - 1
 7	1952	170	24401
 7	1968	154	24401
@@ -2181,6 +2171,29 @@
 101	1536	186	230	1	5
 101	1664	186	230	1	36
 101	2256	186	230	1	35
+
+# Question Brick Group - 1_1
+6	176	122	22	8	2451
+6	192	122	22	8	2451
+
+# Question Brick Group - 1_2
+6	224	74	22	8	2451
+6	240	74	22	10	2461	0
+
+# Question Brick Group - 1_3
+6	416	90	22	8	2451
+
+# Question Brick Group - 2_1
+6	656	154	22	1001	2462
+
+# Question Brick Group - 2_2
+6	704	122	22	8	2451
+
+# Question Brick Group - 3_1
+6	1472	138	22	1001	2462
+
+# Question Brick Group - 3_2
+6	1440	-102	22	10	2461	1
 
 # GOOMBA
 2	224	170	3

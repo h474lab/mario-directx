@@ -115,6 +115,9 @@
     <Filter Include="Objects\PowerObject\PowerArrow">
       <UniqueIdentifier>{28efaa92-74f8-4111-a6d7-95851eb55326}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Leaf">
+      <UniqueIdentifier>{8044c4ad-3c5e-4f77-a36e-fe181765895a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -222,7 +225,12 @@
     <ClCompile Include="PowerSign.cpp">
       <Filter>Objects\PowerObject\PowerSign</Filter>
     </ClCompile>
-    <ClCompile Include="PowerObject.cpp" />
+    <ClCompile Include="PowerObject.cpp">
+      <Filter>Objects\PowerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Objects\Leaf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -330,6 +338,11 @@
     <ClInclude Include="PowerSign.h">
       <Filter>Objects\PowerObject\PowerSign</Filter>
     </ClInclude>
-    <ClInclude Include="PowerObject.h" />
+    <ClInclude Include="PowerObject.h">
+      <Filter>Objects\PowerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>Objects\Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

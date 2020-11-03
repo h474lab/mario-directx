@@ -11,9 +11,10 @@ protected:
 	LPCWSTR sceneFilePath;
 	int minPixelWidth, maxPixelWidth;
 	int minPixelHeight, maxPixelHeight;
+	int world;
 
 public: 
-	CScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight);
+	CScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
 
 	void GetBounds(int& minPixelWidth, int& maxPixelWidth);
 

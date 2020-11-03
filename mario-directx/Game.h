@@ -46,6 +46,10 @@ class CGame
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
 
+	int score;
+	int lives;
+	int money;
+
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
@@ -85,6 +89,15 @@ public:
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+
+	int GetScore() { return score; }
+	void SetScore(int score) { this->score = score; }
+
+	int GetLives() { return lives; }
+	void SetLives(int lives) { this->lives = lives; }
+
+	int GetMoney() { return money; }
+	void SetMoney(int money) { this->money = money; }
 
 	static CGame * GetInstance();
 

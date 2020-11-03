@@ -14,6 +14,8 @@
 #include "QuestionBrick.h"
 #include "Mushroom.h"
 #include "Bullet.h"
+#include "TubeEnemy.h"
+#include "Leaf.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -42,7 +44,6 @@ CMario::CMario(float x, float y) : CGameObject()
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	//DebugOut(L"\n%d", untouchable);
-	DebugOut(L"\nFly: %d", fly);
 	//DebugOut(L"\nFlying start: %llu", GetTickCount64() - flyJump_start);
 
 	float _lastVy = vy;
@@ -87,13 +88,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!lastRunning && running)
 		StartRunning();
 
-	if (GetTickCount64() - running_start > MARIO_RUNNING_TIME && running)
+	DWORD runningTime = GetTickCount64() - running_start;
+
+	if (running)
 	{
-		DebugOut(L"\nRunningFast");
-		if (nx > 0)
-			SetState(MARIO_STATE_RUNNING_FAST_RIGHT);
-		else
-			SetState(MARIO_STATE_RUNNING_FAST_LEFT);
+		if (runningTime > MARIO_RUNNING_TIME)
+		{
+			if (nx > 0)
+				SetState(MARIO_STATE_RUNNING_FAST_RIGHT);
+			else
+				SetState(MARIO_STATE_RUNNING_FAST_LEFT);
+		}
+		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
 	}
 
 	// Calculate dx, dy 
@@ -235,7 +241,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
+					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
 					{
 						goomba->SetState(GOOMBA_STATE_DIE);
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -275,12 +281,38 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
 					else if (koopaState == KOOPATROOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT)
 						koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
-					// to-do: sliding to the left/right before kicking koopa to other direction
-					else if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
+					else if (koopaState == KOOPATROOPA_STATE_LYING_DOWN || koopaState == KOOPATROOPA_STATE_LYING_UP)
 					{
-						kicking = 1;
-						nx = 1;
-						koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+						float left, top, right, bottom;
+						GetBoundingBox(left, top, right, bottom);
+
+						x = lastX + dx;
+						y = lastY + dy;
+
+						vx = lastVx;
+						vy = lastVy;
+
+						float koopa_x, koopa_y;
+						koopa->GetPosition(koopa_x, koopa_y);
+
+						if (koopa_x > x)
+						{
+							nx = 1;
+							kicking = 1;
+							if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
+								koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+							else
+								koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+						}
+						else
+						{
+							nx = -1;
+							kicking = 1;
+							if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
+								koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+							else
+								koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+						}
 						continue;
 					}
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -344,6 +376,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					float ex, ey;
 					e->obj->GetPosition(ex, ey);
 					brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
+					continue;
+				}
+				if (e->nx != 0 && spinning)
+				{
+					brick->HitQuestionBrick(this->nx);
 				}
 			}
 			else if (dynamic_cast<CMushroom*>(e->obj))
@@ -368,6 +405,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (!untouchable)
 					this->LevelDown();
+			}
+			else if (dynamic_cast<CTubeEnemy*>(e->obj))
+			{
+				if (!untouchable)
+					this->LevelDown();
+			}
+			else if (dynamic_cast<CLeaf*>(e->obj))
+			{
+				CLeaf *leaf = dynamic_cast<CLeaf*>(e->obj);
+				this->LevelUp();
+				leaf->SetState(LEAF_STATE_UNAVAILABLE);
 			}
 		}
 	}
@@ -972,10 +1020,24 @@ void CMario::releaseKoopa()
 	float l, t, r, b;
 	GetBoundingBox(l, t, r, b);
 
+	StartKicking();
+
 	if (nx > 0)
+	{
 		holdenKoopa->SetPosition(r + 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
+		if (holdenKoopa->GetState() == KOOPATROOPA_STATE_LYING_DOWN)
+			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+		else
+			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+	}
 	else
+	{
 		holdenKoopa->SetPosition(l - KOOPATROOPA_LYING_WIDTH - 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
+		if (holdenKoopa->GetState() == KOOPATROOPA_STATE_LYING_DOWN)
+			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+		else
+			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+	}
 
 	holdenKoopa = NULL;
 }

@@ -9,6 +9,7 @@
 #include "Koopas.h"
 #include "HUD.h"
 
+#define GAMETIME	301000
 
 class CPlayScene: public CScene
 {
@@ -18,6 +19,8 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 
+	DWORD gameStartingTime;
+
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -26,7 +29,9 @@ protected:
 
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight);
+	CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
+
+	void StartGameTime() { gameStartingTime = GetTickCount64(); }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

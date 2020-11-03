@@ -6,6 +6,8 @@
 #include "VenusFireTrap.h"
 #include "ShortFireTrap.h"
 #include "PiranhaPlant.h"
+#include "GroundBricks.h"
+#include "ColoredBlock.h"
 
 void CFireball::SetDirection(int direction)
 {
@@ -103,6 +105,10 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				SetState(FIREBALL_STATE_ON_HOLD);
 				koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
+			}
+			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj))
+			{
+				SetState(FIREBALL_STATE_ON_HOLD);
 			}
 		}
 

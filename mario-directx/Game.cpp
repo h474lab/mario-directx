@@ -341,8 +341,9 @@ void CGame::_ParseSection_SCENES(string line)
 	int maxPixelWidth = atoi(tokens[3].c_str());
 	int minPixelHeight = atoi(tokens[4].c_str());
 	int maxPixelHeight = atoi(tokens[5].c_str());
+	int world = atoi(tokens[6].c_str());
 
-	LPSCENE scene = new CPlayScene(id, path, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight);
+	LPSCENE scene = new CPlayScene(id, path, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world);
 	scenes[id] = scene;
 }
 

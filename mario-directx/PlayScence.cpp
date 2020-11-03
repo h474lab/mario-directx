@@ -18,11 +18,12 @@
 #include "VenusFireTrap.h"
 #include "PiranhaPlant.h"
 #include "ShortFireTrap.h"
+#include "Leaf.h"
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight):
-	CScene(id, filePath, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world):
+	CScene(id, filePath, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
 }
@@ -54,6 +55,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 #define OBJECT_TYPE_COIN			8
 #define OBJECT_TYPE_KOOPATROOPA		9
 #define OBJECT_TYPE_MUSHROOM		10
+#define OBJECT_TYPE_LEAF			1001
 #define OBJECT_TYPE_BACKGROUND		11
 
 #define OBJECT_TYPE_PORTAL	50
@@ -167,6 +169,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int nFireballs = 2;
 	int fireball_ani_set;
 
+	CGameObject* includedObj = NULL;
+
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
@@ -218,7 +222,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				int obj_type = atoi(tokens[6].c_str());
 				int obj_ani_set = atoi(tokens[7].c_str());
 				int bullet_ani_set;
-				CGameObject* includedObj = NULL;
 				CBullet* bullet = NULL;
 
 				switch (obj_type)
@@ -259,9 +262,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				}
 
 				tube->SetObject(includedObj);
-				objects.push_back(includedObj);
 			}
 
+			if (includedObj)
+			{
+				objects.push_back(includedObj);
+				includedObj = NULL;
+			}
 			break;
 		}
 	case OBJECT_TYPE_QUESTIONBRICK: 
@@ -271,8 +278,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int i = 4;
 			while (i < tokens.size())
 			{
-				CGameObject* includedObj = NULL;
 				
+				int ani_set;
+				int mushroom_level;
+
 				switch (atoi(tokens[i].c_str()))
 				{
 				case OBJECT_TYPE_COIN:
@@ -280,23 +289,35 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 					includedObj->SetAnimationSet(
 						animation_sets->Get(atoi(tokens[i + 1].c_str()))
 					);
+
+					brick->AddNewObject(includedObj);
+					objects.push_back(includedObj);
+					includedObj = NULL;
 					i += 2;
 					break;
 				case OBJECT_TYPE_MUSHROOM:
-					int ani_set = atoi(tokens[i + 1].c_str());
-					int mushroom_level = atoi(tokens[i + 2].c_str());
+					ani_set = atoi(tokens[i + 1].c_str());
+					mushroom_level = atoi(tokens[i + 2].c_str());
 
 					includedObj = new CMushroom(mushroom_level);
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
-
 					dynamic_cast<CMushroom*>(includedObj)->SetContainer(obj);
 
+					brick->AddNewObject(includedObj);
+					objects.push_back(includedObj);
+					includedObj = NULL;
 					i += 3;
+					break;
+				case OBJECT_TYPE_LEAF:
+					ani_set = atoi(tokens[i + 1].c_str());
+
+					includedObj = new CLeaf();
+					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
+					brick->AddNewObject(includedObj);
+					i += 2;
 					break;
 				}
 
-				brick->AddNewObject(includedObj);
-				objects.push_back(includedObj);
 			}
 			break;
 		}
@@ -330,6 +351,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+	if (includedObj) objects.push_back(includedObj);
 }
 
 void CPlayScene::Load()
@@ -381,6 +403,8 @@ void CPlayScene::Load()
 	HUD = new CHUD();
 
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+
+	StartGameTime();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -442,6 +466,13 @@ void CPlayScene::Update(DWORD dt)
 	CGame::GetInstance()->SetCamPos((int)cx, (int)cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
 
 	HUD->SetPosition((int)cx, (int)cy + game->GetScreenHeight());
+	
+	HUD->SetPowerLevel(player->GetPowerLevel());
+	HUD->SetWorld(this->world);
+	HUD->SetScore(game->GetScore());
+	HUD->SetLives(game->GetLives());
+	HUD->SetMoney(game->GetMoney());
+	HUD->SetRemainingTime((GAMETIME - (GetTickCount64() - gameStartingTime)) / 1000);
 }
 
 void CPlayScene::Render()

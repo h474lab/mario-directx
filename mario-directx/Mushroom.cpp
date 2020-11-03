@@ -74,8 +74,8 @@ void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bot
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"\nDisappear: %d", disappear);
-	//DebugOut(L"\nPosition: %f, %f", x, y);
-	//DebugOut(L"\nFlying state: %d", flyingDirection);
+	DebugOut(L"\nPosition: %f, %f", x, y);
+	DebugOut(L"\nFlying state: %d", flyingDirection);
 	UpdateFlying(dt);
 
 	//DebugOut(L"\nFlying Speed: %f", flyingSpeedY);
@@ -140,12 +140,15 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		DebugOut(L"\nPosition: %f, %f", x, y);
 	}
 }
 
 void CMushroom::Render()
 {
-	if (state != MUSHROOM_STATE_UNAVAILABLE)
-		animation_set->at(0)->Render(x, y);
+	if (state == MUSHROOM_STATE_UNAVAILABLE) return;
+	
+	if (level == MUSHROOM_LEVEL_1UP)
+		animation_set->at(MUSHROOM_ANI_1UP)->Render(x, y);
+	else
+		animation_set->at(MUSHROOM_ANI_SUPER)->Render(x, y);
 }

@@ -38,7 +38,7 @@ void CQuestionBrick::HitQuestionBrick(int side)
 	{
 		CGameObject* obj = objects.back();
 		objects.pop_back();
-
+		
 		obj->SetFlyingDirection(FLYING_DIRECTION_UP, -side);
 	}
 }
