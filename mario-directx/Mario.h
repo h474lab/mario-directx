@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "KoopaTroopa.h"
+#include "Koopa.h"
 #include "Utils.h"
 #include "Fireball.h"
 
@@ -197,7 +197,7 @@ class CMario : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 
-	CKoopaTroopa* holdenKoopa;
+	CKoopa* holdenKoopa;
 
 	int lastState;
 
@@ -252,7 +252,7 @@ public:
 	void SetThrowing();
 	void ThrowFireball();
 
-	void setHoldenKoopa(CKoopaTroopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
+	void setHoldenKoopa(CKoopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 
 	void LevelUp();

@@ -2,7 +2,7 @@
 #include "Utils.h"
 #include "Goomba.h"
 #include "TubeEnemy.h"
-#include "KoopaTroopa.h"
+#include "Koopa.h"
 #include "VenusFireTrap.h"
 #include "ShortFireTrap.h"
 #include "PiranhaPlant.h"
@@ -99,12 +99,12 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(FIREBALL_STATE_ON_HOLD);
 				firetrap->SetState(TUBE_ENEMY_STATE_DIE);
 			}
-			else if (dynamic_cast<CKoopaTroopa*>(event->obj))
+			else if (dynamic_cast<CKoopa*>(event->obj))
 			{
-				CKoopaTroopa* koopa = dynamic_cast<CKoopaTroopa*>(event->obj);
+				CKoopa* koopa = dynamic_cast<CKoopa*>(event->obj);
 
 				SetState(FIREBALL_STATE_ON_HOLD);
-				koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
+				koopa->SetState(KOOPA_STATE_LYING_DOWN);
 			}
 			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj))
 			{

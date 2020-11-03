@@ -10,7 +10,7 @@
 #include "Brick.h"
 #include "ColoredBlock.h"
 #include "Coin.h"
-#include "KoopaTroopa.h"
+#include "Koopa.h"
 #include "QuestionBrick.h"
 #include "Mushroom.h"
 #include "Bullet.h"
@@ -270,18 +270,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}*/
 				}
 			}
-			else if (dynamic_cast<CKoopaTroopa*>(e->obj))
+			else if (dynamic_cast<CKoopa*>(e->obj))
 			{
-				CKoopaTroopa* koopa = dynamic_cast<CKoopaTroopa*>(e->obj);
+				CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 				int koopaState = koopa->GetState();
 
 				if (e->ny < 0)
 				{
-					if (koopaState == KOOPATROOPA_STATE_WALKING_LEFT || koopaState == KOOPATROOPA_STATE_WALKING_RIGHT)
-						koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
-					else if (koopaState == KOOPATROOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT)
-						koopa->SetState(KOOPATROOPA_STATE_LYING_DOWN);
-					else if (koopaState == KOOPATROOPA_STATE_LYING_DOWN || koopaState == KOOPATROOPA_STATE_LYING_UP)
+					if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT)
+						koopa->LevelDown();
+					else if (koopaState == KOOPA_STATE_WALKING_LEFT || koopaState == KOOPA_STATE_WALKING_RIGHT)
+						koopa->SetState(KOOPA_STATE_LYING_DOWN);
+					else if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT)
+						koopa->SetState(KOOPA_STATE_LYING_DOWN);
+					else if (koopaState == KOOPA_STATE_LYING_DOWN || koopaState == KOOPA_STATE_LYING_UP)
 					{
 						float left, top, right, bottom;
 						GetBoundingBox(left, top, right, bottom);
@@ -299,19 +301,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						{
 							nx = 1;
 							kicking = 1;
-							if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
-								koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+							if (koopaState == KOOPA_STATE_LYING_DOWN)
+								koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 							else
-								koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+								koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
 						}
 						else
 						{
 							nx = -1;
 							kicking = 1;
-							if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
-								koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+							if (koopaState == KOOPA_STATE_LYING_DOWN)
+								koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
 							else
-								koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+								koopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
 						}
 						continue;
 					}
@@ -323,19 +325,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						koopa->HitKoopa(nx);
 					}
-					else if ((koopaState == KOOPATROOPA_STATE_LYING_UP || koopaState == KOOPATROOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_RIGHT)
+					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_RIGHT)
 					{
 						setHoldenKoopa(koopa);
 					}
-					else if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
+					else if (koopaState == KOOPA_STATE_LYING_DOWN)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+						koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 					}
-					else if (koopaState == KOOPATROOPA_STATE_LYING_UP)
+					else if (koopaState == KOOPA_STATE_LYING_UP)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+						koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
 					}
 					else
 					{
@@ -348,19 +350,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						koopa->HitKoopa(nx);
 					}
-					if ((koopaState == KOOPATROOPA_STATE_LYING_UP || koopaState == KOOPATROOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_LEFT)
+					if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_LEFT)
 					{
 						setHoldenKoopa(koopa);
 					}
-					else if (koopaState == KOOPATROOPA_STATE_LYING_DOWN)
+					else if (koopaState == KOOPA_STATE_LYING_DOWN)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+						koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
 					}
-					else if (koopaState == KOOPATROOPA_STATE_LYING_UP)
+					else if (koopaState == KOOPA_STATE_LYING_UP)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+						koopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
 					}
 					else
 					{
@@ -426,9 +428,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		GetBoundingBox(l, t, r, b);
 
 		if (nx > 0)
-			holdenKoopa->SetPosition(r - 5, b - KOOPATROOPA_LYING_HEIGHT - 1);
+			holdenKoopa->SetPosition(r - 5, b - KOOPA_LYING_HEIGHT - 1);
 		else
-			holdenKoopa->SetPosition(l + 5 - KOOPATROOPA_LYING_WIDTH, b - KOOPATROOPA_LYING_HEIGHT - 1);
+			holdenKoopa->SetPosition(l + 5 - KOOPA_LYING_WIDTH, b - KOOPA_LYING_HEIGHT - 1);
 	}
 
 	// clean up collision events
@@ -1024,19 +1026,19 @@ void CMario::releaseKoopa()
 
 	if (nx > 0)
 	{
-		holdenKoopa->SetPosition(r + 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
-		if (holdenKoopa->GetState() == KOOPATROOPA_STATE_LYING_DOWN)
-			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_RIGHT);
+		holdenKoopa->SetPosition(r + 0.0001f, b - KOOPA_LYING_HEIGHT);
+		if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
+			holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 		else
-			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_RIGHT);
+			holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
 	}
 	else
 	{
-		holdenKoopa->SetPosition(l - KOOPATROOPA_LYING_WIDTH - 0.0001f, b - KOOPATROOPA_LYING_HEIGHT);
-		if (holdenKoopa->GetState() == KOOPATROOPA_STATE_LYING_DOWN)
-			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_DOWN_LEFT);
+		holdenKoopa->SetPosition(l - KOOPA_LYING_WIDTH - 0.0001f, b - KOOPA_LYING_HEIGHT);
+		if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
+			holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
 		else
-			holdenKoopa->SetState(KOOPATROOPA_STATE_ROLLING_UP_LEFT);
+			holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
 	}
 
 	holdenKoopa = NULL;

@@ -180,9 +180,6 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Game Manager\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="KoopaTroopa.cpp">
-      <Filter>Objects\KoopaTroopa</Filter>
-    </ClCompile>
     <ClCompile Include="GroundBricks.cpp">
       <Filter>Objects\GroundBricks</Filter>
     </ClCompile>
@@ -230,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
       <Filter>Objects\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Objects\KoopaTroopa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,9 +293,6 @@
     <ClInclude Include="Utils.h">
       <Filter>Game Manager\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="KoopaTroopa.h">
-      <Filter>Objects\KoopaTroopa</Filter>
-    </ClInclude>
     <ClInclude Include="GroundBricks.h">
       <Filter>Objects\GroundBricks</Filter>
     </ClInclude>
@@ -343,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>Objects\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopa.h">
+      <Filter>Objects\KoopaTroopa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

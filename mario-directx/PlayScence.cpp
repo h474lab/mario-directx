@@ -12,7 +12,7 @@
 #include "QuestionBrick.h"
 #include "SquareBrick.h"
 #include "Coin.h"
-#include "KoopaTroopa.h"
+#include "Koopa.h"
 #include "GroundBricks.h"
 #include "Mushroom.h"
 #include "VenusFireTrap.h"
@@ -53,7 +53,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixel
 #define OBJECT_TYPE_QUESTIONBRICK	6
 #define OBJECT_TYPE_SQUARE_BRICK	7
 #define OBJECT_TYPE_COIN			8
-#define OBJECT_TYPE_KOOPATROOPA		9
+#define OBJECT_TYPE_KOOPA			9
 #define OBJECT_TYPE_MUSHROOM		10
 #define OBJECT_TYPE_LEAF			1001
 #define OBJECT_TYPE_BACKGROUND		11
@@ -328,11 +328,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
-	case OBJECT_TYPE_KOOPATROOPA:
+	case OBJECT_TYPE_KOOPA:
 		{
-			float leftEdge = atof(tokens[4].c_str());
-			float rightEdge = atof(tokens[5].c_str());
-			obj = new CKoopaTroopa(leftEdge, rightEdge);
+			obj = new CKoopa();
+			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[4].c_str()));
 			break;
 		}
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
