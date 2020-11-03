@@ -70,7 +70,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				flyJump = 0;
 				fly = 0;
 			}
-			vy -= MARIO_FLY_SPEED_Y * dt;
+			vy = -MARIO_FLY_SPEED_Y * dt;
 		}
 	}
 	else
@@ -243,7 +243,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
 					{
-						goomba->SetState(GOOMBA_STATE_DIE);
+						goomba->LevelDown();
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 					}
 				}
@@ -1215,48 +1215,78 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	left = x;
 	top = y; 
 
+	float leftMargin, rightMargin;
+
 	if (level == MARIO_LEVEL_FIRE)
 	{
+		leftMargin = MARIO_FIRE_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_FIRE_BBOX_MARGIN_RIGHT;
+
+		if (nx < 0) swap(leftMargin, rightMargin);
+
+		if (state == MARIO_STATE_IDLE)
+			left = x + leftMargin;
 		if (sitting)
 		{
-			right = x + MARIO_FIRE_SITTING_BBOX_WIDTH;
+			right = x + MARIO_FIRE_SITTING_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_FIRE_SITTING_BBOX_HEIGHT;
 		}
 		else
 		{
-			right = x + MARIO_FIRE_BBOX_WIDTH;
+			right = x + MARIO_FIRE_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_FIRE_BBOX_HEIGHT;
 		}
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
+		leftMargin = MARIO_TAIL_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_TAIL_BBOX_MARGIN_RIGHT;
+
+		if (nx < 0) swap(leftMargin, rightMargin);
+
+		if (state == MARIO_STATE_IDLE)
+			left = x + leftMargin;
 		if (sitting)
 		{
-			right = x + MARIO_TAIL_SITTING_BBOX_WIDTH;
+			right = x + MARIO_TAIL_SITTING_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_TAIL_SITTING_BBOX_HEIGHT;
 		}
 		else
 		{
-			right = x + MARIO_TAIL_BBOX_WIDTH;
+			right = x + MARIO_TAIL_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_TAIL_BBOX_HEIGHT;
 		}
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
+		leftMargin = MARIO_BIG_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_BIG_BBOX_MARGIN_RIGHT;
+
+		if (nx < 0) swap(leftMargin, rightMargin);
+
+		if (state == MARIO_STATE_IDLE)
+			left = x + leftMargin;
 		if (sitting)
 		{
-			right = x + MARIO_BIG_SITTING_BBOX_WIDTH;
+			right = x + MARIO_BIG_SITTING_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_BIG_SITTING_BBOX_HEIGHT;
 		}
 		else
 		{
-			right = x + MARIO_BIG_BBOX_WIDTH;
+			right = x + MARIO_BIG_BBOX_WIDTH - rightMargin;
 			bottom = y + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
 	else
 	{
-		right = x + MARIO_SMALL_BBOX_WIDTH;
+		leftMargin = MARIO_SMALL_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_SMALL_BBOX_MARGIN_RIGHT;
+
+		if (nx < 0) swap(leftMargin, rightMargin);
+
+		if (state == MARIO_STATE_IDLE)
+			left = x + leftMargin;
+		right = x + MARIO_SMALL_BBOX_WIDTH - rightMargin;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
 	}
 }
