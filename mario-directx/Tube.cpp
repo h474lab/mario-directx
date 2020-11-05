@@ -19,10 +19,18 @@ void CTube::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (object)
 	{
-		if (object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE)
+		if (objLastState == FLYING_DIRECTION_DOWN && object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE)
+		{
+			object->SetDisappearingState();
+			StartDelayingObject();
+		}
+
+		if (object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE && GetTickCount64() - objectDelay_start > TUBE_OBJECT_DELAYING_TIME)
 		{
 			object->SetFlyingDirection(FLYING_DIRECTION_UP, 1);
 		}
+
+		objLastState = object->GetFlyingDirection();
 	}
 }
 

@@ -16,6 +16,8 @@
 #include "Bullet.h"
 #include "TubeEnemy.h"
 #include "Leaf.h"
+#include "Tube.h"
+#include "SquareBrick.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -208,9 +210,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//
 		jumping = 1;
 		int acquiredQuestionBrick = 0;
+		int keepMoving = 0;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			float obj_x, obj_y;
+			e->obj->GetPosition(obj_x, obj_y);
+
+			float obj_l, obj_t, obj_r, obj_b;
+			e->obj->GetBoundingBox(obj_l, obj_t, obj_r, obj_b);
+			
+			float obj_w = obj_r - obj_l;
+			float obj_h = obj_b - obj_t;
+
+			int canBeHitBySpinning = (e->nx != 0 && spinning && obj_y <= y + MARIO_TAIL_HEAD_TO_TAIL &&
+				obj_y + obj_h >= y + MARIO_TAIL_HEAD_TO_TAIL + MARIO_TAIL_TAIL_WIDTH) ? 1 : 0;
 
 			if (e->ny < 0) jumping = 0;
 			if (e->ny > 0)
@@ -221,28 +236,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CCoin*>(e->obj))
 			{
-   				//DebugOut(L"\nCOIN GAINED");
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 
 				if (coin->GetState() == COIN_STATE_AVAILABLE)
 					coin->SetState(COIN_STATE_UNAVAILABLE);
 
-				x = lastX + dx;
-				y = lastY + dy;
-
-				vx = lastVx;
-				vy = lastVy;
+				keepMoving = 1;
 			}
-			else if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			else if (dynamic_cast<CGoomba *>(e->obj))
 			{
 				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-				//DebugOut(L"\n%d", untouchable);
-
-				// jump on top >> kill Goomba and deflect a bit 
 				if (e->ny < 0)
 				{
-					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
+					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
 					{
 						goomba->LevelDown();
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -250,7 +256,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (e->nx != 0)
 				{
-					if (spinning)
+					if (canBeHitBySpinning)
 					{
 						goomba->HitGoomba(nx);
 					}
@@ -261,14 +267,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							LevelDown();
 						}
 					}
-					/*else
-					{
-						x = lastX + dx;
-						y = lastY + dy;
-
-						vx = lastVx;
-						vy = lastVy;
-					}*/
 				}
 			}
 			else if (dynamic_cast<CKoopa*>(e->obj))
@@ -289,11 +287,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						float left, top, right, bottom;
 						GetBoundingBox(left, top, right, bottom);
 
-						x = lastX + dx;
-						y = lastY + dy;
-
-						vx = lastVx;
-						vy = lastVy;
+						keepMoving = 1;
 
 						float koopa_x, koopa_y;
 						koopa->GetPosition(koopa_x, koopa_y);
@@ -320,9 +314,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
-				else if (e->nx < 0)
+				else if (e->nx != 0)
 				{
-					if (spinning)
+					if (canBeHitBySpinning)
 					{
 						koopa->HitKoopa(nx);
 					}
@@ -333,41 +327,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					else if (koopaState == KOOPA_STATE_LYING_DOWN)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
+						if (e->nx < 0)
+							koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
+						else
+							koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
 					}
 					else if (koopaState == KOOPA_STATE_LYING_UP)
 					{
 						kicking = 1;
-						koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
+						if (e->nx < 0)
+							koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
+						else
+							koopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
 					}
 					else
 					{
 						if (!untouchable) LevelDown();
-					}
-				}
-				else if (e->nx > 0)
-				{
-					if (spinning)
-					{
-						koopa->HitKoopa(nx);
-					}
-					if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_LEFT)
-					{
-						setHoldenKoopa(koopa);
-					}
-					else if (koopaState == KOOPA_STATE_LYING_DOWN)
-					{
-						kicking = 1;
-						koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
-					}
-					else if (koopaState == KOOPA_STATE_LYING_UP)
-					{
-						kicking = 1;
-						koopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
-					}
-					else
-					{
-						if (!untouchable) LevelDown();
+
+						keepMoving = 1;
 					}
 				}
 			}
@@ -382,18 +359,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					result = brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
 					continue;
 				}
-				if (e->nx != 0 && spinning)
+				if (canBeHitBySpinning)
 				{
 					result = brick->HitQuestionBrick(this->nx);
 				}
 
 				if (result) acquiredQuestionBrick = 1;
-			}
-			else if (dynamic_cast<CMushroom*>(e->obj))
-			{
-				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-				mushroom->SetState(MUSHROOM_STATE_UNAVAILABLE);
-				LevelUp();
 			}
 			else if (dynamic_cast<CPortal *>(e->obj))
 			{
@@ -406,22 +377,54 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (!untouchable)
 					this->LevelDown();
+
+				keepMoving = 1;
 			}
 			else if (dynamic_cast<CMushroom*>(e->obj))
 			{
-				if (!untouchable)
-					this->LevelDown();
+				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+				mushroom->Gain(this);
+
+				keepMoving = 1;
 			}
 			else if (dynamic_cast<CTubeEnemy*>(e->obj))
 			{
 				if (!untouchable)
 					this->LevelDown();
+
+				keepMoving = 1;
 			}
 			else if (dynamic_cast<CLeaf*>(e->obj))
 			{
 				CLeaf *leaf = dynamic_cast<CLeaf*>(e->obj);
 				this->LevelUp();
 				leaf->SetState(LEAF_STATE_UNAVAILABLE);
+
+				keepMoving = 1;
+			}
+			else if (dynamic_cast<CTube*>(e->obj))
+			{
+				CTube* tube = dynamic_cast<CTube*>(e->obj);
+				tube->StartDelayingObject();
+			}
+			else if (dynamic_cast<CSquareBrick*>(e->obj))
+			{
+				CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
+				
+				if (canBeHitBySpinning || e->ny > 0)
+					squareBrick->Destroy();
+			}
+		}
+
+		if (keepMoving)
+		{
+			x = lastX + dx;
+			vx = lastVx;
+
+			if (jumping || lastVy < 0)
+			{
+				y = lastY + dy;
+				vy = lastVy;
 			}
 		}
 	}
@@ -1143,6 +1146,7 @@ void CMario::LevelUp()
 
 void CMario::LevelDown()
 {
+
 	if (level == MARIO_LEVEL_FIRE)
 	{
 		SetLevel(MARIO_LEVEL_BIG);

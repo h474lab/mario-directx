@@ -13,7 +13,7 @@ void CShortFireTrap::SetPosition(float x, float y)
 
 void CShortFireTrap::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == TUBE_ENEMY_STATE_DIE)
+	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE)
 	{
 		background = 1;
 		return;

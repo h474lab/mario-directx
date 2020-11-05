@@ -1,5 +1,9 @@
 #pragma once
 #include "GameObject.h"
+#include "Mario.h"
+#include "Utils.h"
+#include "Brick.h"
+#include "Tube.h"
 
 #define MUSHROOM_GRAVITY		0.001f
 #define MUSHROOM_FLYING_SPEED_Y	0.025f
@@ -28,6 +32,8 @@ public:
 
 	void SetLevel(int level) { this->level = level; }
 	void SetState(int state);
+
+	void Gain(CMario* player);
 
 	void SetContainer(CGameObject* container) { this->container = container; }
 

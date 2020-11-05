@@ -11,6 +11,8 @@
 
 #define GAMETIME	301000
 
+#define GAME_PAUSING_TIME	1000
+
 class CPlayScene: public CScene
 {
 protected: 

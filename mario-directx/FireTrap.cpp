@@ -5,7 +5,17 @@ void CFireTrap::SetPosition(float x, float y)
 	this->x = x;
 	this->y = y;
 
-	state = TUBE_ENEMY_STATE_POINT;
+	SetState(TUBE_ENEMY_STATE_POINT);
+}
+
+void CFireTrap::SetState(int state)
+{
+	CGameObject::SetState(state);
+
+	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE)
+		background = 1;
+	else
+		background = 0;
 }
 
 void CFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -15,7 +25,7 @@ void CFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFireTrap::Render()
 {
-	if (state == TUBE_ENEMY_STATE_DIE) return;
+	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE) return;
 
 	int ani = -1;
 

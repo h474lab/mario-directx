@@ -6,6 +6,7 @@
 #include "GroundBricks.h"
 #include "Tube.h"
 #include "QuestionBrick.h"
+#include "SquareBrick.h"
 
 CKoopa::CKoopa()
 {
@@ -191,13 +192,13 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			
 			if (e->ny < 0) jumping = 0;
 
-			if (e->ny < 0 && (dynamic_cast<CColoredBlock*>(e->obj)))
+			if (e->ny < 0 && (dynamic_cast<CColoredBlock*>(e->obj) || dynamic_cast<CSquareBrick*>(e->obj)))
 			{
 				float l, t, r, b;
 				e->obj->GetBoundingBox(l, t, r, b);
 
-				leftEdge = l;
-				rightEdge = r;
+				leftEdge = l - 7;
+				rightEdge = r + 7;
 			}
 			else if (e->nx != 0)
 			{
@@ -230,6 +231,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
 						questionbrick->HitQuestionBrick(this->nx);
+					ChangeDirection();
+				}
+				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				{
+					CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+						squareBrick->Destroy();
 					ChangeDirection();
 				}
 				else SetState(state);
@@ -299,7 +308,7 @@ void CKoopa::Render()
 
 void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x;
+	l = x + 5;
 	t = y;
 
 	if (state == KOOPA_STATE_JUMPING_LEFT || state == KOOPA_STATE_JUMPING_RIGHT)
@@ -314,12 +323,12 @@ void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}
 	else if (state == KOOPA_STATE_LYING_UP || state == KOOPA_STATE_LYING_DOWN)
 	{
-		r = l + KOOPA_LYING_WIDTH;
+		r = l + KOOPA_LYING_WIDTH - 5;
 		b = t + KOOPA_LYING_HEIGHT;
 	}
 	else
 	{
-		r = l + KOOPA_ROLLING_WIDTH;
+		r = l + KOOPA_ROLLING_WIDTH - 5;
 		b = t + KOOPA_ROLLING_HEIGHT;
 	}
 }

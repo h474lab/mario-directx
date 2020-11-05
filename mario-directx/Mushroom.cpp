@@ -1,8 +1,4 @@
 #include "Mushroom.h"
-#include "Utils.h"
-#include "Brick.h"
-#include "Tube.h"
-#include "Mario.h"
 
 CMushroom::CMushroom(int level)
 {
@@ -34,6 +30,20 @@ void CMushroom::SetState(int state)
 	}
 	this->state = state;
 }
+
+void CMushroom::Gain(CMario* player)
+{
+	SetState(MUSHROOM_STATE_UNAVAILABLE);
+	switch (level)
+	{
+	case MUSHROOM_LEVEL_1UP:
+		break;
+	case MUSHROOM_LEVEL_SUPER:
+		player->LevelUp();
+		break;
+	}
+}
+
 
 void CMushroom::SetPosition(float x, float y)
 {
@@ -124,8 +134,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CMario* mario = dynamic_cast<CMario*>(e->obj);
 
-				SetState(MUSHROOM_STATE_UNAVAILABLE);
-				mario->LevelUp();
+				Gain(mario);
 			}
 			else
 			{

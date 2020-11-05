@@ -7,11 +7,11 @@
 #define GOOMBA_DEFLECT_SPEED_Y	0.3f
 
 #define GOOMBA_LOW_JUMP_SPEED_X		0.02
-#define GOOMBA_LOW_JUMP_SPEED_Y		0.15
+#define GOOMBA_LOW_JUMP_SPEED_Y		0.1
 #define GOOMBA_MAXIMUM_LOW_JUMP		3
 
 #define GOOMBA_HIGH_JUMP_SPEED_X	0.03
-#define GOOMBA_HIGH_JUMP_SPEED_Y	0.3
+#define GOOMBA_HIGH_JUMP_SPEED_Y	0.2
 #define GOOMBA_MAXIMUM_HIGH_JUMP	1
 
 #define GOOMBA_WALKING_TIME			1000
@@ -34,6 +34,7 @@
 #define GOOMBA_STATE_JUMPING_HIGH_RIGHT	600
 #define GOOMBA_STATE_DIE				700
 #define GOOMBA_STATE_DIE_AND_FLY		800
+#define GOOMBA_STATE_DISAPPEARED		900
 
 #define GOOMBA_CORPSE_STAYING_TIME		200
 
@@ -50,6 +51,8 @@ class CGoomba : public CGameObject
 	int jumpCount;
 	int jumping;
 
+	CGameObject* followingObject;
+
 	DWORD corpse_start;
 	DWORD walking_start;
 public: 	
@@ -57,8 +60,12 @@ public:
 
 	void SetLevel(int level) { this->level = level; }
 
+	void SetFollowingObject(CGameObject* object) { followingObject = object; }
+
 	void StartDying() { corpse_start = GetTickCount64(); }
 	void StartWalking() { walking_start = GetTickCount64(); }
+
+	void ChangeDirection();
 
 	void HitGoomba(float direction);
 	void LevelDown();

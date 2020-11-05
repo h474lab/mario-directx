@@ -197,6 +197,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		obj = new CGoomba();
 		dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[4].c_str()));
+		dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
 		break;
 	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;

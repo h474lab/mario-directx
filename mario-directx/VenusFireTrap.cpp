@@ -14,7 +14,7 @@ void CVenusFireTrap::SetPosition(float x, float y)
 
 void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == TUBE_ENEMY_STATE_DIE)
+	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE)
 	{
 		background = 1;
 		return;
@@ -28,6 +28,7 @@ void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float
 void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CFireTrap::Update(dt, coObjects);
+	DebugOut(L"\nState: %d", state);
 }
 
 void CVenusFireTrap::Render()

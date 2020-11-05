@@ -8,11 +8,39 @@ CGoomba::CGoomba()
 	background = 0;
 	jumpCount = 0;
 	level = GOOMBA_LEVEL_PARA_GOOMBA;
+	state = GOOMBA_STATE_DIE;
 	SetState(GOOMBA_STATE_WALKING_LEFT);
+}
+
+void CGoomba::ChangeDirection()
+{
+	switch (state)
+	{
+	case GOOMBA_STATE_WALKING_LEFT:
+		SetState(GOOMBA_STATE_WALKING_RIGHT);
+		break;
+	case GOOMBA_STATE_WALKING_RIGHT:
+		SetState(GOOMBA_STATE_WALKING_LEFT);
+		break;
+	case GOOMBA_STATE_JUMPING_LOW_LEFT:
+		SetState(GOOMBA_STATE_JUMPING_LOW_RIGHT);
+		break;
+	case GOOMBA_STATE_JUMPING_LOW_RIGHT:
+		SetState(GOOMBA_STATE_JUMPING_LOW_LEFT);
+		break;
+	case GOOMBA_STATE_JUMPING_HIGH_LEFT:
+		SetState(GOOMBA_STATE_JUMPING_HIGH_RIGHT);
+		break;
+	case GOOMBA_STATE_JUMPING_HIGH_RIGHT:
+		SetState(GOOMBA_STATE_JUMPING_HIGH_LEFT);
+		break;
+	}
 }
 
 void CGoomba::HitGoomba(float direction)
 {
+	if (state == GOOMBA_STATE_DIE || state == GOOMBA_STATE_DIE_AND_FLY)
+		return;
 	nx = -direction;
 	SetState(GOOMBA_STATE_DIE_AND_FLY);
 }
@@ -55,6 +83,8 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (state == GOOMBA_STATE_DISAPPEARED) return;
+
 	float lastX, lastY;
 	GetPosition(lastX, lastY);
 
@@ -62,6 +92,17 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		if (state == GOOMBA_STATE_WALKING_LEFT || state == GOOMBA_STATE_WALKING_RIGHT)
 		{
+			float fX, fY;
+			if (followingObject)
+			{
+				followingObject->GetPosition(fX, fY);
+
+				if (x < fX)
+					SetState(GOOMBA_STATE_WALKING_RIGHT);
+				else
+					SetState(GOOMBA_STATE_WALKING_LEFT);
+			}
+			
 			if (GetTickCount64() - walking_start > GOOMBA_WALKING_TIME)
 			{
 				jumpCount = 0;
@@ -78,7 +119,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				SetState(state);
 				jumpCount++;
 			}
-			if (jumpCount > GOOMBA_MAXIMUM_LOW_JUMP)
+			if (jumpCount == GOOMBA_MAXIMUM_LOW_JUMP)
 			{
 				jumpCount = 0;
 				if (nx < 0)
@@ -134,6 +175,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (ny != 0) vy = 0;
 		
 		jumping = 1;
+		int changeDirection = 0;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			//DebugOut(L"\nsize: %d", coEventsResult.size());
@@ -142,21 +184,36 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (e->ny < 0) jumping = 0;
 
-			if (dynamic_cast<CMario*>(e->obj) || dynamic_cast<CGoomba*>(e->obj))
+			if (dynamic_cast<CMario*>(e->obj))
 			{
 				if (e->nx != 0)
 				{
-					SetState(state);
+					CMario* mario = dynamic_cast<CMario*>(e->obj);
+
+					if (!mario->GetUntouchable())
+						mario->LevelDown();
 				}
 			}
-			else if (!dynamic_cast<CBrick*>(e->obj) && e->nx != 0)
+			else if (dynamic_cast<CKoopa*>(e->obj))
 			{
-				if (state == GOOMBA_STATE_WALKING_LEFT)
-					SetState(GOOMBA_STATE_WALKING_RIGHT);
-				else if (state == GOOMBA_STATE_WALKING_RIGHT)
-					SetState(GOOMBA_STATE_WALKING_LEFT);
+				CKoopa *koopa = dynamic_cast<CKoopa*>(e->obj);
+				int koopaState = koopa->GetState();
+
+				if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT ||
+					koopaState == KOOPA_STATE_ROLLING_UP_LEFT || koopaState == KOOPA_STATE_ROLLING_UP_RIGHT)
+					HitGoomba(e->nx);
+			}
+			else if (e->nx != 0)
+			{
+				followingObject = NULL;
+				changeDirection = 1;
 			}
 		}
+
+		if (changeDirection)
+			ChangeDirection();
+		else
+			SetState(state);
 
 		CGameObject::Update(dt, coObjects);
 		x += dx;
@@ -167,7 +224,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CGoomba::Render()
 {
-	if (isBackground()) return;
+	if (state == GOOMBA_STATE_DISAPPEARED) return;
 
 	int ani = -1;
 	if (level == GOOMBA_LEVEL_GOOMBA)
@@ -177,7 +234,7 @@ void CGoomba::Render()
 			ani = GOOMBA_ANI_DIE;
 			if (GetTickCount64() - corpse_start > GOOMBA_CORPSE_STAYING_TIME)
 			{
-				background = 1;
+				SetState(GOOMBA_STATE_DISAPPEARED);
 			}
 		}
 		else if (state == GOOMBA_STATE_DIE_AND_FLY) ani = GOOMBA_ANI_DIE_AND_FLY;
@@ -197,6 +254,8 @@ void CGoomba::Render()
 
 void CGoomba::SetState(int state)
 {
+	int lastState = this->state;
+
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -205,6 +264,7 @@ void CGoomba::SetState(int state)
 			vx = 0;
 			vy = 0;
 			StartDying();
+			background = 1;
 			break;
 		case GOOMBA_STATE_DIE_AND_FLY:
 			if (nx > 0)
@@ -212,16 +272,17 @@ void CGoomba::SetState(int state)
 			else
 				vx = -GOOMBA_DEFLECT_SPEED_X;
 			vy = -GOOMBA_DEFLECT_SPEED_Y;
+			background = 1;
 			break;
 		case GOOMBA_STATE_WALKING_LEFT:
 			nx = -1;
 			vx = -GOOMBA_WALKING_SPEED;
-			if (level == GOOMBA_LEVEL_PARA_GOOMBA) StartWalking();
+			if (level == GOOMBA_LEVEL_PARA_GOOMBA && lastState != GOOMBA_STATE_WALKING_LEFT && lastState != GOOMBA_STATE_WALKING_RIGHT) StartWalking();
 			break;
 		case GOOMBA_STATE_WALKING_RIGHT:
 			nx = 1;
 			vx = GOOMBA_WALKING_SPEED;
-			if (level == GOOMBA_LEVEL_PARA_GOOMBA) StartWalking();
+			if (level == GOOMBA_LEVEL_PARA_GOOMBA && lastState != GOOMBA_STATE_WALKING_LEFT && lastState != GOOMBA_STATE_WALKING_RIGHT) StartWalking();
 			break;
 		case GOOMBA_STATE_JUMPING_LOW_LEFT:
 			nx = -1;

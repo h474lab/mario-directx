@@ -104,22 +104,24 @@ void CGameObject::FilterCollision(
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 
-		if (c->t < min_tx && c->nx != 0) {
+		if (c->t < 1.0f /*min_tx*/ && c->nx != 0) {
 			if (dynamic_cast<CColoredBlock*>(c->obj))
 				continue;
 			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+			coEventsResult.push_back(coEvents[i]);
 		}
 
-		if (c->t < min_ty  && c->ny != 0) {
+		if (c->t < 1.0f /*min_ty*/  && c->ny != 0) {
 			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+			coEventsResult.push_back(coEvents[i]);
 		}
 	}
 
 	//DebugOut(L"\nmin_tx=%f", min_tx);
 	//DebugOut(L"\nmin_ty=%f", min_ty);
 
-	if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
-	if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);
+	//if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
+	//if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);
 }
 
 

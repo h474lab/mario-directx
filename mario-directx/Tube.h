@@ -11,14 +11,20 @@
 #define TUBE_ANI_LOWER_LID_LEFT		4
 #define TUBE_ANI_LOWER_LID_RIGHT	5
 
+#define TUBE_OBJECT_DELAYING_TIME	2000
+
 class CTube : public CGameObject
 {
 	int numRows;
 	int hasLid;		// hasLid = 0 - no lid, 1 - upper lid, 2 - lower lid
 
 	CGameObject* object;
+	DWORD objectDelay_start;
+	int objLastState;
 public:
 	CTube(int numRows, int hasLid);
+
+	void StartDelayingObject() { objectDelay_start = GetTickCount64(); }
 
 	virtual void SetPosition(float x, float y);
 

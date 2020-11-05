@@ -2,10 +2,11 @@
 #include "GameObject.h"
 #include "Bullet.h"
 
-#define TUBE_ENEMY_STATE_POINT	0
-#define TUBE_ENEMY_STATE_FIRE	1
-#define TUBE_ENEMY_STATE_IDLE	2
-#define TUBE_ENEMY_STATE_DIE	3
+#define TUBE_ENEMY_STATE_POINT			0
+#define TUBE_ENEMY_STATE_FIRE			1
+#define TUBE_ENEMY_STATE_IDLE			2
+#define TUBE_ENEMY_STATE_DIE			3
+#define TUBE_ENEMY_STATE_UNAVAILABLE	4
 
 #define TUBE_ENEMY_DIRECTION_BOTTOM_LEFT	0
 #define TUBE_ENEMY_DIRECTION_BOTTOM_RIGHT	1
@@ -16,6 +17,7 @@ class CTubeEnemy : public CGameObject
 {
 protected:
 	int direction;
+
 	CGameObject* followingObject;
 	CBullet* bullet;
 public:
@@ -24,7 +26,8 @@ public:
 
 	void Firing();
 
-	virtual void SetAppearingState(int state) {}
+	virtual void SetAppearingState() {}
+	virtual void SetDisappearingState() { SetState(TUBE_ENEMY_STATE_UNAVAILABLE); }
 	void SetFollowingObject(CGameObject* followingObject) { this->followingObject = followingObject; }
 	void SetBullet(CBullet* bullet) { this->bullet = bullet; }
 

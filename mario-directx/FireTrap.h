@@ -14,8 +14,9 @@ class CFireTrap : public CTubeEnemy
 {
 public:
 	virtual void SetPosition(float x, float y);
+	virtual void SetState(int state);
 
-	virtual void SetAppearingState(int state) { SetState(TUBE_ENEMY_STATE_POINT); }
+	virtual void SetAppearingState() { SetState(TUBE_ENEMY_STATE_POINT); }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

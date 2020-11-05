@@ -8,6 +8,7 @@
 #include "PiranhaPlant.h"
 #include "GroundBricks.h"
 #include "ColoredBlock.h"
+#include "SquareBrick.h"
 
 void CFireball::SetDirection(int direction)
 {
@@ -127,7 +128,7 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(FIREBALL_STATE_ON_HOLD);
 				koopa->KickKoopaOut(-this->nx);
 			}
-			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj))
+			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj) && !dynamic_cast<CSquareBrick*>(event->obj))
 			{
 				SetState(FIREBALL_STATE_ON_HOLD);
 			}
