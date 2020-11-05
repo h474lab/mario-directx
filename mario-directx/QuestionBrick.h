@@ -21,7 +21,7 @@ public:
 	virtual void SetPosition(float x, float y);
 
 	void AddNewObject(CGameObject* obj);
-	void HitQuestionBrick(int side);
+	int HitQuestionBrick(int side);
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();

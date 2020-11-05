@@ -3,6 +3,9 @@
 #include "Brick.h"
 #include "ColoredBlock.h"
 #include "Goomba.h"
+#include "GroundBricks.h"
+#include "Tube.h"
+#include "QuestionBrick.h"
 
 CKoopa::CKoopa()
 {
@@ -85,6 +88,44 @@ void CKoopa::HitKoopa(int direction)
 	StartFlying();
 }
 
+void CKoopa::KickKoopaOut(int direction)
+{
+	SetState(KOOPA_STATE_FLYING_OUT);
+
+	if (-direction > 0)
+		vx = KOOPA_FLYING_OUT_X;
+	else
+		vx = -KOOPA_FLYING_OUT_X;
+	vy = -KOOPA_FLYING_OUT_Y;
+
+	StartFlying();
+}
+
+void CKoopa::ChangeDirection()
+{
+	switch (state)
+	{
+	case KOOPA_STATE_ROLLING_DOWN_RIGHT:
+		SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
+		break;
+	case KOOPA_STATE_ROLLING_DOWN_LEFT:
+		SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
+		break;
+	case KOOPA_STATE_ROLLING_UP_RIGHT:
+		SetState(KOOPA_STATE_ROLLING_UP_LEFT);
+		break;
+	case KOOPA_STATE_ROLLING_UP_LEFT:
+		SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
+		break;
+	case KOOPA_STATE_WALKING_RIGHT:
+		SetState(KOOPA_STATE_WALKING_LEFT);
+		break;
+	case KOOPA_STATE_WALKING_LEFT:
+		SetState(KOOPA_STATE_WALKING_RIGHT);
+		break;
+	}
+}
+
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"\nvx, vy: %f, %f", vx, vy);
@@ -111,6 +152,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += KOOPA_GRAVITY * dt;
 
 	CGameObject::Update(dt, coObjects);
+
+	if (state == KOOPA_STATE_FLYING_OUT)
+	{
+		x += dx;
+		y += dy;
+		background = 1;
+		return;
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -160,27 +209,30 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
 					{
 						goomba->HitGoomba(nx);
+						SetState(state);
 					}
 					else if (state == KOOPA_STATE_WALKING_RIGHT)
-						SetState(KOOPA_STATE_WALKING_RIGHT);
+						SetState(state);
 					else if (state == KOOPA_STATE_WALKING_LEFT)
-						SetState(KOOPA_STATE_WALKING_LEFT);
+						SetState(state);
 				}
-				if (dynamic_cast<CMario*>(e->obj))
+				else if (dynamic_cast<CMario*>(e->obj))
 				{
 					SetState(state);
 				}
-				else
+				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CTube*>(e->obj))
 				{
-					if (state == KOOPA_STATE_ROLLING_DOWN_RIGHT)
-						SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
-					else if (state == KOOPA_STATE_ROLLING_DOWN_LEFT)
-						SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
-					else if (state == KOOPA_STATE_ROLLING_UP_RIGHT)
-						SetState(KOOPA_STATE_ROLLING_UP_LEFT);
-					else if (state == KOOPA_STATE_ROLLING_UP_LEFT)
-						SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
+					ChangeDirection();
 				}
+				else if (dynamic_cast<CQuestionBrick*>(e->obj))
+				{
+					CQuestionBrick* questionbrick = dynamic_cast<CQuestionBrick*>(e->obj);
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+						questionbrick->HitQuestionBrick(this->nx);
+					ChangeDirection();
+				}
+				else SetState(state);
 			}
 		}
 
@@ -237,6 +289,9 @@ void CKoopa::Render()
 		break;
 	case KOOPA_STATE_JUMPING_RIGHT:
 		ani = KOOPA_ANI_JUMPING_RIGHT;
+		break;
+	case KOOPA_STATE_FLYING_OUT:
+		ani = KOOPA_ANI_LYING_UP;
 		break;
 	}
 	animation_set->at(ani)->Render(x, y);

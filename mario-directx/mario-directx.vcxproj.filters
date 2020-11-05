@@ -64,9 +64,6 @@
     <Filter Include="Game Manager\Utils">
       <UniqueIdentifier>{b756dab2-c4f9-45ea-b37f-54fc37c4b843}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\KoopaTroopa">
-      <UniqueIdentifier>{dcdb3a4c-0571-4029-a116-d6eafe2625d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\GroundBricks">
       <UniqueIdentifier>{02fe5a4e-1be0-4653-9eff-ea216beace4e}</UniqueIdentifier>
     </Filter>
@@ -117,6 +114,9 @@
     </Filter>
     <Filter Include="Objects\Leaf">
       <UniqueIdentifier>{8044c4ad-3c5e-4f77-a36e-fe181765895a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Koopa">
+      <UniqueIdentifier>{dcdb3a4c-0571-4029-a116-d6eafe2625d6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,7 +229,7 @@
       <Filter>Objects\Leaf</Filter>
     </ClCompile>
     <ClCompile Include="Koopa.cpp">
-      <Filter>Objects\KoopaTroopa</Filter>
+      <Filter>Objects\Koopa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -342,7 +342,7 @@
       <Filter>Objects\Leaf</Filter>
     </ClInclude>
     <ClInclude Include="Koopa.h">
-      <Filter>Objects\KoopaTroopa</Filter>
+      <Filter>Objects\Koopa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

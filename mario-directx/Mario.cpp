@@ -207,6 +207,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// Collision logic with other objects
 		//
 		jumping = 1;
+		int acquiredQuestionBrick = 0;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -370,20 +371,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-			else if (dynamic_cast<CQuestionBrick*>(e->obj))
+			else if (dynamic_cast<CQuestionBrick*>(e->obj) && !acquiredQuestionBrick)
 			{
 				CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(e->obj);
+				int result = 0;
 				if (e->ny > 0)
 				{
 					float ex, ey;
 					e->obj->GetPosition(ex, ey);
-					brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
+					result = brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
 					continue;
 				}
 				if (e->nx != 0 && spinning)
 				{
-					brick->HitQuestionBrick(this->nx);
+					result = brick->HitQuestionBrick(this->nx);
 				}
+
+				if (result) acquiredQuestionBrick = 1;
 			}
 			else if (dynamic_cast<CMushroom*>(e->obj))
 			{
@@ -539,7 +543,12 @@ void CMario::Render()
 			if (nx > 0)
 			{
 				if (jumping)
-					ani = MARIO_ANI_FIRE_JUMPING_RIGHT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_FIRE_JUMPING_RIGHT;
+					else
+						ani = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_RIGHT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_FIRE_KICKING_RIGHT;
 				else if (holdenKoopa)
@@ -550,7 +559,12 @@ void CMario::Render()
 			else
 			{
 				if (jumping)
-					ani = MARIO_ANI_FIRE_JUMPING_LEFT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_FIRE_JUMPING_LEFT;
+					else
+						ani = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_LEFT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_FIRE_KICKING_LEFT;
 				else if (holdenKoopa)
@@ -562,7 +576,12 @@ void CMario::Render()
 		else if (vx > 0)
 		{
 			if (jumping)
-				ani = MARIO_ANI_FIRE_JUMPING_RIGHT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_FIRE_JUMPING_RIGHT;
+				else
+					ani = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_RIGHT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_FIRE_KICKING_RIGHT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -587,7 +606,12 @@ void CMario::Render()
 		else
 		{
 			if (jumping)
-				ani = MARIO_ANI_FIRE_JUMPING_LEFT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_FIRE_JUMPING_LEFT;
+				else
+					ani = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_LEFT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_FIRE_KICKING_LEFT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -618,7 +642,11 @@ void CMario::Render()
 			{
 				if (jumping)
 				{
-					if (vy < 0)
+					if (holdenKoopa)
+					{
+						ani = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_RIGHT;
+					}
+					else if (vy < 0)
 					{
 						if (fly == 1)
 							ani = MARIO_ANI_TAIL_FLY_RIGHT;
@@ -646,7 +674,11 @@ void CMario::Render()
 			{
 				if (jumping)
 				{
-					if (vy < 0)
+					if (holdenKoopa)
+					{
+						ani = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_LEFT;
+					}
+					else if (vy < 0)
 					{
 						if (fly == 1)
 							ani = MARIO_ANI_TAIL_FLY_LEFT;
@@ -675,7 +707,11 @@ void CMario::Render()
 		{
 			if (jumping)
 			{
-				if (vy < 0)
+				if (holdenKoopa)
+				{
+					ani = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_RIGHT;
+				}
+				else if (vy < 0)
 				{
 					if (fly == 1)
 						ani = MARIO_ANI_TAIL_FLY_RIGHT;
@@ -717,7 +753,11 @@ void CMario::Render()
 		{
 			if (jumping)
 			{
-				if (vy < 0)
+				if (holdenKoopa)
+				{
+					ani = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_LEFT;
+				}
+				else if (vy < 0)
 				{
 					if (fly == 1)
 						ani = MARIO_ANI_TAIL_FLY_LEFT;
@@ -763,7 +803,12 @@ void CMario::Render()
 			if (nx > 0)
 			{
 				if (jumping)
-					ani = MARIO_ANI_BIG_JUMPING_RIGHT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_BIG_JUMPING_RIGHT;
+					else
+						ani = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_RIGHT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_BIG_KICKING_RIGHT;
 				else if (holdenKoopa)
@@ -774,7 +819,12 @@ void CMario::Render()
 			else
 			{
 				if (jumping)
-					ani = MARIO_ANI_BIG_JUMPING_LEFT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_BIG_JUMPING_LEFT;
+					else
+						ani = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_LEFT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_BIG_KICKING_LEFT;
 				else if (holdenKoopa)
@@ -786,7 +836,12 @@ void CMario::Render()
 		else if (vx > 0)
 		{
 			if (jumping)
-				ani = MARIO_ANI_BIG_JUMPING_RIGHT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_BIG_JUMPING_RIGHT;
+				else
+					ani = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_RIGHT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_BIG_KICKING_RIGHT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -811,7 +866,12 @@ void CMario::Render()
 		else
 		{
 			if (jumping)
-				ani = MARIO_ANI_BIG_JUMPING_LEFT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_BIG_JUMPING_LEFT;
+				else
+					ani = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_LEFT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_BIG_KICKING_LEFT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -841,7 +901,12 @@ void CMario::Render()
 			if (nx > 0)
 			{
 				if (jumping)
-					ani = MARIO_ANI_SMALL_JUMPING_RIGHT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_SMALL_JUMPING_RIGHT;
+					else
+						ani = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_RIGHT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_SMALL_KICKING_RIGHT;
 				else if (holdenKoopa)
@@ -852,7 +917,12 @@ void CMario::Render()
 			else
 			{
 				if (jumping)
-					ani = MARIO_ANI_SMALL_JUMPING_LEFT;
+				{
+					if (!holdenKoopa)
+						ani = MARIO_ANI_SMALL_JUMPING_LEFT;
+					else
+						ani = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_LEFT;
+				}
 				else if (kicking)
 					ani = MARIO_ANI_SMALL_KICKING_LEFT;
 				else if (holdenKoopa)
@@ -864,7 +934,12 @@ void CMario::Render()
 		else if (vx > 0)
 		{
 			if (jumping)
-				ani = MARIO_ANI_SMALL_JUMPING_RIGHT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_SMALL_JUMPING_RIGHT;
+				else
+					ani = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_RIGHT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_SMALL_KICKING_RIGHT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -889,7 +964,12 @@ void CMario::Render()
 		else
 		{
 			if (jumping)
-				ani = MARIO_ANI_SMALL_JUMPING_LEFT;
+			{
+				if (!holdenKoopa)
+					ani = MARIO_ANI_SMALL_JUMPING_LEFT;
+				else
+					ani = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_LEFT;
+			}
 			else if (kicking)
 				ani = MARIO_ANI_SMALL_KICKING_LEFT;
 			else if (vx * nx == MARIO_WALKING_SPEED)
@@ -994,11 +1074,16 @@ void CMario::SetThrowing()
 void CMario::ThrowFireball()
 {
 	if (level != MARIO_LEVEL_FIRE) return;
+	
+	currentFireball = -1;
+	for (int i = 0; i < fireballs.size(); i++)
+		if (fireballs[i]->GetState() == FIREBALL_STATE_ON_HOLD)
+		{
+			currentFireball = i;
+			break;
+		}
 
-	if (currentFireball + 1 > fireballs.size() - 1)
-		currentFireball = 0;
-	else
-		currentFireball++;
+	if (currentFireball == -1) return;
 
 	fireballs.at(currentFireball)->SetState(FIREBALL_STATE_ON_HOLD);
 	if (nx > 0)

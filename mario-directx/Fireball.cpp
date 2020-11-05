@@ -12,11 +12,32 @@
 void CFireball::SetDirection(int direction)
 {
 	if (direction == FIREBALL_DIRECTION_LEFT)
+	{
+		nx = -1;
 		vx = -FIREBALL_FLYING_SPEED_X;
+	}
 	else
+	{
+		nx = 1;
 		vx = FIREBALL_FLYING_SPEED_X;
+	}
 
 	this->direction = direction;
+}
+
+void CFireball::SetState(int state)
+{
+	CGameObject::SetState(state);
+
+	switch (state)
+	{
+	case FIREBALL_STATE_ON_HOLD:
+		background = 1;
+		break;
+	case FIREBALL_STATE_FLY:
+		background = 0;
+		break;
+	}
 }
 
 void CFireball::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -104,7 +125,7 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CKoopa* koopa = dynamic_cast<CKoopa*>(event->obj);
 
 				SetState(FIREBALL_STATE_ON_HOLD);
-				koopa->SetState(KOOPA_STATE_LYING_DOWN);
+				koopa->KickKoopaOut(-this->nx);
 			}
 			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj))
 			{

@@ -15,6 +15,9 @@
 #define KOOPA_DEFLECTING_X			0.15f
 #define KOOPA_DEFLECTING_Y			0.4f
 
+#define KOOPA_FLYING_OUT_X			0.1f
+#define KOOPA_FLYING_OUT_Y			0.2f
+
 #define KOOPA_STATE_WALKING_LEFT			0
 #define KOOPA_STATE_WALKING_RIGHT			1
 #define KOOPA_STATE_LYING_UP				2
@@ -24,7 +27,8 @@
 #define KOOPA_STATE_ROLLING_DOWN_LEFT		6
 #define KOOPA_STATE_ROLLING_DOWN_RIGHT		7
 #define KOOPA_STATE_JUMPING_RIGHT			8
-#define KOOPA_STATE_JUMPING_LEFT				9
+#define KOOPA_STATE_JUMPING_LEFT			9
+#define KOOPA_STATE_FLYING_OUT				10
 
 #define KOOPA_ANI_WALKING_RIGHT			0
 #define KOOPA_ANI_WALKING_LEFT			1
@@ -69,6 +73,9 @@ public:
 	void SetHolden(int holdenState) { isHolden = holdenState; background = isHolden; }
 
 	void HitKoopa(int direction);
+	void KickKoopaOut(int direction);
+
+	void ChangeDirection();
 
 	void StartFlying() { flying = 1; flying_start = GetTickCount64(); }
 

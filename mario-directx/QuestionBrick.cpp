@@ -30,7 +30,7 @@ void CQuestionBrick::AddNewObject(CGameObject* obj)
 	objects.push_back(obj);
 }
 
-void CQuestionBrick::HitQuestionBrick(int side)
+int CQuestionBrick::HitQuestionBrick(int side)
 {
 	SetFlyingDirection(FLYING_DIRECTION_UP, side);
 
@@ -40,7 +40,9 @@ void CQuestionBrick::HitQuestionBrick(int side)
 		objects.pop_back();
 		
 		obj->SetFlyingDirection(FLYING_DIRECTION_UP, -side);
+		return 1;
 	}
+	return 0;
 }
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

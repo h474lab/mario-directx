@@ -1,5 +1,6 @@
 #include "Leaf.h"
 #include "Utils.h"
+#include "Mario.h"
 
 CLeaf::CLeaf()
 {
@@ -69,8 +70,55 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt);
 
-	x += dx;
-	y += dy;
+	CGameObject::Update(dt);
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx, ny;
+		float rdx, rdy;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
+
+		for (int i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CMario*>(e->obj))
+			{
+				CMario* mario = dynamic_cast<CMario*>(e->obj);
+
+				SetState(LEAF_STATE_UNAVAILABLE);
+				mario->LevelUp();
+			}
+			else
+			{
+				if (e->nx != 0)
+				{
+					SetState(state);
+				}
+			}
+		}
+
+		CGameObject::Update(dt, coObjects);
+		x += dx;
+		y += dy;
+
+	}
 }
 
 void CLeaf::Render()

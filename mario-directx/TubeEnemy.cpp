@@ -8,19 +8,37 @@ void CTubeEnemy::Firing()
 	bullet->SetState(BULLET_STATE_FLY);
 	bullet->SetPosition(this->x + 5, this->y);
 
+	float l, t, r, b;
+	followingObject->GetBoundingBox(l, t, r, b);
+
+	float fX = (l + r) / 2;
+	float fY = (t + b) / 2;
+
 	switch (direction)
 	{
 	case TUBE_ENEMY_DIRECTION_BOTTOM_LEFT:
-		bullet->SetDirection(BULLET_FLYING_DIRECTION_BOT_LEFT);
+		if (bullet->GetDistance(BULLET_FLYING_DIRECTION_BOT_LEFT, fX, fY) < bullet->GetDistance(BULLET_FLYING_DIRECTION_MID_BOT_LEFT, fX, fY))
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_BOT_LEFT);
+		else
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_MID_BOT_LEFT);
 		break;
 	case TUBE_ENEMY_DIRECTION_BOTTOM_RIGHT:
-		bullet->SetDirection(BULLET_FLYING_DIRECTION_BOT_RIGHT);
+		if (bullet->GetDistance(BULLET_FLYING_DIRECTION_BOT_RIGHT, fX, fY) < bullet->GetDistance(BULLET_FLYING_DIRECTION_MID_BOT_RIGHT, fX, fY))
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_BOT_RIGHT);
+		else
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_MID_BOT_RIGHT);
 		break;
 	case TUBE_ENEMY_DIRECTION_TOP_LEFT:
-		bullet->SetDirection(BULLET_FLYING_DIRECTION_TOP_LEFT);
+		if (bullet->GetDistance(BULLET_FLYING_DIRECTION_TOP_LEFT, fX, fY) < bullet->GetDistance(BULLET_FLYING_DIRECTION_MID_TOP_LEFT, fX, fY))
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_TOP_LEFT);
+		else
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_MID_TOP_LEFT);
 		break;
 	case TUBE_ENEMY_DIRECTION_TOP_RIGHT:
-		bullet->SetDirection(BULLET_FLYING_DIRECTION_TOP_RIGHT);
+		if (bullet->GetDistance(BULLET_FLYING_DIRECTION_TOP_RIGHT, fX, fY) < bullet->GetDistance(BULLET_FLYING_DIRECTION_MID_TOP_RIGHT, fX, fY))
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_TOP_RIGHT);
+		else
+			bullet->SetDirection(BULLET_FLYING_DIRECTION_MID_TOP_RIGHT);
 		break;
 	}
 }
