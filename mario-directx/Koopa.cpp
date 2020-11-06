@@ -259,7 +259,8 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		//DebugOut(L"\ndx, dy = %f, %f", dx, dy);
+		int dir = CanBeHitByTail();
+		if (dir) HitKoopa(dir);
 	}
 }
 
@@ -309,26 +310,26 @@ void CKoopa::Render()
 void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x + 5;
-	t = y;
+	t = y + 2;
 
 	if (state == KOOPA_STATE_JUMPING_LEFT || state == KOOPA_STATE_JUMPING_RIGHT)
 	{
 		r = l + KOOPA_JUMPING_WIDTH;
-		b = t + KOOPA_JUMPING_HEIGHT;
+		b = t + KOOPA_JUMPING_HEIGHT - 2;
 	}
 	else if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT)
 	{
 		r = l + KOOPA_STANDING_WIDTH;
-		b = t + KOOPA_STANDING_HEIGHT;
+		b = t + KOOPA_STANDING_HEIGHT - 2;
 	}
 	else if (state == KOOPA_STATE_LYING_UP || state == KOOPA_STATE_LYING_DOWN)
 	{
 		r = l + KOOPA_LYING_WIDTH - 5;
-		b = t + KOOPA_LYING_HEIGHT;
+		b = t + KOOPA_LYING_HEIGHT - 2;
 	}
 	else
 	{
 		r = l + KOOPA_ROLLING_WIDTH - 5;
-		b = t + KOOPA_ROLLING_HEIGHT;
+		b = t + KOOPA_ROLLING_HEIGHT - 2;
 	}
 }

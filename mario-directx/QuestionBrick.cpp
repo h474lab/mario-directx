@@ -17,6 +17,7 @@ void CQuestionBrick::SetPosition(float x, float y)
 	this->y = y;
 	maxFlyingY = y;
 	minFlyingY = y - QUESTIONBRICK_BBOX_HEIGHT * 0.75f;
+	bottom_y = y + QUESTIONBRICK_BBOX_HEIGHT;
 
 	for (int i = 0; i < objects.size(); i++)
 	{
@@ -52,6 +53,13 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (objects.size() == 0)
 		SetState(QUESTIONBRICK_STATE_NONE_OBJECTS);
+
+	if (state == QUESTIONBRICK_STATE_CONTAINING_OBJECTS)
+	{
+		int dir = CanBeHitByTail();
+		if (dir)
+			HitQuestionBrick(dir);
+	}
 }
 
 void CQuestionBrick::Render()
@@ -70,5 +78,5 @@ void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 	l = x;
 	t = y;
 	r = l + QUESTIONBRICK_BBOX_WIDTH;
-	b = t + QUESTIONBRICK_BBOX_HEIGHT;
+	b = bottom_y;
 }

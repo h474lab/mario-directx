@@ -179,6 +179,31 @@ void CGameObject::UpdateFlying(DWORD dt)
 	}
 }
 
+int CGameObject::CanBeHitByTail()
+{
+	float l, t, r, b;
+	GetBoundingBox(l, t, r, b);
+	float w = r - l;
+	float h = b - t;
+
+	CMario* mario = CGame::GetInstance()->GetPlayer();
+	if (!mario) return 0;
+
+	float start_x, end_x, start_y, end_y;
+
+	if (mario->GetHittableTail())
+	{
+		mario->GetTail(start_x, end_x, start_y, end_y);
+		if (start_y > this->y && this->y + h > end_y)
+		{
+			if (start_x <= this->x && end_x >= this->x) return 1;
+			if (start_x <= this->x + w && end_x >= this->x + w) return -1;
+		}
+			
+	}
+	return 0;
+}
+
 void CGameObject::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);

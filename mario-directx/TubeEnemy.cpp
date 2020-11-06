@@ -102,4 +102,7 @@ void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetDirection(TUBE_ENEMY_DIRECTION_TOP_LEFT);
 		}
 	}
+
+	if (state != TUBE_ENEMY_STATE_DIE && state != TUBE_ENEMY_STATE_UNAVAILABLE && CanBeHitByTail())
+		SetState(TUBE_ENEMY_STATE_DIE);
 }

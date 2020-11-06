@@ -135,6 +135,18 @@ void CScoreboard::SetRemainingTime(int remainingTime)
 	}
 }
 
+void CScoreboard::Delete()
+{
+	for (int i = 0; i < objectSet.size(); i++)
+	{
+		if (objectSet.at(i))
+		{
+			delete objectSet.at(i);
+			objectSet.at(i) = NULL;
+		}
+	}
+}
+
 void CScoreboard::SetPosition(float x, float y)
 {
 	CGameObject::SetPosition(x, y);

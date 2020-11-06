@@ -183,6 +183,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;
 
+		CGame::GetInstance()->SetPlayer(player);
+
 		for (int i = 0; i < nFireballs; i++)
 		{
 			fireball = new CFireball();
@@ -499,8 +501,12 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = NULL;
 	
-	delete HUD;
-	HUD = NULL;
+	if (HUD)
+	{
+		HUD->Delete();
+		delete HUD;
+		HUD = NULL;
+	}
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }

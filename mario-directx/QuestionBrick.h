@@ -10,11 +10,13 @@
 #define QUESTIONBRICK_ANI_CONTAINING_OBJECTS	0
 #define QUESTIONBRICK_ANI_NONE_OBJECTS			1
 
-#define MOVEMENT_SPEED_Y			0.25f
+#define MOVEMENT_SPEED_Y			0.1f
 
 class CQuestionBrick : public CGameObject
 {
 	vector<CGameObject*> objects;
+
+	float bottom_y;
 public:
 	CQuestionBrick();
 

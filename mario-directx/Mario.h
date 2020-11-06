@@ -15,7 +15,7 @@
 #define MARIO_FLY_JUMP_SPEED_Y		0.00199f
 #define MARIO_FLY_JUMP_TIME			300
 
-#define MARIO_FLY_SPEED_Y			1.0/500.0
+#define MARIO_FLY_SPEED_Y			1.0/400.0
 #define MARIO_FLY_TIME				500
 
 #define MARIO_THROW_TIME			200
@@ -170,12 +170,16 @@
 #define MARIO_FIRE_BBOX_MARGIN_LEFT		2
 #define MARIO_FIRE_BBOX_MARGIN_RIGHT	0
 
-#define MARIO_TAIL_BBOX_WIDTH	22
+#define MARIO_TAIL_FACING_SCREEN_WIDTH	16
+#define MARIO_TAIL_BBOX_WIDTH	21
 #define MARIO_TAIL_BBOX_HEIGHT	27
-#define MARIO_TAIL_BBOX_MARGIN_LEFT		9
+#define MARIO_TAIL_BBOX_MARGIN_LEFT		7
 #define MARIO_TAIL_BBOX_MARGIN_RIGHT	0
 #define MARIO_TAIL_HEAD_TO_TAIL		18
-#define MARIO_TAIL_TAIL_WIDTH		5
+#define MARIO_TAIL_TAIL_WIDTH		2
+
+#define MARIO_TAIL_SPINNING_WIDTH		23
+#define MARIO_TAIL_SPINNING_MARGIN_LEFT	9
 
 #define MARIO_BIG_BBOX_WIDTH  15
 #define MARIO_BIG_BBOX_HEIGHT 27
@@ -199,7 +203,7 @@
 #define MARIO_UNTOUCHABLE_TIME	2000
 #define MARIO_TURNING_DELAY		150
 #define MARIO_KICKING_TIME		1000
-#define MARIO_SPINNING_TIME		240
+#define MARIO_SPINNING_TIME		300
 
 
 class CMario : public CGameObject
@@ -240,6 +244,12 @@ class CMario : public CGameObject
 
 	int spinning;
 	DWORD spinning_start;
+	float startSpinningPosition;
+	int spinningPhase;
+
+	int hittableTail;
+	float tail_start_x, tail_end_x;
+	float tail_start_y, tail_end_y;
 
 	vector<CFireball*> fireballs;
 	int currentFireball;
@@ -272,6 +282,8 @@ public:
 	void SetState(int state);
 	void SetLevel(int l);
 
+	void GetMargins(int& leftMargin, int& rightMargin);
+
 	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
@@ -280,6 +292,8 @@ public:
 	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };
 
 	void StartSpinning();
+	int GetHittableTail() { return hittableTail; }
+	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
 	void StartRunning() { running_start = GetTickCount64(); }
 
 	int GetPowerLevel() { return powerLevel; }

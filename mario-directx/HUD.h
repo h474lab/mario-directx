@@ -25,6 +25,8 @@ public:
 	int GetPowerLevel() { return scoreBoard->GetPowerLevel(); }
 	int GetRemainingTime() { return scoreBoard->GetRemainingTime(); }
 
+	void Delete();
+
 	virtual void SetPosition(float x, float y);
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

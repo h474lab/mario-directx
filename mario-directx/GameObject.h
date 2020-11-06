@@ -105,6 +105,8 @@ public:
 	virtual void SetDisappearingState() {}
 	virtual void SetAppearingState() {}
 
+	int CanBeHitByTail();
+
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }

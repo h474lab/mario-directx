@@ -6,6 +6,11 @@ void CSquareBrick::Destroy()
 	SetState(SQUARE_BRICK_STATE_UNAVAILABLE);
 }
 
+void CSquareBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (state == SQUARE_BRICK_STATE_AVAILABLE && CanBeHitByTail()) Destroy();
+}
+
 void CSquareBrick::Render()
 {
 	if (state == SQUARE_BRICK_STATE_AVAILABLE)

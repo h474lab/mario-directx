@@ -162,10 +162,50 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		turning_start = 0;
 	}
 
-	if (GetTickCount64() - spinning_start > MARIO_SPINNING_TIME)
+	if (spinning == 1)
 	{
-		spinning = 0;
-		spinning_start = 0;
+		DWORD spinning_time = GetTickCount64() - spinning_start;
+		if (spinning_time > MARIO_SPINNING_TIME)
+		{
+			spinning = 0;
+			spinning_start = 0;
+			if (nx > 0)
+				x -= MARIO_TAIL_BBOX_MARGIN_LEFT;
+			else
+				x += - MARIO_TAIL_BBOX_WIDTH + MARIO_TAIL_BBOX_MARGIN_LEFT + MARIO_TAIL_FACING_SCREEN_WIDTH;
+			//DebugOut(L"\nx = %f", x);
+		}
+		else if (spinning_time > MARIO_SPINNING_TIME * 2.0f / 3.0f)
+		{
+			if (nx < 0 && spinningPhase == 2)
+			{
+				x += MARIO_TAIL_BBOX_WIDTH - MARIO_TAIL_FACING_SCREEN_WIDTH;
+				spinningPhase++;
+				hittableTail = 0;
+			}
+		}
+		else if (spinning_time > MARIO_SPINNING_TIME / 3.0f)
+		{
+			if (spinningPhase == 1)
+			{
+				hittableTail = 1;
+				if (nx < 0)
+				{
+					x += -MARIO_TAIL_BBOX_WIDTH + MARIO_TAIL_FACING_SCREEN_WIDTH;
+					tail_start_x = x - MARIO_TAIL_BBOX_MARGIN_LEFT;
+					tail_end_x = x;
+				}
+				else
+				{
+					tail_start_x = x + MARIO_TAIL_BBOX_WIDTH - MARIO_TAIL_BBOX_MARGIN_LEFT;
+					tail_end_x = tail_start_x + MARIO_TAIL_BBOX_MARGIN_LEFT;
+				}
+
+				tail_start_y = y + MARIO_TAIL_HEAD_TO_TAIL;
+				tail_end_y = tail_start_y + MARIO_TAIL_TAIL_WIDTH;
+				spinningPhase++;
+			}
+		}
 	}
 
 	// reset untouchable timer if untouchable time has passed
@@ -350,13 +390,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CQuestionBrick*>(e->obj) && !acquiredQuestionBrick)
 			{
+				float l, t, b, r;
+				GetBoundingBox(l, t, r, b);
+
+				float width = r - l, height = b - t;
+
 				CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(e->obj);
 				int result = 0;
 				if (e->ny > 0)
 				{
-					float ex, ey;
-					e->obj->GetPosition(ex, ey);
-					result = brick->HitQuestionBrick((this->x > ex) ? 1 : -1);
+					if ((x <= obj_x && x + width - obj_x >= width / 2.5f) || (x >= obj_x && obj_x + width - x >= width / 2.5f))
+						brick->HitQuestionBrick((this->x > obj_x) ? 1 : -1);
+
 					continue;
 				}
 				if (canBeHitBySpinning)
@@ -1172,6 +1217,7 @@ void CMario::SetState(int state)
 {
 	lastState = GetState();
 	lastRunning = running;
+	int last_nx = nx;
 
 	CGameObject::SetState(state);
 
@@ -1254,6 +1300,22 @@ void CMario::SetState(int state)
 		else
 			vx = -MARIO_JUMP_SPEED_X;
 	}
+
+	if (last_nx != nx)
+	{
+		int leftMargin = 0, rightMargin = 0;
+
+		GetMargins(leftMargin, rightMargin);
+
+		if (last_nx > nx)
+		{
+			x = x + leftMargin - rightMargin;
+		}
+		else
+		{
+			x = x - leftMargin + rightMargin;
+		}
+	}
 }
 
 void CMario::SetLevel(int l)
@@ -1263,6 +1325,9 @@ void CMario::SetLevel(int l)
 	float left, top, right, bottom;
 	GetBoundingBox(left, top, right, bottom);
 	float width = right - left, height = bottom - top;
+
+	int leftMargin, rightMargin;
+	GetMargins(leftMargin, rightMargin);
 
 	level = l;
 
@@ -1274,6 +1339,9 @@ void CMario::SetLevel(int l)
 	int lv_sit_height[] = { MARIO_SMALL_BBOX_HEIGHT, MARIO_BIG_SITTING_BBOX_HEIGHT, MARIO_TAIL_SITTING_BBOX_HEIGHT, MARIO_FIRE_SITTING_BBOX_HEIGHT };
 	int lv_sit_width[] = { MARIO_SMALL_BBOX_WIDTH, MARIO_BIG_SITTING_BBOX_WIDTH, MARIO_TAIL_SITTING_BBOX_WIDTH, MARIO_FIRE_SITTING_BBOX_WIDTH };
 
+	int lv_width_marginLeft[] = { MARIO_SMALL_BBOX_MARGIN_LEFT, MARIO_BIG_BBOX_MARGIN_LEFT, MARIO_TAIL_BBOX_MARGIN_LEFT, MARIO_FIRE_BBOX_MARGIN_LEFT };
+	int lv_width_marginRight[] = { MARIO_SMALL_BBOX_MARGIN_RIGHT, MARIO_BIG_BBOX_MARGIN_RIGHT, MARIO_TAIL_BBOX_MARGIN_RIGHT, MARIO_FIRE_BBOX_MARGIN_RIGHT };
+
 	for (int j = 0; j < 4; j++)
 	{
 		if (lv[j] == level)
@@ -1281,28 +1349,72 @@ void CMario::SetLevel(int l)
 			if (!sitting)
 			{
 				y += height - lv_height[j];
-				if (width < lv_width[j])
-				{
-					if (nx > 0) x -= lv_width[j] - width;
-					else x += lv_width[j] - width;
-				}
+				if (nx > 0)
+					x += leftMargin - lv_width_marginLeft[j];
+				else
+					x += rightMargin - lv_width_marginRight[j];
 			}
 			else
 			{
 				y += height - lv_sit_height[j];
-				if (width < lv_sit_width[j])
-				{
-					if (nx > 0) x -= lv_sit_width[j] - width;
-					else x += lv_sit_width[j] - width;
-				}
+				if (nx > 0)
+					x += leftMargin - lv_width_marginLeft[j];
+				else
+					x += rightMargin - lv_width_marginRight[j];
 			}
 			return;
 		}
 	}
 }
 
+void CMario::GetMargins(int& leftMargin, int& rightMargin)
+{
+	switch (level)
+	{
+	case MARIO_LEVEL_SMALL:
+		leftMargin = MARIO_SMALL_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_SMALL_BBOX_MARGIN_RIGHT;
+		break;
+	case MARIO_LEVEL_BIG:
+		leftMargin = MARIO_BIG_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_BIG_BBOX_MARGIN_RIGHT;
+		break;
+	case MARIO_LEVEL_TAIL:
+		leftMargin = MARIO_TAIL_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_TAIL_BBOX_MARGIN_RIGHT;
+		break;
+	case MARIO_LEVEL_FIRE:
+		leftMargin = MARIO_FIRE_BBOX_MARGIN_LEFT;
+		rightMargin = MARIO_FIRE_BBOX_MARGIN_RIGHT;
+		break;
+	}
+}
+
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
+	if (spinning && level == MARIO_LEVEL_TAIL)
+	{
+		if (spinningPhase == 1 || spinningPhase == 3)
+		{
+			if (nx > 0)
+				left = x;
+			else
+				left = x - MARIO_TAIL_BBOX_WIDTH + MARIO_TAIL_BBOX_MARGIN_LEFT + MARIO_TAIL_FACING_SCREEN_WIDTH;
+		}
+		else if (spinningPhase == 2)
+		{
+			if (nx > 0)
+				left = x;
+			else
+				left = x + MARIO_TAIL_BBOX_MARGIN_LEFT;
+		}
+
+		right = left + MARIO_TAIL_BBOX_WIDTH - MARIO_TAIL_BBOX_MARGIN_LEFT;
+		top = y;
+		bottom = top + MARIO_TAIL_BBOX_HEIGHT;
+		return;
+	}
+
 	left = x;
 	top = y; 
 
@@ -1335,8 +1447,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 
 		if (nx < 0) swap(leftMargin, rightMargin);
 
-		if (state == MARIO_STATE_IDLE)
-			left = x + leftMargin;
+		left = x + leftMargin;
 		if (sitting)
 		{
 			right = x + MARIO_TAIL_SITTING_BBOX_WIDTH - rightMargin;
@@ -1388,6 +1499,12 @@ void CMario::StartSpinning()
 	{
 		spinning = 1;
 		spinning_start = GetTickCount64();
+		if (nx > 0)
+			x += MARIO_TAIL_BBOX_MARGIN_LEFT;
+		else
+			x += MARIO_TAIL_BBOX_WIDTH - MARIO_TAIL_BBOX_MARGIN_LEFT - MARIO_TAIL_FACING_SCREEN_WIDTH;
+
+		spinningPhase = 1;
 	}
 }
 

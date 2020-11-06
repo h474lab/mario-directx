@@ -57,6 +57,8 @@ public:
 	int GetPowerLevel() { return powerLevel; }
 	int GetRemainingTime() { return remainingTime; }
 
+	void Delete();
+
 	virtual void SetPosition(float x, float y);
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}

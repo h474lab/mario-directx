@@ -9,6 +9,16 @@ CHUD::CHUD()
 	scoreBoard = new CScoreboard();
 }
 
+void CHUD::Delete()
+{
+	if (scoreBoard)
+	{
+		scoreBoard->Delete();
+		delete scoreBoard;
+		scoreBoard = NULL;
+	}
+}
+
 void CHUD::SetPosition(float x, float y)
 {
 	CGameObject::SetPosition(x, y);

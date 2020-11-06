@@ -11,6 +11,7 @@
 #include <dinput.h>
 
 #include "Scence.h"
+#include "Mario.h"
 
 using namespace std;
 
@@ -42,6 +43,8 @@ class CGame
 
 	int screen_width;
 	int screen_height; 
+
+	CMario* player;
 
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
@@ -89,6 +92,9 @@ public:
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
+
+	void SetPlayer(CMario* player) { this->player = player; }
+	CMario* GetPlayer() { return player; }
 
 	int GetScore() { return score; }
 	void SetScore(int score) { this->score = score; }
