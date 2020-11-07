@@ -329,7 +329,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			}
 			break;
 		}
-	case OBJECT_TYPE_SQUARE_BRICK: obj = new CSquareBrick(); break;
+	case OBJECT_TYPE_SQUARE_BRICK:
+	{
+		obj = new CSquareBrick();
+		((CSquareBrick*)obj)->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
+
+		break;
+	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
 	case OBJECT_TYPE_KOOPA:
 		{

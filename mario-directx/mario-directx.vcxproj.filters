@@ -118,6 +118,9 @@
     <Filter Include="Objects\Koopa">
       <UniqueIdentifier>{dcdb3a4c-0571-4029-a116-d6eafe2625d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\BrickFragment">
+      <UniqueIdentifier>{24d1ded9-3dbe-47c3-a612-ae364d9b0965}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -231,6 +234,9 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Objects\Koopa</Filter>
     </ClCompile>
+    <ClCompile Include="BrickFragment.cpp">
+      <Filter>Objects\BrickFragment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -343,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Koopa.h">
       <Filter>Objects\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="BrickFragment.h">
+      <Filter>Objects\BrickFragment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

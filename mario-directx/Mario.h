@@ -173,13 +173,14 @@
 #define MARIO_TAIL_FACING_SCREEN_WIDTH	16
 #define MARIO_TAIL_BBOX_WIDTH	21
 #define MARIO_TAIL_BBOX_HEIGHT	27
-#define MARIO_TAIL_BBOX_MARGIN_LEFT		7
+#define MARIO_TAIL_NORMAL_LENGTH		5
 #define MARIO_TAIL_BBOX_MARGIN_RIGHT	0
 #define MARIO_TAIL_HEAD_TO_TAIL		18
 #define MARIO_TAIL_TAIL_WIDTH		2
 
-#define MARIO_TAIL_SPINNING_WIDTH		23
-#define MARIO_TAIL_SPINNING_MARGIN_LEFT	9
+#define MARIO_TAIL_SPINNING_WIDTH	23
+#define MARIO_TAIL_SPINNING_LENGTH	7
+#define MARIO_SPINNING_PHASE_ERROR	16
 
 #define MARIO_BIG_BBOX_WIDTH  15
 #define MARIO_BIG_BBOX_HEIGHT 27
@@ -203,7 +204,7 @@
 #define MARIO_UNTOUCHABLE_TIME	2000
 #define MARIO_TURNING_DELAY		150
 #define MARIO_KICKING_TIME		1000
-#define MARIO_SPINNING_TIME		300
+#define MARIO_SPINNING_TIME		500
 
 
 class CMario : public CGameObject
@@ -243,7 +244,7 @@ class CMario : public CGameObject
 	DWORD kicking_start;
 
 	int spinning;
-	DWORD spinning_start;
+	DWORD spinning_start, spinningTime;
 	float startSpinningPosition;
 	int spinningPhase;
 
@@ -293,7 +294,10 @@ public:
 
 	void StartSpinning();
 	int GetHittableTail() { return hittableTail; }
+
+	void SetTail(float start_x, float end_x);
 	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
+	
 	void StartRunning() { running_start = GetTickCount64(); }
 
 	int GetPowerLevel() { return powerLevel; }
