@@ -8,7 +8,7 @@ class CScene
 protected:
 	CKeyEventHandler * key_handler;
 	int id;
-	LPCWSTR sceneFilePath;
+	LPCWSTR sceneDirectory;
 	int minPixelWidth, maxPixelWidth;
 	int minPixelHeight, maxPixelHeight;
 	int world;

@@ -3,7 +3,7 @@
 CScene::CScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world)
 {
 	this->id = id;
-	this->sceneFilePath = filePath;
+	this->sceneDirectory = filePath;
 	this->minPixelWidth = minPixelWidth;
 	this->maxPixelWidth = maxPixelWidth;
 	this->minPixelHeight = minPixelHeight;

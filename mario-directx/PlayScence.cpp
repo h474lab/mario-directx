@@ -369,10 +369,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 void CPlayScene::Load()
 {
-	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
+	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneDirectory);
 
+	// load background
+	wstring tileset_path = wstring(sceneDirectory) + L"tileset.png";
+	wstring tile_path = wstring(sceneDirectory) + L"tiled_background.txt";
+	tiled_background = new CTilemap(-10, 4, 11, tile_path.c_str(), tileset_path.c_str());
+	tiled_background->LoadTiles();
+	tiled_background->LoadMap();
+
+	// load map
+	wstring map_path = wstring(sceneDirectory) + L"map.txt";
 	ifstream f;
-	f.open(sceneFilePath);
+	f.open(map_path);
 
 	// current resource section flag
 	int section = SCENE_SECTION_UNKNOWN;					
@@ -415,7 +424,7 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_HUD_BG, L"textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
 	HUD = new CHUD();
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
 
 	StartGameTime();
 }
@@ -490,6 +499,8 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	tiled_background->DrawFullTilemap(0.0f, minPixelHeight);
+
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
@@ -514,7 +525,7 @@ void CPlayScene::Unload()
 		HUD = NULL;
 	}
 
-	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneDirectory);
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)

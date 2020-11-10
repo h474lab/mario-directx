@@ -177,6 +177,7 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="SquareBrick.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Tube.cpp" />
     <ClCompile Include="TubeEnemy.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="SquareBrick.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Tilemap.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="TubeEnemy.h" />
     <ClInclude Include="Utils.h" />

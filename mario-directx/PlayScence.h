@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "HUD.h"
+#include "Tilemap.h"
 
 #define GAMETIME	301000
 
@@ -20,6 +21,7 @@ protected:
 	CHUD* HUD;
 
 	vector<LPGAMEOBJECT> objects;
+	CTilemap* tiled_background;
 
 	DWORD gameStartingTime;
 

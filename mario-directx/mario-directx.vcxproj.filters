@@ -121,6 +121,9 @@
     <Filter Include="Objects\BrickFragment">
       <UniqueIdentifier>{24d1ded9-3dbe-47c3-a612-ae364d9b0965}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI Components\TileMap">
+      <UniqueIdentifier>{1ba79cd5-3f27-46b7-b8d4-71efd28f495e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -237,6 +240,9 @@
     <ClCompile Include="BrickFragment.cpp">
       <Filter>Objects\BrickFragment</Filter>
     </ClCompile>
+    <ClCompile Include="Tilemap.cpp">
+      <Filter>UI Components\TileMap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -352,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="BrickFragment.h">
       <Filter>Objects\BrickFragment</Filter>
+    </ClInclude>
+    <ClInclude Include="Tilemap.h">
+      <Filter>UI Components\TileMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
