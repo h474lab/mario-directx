@@ -7,9 +7,6 @@
     <Filter Include="Objects\Mario">
       <UniqueIdentifier>{9d970086-c10d-40b2-9de3-bfa8e9f0c21b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Koopas">
-      <UniqueIdentifier>{6129849d-bb72-4a03-9842-1a0a0b1198b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\Brick">
       <UniqueIdentifier>{29d9fbad-a305-4875-a258-a469dfe5ea9c}</UniqueIdentifier>
     </Filter>
@@ -124,6 +121,9 @@
     <Filter Include="UI Components\TileMap">
       <UniqueIdentifier>{1ba79cd5-3f27-46b7-b8d4-71efd28f495e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Resources">
+      <UniqueIdentifier>{a938b1ca-c069-4179-ba50-6225261db124}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -131,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Objects\Mario</Filter>
-    </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Objects\Koopas</Filter>
     </ClCompile>
     <ClCompile Include="Brick.cpp">
       <Filter>Objects\Brick</Filter>
@@ -243,6 +240,9 @@
     <ClCompile Include="Tilemap.cpp">
       <Filter>UI Components\TileMap</Filter>
     </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Game Manager\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -250,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Objects\Mario</Filter>
-    </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Objects\Koopas</Filter>
     </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>Objects\Brick</Filter>
@@ -361,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="Tilemap.h">
       <Filter>UI Components\TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Game Manager\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

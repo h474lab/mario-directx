@@ -16,6 +16,7 @@
 #define MARIO_FLY_JUMP_TIME			300
 
 #define MARIO_FLY_SPEED_Y			1.0/400.0
+#define MARIO_FLY_SPEED_X			0.35f
 #define MARIO_FLY_TIME				500
 
 #define MARIO_THROW_TIME			200

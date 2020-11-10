@@ -1,0 +1,47 @@
+# HIGH
+# Right
+# --Closed Bottom Right (Up)
+30071	265	545	281	578	80
+# --Closed Up Right (Up)
+30072	215	545	231	578	80
+# --Opened Bottom Right (Up)
+30073	365	545	381	578	80
+# --Opened Up Right (Up)
+30074	315	545	331	578	80
+
+# Left
+# --Closed Bottom Left (Up)
+30075	115	545	131	578	80
+# --Closed Up Left (Up)
+30076	165	545	181	578	80
+# --Opened Bottom Left (Up)
+30077	15	545	31	578	80
+# --Opened Up Left (Up)
+30078	65	545	81	578	80
+
+# SHORT
+# Right
+# --Closed Bottom Right (Up)
+300710	264	399	280	424	80
+# --Closed Up Right (Up)
+300720	215	399	231	424	80
+# --Opened Bottom Right (Up)
+300730	364	399	380	424	80
+# --Opened Up Right (Up)
+300740	315	399	331	424	80
+
+# Left
+# --Closed Bottom Left (Up)
+300750	115	399	131	424	80
+# --Closed Up Left (Up)
+300760	165	399	181	424	80
+# --Opened Bottom Left (Up)
+300770	15	399	31	424	80
+# --Opened Up Left (Up)
+300780	65	399	81	424	80
+
+#Bullet
+30081	114	657	122	666	80
+30082	134	658	142	666	80
+30083	154	657	162	666	80
+30084	174	658	182	666	80

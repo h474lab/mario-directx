@@ -1,0 +1,9 @@
+# HUD
+# Scoreboard
+1110	11100
+# Cards
+1111	11101	11102	11103	11104
+# Power Arrow
+1112	11105	11106
+# Power Letter
+1113	11107	11108

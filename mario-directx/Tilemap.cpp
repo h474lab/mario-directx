@@ -20,7 +20,7 @@ CTilemap::CTilemap(int id, int numRows, int numColumns, LPCWSTR tileFilePath, LP
 
 int CTilemap::getTileID(int tilePosition)
 {
-	return ID * 991 + 23 * tilePosition;
+	return ID * 91 + 23 * tilePosition;
 }
 
 void CTilemap::LoadTiles()
@@ -59,8 +59,13 @@ void CTilemap::LoadMap()
 
 		for (int i = 0; i < tile.size(); i++)
 		{
-			int tileID = getTileID(atoi(tile[i].c_str()));
-			tile_line.push_back(spriteList->Get(tileID));
+			int tilePos = atoi(tile[i].c_str());
+			if (tilePos != -1)
+			{
+				int tileID = getTileID(tilePos);
+				tile_line.push_back(spriteList->Get(tileID));
+			}
+			else tile_line.push_back(NULL);
 
 			//DebugOut(L"[INFO] Tile loaded Ok: id=%d, %s\n", tileID, tileFilePath);
 		}
@@ -79,7 +84,7 @@ void CTilemap::DrawFullTilemap(float posX, float posY)
 			float x = posX + j * this->tileWidth;
 			float y = posY + i * this->tileHeight;
 
-			tilemap[i][j]->Draw(x, y);
+			if (tilemap[i][j]) tilemap[i][j]->Draw(x, y);
 			//CGame::GetInstance()->Draw(x, y, CTextures::GetInstance()->Get(10), 0, 0, 16, 16);
 		}
 

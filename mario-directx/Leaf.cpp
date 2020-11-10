@@ -4,7 +4,7 @@
 
 CLeaf::CLeaf()
 {
-	background = 0;
+	background = 1;
 }
 
 void CLeaf::SetPosition(float x, float y)

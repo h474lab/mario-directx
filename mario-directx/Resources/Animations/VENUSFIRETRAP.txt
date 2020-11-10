@@ -1,0 +1,38 @@
+# HIGH
+# Point bottom left
+930	30075	150	30077	150
+# Fire bottom left
+931	30077	100
+# Point bottom right
+932	30071	150	30073	150
+# Fire bottom right
+933	30073	100
+# Point up left
+934	30076	150	30078	150
+# Fire up left
+935	30078	100
+# Point up right
+936	30072	150	30074	150
+# Fire up right
+937	30074	100
+
+# SHORT
+# Point bottom left
+9300	300750	150	300770	150
+# Fire bottom left
+9310	300770	100
+# Point bottom right
+9320	300710	150	300730	150
+# Fire bottom right
+9330	300730	100
+# Point up left
+9340	300760	150	300780	150
+# Fire up left
+9350	300780	100
+# Point up right
+9360	300720	150	300740	150
+# Fire up right
+9370	300740	100
+
+# Bullet
+938	30081	60	30082	60	30083	60	30084	60

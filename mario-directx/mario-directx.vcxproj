@@ -157,7 +157,6 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GroundBricks.cpp" />
     <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
@@ -171,6 +170,7 @@
     <ClCompile Include="PowerObject.cpp" />
     <ClCompile Include="PowerSign.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ShortFireTrap.cpp" />
@@ -199,7 +199,6 @@
     <ClInclude Include="GroundBricks.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="KeyEventHandler.h" />
-    <ClInclude Include="Koopas.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Mario.h" />
@@ -212,6 +211,7 @@
     <ClInclude Include="PowerObject.h" />
     <ClInclude Include="PowerSign.h" />
     <ClInclude Include="QuestionBrick.h" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ShortFireTrap.h" />

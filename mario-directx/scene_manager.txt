@@ -2,5 +2,5 @@
 start	1
 #scene list
 [SCENES]
-1	scenes\world1_1\	0	2816	-230	0	1
+1	Scenes\World1_1\	0	2816	-230	0	1
 #2	world1-1_underground.txt	0	512	0	0	1
