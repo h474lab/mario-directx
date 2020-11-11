@@ -365,9 +365,11 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > maxPixelHeight) cy = maxPixelHeight;
 	else if (cy < minPixelHeight) cy = minPixelHeight;
 
-	CGame::GetInstance()->SetCamPos((int)cx, (int)cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
+	cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
 
-	HUD->SetPosition((int)cx, (int)cy + game->GetScreenHeight());
+	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
+
+	HUD->SetPosition((int)cx, (int)cy + GAME_PLAY_HEIGHT);
 	
 	HUD->SetPowerLevel(player->GetPowerLevel());
 	HUD->SetWorld(this->world);

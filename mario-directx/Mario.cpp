@@ -1377,29 +1377,20 @@ void CMario::SetLevel(int l)
 	int lv_sit_height[] = { MARIO_SMALL_BBOX_HEIGHT, MARIO_BIG_SITTING_BBOX_HEIGHT, MARIO_TAIL_SITTING_BBOX_HEIGHT, MARIO_FIRE_SITTING_BBOX_HEIGHT };
 	int lv_sit_width[] = { MARIO_SMALL_BBOX_WIDTH, MARIO_BIG_SITTING_BBOX_WIDTH, MARIO_TAIL_SITTING_BBOX_WIDTH, MARIO_FIRE_SITTING_BBOX_WIDTH };
 
-	int lv_width_marginLeft[] = { MARIO_SMALL_BBOX_MARGIN_LEFT, MARIO_BIG_BBOX_MARGIN_LEFT, MARIO_TAIL_NORMAL_LENGTH, MARIO_FIRE_BBOX_MARGIN_LEFT };
+	int lv_width_marginLeft[] = { MARIO_SMALL_BBOX_MARGIN_LEFT, MARIO_BIG_BBOX_MARGIN_LEFT, MARIO_TAIL_BBOX_MARGIN_LEFT, MARIO_FIRE_BBOX_MARGIN_LEFT };
 	int lv_width_marginRight[] = { MARIO_SMALL_BBOX_MARGIN_RIGHT, MARIO_BIG_BBOX_MARGIN_RIGHT, MARIO_TAIL_BBOX_MARGIN_RIGHT, MARIO_FIRE_BBOX_MARGIN_RIGHT };
 
 	for (int j = 0; j < 4; j++)
 	{
 		if (lv[j] == level)
 		{
-			if (!sitting)
-			{
-				y += height - lv_height[j];
-				if (nx > 0)
-					x += leftMargin - lv_width_marginLeft[j];
-				else
-					x += rightMargin - lv_width_marginRight[j];
-			}
+			if (!sitting) y += height - lv_height[j];
+			else y += height - lv_sit_height[j];
+
+			if (nx > 0)
+				x += (leftMargin - lv_width_marginLeft[j]);
 			else
-			{
-				y += height - lv_sit_height[j];
-				if (nx > 0)
-					x += leftMargin - lv_width_marginLeft[j];
-				else
-					x += rightMargin - lv_width_marginRight[j];
-			}
+				x += (rightMargin - lv_width_marginRight[j]);
 			return;
 		}
 	}
@@ -1418,7 +1409,7 @@ void CMario::GetMargins(int& leftMargin, int& rightMargin)
 		rightMargin = MARIO_BIG_BBOX_MARGIN_RIGHT;
 		break;
 	case MARIO_LEVEL_TAIL:
-		leftMargin = MARIO_TAIL_NORMAL_LENGTH;
+		leftMargin = MARIO_TAIL_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_TAIL_BBOX_MARGIN_RIGHT;
 		break;
 	case MARIO_LEVEL_FIRE:
@@ -1490,7 +1481,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
-		leftMargin = MARIO_TAIL_NORMAL_LENGTH;
+		leftMargin = MARIO_TAIL_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_TAIL_BBOX_MARGIN_RIGHT;
 
 		if (nx < 0) swap(leftMargin, rightMargin);
