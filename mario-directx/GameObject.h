@@ -12,12 +12,12 @@ using namespace std;
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define ID_HUD_BG	-1
 
-#define ID_ANI_SET_SCOREBOARD		1110
-#define ID_ANI_SET_CARDS			1111
-#define ID_ANI_SET_POWER_ARROW		1112
-#define ID_ANI_SET_POWER_LETTERS	1113
-#define ID_ANI_SET_NUMBERS			1114
-#define ID_ANI_SET_LETTERS			1115
+#define ID_ANI_SET_SCOREBOARD		9901
+#define ID_ANI_SET_CARDS			9902
+#define ID_ANI_SET_POWER_ARROW		9903
+#define ID_ANI_SET_POWER_LETTERS	9904
+#define ID_ANI_SET_NUMBERS			9905
+#define ID_ANI_SET_LETTERS			9906
 
 #define FLYING_DIRECTION_NOMOVE		0
 #define FLYING_DIRECTION_UP			1
