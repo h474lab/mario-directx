@@ -105,7 +105,20 @@ void CPlayScene::_ParseObjects(string line)
 		dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
 		break;
 	}
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: 
+	{
+		int numRows = atoi(tokens[4].c_str());
+		int numColumns = atoi(tokens[5].c_str());
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+			{
+				obj = new CBrick();
+				obj->SetPosition(x + BRICK_BBOX_WIDTH * j, y + BRICK_BBOX_HEIGHT * i);
+				obj->SetAnimationSet(animation_sets->Get(ani_set_id));
+				objects.push_back(obj);
+			}
+		return;
+	}
 	case OBJECT_TYPE_GROUNDBRICK:
 	{
 		int numRows = atoi(tokens[4].c_str());

@@ -107,8 +107,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	//DebugOut(L"\ndx, dy= %f %f", dx, dy);
-
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -148,7 +146,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			fly = -1;
 		}
 	}
-
 	
 	if (GetTickCount64() - kicking_start > MARIO_KICKING_TIME)
 	{
@@ -396,7 +393,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						koopa->HitKoopa(nx);
 					}
-					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) && state == MARIO_STATE_RUNNING_RIGHT)
+					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) &&
+						(state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT ||
+							state == MARIO_STATE_RUNNING_FAST_RIGHT || state == MARIO_STATE_RUNNING_FAST_LEFT))
 					{
 						setHoldenKoopa(koopa);
 					}
