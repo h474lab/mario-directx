@@ -47,7 +47,7 @@ CMario::CMario(float x, float y) : CGameObject()
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	//DebugOut(L"\n%d", untouchable);
-	//DebugOut(L"\nFlying start: %llu", GetTickCount64() - flyJump_start);
+	//DebugOut(L"\nFlying start: %llu", (DWORD)GetTickCount64() - flyJump_start);
 
 	float _lastVy = vy;
 
@@ -73,7 +73,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				flyJump = 0;
 				fly = 0;
 			}
-			vy = -MARIO_FLY_SPEED_Y * dt;
+			vy = (float)-MARIO_FLY_SPEED_Y * dt;
 		}
 	}
 	else
@@ -91,7 +91,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!lastRunning && running)
 		StartRunning();
 
-	DWORD runningTime = GetTickCount64() - running_start;
+	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
 
 	if (running)
 	{
@@ -117,7 +117,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (state!=MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
-	if (throwing && GetTickCount64() - throwing_start > MARIO_THROW_TIME)
+	if (throwing && (DWORD)GetTickCount64() - throwing_start > MARIO_THROW_TIME)
 	{
 		throwing = 0;
 		throwing_start = 0;
@@ -162,7 +162,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (spinning == 1)
 	{
-		spinningTime = GetTickCount64();
+		spinningTime = (DWORD)GetTickCount64();
 		DWORD spinning_time = spinningTime - spinning_start;
 		int body_spinning = MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH;
 		int body_facing = MARIO_TAIL_FACING_SCREEN_WIDTH;
@@ -244,7 +244,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
+	if ( (DWORD)GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
 		untouchable_start = 0;
 		untouchable = 0;
@@ -393,7 +393,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (canBeHitBySpinning)
 					{
-						koopa->HitKoopa(nx);
+						koopa->HitKoopa((int)nx);
 					}
 					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) &&
 						(state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT ||
@@ -1139,14 +1139,14 @@ void CMario::SetJumpingUp(int jumpingUp)
 {
 	this->jumpingUp = jumpingUp;
 	if (jumpingUp)
-		jumpingUp_start = GetTickCount64();
+		jumpingUp_start = (DWORD)GetTickCount64();
 }
 
 void CMario::FlyJump()
 {
 	if (level == MARIO_LEVEL_TAIL && jumping)
 	{
-		flyJump_start = GetTickCount64();
+		flyJump_start = (DWORD)GetTickCount64();
 		flyJump = 1;
 	}
 }
@@ -1155,7 +1155,7 @@ void CMario::SetThrowing()
 {
 	if (level != MARIO_LEVEL_FIRE) return;
 	throwing = 1;
-	throwing_start = GetTickCount64();
+	throwing_start = (DWORD)GetTickCount64();
 }
 
 void CMario::ThrowFireball()
@@ -1163,7 +1163,7 @@ void CMario::ThrowFireball()
 	if (level != MARIO_LEVEL_FIRE) return;
 	
 	currentFireball = -1;
-	for (int i = 0; i < fireballs.size(); i++)
+	for (unsigned int i = 0; i < fireballs.size(); i++)
 		if (fireballs[i]->GetState() == FIREBALL_STATE_ON_HOLD)
 		{
 			currentFireball = i;
@@ -1538,7 +1538,7 @@ void CMario::StartSpinning()
 	if (spinning != 1 && level == MARIO_LEVEL_TAIL && sitting != 1)
 	{
 		spinning = 1;
-		spinning_start = GetTickCount64();
+		spinning_start = (DWORD)GetTickCount64();
 
 		CCamera::GetInstance()->LockCamera(1);
 

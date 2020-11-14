@@ -138,7 +138,7 @@ void CScoreboard::SetRemainingTime(int remainingTime)
 
 void CScoreboard::Delete()
 {
-	for (int i = 0; i < objectSet.size(); i++)
+	for (unsigned int i = 0; i < objectSet.size(); i++)
 	{
 		if (objectSet.at(i))
 		{
@@ -176,6 +176,6 @@ void CScoreboard::Render()
 {
 	animation_set->at(0)->Render(x, y);
 
-	for (int i = 0; i < objectSet.size(); i++)
+	for (unsigned int i = 0; i < objectSet.size(); i++)
 		objectSet.at(i)->Render();
 }

@@ -361,8 +361,8 @@ void CGame::_ParseSection_SCENES(string line)
 		LPCWSTR path = ToLPCWSTR(tokens[3]);
 		LPCWSTR tilesetFileName = ToLPCWSTR(tokens[4]);
 		LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
-		float tile_startX = atoi(tokens[6].c_str());
-		float tile_startY = atoi(tokens[7].c_str());
+		float tile_startX = (float)atof(tokens[6].c_str());
+		float tile_startY = (float)atof(tokens[7].c_str());
 
 		LPCWSTR objectsFileName = ToLPCWSTR(tokens[8]);
 
@@ -372,21 +372,21 @@ void CGame::_ParseSection_SCENES(string line)
 		playZones.clear();
 
 		// information of each zone in the scene
-		int i = 10;
+		unsigned int i = 10;
 		while (i < tokens.size())
 		{
 			CPlayZone playZone;
 
-			int minPixelWidth = atoi(tokens[i].c_str());
-			int maxPixelWidth = atoi(tokens[i + 1].c_str());
+			float minPixelWidth = (float)atof(tokens[i].c_str());
+			float maxPixelWidth = (float)atof(tokens[i + 1].c_str());
 			playZone.SetHorizontalBounds(minPixelWidth, maxPixelWidth);
 
-			int minPixelHeight = atoi(tokens[i + 2].c_str());
-			int maxPixelHeight = atoi(tokens[i + 3].c_str());
+			float minPixelHeight = (float)atof(tokens[i + 2].c_str());
+			float maxPixelHeight = (float)atof(tokens[i + 3].c_str());
 			playZone.SetVerticalBounds(minPixelHeight, maxPixelHeight);
 
-			float marioStartingX = atof(tokens[i + 4].c_str());
-			float marioStartingY = atof(tokens[i + 5].c_str());
+			float marioStartingX = (float)atof(tokens[i + 4].c_str());
+			float marioStartingY = (float)atof(tokens[i + 5].c_str());
 			playZone.SetPlayerStartPosition(marioStartingX, marioStartingY);
 
 			playZones.push_back(playZone);

@@ -6,13 +6,13 @@
 #define GOOMBA_DEFLECT_SPEED_X	0.04f
 #define GOOMBA_DEFLECT_SPEED_Y	0.3f
 
-#define GOOMBA_LOW_JUMP_SPEED_X		0.02
-#define GOOMBA_LOW_JUMP_SPEED_Y		0.1
-#define GOOMBA_MAXIMUM_LOW_JUMP		3
+#define GOOMBA_LOW_JUMP_SPEED_X		0.02f
+#define GOOMBA_LOW_JUMP_SPEED_Y		0.1f
+#define GOOMBA_MAXIMUM_LOW_JUMP		3.0f
 
-#define GOOMBA_HIGH_JUMP_SPEED_X	0.03
-#define GOOMBA_HIGH_JUMP_SPEED_Y	0.2
-#define GOOMBA_MAXIMUM_HIGH_JUMP	1
+#define GOOMBA_HIGH_JUMP_SPEED_X	0.03f
+#define GOOMBA_HIGH_JUMP_SPEED_Y	0.2f
+#define GOOMBA_MAXIMUM_HIGH_JUMP	1.0f
 
 #define GOOMBA_WALKING_TIME			1000
 
@@ -62,8 +62,8 @@ public:
 
 	void SetFollowingObject(CGameObject* object) { followingObject = object; }
 
-	void StartDying() { corpse_start = GetTickCount64(); }
-	void StartWalking() { walking_start = GetTickCount64(); }
+	void StartDying() { corpse_start = (DWORD)GetTickCount64(); }
+	void StartWalking() { walking_start = (DWORD)GetTickCount64(); }
 
 	void ChangeDirection();
 

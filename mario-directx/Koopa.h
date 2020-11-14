@@ -9,8 +9,8 @@
 #define KOOPA_GRAVITY				0.001f
 #define KOOPA_FLYING_TIME			2000
 
-#define KOOPA_JUMPING_SPEED_X		0.05
-#define KOOPA_JUMPING_SPEED_Y		0.3
+#define KOOPA_JUMPING_SPEED_X		0.05f
+#define KOOPA_JUMPING_SPEED_Y		0.3f
 
 #define KOOPA_DEFLECTING_X			0.15f
 #define KOOPA_DEFLECTING_Y			0.2f
@@ -80,7 +80,7 @@ public:
 
 	void ChangeDirection();
 
-	void StartFlying() { flying = 1; flying_start = GetTickCount64(); }
+	void StartFlying() { flying = 1; flying_start = (DWORD)GetTickCount64(); }
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
 	virtual void Render();

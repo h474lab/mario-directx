@@ -68,7 +68,7 @@ void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vector<LPCOLLISIONEVENT> coEventsResult;
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		for (int i = 0; i < coEventsResult.size(); i++)
+		for (unsigned int i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT event = coEventsResult.at(i);
 

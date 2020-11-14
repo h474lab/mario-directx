@@ -46,7 +46,7 @@ void CTilemap::LoadMap()
 {
 	ifstream f;
 	f.open(tileFilePath);
-	tilemap.empty();
+	bool result = tilemap.empty();
 
 	char str[TILEMAP_MAX_SIZE];
 	while (f.getline(str, TILEMAP_MAX_SIZE))
@@ -55,9 +55,9 @@ void CTilemap::LoadMap()
 		vector<string> tile = split(line);
 
 		vector<LPSPRITE> tile_line;
-		tile_line.empty();
+		bool result = tile_line.empty();
 
-		for (int i = 0; i < tile.size(); i++)
+		for (unsigned int i = 0; i < tile.size(); i++)
 		{
 			int tilePos = atoi(tile[i].c_str());
 			if (tilePos != -1)
@@ -78,8 +78,8 @@ void CTilemap::LoadMap()
 
 void CTilemap::DrawFullTilemap(float posX, float posY)
 {
-	for (int i = 0; i < tilemap.size(); i++)
-		for (int j = 0; j < tilemap[i].size(); j++)
+	for (unsigned int i = 0; i < tilemap.size(); i++)
+		for (unsigned int j = 0; j < tilemap[i].size(); j++)
 		{
 			float x = posX + j * this->tileWidth;
 			float y = posY + i * this->tileHeight;

@@ -24,7 +24,7 @@ class CTube : public CGameObject
 public:
 	CTube(int numRows, int hasLid);
 
-	void StartDelayingObject() { objectDelay_start = GetTickCount64(); }
+	void StartDelayingObject() { objectDelay_start = (DWORD)GetTickCount64(); }
 
 	virtual void SetPosition(float x, float y);
 

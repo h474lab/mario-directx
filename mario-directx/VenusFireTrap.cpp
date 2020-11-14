@@ -5,7 +5,7 @@ void CVenusFireTrap::SetPosition(float x, float y)
 {
 	CFireTrap::SetPosition(x, y);
 
-	minFlyingY = y - FIRE_TRAP_BBOX_HEIGHT;
+	minFlyingY = y - VENUS_FIRE_TRAP_BBOX_HEIGHT;
 	maxFlyingY = y + 1;
 	flyingSpeedY = FIRE_TRAP_FLYING_SPEED_Y;
 	delayAfterMovingUp = 1;
@@ -21,8 +21,8 @@ void CVenusFireTrap::GetBoundingBox(float& left, float& top, float& right, float
 	}
 	left = x;
 	top = y;
-	right = x + FIRE_TRAP_BBOX_WIDTH;
-	bottom = y + FIRE_TRAP_BBOX_HEIGHT;
+	right = x + VENUS_FIRE_TRAP_BBOX_WIDTH;
+	bottom = y + VENUS_FIRE_TRAP_BBOX_HEIGHT;
 }
 
 void CVenusFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

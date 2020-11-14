@@ -149,7 +149,7 @@ void CGameObject::UpdateFlying(DWORD dt)
 	}
 	else if (flyingDirection == FLYING_DIRECTION_DOWN)
 	{
-		if (!delayAfterMovingUp || GetTickCount64() - delay_start > delay_time)
+		if (!delayAfterMovingUp || (DWORD)GetTickCount64() - delay_start > delay_time)
 		{
 			SetAppearingState();
 			vy = flyingSpeedY;

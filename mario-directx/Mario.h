@@ -15,7 +15,7 @@
 #define MARIO_FLY_JUMP_SPEED_Y		0.00199f
 #define MARIO_FLY_JUMP_TIME			300
 
-#define MARIO_FLY_SPEED_Y			1.0/400.0
+#define MARIO_FLY_SPEED_Y			1.0/400.0f
 #define MARIO_FLY_SPEED_X			0.35f
 #define MARIO_FLY_TIME				500
 
@@ -289,11 +289,11 @@ public:
 	void GetMargins(int& leftMargin, int& rightMargin);
 
 	int GetUntouchable() { return untouchable; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
 
-	void StartTurning(int dir) { turning = dir; turning_start = GetTickCount64(); running = 0; }
+	void StartTurning(int dir) { turning = dir; turning_start = (DWORD)GetTickCount64(); running = 0; }
 
-	void StartKicking() { kicking = 1; kicking_start = GetTickCount64(); };
+	void StartKicking() { kicking = 1; kicking_start = (DWORD)GetTickCount64(); };
 
 	void StartSpinning();
 	int GetHittableTail() { return hittableTail; }
@@ -301,7 +301,7 @@ public:
 	void SetTail(float start_x, float end_x);
 	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
 	
-	void StartRunning() { running_start = GetTickCount64(); }
+	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
 
 	int GetPowerLevel() { return powerLevel; }
 

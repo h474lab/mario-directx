@@ -41,7 +41,7 @@ void CGoomba::HitGoomba(float direction)
 {
 	if (state == GOOMBA_STATE_DIE || state == GOOMBA_STATE_DIE_AND_FLY)
 		return;
-	nx = -direction;
+	nx = (int)-direction;
 	SetState(GOOMBA_STATE_DIE_AND_FLY);
 }
 

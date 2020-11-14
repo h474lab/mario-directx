@@ -186,7 +186,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (ny != 0) vy = 0;
 
 		jumping = 1;
-		for (int i = 0; i < coEventsResult.size(); i++)
+		for (unsigned int i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			

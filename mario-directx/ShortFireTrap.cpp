@@ -4,7 +4,7 @@ void CShortFireTrap::SetPosition(float x, float y)
 {
 	CFireTrap::SetPosition(x, y);
 
-	minFlyingY = y - FIRE_TRAP_BBOX_HEIGHT;
+	minFlyingY = y - SHORT_FIRE_TRAP_BBOX_HEIGHT;
 	maxFlyingY = y + 1;
 	flyingSpeedY = FIRE_TRAP_FLYING_SPEED_Y;
 	delayAfterMovingUp = 1;
@@ -20,8 +20,8 @@ void CShortFireTrap::GetBoundingBox(float& left, float& top, float& right, float
 	}
 	left = x;
 	top = y;
-	right = x + FIRE_TRAP_BBOX_WIDTH;
-	bottom = y + FIRE_TRAP_BBOX_HEIGHT;
+	right = x + SHORT_FIRE_TRAP_BBOX_WIDTH;
+	bottom = y + SHORT_FIRE_TRAP_BBOX_HEIGHT;
 }
 
 void CShortFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

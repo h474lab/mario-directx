@@ -4,8 +4,8 @@
 #define BULLET_FLYING_SPEED_X		0.04f
 #define BULLET_FLYING_SPEED_Y		0.04f
 
-#define BULLET_FLYING_MID_SPEED_X	sqrt(6)/50.0f
-#define BULLET_FLYING_MID_SPEED_Y	sqrt(2)/50.0f
+#define BULLET_FLYING_MID_SPEED_X	(float)sqrt(6)/50.0f
+#define BULLET_FLYING_MID_SPEED_Y	(float)sqrt(2)/50.0f
 
 #define BULLET_BBOX_WIDTH	8
 #define BULLET_BBOX_HEIGHT	8

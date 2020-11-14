@@ -39,7 +39,7 @@ protected:
 public: 
 	CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world);
 
-	void StartGameTime() { gameStartingTime = GetTickCount64(); }
+	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

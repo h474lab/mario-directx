@@ -19,7 +19,7 @@ void CQuestionBrick::SetPosition(float x, float y)
 	minFlyingY = y - QUESTIONBRICK_BBOX_HEIGHT * 0.75f;
 	bottom_y = y + QUESTIONBRICK_BBOX_HEIGHT;
 
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		objects[i]->SetDisappearingState();
 		objects[i]->SetPosition(this->x, this->y);

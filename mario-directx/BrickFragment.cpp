@@ -6,7 +6,7 @@ void CBrickFragment::Hit()
 		SetState(FRAGMENT_STATE_FLY_LOW);
 	else
 		SetState(FRAGMENT_STATE_FLY_HIGH);
-	available_start = GetTickCount64();
+	available_start = (DWORD)GetTickCount64();
 }
 
 void CBrickFragment::SetState(int state)

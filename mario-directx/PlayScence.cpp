@@ -72,8 +72,8 @@ void CPlayScene::_ParseObjects(string line)
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
 	int object_type = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
 
 	int ani_set_id = atoi(tokens[3].c_str());
 
@@ -212,7 +212,7 @@ void CPlayScene::_ParseObjects(string line)
 		{
 			obj = new CQuestionBrick();
 			CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(obj);
-			int i = 4;
+			unsigned int i = 4;
 			while (i < tokens.size())
 			{
 				
@@ -275,8 +275,8 @@ void CPlayScene::_ParseObjects(string line)
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_PORTAL:
 		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
+			float r = (float)atof(tokens[4].c_str());
+			float b = (float)atof(tokens[5].c_str());
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 		}
@@ -356,10 +356,10 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// get current zone's active area
-	int minPixelWidth, maxPixelWidth;
+	float minPixelWidth, maxPixelWidth;
 	playZones[currentZone].GetHorizontalBounds(minPixelWidth, maxPixelWidth);
 	
-	int minPixelHeight, maxPixelHeight;
+	float minPixelHeight, maxPixelHeight;
 	playZones[currentZone].GetVerticalBounds(minPixelHeight, maxPixelHeight);
 
 	// Reposition mario if needed
@@ -396,7 +396,7 @@ void CPlayScene::Update(DWORD dt)
 	cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
 
 	CCamera* camera = CCamera::GetInstance();
-	camera->SetPosition((int)cx, (int)cy);
+	camera->SetPosition((float)((int)cx), (float)((int)cy));
 	
 	// set parameters for HUD
 	float HUD_x, HUD_y;
@@ -409,14 +409,14 @@ void CPlayScene::Update(DWORD dt)
 	HUD->SetScore(game->GetScore());
 	HUD->SetLives(game->GetLives());
 	HUD->SetMoney(game->GetMoney());
-	HUD->SetRemainingTime((GAMETIME - (GetTickCount64() - gameStartingTime)) / 1000);
+	HUD->SetRemainingTime((int)(GAMETIME - (GetTickCount64() - gameStartingTime)) / 1000);
 }
 
 void CPlayScene::Render()
 {
 	tiled_background->DrawFullTilemap(tile_x, tile_y);
 
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 
 	HUD->Render();
@@ -427,7 +427,7 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
 	objects.clear();

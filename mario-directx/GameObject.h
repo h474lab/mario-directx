@@ -98,7 +98,7 @@ public:
 	void SetFlyingDirection(int direction, int side) { flyingDirection = direction; movingSideAfter = side; }
 	int GetFlyingDirection() { return flyingDirection; }
 	
-	void StartDelayingFlying() { delay_start = GetTickCount64(); }
+	void StartDelayingFlying() { delay_start = (DWORD)GetTickCount64(); }
 
 	virtual void UpdateFlying(DWORD dt);
 	virtual void SetMovingDirection(int movDirection) {}
