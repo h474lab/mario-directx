@@ -18,6 +18,7 @@
 #include "Leaf.h"
 #include "Tube.h"
 #include "SquareBrick.h"
+#include "Camera.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -172,7 +173,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			spinning_start = 0;
 			if (nx > 0)
 				x += MARIO_TAIL_SPINNING_LENGTH - MARIO_TAIL_NORMAL_LENGTH;
-			//DebugOut(L"\nx = %f", x);
+
+			CCamera::GetInstance()->LockCamera(0);
 		}
 		// phase 5
 		else if (spinning_time >= MARIO_SPINNING_TIME * 4.0f / 5.0f - MARIO_SPINNING_PHASE_ERROR)
@@ -1537,6 +1539,8 @@ void CMario::StartSpinning()
 	{
 		spinning = 1;
 		spinning_start = GetTickCount64();
+
+		CCamera::GetInstance()->LockCamera(1);
 
 		hittableTail = 1;
 		if (nx > 0)

@@ -20,6 +20,7 @@
 #include "PiranhaPlant.h"
 #include "ShortFireTrap.h"
 #include "Leaf.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -380,21 +381,29 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
+	int screenWidth = game->GetScreenWidth();
+	int screenHeight = game->GetScreenHeight();
+
+	cx -= screenWidth / 2;
+	cy -= screenHeight / 2;
 
 	if (cx < minPixelWidth) cx = minPixelWidth;
-	else if (cx > maxPixelWidth - game->GetScreenWidth()) cx = maxPixelWidth - game->GetScreenWidth();
+	else if (cx > maxPixelWidth - screenWidth) cx = maxPixelWidth - screenWidth;
 
-	if (cy > maxPixelHeight) cy = maxPixelHeight;
+	if (cy > maxPixelHeight - screenHeight) cy = maxPixelHeight - screenHeight;
 	else if (cy < minPixelHeight) cy = minPixelHeight;
 
 	cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
 
-	CGame::GetInstance()->SetCamPos((int)cx, (int)cy);
-
-	HUD->SetPosition((int)cx, (int)cy + GAME_PLAY_HEIGHT);
+	CCamera* camera = CCamera::GetInstance();
+	camera->SetPosition((int)cx, (int)cy);
 	
+	// set parameters for HUD
+	float HUD_x, HUD_y;
+	camera->GetPosition(HUD_x, HUD_y);
+	HUD_y += GAME_PLAY_HEIGHT;
+
+	HUD->SetPosition(HUD_x, HUD_y);
 	HUD->SetPowerLevel(player->GetPowerLevel());
 	HUD->SetWorld(this->world);
 	HUD->SetScore(game->GetScore());

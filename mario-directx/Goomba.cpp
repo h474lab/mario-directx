@@ -140,13 +140,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	//DebugOut(L"\nState: %d", state);
-
 	vy += GOOMBA_GRAVITY * dt;
 
 	CGameObject::Update(dt, coObjects);
-
-	//DebugOut(L"\n%f %f", vx, vy);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -178,20 +174,17 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		int changeDirection = 0;
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
-			//DebugOut(L"\nsize: %d", coEventsResult.size());
-
 			LPCOLLISIONEVENT e = coEventsResult.at(i);
 
 			if (e->ny < 0) jumping = 0;
 
 			if (dynamic_cast<CMario*>(e->obj))
 			{
-				if (e->nx != 0)
+				if (e->nx != 0 || e->ny < 0)
 				{
 					CMario* mario = dynamic_cast<CMario*>(e->obj);
 
-					if (!mario->GetUntouchable())
-						mario->LevelDown();
+					if (!mario->GetUntouchable()) mario->LevelDown();
 				}
 			}
 			else if (dynamic_cast<CKoopa*>(e->obj))

@@ -38,9 +38,6 @@ class CGame
 
 	LPKEYEVENTHANDLER keyHandler;
 
-	float cam_x = 0.0f;
-	float cam_y = 0.0f;
-
 	int screen_width;
 	int screen_height; 
 
@@ -90,8 +87,6 @@ public:
 	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
-
-	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 
 	void SetPlayer(CMario* player) { this->player = player; }
 	CMario* GetPlayer() { return player; }
