@@ -6,6 +6,7 @@
 
 #include "PlayScence.h"
 #include "Resources.h"
+#include "PlayZone.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -347,21 +348,53 @@ void CGame::_ParseSection_SCENES(string line)
 
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
-	LPCWSTR path = ToLPCWSTR(tokens[1]);
+	int scene_type = atoi(tokens[1].c_str());
+	switch (scene_type)
+	{
+	case SCENE_TYPE_PLAY:
+		int world = atoi(tokens[2].c_str());
 
-	LPCWSTR tilesetFileName = ToLPCWSTR(tokens[2]);
-	LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[3]);
-	LPCWSTR objectsFileName = ToLPCWSTR(tokens[4]);
+		LPCWSTR path = ToLPCWSTR(tokens[3]);
+		LPCWSTR tilesetFileName = ToLPCWSTR(tokens[4]);
+		LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
+		float tile_startX = atoi(tokens[6].c_str());
+		float tile_startY = atoi(tokens[7].c_str());
 
-	int minPixelWidth = atoi(tokens[5].c_str());
-	int maxPixelWidth = atoi(tokens[6].c_str());
-	int minPixelHeight = atoi(tokens[7].c_str());
-	int maxPixelHeight = atoi(tokens[8].c_str());
+		LPCWSTR objectsFileName = ToLPCWSTR(tokens[8]);
 
-	int world = atoi(tokens[9].c_str());
+		int currentZone = atoi(tokens[9].c_str());
 
-	LPSCENE scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, objectsFileName, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world);
-	scenes[id] = scene;
+		vector<CPlayZone> playZones;
+		playZones.clear();
+
+		// information of each zone in the scene
+		int i = 10;
+		while (i < tokens.size())
+		{
+			CPlayZone playZone;
+
+			int minPixelWidth = atoi(tokens[i].c_str());
+			int maxPixelWidth = atoi(tokens[i + 1].c_str());
+			playZone.SetHorizontalBounds(minPixelWidth, maxPixelWidth);
+
+			int minPixelHeight = atoi(tokens[i + 2].c_str());
+			int maxPixelHeight = atoi(tokens[i + 3].c_str());
+			playZone.SetVerticalBounds(minPixelHeight, maxPixelHeight);
+
+			float marioStartingX = atof(tokens[i + 4].c_str());
+			float marioStartingY = atof(tokens[i + 5].c_str());
+			playZone.SetPlayerStartPosition(marioStartingX, marioStartingY);
+
+			playZones.push_back(playZone);
+			i += 6;
+		}
+		
+
+		LPSCENE scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
+		scenes[id] = scene;
+		break;
+	}
+	
 }
 
 /*

@@ -23,12 +23,6 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world):
-	CScene(id, filePath, tilesetFileName, tiledBackgroundFileName, objectsFileName, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world)
-{
-	key_handler = new CPlayScenceKeyHandler(this);
-}
-
 #define OBJECT_TYPE_MARIO			0
 #define OBJECT_TYPE_BRICK			1
 #define OBJECT_TYPE_GROUNDBRICK		2
@@ -49,6 +43,23 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWST
 #define OBJECT_TYPE_PORTAL	50
 
 #define MAX_SCENE_LINE 1024
+
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world) :
+	CScene(id, filePath)
+{
+	this->tilesetFileName = tilesetFileName;
+	this->tiledBackgroundFileName = tiledBackgroundFileName;
+	this->tile_x = tile_startX;
+	this->tile_y = tile_startY;
+
+	this->objectsFileName = objectsFileName;
+
+	currentZone = initialZone;
+	this->playZones = playZones;
+
+	this->world = world;
+	key_handler = new CPlayScenceKeyHandler(this);
+}
 
 /*
 	Parse a line in section [OBJECTS] 
@@ -95,6 +106,8 @@ void CPlayScene::_ParseObjects(string line)
 			player->AddFireball(fireball);
 			objects.push_back(fireball);
 		}
+
+		playZones[currentZone].GetPlayerStartPosition(x, y);
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -287,8 +300,8 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneDirectory);
 
 	// load background
-	wstring tileset_path = wstring(sceneDirectory) + L"tileset.png";
-	wstring tile_path = wstring(sceneDirectory) + L"tiled_background.txt";
+	wstring tileset_path = wstring(sceneDirectory) + tilesetFileName;
+	wstring tile_path = wstring(sceneDirectory) + tiledBackgroundFileName;
 	tiled_background = new CTilemap(-10, 4, 11, tile_path.c_str(), tileset_path.c_str());
 	tiled_background->LoadTiles();
 	tiled_background->LoadMap();
@@ -296,7 +309,7 @@ void CPlayScene::Load()
 	CResources::GetInstance()->LoadResources();
 
 	// load map
-	wstring objectPath = wstring(sceneDirectory) + L"objects.txt";
+	wstring objectPath = wstring(sceneDirectory) + objectsFileName;
 	ifstream f;
 	f.open(objectPath);			
 
@@ -341,6 +354,13 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
+	// get current zone's active area
+	int minPixelWidth, maxPixelWidth;
+	playZones[currentZone].GetHorizontalBounds(minPixelWidth, maxPixelWidth);
+	
+	int minPixelHeight, maxPixelHeight;
+	playZones[currentZone].GetVerticalBounds(minPixelHeight, maxPixelHeight);
+
 	// Reposition mario if needed
 	float px, py;
 	player->GetPosition(px, py);
@@ -362,9 +382,6 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-
-	int minPixelWidth, maxPixelWidth;
-	this->GetBounds(minPixelWidth, maxPixelWidth);
 
 	if (cx < minPixelWidth) cx = minPixelWidth;
 	else if (cx > maxPixelWidth - game->GetScreenWidth()) cx = maxPixelWidth - game->GetScreenWidth();
@@ -388,7 +405,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	tiled_background->DrawFullTilemap(0.0f, minPixelHeight);
+	tiled_background->DrawFullTilemap(tile_x, tile_y);
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();

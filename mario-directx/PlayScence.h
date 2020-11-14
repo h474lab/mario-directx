@@ -8,6 +8,7 @@
 #include "Goomba.h"
 #include "HUD.h"
 #include "Tilemap.h"
+#include "PlayZone.h"
 
 #define GAMETIME	301000
 
@@ -19,15 +20,24 @@ protected:
 	CMario *player;					// A play scene has to have player, right? 
 	CHUD* HUD;
 
+	LPCWSTR tilesetFileName, tiledBackgroundFileName, objectsFileName;
+
+	int currentZone;
+	vector<CPlayZone> playZones;
+
+	int world;
+
 	vector<LPGAMEOBJECT> objects;
+
 	CTilemap* tiled_background;
+	float tile_x, tile_y;
 
 	DWORD gameStartingTime;
 
 	void _ParseObjects(string line);
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
+	CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world);
 
 	void StartGameTime() { gameStartingTime = GetTickCount64(); }
 

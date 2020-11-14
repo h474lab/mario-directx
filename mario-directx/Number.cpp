@@ -14,8 +14,6 @@ void CNumber::Render()
 
 	int ani = -1;
 
-	//DebugOut(L"Number x, y: %f, %f", x, y);
-
 	switch (currentNumber)
 	{
 	case 0:

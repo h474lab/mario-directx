@@ -148,6 +148,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickFragment.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CPlayZone.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FireTrap.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GroundBricks.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GroundBricks.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="Number.h" />
     <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScence.h" />
+    <ClInclude Include="PlayZone.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="PowerArrow.h" />
     <ClInclude Include="PowerObject.h" />

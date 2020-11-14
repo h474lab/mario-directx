@@ -3,21 +3,18 @@
 #include <d3dx9.h>
 #include "KeyEventHandler.h"
 
+#define SCENE_TYPE_INTRO	0
+#define SCENE_TYPE_PLAY		1
+
 class CScene
 {
 protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneDirectory;
-	LPCWSTR tilesetFileName, tiledBackgroundFileName, objectsFileName;
-	int minPixelWidth, maxPixelWidth;
-	int minPixelHeight, maxPixelHeight;
-	int world;
 
 public: 
-	CScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
-
-	void GetBounds(int& minPixelWidth, int& maxPixelWidth);
+	CScene(int id, LPCWSTR filePath);
 
 	CKeyEventHandler * GetKeyEventHandler() { return key_handler; }
 	virtual void Load() = 0;

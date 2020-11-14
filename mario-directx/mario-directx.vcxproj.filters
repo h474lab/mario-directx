@@ -124,6 +124,12 @@
     <Filter Include="Game Manager\Resources">
       <UniqueIdentifier>{a938b1ca-c069-4179-ba50-6225261db124}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Scence\IntroScene">
+      <UniqueIdentifier>{bfe9ba40-e0a2-4f86-84af-ac2fb09625e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Manager\Scence\PlayScene\PlayZone">
+      <UniqueIdentifier>{7aa82985-bab5-4f88-8ecc-cf2b9d009b30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -243,6 +249,12 @@
     <ClCompile Include="Resources.cpp">
       <Filter>Game Manager\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Game Manager\Scence\IntroScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayZone.cpp">
+      <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -361,6 +373,12 @@
     </ClInclude>
     <ClInclude Include="Resources.h">
       <Filter>Game Manager\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Game Manager\Scence\IntroScene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayZone.h">
+      <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

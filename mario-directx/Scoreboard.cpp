@@ -10,7 +10,7 @@ CScoreboard::CScoreboard()
 
 	objectSet.clear();
 
-	number_World = new CNumber(); 
+	number_World = new CNumber();
 	objectSet.push_back(number_World);
 
 	for (int i = 0; i < 2; i++)
@@ -47,6 +47,7 @@ CScoreboard::CScoreboard()
 void CScoreboard::SetWorld(int world)
 {
 	this->world = world;
+	number_World->SetState(NUMBER_STATE_AVAILABLE);
 	number_World->SetCurrentNumber(this->world);
 }
 
