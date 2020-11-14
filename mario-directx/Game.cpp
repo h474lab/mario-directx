@@ -5,6 +5,7 @@
 #include "Utils.h"
 
 #include "PlayScence.h"
+#include "Resources.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -326,6 +327,16 @@ void CGame::_ParseSection_SETTINGS(string line)
 	if (tokens.size() < 2) return;
 	if (tokens[0] == "start")
 		current_scene = atoi(tokens[1].c_str());
+	else if (tokens[0] == "textures_path")
+		CResources::GetInstance()->SetTexturesPath(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "sprites_path")
+		CResources::GetInstance()->SetSpritesPath(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "animations_path")
+		CResources::GetInstance()->SetAnimationsPath(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "animation_sets_path")
+		CResources::GetInstance()->SetAnimationSetsPath(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "object_list")
+		CResources::GetInstance()->SetGameObjectList(ToLPCWSTR(tokens[1]));
 	else
 		DebugOut(L"[ERROR] Unknown game setting %s\n", ToWSTR(tokens[0]).c_str());
 }

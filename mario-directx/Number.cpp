@@ -4,7 +4,7 @@
 CNumber::CNumber()
 {
 	background = 1;
-
+	SetState(NUMBER_STATE_UNAVAILABLE);
 	SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_NUMBERS));
 }
 

@@ -9,6 +9,7 @@ protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneDirectory;
+	LPCWSTR tilesetFileName, tiledBackgroundFileName, objectsFileName;
 	int minPixelWidth, maxPixelWidth;
 	int minPixelHeight, maxPixelHeight;
 	int world;

@@ -286,12 +286,6 @@ void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneDirectory);
 
-	CResources::GetInstance()->SetTexturesPath(L"Resources\\TEXTURES.txt");
-	CResources::GetInstance()->SetSpritesPath(L"Resources\\Sprites\\");
-	CResources::GetInstance()->SetAnimationsPath(L"Resources\\Animations\\");
-	CResources::GetInstance()->SetAnimationSetsPath(L"Resources\\AnimationSets\\");
-	CResources::GetInstance()->SetGameObjectList(L"Resources\\GAMEOBJECT_LIST.txt");
-
 	// load background
 	wstring tileset_path = wstring(sceneDirectory) + L"tileset.png";
 	wstring tile_path = wstring(sceneDirectory) + L"tiled_background.txt";
