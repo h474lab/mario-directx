@@ -15,7 +15,7 @@ protected:
 	int world;
 
 public: 
-	CScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
+	CScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
 
 	void GetBounds(int& minPixelWidth, int& maxPixelWidth);
 

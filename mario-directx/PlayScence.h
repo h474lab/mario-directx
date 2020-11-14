@@ -27,7 +27,7 @@ protected:
 	void _ParseObjects(string line);
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
+	CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world);
 
 	void StartGameTime() { gameStartingTime = GetTickCount64(); }
 

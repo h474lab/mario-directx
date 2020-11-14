@@ -23,8 +23,8 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world):
-	CScene(id, filePath, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR objectsFileName, int minPixelWidth, int maxPixelWidth, int minPixelHeight, int maxPixelHeight, int world):
+	CScene(id, filePath, tilesetFileName, tiledBackgroundFileName, objectsFileName, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
 }

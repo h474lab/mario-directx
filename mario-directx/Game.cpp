@@ -348,13 +348,19 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);
-	int minPixelWidth = atoi(tokens[2].c_str());
-	int maxPixelWidth = atoi(tokens[3].c_str());
-	int minPixelHeight = atoi(tokens[4].c_str());
-	int maxPixelHeight = atoi(tokens[5].c_str());
-	int world = atoi(tokens[6].c_str());
 
-	LPSCENE scene = new CPlayScene(id, path, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world);
+	LPCWSTR tilesetFileName = ToLPCWSTR(tokens[2]);
+	LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[3]);
+	LPCWSTR objectsFileName = ToLPCWSTR(tokens[4]);
+
+	int minPixelWidth = atoi(tokens[5].c_str());
+	int maxPixelWidth = atoi(tokens[6].c_str());
+	int minPixelHeight = atoi(tokens[7].c_str());
+	int maxPixelHeight = atoi(tokens[8].c_str());
+
+	int world = atoi(tokens[9].c_str());
+
+	LPSCENE scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, objectsFileName, minPixelWidth, maxPixelWidth, minPixelHeight, maxPixelHeight, world);
 	scenes[id] = scene;
 }
 
