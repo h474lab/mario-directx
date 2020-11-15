@@ -216,24 +216,31 @@ class CMario : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 
+	// Koopa that Mario is holding
 	CKoopa* holdenKoopa;
 
+	// State in the last frame
 	int lastState;
 
+	// When Mario changes his direction, he may be turned into turning state
 	int turning;	// turn left - 1, turn right - 2
 	DWORD turning_start;
 
+	// Indicate whether Mario is on the ground or not
 	int jumping;
 
+	// "Jumping Up" is the state that Mario can jump higher (or further) than normal jumping state
 	int jumpingUp;
 	DWORD jumpingUp_start;
 
-	int sitting;
-
 	int flyJump;
 	DWORD flyJump_start;
-
 	int fly;
+
+	int sitting;
+
+	// Point out whether Mario is ready to go up/down the tube
+	int readyToUp, readyToDown;
 
 	int throwing;
 	DWORD throwing_start;
@@ -260,6 +267,8 @@ class CMario : public CGameObject
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
+
+	DWORD now;
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
 
@@ -306,6 +315,9 @@ public:
 	int GetPowerLevel() { return powerLevel; }
 
 	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
+
+	void SetReadyUp(int state) { readyToUp = state; }
+	void SetReadyDown(int state) { readyToDown = state; }
 
 	void Reset();
 

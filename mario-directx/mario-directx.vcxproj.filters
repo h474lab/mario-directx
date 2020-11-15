@@ -130,6 +130,9 @@
     <Filter Include="UI Components\Tilemap">
       <UniqueIdentifier>{1ba79cd5-3f27-46b7-b8d4-71efd28f495e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Camera">
+      <UniqueIdentifier>{d6ef6192-dc33-4792-b10b-975ddea569ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -255,7 +258,9 @@
     <ClCompile Include="CPlayZone.cpp">
       <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game Manager\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -381,6 +386,8 @@
     <ClInclude Include="PlayZone.h">
       <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>Game Manager\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -150,14 +150,15 @@ void CPlayScene::_ParseObjects(string line)
 	case OBJECT_TYPE_TUBE:
 		{
 			int numRows = atoi(tokens[4].c_str());
-			int hasLid = atoi(tokens[5].c_str());
-			obj = new CTube(numRows, hasLid);
+			int lidType = atoi(tokens[5].c_str());
+			int zoneID = atoi(tokens[6].c_str());
+			obj = new CTube(numRows, lidType, zoneID);
 			CTube* tube = dynamic_cast<CTube*>(obj);
 
-			if (tokens.size() > 6)
+			if (tokens.size() > 7)
 			{
-				int obj_type = atoi(tokens[6].c_str());
-				int obj_ani_set = atoi(tokens[7].c_str());
+				int obj_type = atoi(tokens[7].c_str());
+				int obj_ani_set = atoi(tokens[8].c_str());
 				int bullet_ani_set;
 				CBullet* bullet = NULL;
 
@@ -170,7 +171,7 @@ void CPlayScene::_ParseObjects(string line)
 					if (player)
 						dynamic_cast<CVenusFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[8].c_str());
+					bullet_ani_set = atoi(tokens[9].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					dynamic_cast<CVenusFireTrap*>(includedObj)->SetBullet(bullet);
@@ -184,7 +185,7 @@ void CPlayScene::_ParseObjects(string line)
 					if (player)
 						dynamic_cast<CShortFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[8].c_str());
+					bullet_ani_set = atoi(tokens[9].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					dynamic_cast<CShortFireTrap*>(includedObj)->SetBullet(bullet);
@@ -294,6 +295,28 @@ void CPlayScene::_ParseObjects(string line)
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 	if (includedObj) objects.push_back(includedObj);
+}
+
+void CPlayScene::ChangePlayZone(int zoneID)
+{
+	if (zoneID >= playZones.size())
+	{
+		DebugOut(L"[INFO] Cannot switch to Zone %d!\n", zoneID);
+		return;
+	}
+	float x, y;
+	/*if (playZones[currentZone].GetAllowSavingPosition())
+	{
+		float l, t, r, b;
+		player->GetPosition(x, y);
+		player->GetBoundingBox(l, t, r, b);
+		playZones[currentZone].SetPlayerStartPosition(x, y - (b - t));
+	}*/
+
+	currentZone = zoneID;
+
+	playZones[currentZone].GetPlayerStartPosition(x, y);
+	player->SetPosition(x, y);
 }
 
 void CPlayScene::Load()
@@ -497,9 +520,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		shiftButtonPressed = 1;
 
 	if (game->IsKeyDown(DIK_DOWN))
+	{
 		mario->SetSittingState(1);
+		mario->SetReadyDown(1);
+	}
 	else
+	{
 		mario->SetSittingState(0);
+		mario->SetReadyDown(0);
+	}
+
+	if (game->IsKeyDown(DIK_UP)) mario->SetReadyUp(1);
+	else mario->SetReadyUp(0);
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{

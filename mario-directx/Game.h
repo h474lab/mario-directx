@@ -66,6 +66,8 @@ public:
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id);
 
+	void ChangePlayZone(int zoneID);
+
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }
 

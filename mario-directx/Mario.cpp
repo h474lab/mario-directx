@@ -488,6 +488,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CTube* tube = dynamic_cast<CTube*>(e->obj);
 				tube->StartDelayingObject();
+
+				int lidType = tube->GetLidType();
+				int zoneToSwitch = tube->GetZoneToSwitch();
+				if (zoneToSwitch != TUBE_ZONE_NO_DOOR) {
+					if ((lidType == TUBE_TYPE_UPPER_LID && e->ny < 0  && readyToDown) || (lidType == TUBE_TYPE_LOWER_LID && e->ny > 0 && readyToUp))
+						CGame::GetInstance()->ChangePlayZone(zoneToSwitch);
+				}
 			}
 			else if (dynamic_cast<CSquareBrick*>(e->obj))
 			{

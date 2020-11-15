@@ -1,9 +1,10 @@
 #include "Tube.h"
 
-CTube::CTube(int numRows, int hasLid)
+CTube::CTube(int numRows, int lidType, int zoneID)
 {
 	this->numRows = numRows;
-	this->hasLid = hasLid;
+	this->lidType = lidType;
+	this->doorToZone = zoneID;
 }
 
 void CTube::SetPosition(float x, float y)
@@ -38,20 +39,20 @@ void CTube::Render()
 {
 	for (int i = 0; i < numRows; i++)
 	{
-		if (i == 0 && hasLid == 1)
+		if (i == 0 && lidType == TUBE_TYPE_UPPER_LID)
 		{
-			animation_set->at(TUBE_ANI_UPPER_LID_LEFT)->Render(x, y + 16 * i);
-			animation_set->at(TUBE_ANI_UPPER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+			animation_set->at(TUBE_ANI_UPPER_LID_LEFT)->Render(x, y + TUBE_CELL_HEIGHT * i);
+			animation_set->at(TUBE_ANI_UPPER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + TUBE_CELL_HEIGHT * i);
 			continue;
 		}
-		else if (i == numRows - 1 && hasLid == 2)
+		else if (i == numRows - 1 && lidType == TUBE_TYPE_LOWER_LID)
 		{
-			animation_set->at(TUBE_ANI_LOWER_LID_LEFT)->Render(x, y + 16 * i);
-			animation_set->at(TUBE_ANI_LOWER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+			animation_set->at(TUBE_ANI_LOWER_LID_LEFT)->Render(x, y + TUBE_CELL_HEIGHT * i);
+			animation_set->at(TUBE_ANI_LOWER_LID_RIGHT)->Render(x + TUBE_CELL_WIDTH, y + TUBE_CELL_HEIGHT * i);
 			continue;
 		}
-		animation_set->at(TUBE_ANI_LEFT_EDGE)->Render(x, y + 16 * i);
-		animation_set->at(TUBE_ANI_RIGHT_EDGE)->Render(x + TUBE_CELL_WIDTH, y + 16 * i);
+		animation_set->at(TUBE_ANI_LEFT_EDGE)->Render(x, y + TUBE_CELL_HEIGHT * i);
+		animation_set->at(TUBE_ANI_RIGHT_EDGE)->Render(x + TUBE_CELL_WIDTH, y + TUBE_CELL_HEIGHT * i);
 	}
 }
 
@@ -59,6 +60,6 @@ void CTube::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = l + TUBE_CELL_WIDTH * 2;
+	r = l + TUBE_CELL_WIDTH * TUBE_MAX_COLUMN;
 	b = t + TUBE_CELL_HEIGHT * numRows;
 }

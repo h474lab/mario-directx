@@ -41,6 +41,8 @@ public:
 
 	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 
+	void ChangePlayZone(int zoneID);
+
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

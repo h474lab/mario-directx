@@ -456,3 +456,12 @@ void CGame::SwitchScene(int scene_id)
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();	
 }
+
+void CGame::ChangePlayZone(int zoneID)
+{
+	if (dynamic_cast<CPlayScene*>(scenes[current_scene]))
+	{
+		CPlayScene *playScene = dynamic_cast<CPlayScene*>(scenes[current_scene]);
+		playScene->ChangePlayZone(zoneID);
+	}
+}
