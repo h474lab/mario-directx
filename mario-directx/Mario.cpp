@@ -177,21 +177,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else turning = 0;
 	}
 
-	if (spinning == 1)
+	if (spinning)
 	{
 		spinningTime = (DWORD)GetTickCount64();
 		DWORD spinning_time = spinningTime - spinning_start;
 		int body_spinning = MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH;
 		int body_facing = MARIO_TAIL_FACING_SCREEN_WIDTH;
 
+		if (vx != 0)
+			CCamera::GetInstance()->LockCamera(0);
+		else
+			CCamera::GetInstance()->LockCamera(1);
+			
 		if (spinning_time > MARIO_SPINNING_TIME)
 		{
 			spinning = 0;
 			spinning_start = 0;
 			if (nx > 0)
 				x += MARIO_TAIL_SPINNING_LENGTH - MARIO_TAIL_NORMAL_LENGTH;
-
-			CCamera::GetInstance()->LockCamera(0);
 		}
 		// phase 5
 		else if (spinning_time >= MARIO_SPINNING_TIME * 4.0f / 5.0f - MARIO_SPINNING_PHASE_ERROR)
@@ -1453,8 +1456,6 @@ void CMario::StartSpinning()
 	{
 		spinning = 1;
 		spinning_start = (DWORD)GetTickCount64();
-
-		CCamera::GetInstance()->LockCamera(1);
 
 		hittableTail = 1;
 		if (nx > 0)
