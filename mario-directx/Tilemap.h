@@ -27,6 +27,6 @@ public:
 	void LoadTiles();
 	void LoadMap();
 
-	void DrawFullTilemap(float posX, float posY);
+	void DrawFullTilemap(float posX, float posY, float left = -1, float top = -1, float right = -1, float bottom = -1);
 };
 

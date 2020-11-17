@@ -255,11 +255,11 @@
     <ClCompile Include="IntroScene.cpp">
       <Filter>Game Manager\Scence\IntroScene</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayZone.cpp">
-      <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Game Manager\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayZone.cpp">
+      <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -76,11 +76,23 @@ void CTilemap::LoadMap()
 	f.close();
 }
 
-void CTilemap::DrawFullTilemap(float posX, float posY)
+void CTilemap::DrawFullTilemap(float posX, float posY, float left, float top, float right, float bottom)
 {
-	for (unsigned int i = 0; i < tilemap.size(); i++)
-		for (unsigned int j = 0; j < tilemap[i].size(); j++)
+	int start_x = 0, end_x = tilemap[0].size();
+	int start_y = 0, end_y = tilemap.size();
+
+	if (!(left == -1 || top == -1 || right == -1 || bottom == -1))
+	{
+		start_x = (left - posX) / tileWidth;
+		end_x = (right - posX) / tileWidth;
+		start_y = (top - posY) / tileHeight;
+		end_y = (bottom - posY) / tileHeight;
+	}
+
+	for (unsigned int i = start_y; i < end_y; i++)
+		for (unsigned int j = start_x; j < end_x; j++)
 		{
+			if (i >= tilemap.size() || j >= tilemap[i].size()) continue;
 			float x = posX + j * this->tileWidth;
 			float y = posY + i * this->tileHeight;
 

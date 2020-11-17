@@ -437,7 +437,17 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	tiled_background->DrawFullTilemap(tile_x, tile_y);
+	float cx, cy;
+	CCamera::GetInstance()->GetPosition(cx, cy);
+
+	float topBound, bottomBound, leftBound, rightBound;
+	playZones[currentZone].GetVerticalBounds(topBound, bottomBound);
+	playZones[currentZone].GetHorizontalBounds(leftBound, rightBound);
+
+	float screen_width = CGame::GetInstance()->GetScreenWidth();
+	float screen_height = CGame::GetInstance()->GetScreenHeight();
+
+	tiled_background->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();

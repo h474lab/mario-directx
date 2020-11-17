@@ -149,7 +149,7 @@
     <ClCompile Include="BrickFragment.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CPlayZone.cpp" />
+    <ClCompile Include="PlayZone.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FireTrap.cpp" />
     <ClCompile Include="Coin.cpp" />
