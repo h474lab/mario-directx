@@ -274,6 +274,10 @@ public:
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
+	int RenderSmallMario();
+	int RenderBigMario();
+	int RenderTailMario();
+	int RenderFireMario();
 
 	int IsJumping() { return jumping; }
 	void SetSittingState(int state);
