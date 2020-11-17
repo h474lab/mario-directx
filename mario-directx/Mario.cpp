@@ -154,10 +154,27 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		kicking_start = 0;
 	}
 
-	if (GetTickCount64() - turning_start > MARIO_TURNING_DELAY)
+	if (turning)
 	{
-		turning = 0;
-		turning_start = 0;
+		if (vx > 0)
+		{
+			if (vx > MARIO_SLIDING_SPEED_DOWN) vx -= MARIO_SLIDING_SPEED_DOWN;
+			else
+			{
+				vx = 0;
+				turning = 0;
+			}
+		}
+		else if (vx < 0)
+		{
+			if (vx < -MARIO_SLIDING_SPEED_DOWN) vx += MARIO_SLIDING_SPEED_DOWN;
+			else
+			{
+				vx = 0;
+				turning = 0;
+			}
+		}
+		else turning = 0;
 	}
 
 	if (spinning == 1)
@@ -585,40 +602,43 @@ void CMario::Render()
 			}
 		}
 	}
-	else if (turning == 1 && !holdenKoopa)
+	else if (turning)
 	{
-		switch (level)
+		if (vx > 0)
 		{
-		case MARIO_LEVEL_FIRE:
-			ani = MARIO_ANI_FIRE_TURNING_LEFT;
-			break;
-		case MARIO_LEVEL_TAIL:
-			ani = MARIO_ANI_TAIL_TURNING_LEFT;
-			break;
-		case MARIO_LEVEL_BIG:
-			ani = MARIO_ANI_BIG_TURNING_LEFT;
-			break;
-		case MARIO_LEVEL_SMALL:
-			ani = MARIO_ANI_SMALL_TURNING_LEFT;
-			break;
+			switch (level)
+			{
+			case MARIO_LEVEL_FIRE:
+				ani = MARIO_ANI_FIRE_TURNING_LEFT;
+				break;
+			case MARIO_LEVEL_TAIL:
+				ani = MARIO_ANI_TAIL_TURNING_LEFT;
+				break;
+			case MARIO_LEVEL_BIG:
+				ani = MARIO_ANI_BIG_TURNING_LEFT;
+				break;
+			case MARIO_LEVEL_SMALL:
+				ani = MARIO_ANI_SMALL_TURNING_LEFT;
+				break;
+			}
 		}
-	}
-	else if (turning == 2 && !holdenKoopa)
-	{
-		switch (level)
+		else
 		{
-		case MARIO_LEVEL_FIRE:
-			ani = MARIO_ANI_FIRE_TURNING_RIGHT;
-			break;
-		case MARIO_LEVEL_TAIL:
-			ani = MARIO_ANI_TAIL_TURNING_RIGHT;
-			break;
-		case MARIO_LEVEL_BIG:
-			ani = MARIO_ANI_BIG_TURNING_RIGHT;
-			break;
-		case MARIO_LEVEL_SMALL:
-			ani = MARIO_ANI_SMALL_TURNING_RIGHT;
-			break;
+			switch (level)
+			{
+			case MARIO_LEVEL_FIRE:
+				ani = MARIO_ANI_FIRE_TURNING_RIGHT;
+				break;
+			case MARIO_LEVEL_TAIL:
+				ani = MARIO_ANI_TAIL_TURNING_RIGHT;
+				break;
+			case MARIO_LEVEL_BIG:
+				ani = MARIO_ANI_BIG_TURNING_RIGHT;
+				break;
+			case MARIO_LEVEL_SMALL:
+				ani = MARIO_ANI_SMALL_TURNING_RIGHT;
+				break;
+			}
 		}
 	}
 	else if (state == MARIO_STATE_DIE)
@@ -1265,57 +1285,78 @@ void CMario::SetState(int state)
 	lastRunning = running;
 	int last_nx = nx;
 
-	CGameObject::SetState(state);
-
+	int stateCanBeChanged = 0;
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
-		if ((lastState != MARIO_STATE_WALKING_LEFT && lastState != MARIO_STATE_RUNNING_LEFT && lastState != MARIO_STATE_RUNNING_FAST_LEFT) || jumping)
+		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 0;
 			if (holdenKoopa) releaseKoopa();
 			vx = MARIO_WALKING_SPEED;
 			nx = 1;
+			stateCanBeChanged = 1;
 		}
-		else StartTurning(2);
+		else if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
-		if ((lastState != MARIO_STATE_WALKING_RIGHT && lastState != MARIO_STATE_RUNNING_RIGHT && lastState != MARIO_STATE_RUNNING_FAST_RIGHT) || jumping)
+		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 0;
 			if (holdenKoopa) releaseKoopa();
 			vx = -MARIO_WALKING_SPEED;
 			nx = -1;
+			stateCanBeChanged = 1;
 		}
-		else StartTurning(1);
+		else  if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
-		if ((lastState != MARIO_STATE_WALKING_LEFT && lastState != MARIO_STATE_RUNNING_LEFT && lastState != MARIO_STATE_RUNNING_FAST_LEFT) || jumping)
+		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 1;
 			vx = MARIO_RUNNING_SPEED;
 			nx = 1;
+			stateCanBeChanged = 1;
 		}
-		else StartTurning(2);
+		else  if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
-		if ((lastState != MARIO_STATE_WALKING_RIGHT && lastState != MARIO_STATE_RUNNING_RIGHT && lastState != MARIO_STATE_RUNNING_FAST_RIGHT) || jumping)
+		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 1;
 			vx = -MARIO_RUNNING_SPEED;
 			nx = -1;
+			stateCanBeChanged = 1;
 		}
-		else StartTurning(1);
+		else if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_FAST_RIGHT:
-		running = 1;
-		vx = MARIO_RUNNING_FAST_SPEED;
-		nx = 1;
+		if ((last_nx > 0 && !turning) || jumping)
+		{
+			running = 1;
+			vx = MARIO_RUNNING_FAST_SPEED;
+			nx = 1;
+			stateCanBeChanged = 1;
+		}
+		else
+		{
+			StartRunning();
+			if (!turning) turning = 1;
+		}
 		break;
 	case MARIO_STATE_RUNNING_FAST_LEFT:
-		running = 1;
-		vx = -MARIO_RUNNING_FAST_SPEED;
-		nx = -1;
+		if (last_nx < 0 && !turning)
+		{
+			running = 1;
+			vx = -MARIO_RUNNING_FAST_SPEED;
+			nx = -1;
+			stateCanBeChanged = 1;
+		}
+		else
+		{
+			StartRunning();
+			if (!turning) turning = 1;
+		}
 		break;
 	case MARIO_STATE_JUMPING:
 		running = 0;
@@ -1326,16 +1367,19 @@ void CMario::SetState(int state)
 			FlyJump();
 			fly = 1;
 		}
+		stateCanBeChanged = 1;
 		break; 
 	case MARIO_STATE_IDLE:
 		running = 0;
 		if (holdenKoopa) releaseKoopa();
 		vx = 0;
+		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_DIE:
 		running = 0;
 		if (holdenKoopa) releaseKoopa();
 		vy = -MARIO_DIE_DEFLECT_SPEED;
+		stateCanBeChanged = 1;
 		break;
 	}
 
@@ -1353,15 +1397,12 @@ void CMario::SetState(int state)
 
 		GetMargins(leftMargin, rightMargin);
 
-		if (last_nx > nx)
-		{
-			x = x + leftMargin - rightMargin;
-		}
-		else
-		{
-			x = x - leftMargin + rightMargin;
-		}
+		if (last_nx > nx) x = x + leftMargin - rightMargin;
+		else x = x - leftMargin + rightMargin;
 	}
+
+	if (stateCanBeChanged)
+		CGameObject::SetState(state);
 }
 
 void CMario::SetLevel(int l)
