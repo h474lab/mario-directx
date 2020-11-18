@@ -229,5 +229,14 @@
 #spin right
 251	3002	100	3061	100	3032	100	3062	100	3002	100
 
+#switch scene small
+260	2040	100
+#switch scene big
+261	1040	100
+#switch scene tail
+262	3070	100
+#switch scene fire
+263	2040	100
+
 #die
 999	2099	100

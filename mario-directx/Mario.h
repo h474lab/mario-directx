@@ -27,6 +27,8 @@
 #define MARIO_DIE_DEFLECT_SPEED		0.5f
 #define MARIO_RUNNING_TIME			1000
 
+#define MARIO_SWITCHING_SCENE_SPEED	0.2f
+
 #define MARIO_STATE_IDLE				0
 #define MARIO_STATE_WALKING_RIGHT		100
 #define MARIO_STATE_WALKING_LEFT		200
@@ -160,7 +162,13 @@
 
 #define MARIO_ANI_SPINNING_LEFT			104
 #define MARIO_ANI_SPINNING_RIGHT		105
-#define MARIO_ANI_DIE					106
+
+#define MARIO_ANI_SMALL_SWICHING_SCENE	106
+#define MARIO_ANI_BIG_SWITCHING_SCENE	107
+#define MARIO_ANI_TAIL_SWITCHING_SCENE	108
+#define MARIO_ANI_FIRE_SWITCHING_SCENE	109
+
+#define MARIO_ANI_DIE					110
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -208,6 +216,9 @@
 #define MARIO_UNTOUCHABLE_TIME	2000
 #define MARIO_KICKING_TIME		1000
 #define MARIO_SPINNING_TIME		500
+
+#define MARIO_SWITCHING_ZONE_DIRECTION_UP	0
+#define MARIO_SWITCHING_ZONE_DIRECTION_DOWN	1
 
 
 class CMario : public CGameObject
@@ -264,6 +275,9 @@ class CMario : public CGameObject
 
 	vector<CFireball*> fireballs;
 	int currentFireball;
+
+	int lastFlyingDirection;
+	int allowSwichingZone;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
@@ -322,6 +336,10 @@ public:
 
 	void SetReadyUp(int state) { readyToUp = state; }
 	void SetReadyDown(int state) { readyToDown = state; }
+
+	void StartSwitchingZone(int direction);
+	int GetAllowSwitchingZone() { return allowSwichingZone; }
+	void SetAllowSwitchingZone(int value) { allowSwichingZone = value; }
 
 	void Reset();
 

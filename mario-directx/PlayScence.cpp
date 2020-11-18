@@ -305,20 +305,30 @@ void CPlayScene::ChangePlayZone(int zoneID)
 		DebugOut(L"[INFO] Cannot switch to Zone %d!\n", zoneID);
 		return;
 	}
-	float x, y;
 	if (playZones[currentZone].GetAllowSavingPosition())
 	{
+		float x, y;
 		float l, t, r, b;
 		player->SetSittingState(0);
 		player->GetPosition(x, y);
 		player->GetBoundingBox(l, t, r, b);
-		playZones[currentZone].SetPlayerStartPosition(x, y - (b - t));
+		playZones[currentZone].SetPlayerStartPosition(x, y);
 	}
+	waitingZone = zoneID;
+}
 
-	currentZone = zoneID;
+void CPlayScene::StartSettingCurrentZone()
+{
+	if (waitingZone == -1) return;
 
+	currentZone = waitingZone;
+
+	float x, y;
 	playZones[currentZone].GetPlayerStartPosition(x, y);
 	player->SetPosition(x, y);
+	player->SetAllowSwitchingZone(0);
+
+	waitingZone = -1;
 }
 
 void CPlayScene::Load()
@@ -380,10 +390,12 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
+	if (player->GetAllowSwitchingZone())
+		StartSettingCurrentZone();
+
 	// get current zone's active area
 	float minPixelWidth, maxPixelWidth;
 	playZones[currentZone].GetHorizontalBounds(minPixelWidth, maxPixelWidth);
-	
 	float minPixelHeight, maxPixelHeight;
 	playZones[currentZone].GetVerticalBounds(minPixelHeight, maxPixelHeight);
 

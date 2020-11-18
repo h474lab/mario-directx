@@ -32,22 +32,31 @@ CMario::CMario(float x, float y) : CGameObject()
 	state = MARIO_STATE_IDLE;
 	SetState(MARIO_STATE_IDLE);
 
+	flyingDirection = lastFlyingDirection = FLYING_DIRECTION_NOMOVE;
+
 	jumping = 0;
 	background = 0;
 
 	running = 0;
 	lastRunning = 0;
+	allowSwichingZone = 0;
 
 	start_x = x; 
 	start_y = y; 
 	this->x = x; 
-	this->y = y; 
+	this->y = y;
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	//DebugOut(L"\n%d", untouchable);
-	//DebugOut(L"\nFlying start: %llu", (DWORD)GetTickCount64() - flyJump_start);
+	DebugOut(L"\nFlying Direction: %d", flyingDirection);
+	if (flyingDirection != FLYING_DIRECTION_NOMOVE)
+	{
+		UpdateFlying(dt);
+		if (flyingDirection == FLYING_DIRECTION_NOMOVE)
+			allowSwichingZone = 1;
+		return;
+	}
 
 	float _lastVy = vy;
 
@@ -507,13 +516,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CTube*>(e->obj))
 			{
 				CTube* tube = dynamic_cast<CTube*>(e->obj);
-				tube->StartDelayingObject();
 
 				int lidType = tube->GetLidType();
 				int zoneToSwitch = tube->GetZoneToSwitch();
 				if (zoneToSwitch != TUBE_ZONE_NO_DOOR) {
-					if ((lidType == TUBE_TYPE_UPPER_LID && e->ny < 0  && readyToDown) || (lidType == TUBE_TYPE_LOWER_LID && e->ny > 0 && readyToUp))
+					if ((lidType == TUBE_TYPE_UPPER_LID && e->ny < 0 && readyToDown) || (lidType == TUBE_TYPE_LOWER_LID && e->ny > 0 && readyToUp))
+					{
 						CGame::GetInstance()->ChangePlayZone(zoneToSwitch);
+						StartSwitchingZone((readyToUp) ? MARIO_SWITCHING_ZONE_DIRECTION_UP : MARIO_SWITCHING_ZONE_DIRECTION_DOWN);
+					}
 				}
 			}
 			else if (dynamic_cast<CSquareBrick*>(e->obj))
@@ -1475,6 +1486,28 @@ void CMario::SetTail(float start_x, float end_x)
 	tail_end_x = end_x;
 	tail_start_y = y + MARIO_TAIL_HEAD_TO_TAIL;
 	tail_end_y = tail_start_y + MARIO_TAIL_TAIL_WIDTH;
+}
+
+void CMario::StartSwitchingZone(int direction)
+{
+	float l, t, r, b;
+	GetBoundingBox(l, t, r, b);
+	float height = b - t;
+	flyingSpeedY = MARIO_SWITCHING_SCENE_SPEED;
+	disappear = 0;
+	delayAfterMovingUp = 0;
+
+	if (direction == MARIO_SWITCHING_ZONE_DIRECTION_UP)
+	{
+		maxFlyingY = minFlyingY = y - height;
+		flyingDirection = FLYING_DIRECTION_UP;
+	}
+	else
+	{
+		minFlyingY = y;
+		maxFlyingY = y + height * 2;
+		flyingDirection = FLYING_DIRECTION_DOWN;
+	}
 }
 
 /*

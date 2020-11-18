@@ -32,6 +32,8 @@ protected:
 	CTilemap* tiled_background;
 	float tile_x, tile_y;
 
+	int waitingZone;
+
 	DWORD gameStartingTime;
 
 	void _ParseObjects(string line);
@@ -42,6 +44,7 @@ public:
 	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 
 	void ChangePlayZone(int zoneID);
+	void StartSettingCurrentZone();
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

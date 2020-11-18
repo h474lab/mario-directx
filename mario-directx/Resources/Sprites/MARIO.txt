@@ -47,6 +47,8 @@
 1033	16	248	30	266	0
 # hold koopa jump left
 1034	10	323	25	350	0
+#switch scene
+1040	15	283	31	310	0
 
 # SMALL MARIO
 # idle small right
@@ -87,6 +89,8 @@
 2029	15	169	30	185	0
 # hold koopa jump left
 2030	15	169	30	185	0
+# switch scene
+2040	15	129	31	145	0
 
 # die 
 2099	15	209	31	225	0
@@ -161,6 +165,8 @@
 # spin
 3061	355	483	371	511	0
 3062	390	483	406	511	0
+#switch scene
+3070	35	483	51	511	0
 
 #MARIO (FIRE)
 #idle fire right
@@ -211,6 +217,8 @@
 4033	16	688	30	704	0
 # hold koopa jump left
 4034	10	764	26	790	0
+#switch scene
+4040	15	723	31	750	0
 
 # fire right
 4041	366	803	380	830	0
