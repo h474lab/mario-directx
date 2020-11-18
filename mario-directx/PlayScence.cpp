@@ -306,13 +306,14 @@ void CPlayScene::ChangePlayZone(int zoneID)
 		return;
 	}
 	float x, y;
-	/*if (playZones[currentZone].GetAllowSavingPosition())
+	if (playZones[currentZone].GetAllowSavingPosition())
 	{
 		float l, t, r, b;
+		player->SetSittingState(0);
 		player->GetPosition(x, y);
 		player->GetBoundingBox(l, t, r, b);
 		playZones[currentZone].SetPlayerStartPosition(x, y - (b - t));
-	}*/
+	}
 
 	currentZone = zoneID;
 
