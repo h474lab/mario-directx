@@ -154,6 +154,7 @@ void CPlayScene::_ParseObjects(string line)
 			int zoneID = atoi(tokens[6].c_str());
 			obj = new CTube(numRows, lidType, zoneID);
 			CTube* tube = dynamic_cast<CTube*>(obj);
+			tube->SetFollowingObject(player);
 
 			if (tokens.size() > 7)
 			{
@@ -174,7 +175,7 @@ void CPlayScene::_ParseObjects(string line)
 					bullet_ani_set = atoi(tokens[9].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
-					dynamic_cast<CVenusFireTrap*>(includedObj)->SetBullet(bullet);
+					((CVenusFireTrap*)includedObj)->SetBullet(bullet);
 
 					objects.push_back(bullet);
 					break;
@@ -188,7 +189,7 @@ void CPlayScene::_ParseObjects(string line)
 					bullet_ani_set = atoi(tokens[9].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
-					dynamic_cast<CShortFireTrap*>(includedObj)->SetBullet(bullet);
+					((CShortFireTrap*)includedObj)->SetBullet(bullet);
 
 					objects.push_back(bullet);
 					break;

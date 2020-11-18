@@ -1,4 +1,5 @@
 #include "Tube.h"
+#include "Utils.h"
 
 CTube::CTube(int numRows, int lidType, int zoneID)
 {
@@ -20,7 +21,7 @@ void CTube::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (object)
 	{
-		if (objLastState == FLYING_DIRECTION_DOWN && object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE)
+		if ((objLastState == FLYING_DIRECTION_DOWN && object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE))
 		{
 			object->SetDisappearingState();
 			StartDelayingObject();
@@ -29,6 +30,20 @@ void CTube::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (object->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE && (DWORD)GetTickCount64() - objectDelay_start > TUBE_OBJECT_DELAYING_TIME)
 		{
 			object->SetFlyingDirection(FLYING_DIRECTION_UP, 1);
+		}
+		else
+		{
+			float object_x, object_y;
+			followingObject->GetPosition(object_x, object_y);
+			float l, t, r, b;
+			followingObject->GetBoundingBox(l, t, r, b);
+			float object_width = r - l;
+			GetBoundingBox(l, t, r, b);
+			float width = r - l;
+
+			if ((object_x < this->x && this->x - (object_x + object_width) < DISTANCE_TO_MARIO_FOR_NOT_APPEARING) ||
+				(object_x > this->x && object_x - (this->x + width) < DISTANCE_TO_MARIO_FOR_NOT_APPEARING))
+				StartDelayingObject();
 		}
 
 		objLastState = object->GetFlyingDirection();

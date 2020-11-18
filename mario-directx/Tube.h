@@ -19,6 +19,8 @@
 
 #define TUBE_MAX_COLUMN	2
 
+#define DISTANCE_TO_MARIO_FOR_NOT_APPEARING		16
+
 #define TUBE_OBJECT_DELAYING_TIME	2000
 
 class CTube : public CGameObject
@@ -27,6 +29,7 @@ class CTube : public CGameObject
 	int lidType;
 	int doorToZone;
 
+	CGameObject* followingObject;
 	CGameObject* object;
 	DWORD objectDelay_start;
 	int objLastState;
@@ -37,6 +40,7 @@ public:
 
 	virtual void SetPosition(float x, float y);
 	void SetObject(CGameObject* obj) { object = obj; }
+	void SetFollowingObject(CGameObject* obj) { followingObject = obj; }
 
 	int GetZoneToSwitch() { return doorToZone; }
 	int GetLidType() { return lidType; }

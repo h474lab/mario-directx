@@ -46,7 +46,7 @@ void CTubeEnemy::Firing()
 void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == TUBE_ENEMY_STATE_DIE) return;
-
+	
 	UpdateFlying(dt);
 
 	CGameObject::Update(dt);

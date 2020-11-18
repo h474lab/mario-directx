@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Bullet.h"
+#include "Tube.h"
 
 #define TUBE_ENEMY_STATE_POINT			0
 #define TUBE_ENEMY_STATE_FIRE			1
