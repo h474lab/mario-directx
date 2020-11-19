@@ -307,8 +307,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
-		//DebugOut(L"\nMario Velocity: %f %f", vx, vy);
-
 		//
 		// Collision logic with other objects
 		//
@@ -585,7 +583,9 @@ int CMario::RenderSmallMario()
 {
 	int res = -1;
 
-	if (turning)
+	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+		res = MARIO_ANI_SMALL_SWICHING_SCENE;
+	else if (turning)
 	{
 		if (vx > 0) res = MARIO_ANI_SMALL_TURNING_LEFT;
 		else res = MARIO_ANI_SMALL_TURNING_RIGHT;
@@ -674,7 +674,10 @@ int CMario::RenderSmallMario()
 int CMario::RenderBigMario()
 {
 	int res = -1;
-	if (sitting)
+
+	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+		res = MARIO_ANI_BIG_SWITCHING_SCENE;
+	else if (sitting)
 	{
 		if (nx > 0) res = MARIO_ANI_BIG_SITTING_RIGHT;
 		else MARIO_ANI_BIG_SITTING_LEFT;
@@ -766,7 +769,10 @@ int CMario::RenderBigMario()
 int CMario::RenderTailMario()
 {
 	int res = -1;
-	if (spinning)
+
+	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+		res = MARIO_ANI_TAIL_SWITCHING_SCENE;
+	else if (spinning)
 	{
 		if (nx > 0) res = MARIO_ANI_SPINNING_RIGHT;
 		else res = MARIO_ANI_SPINNING_LEFT;
@@ -901,7 +907,10 @@ int CMario::RenderTailMario()
 int CMario::RenderFireMario()
 {
 	int res = -1;
-	if (sitting)
+
+	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+		res = MARIO_ANI_FIRE_SWITCHING_SCENE;
+	else if (sitting)
 	{
 		if (nx > 0) res = MARIO_ANI_FIRE_SITTING_RIGHT;
 		else MARIO_ANI_FIRE_SITTING_LEFT;
@@ -1505,7 +1514,7 @@ void CMario::StartSwitchingZone(int direction)
 	else
 	{
 		minFlyingY = y;
-		maxFlyingY = y + height * 2;
+		maxFlyingY = y + height;
 		flyingDirection = FLYING_DIRECTION_DOWN;
 	}
 }
