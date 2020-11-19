@@ -220,6 +220,15 @@
 #define MARIO_SWITCHING_ZONE_DIRECTION_UP	0
 #define MARIO_SWITCHING_ZONE_DIRECTION_DOWN	1
 
+#define MARIO_SCORE_100		100
+#define MARIO_SCORE_200		200
+#define MARIO_SCORE_400		400
+#define MARIO_SCORE_800		800
+#define MARIO_SCORE_1000	1000
+#define MARIO_SCORE_2000	2000
+#define MARIO_SCORE_4000	4000
+#define MARIO_SCORE_8000	8000
+#define MARIO_SCORE_1UP		-1
 
 class CMario : public CGameObject
 {
@@ -282,6 +291,8 @@ class CMario : public CGameObject
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 
+	int scoreStreak;
+
 	DWORD now;
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -340,6 +351,9 @@ public:
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }
 	void SetAllowSwitchingZone(int value) { allowSwichingZone = value; }
+
+	void AddStreakScore(CGameObject* coObject);
+	void AddScore(int score, CGameObject* coObject);
 
 	void Reset();
 

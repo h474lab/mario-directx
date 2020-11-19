@@ -41,6 +41,8 @@ CMario::CMario(float x, float y) : CGameObject()
 	lastRunning = 0;
 	allowSwichingZone = 0;
 
+	scoreStreak = 0;
+
 	start_x = x; 
 	start_y = y; 
 	this->x = x; 
@@ -49,7 +51,6 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"\nFlying Direction: %d", flyingDirection);
 	if (flyingDirection != FLYING_DIRECTION_NOMOVE)
 	{
 		UpdateFlying(dt);
@@ -197,7 +198,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			CCamera::GetInstance()->LockCamera(0);
 		else
 			CCamera::GetInstance()->LockCamera(1);
-			
+
 		if (spinning_time > MARIO_SPINNING_TIME)
 		{
 			spinning = 0;
@@ -271,6 +272,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		}
 	}
+	else CCamera::GetInstance()->LockCamera(0);
 
 	// reset untouchable timer if untouchable time has passed
 	if ( (DWORD)GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -329,6 +331,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			int canBeHitBySpinning = (e->nx != 0 && spinning && obj_y <= y + MARIO_TAIL_HEAD_TO_TAIL &&
 				obj_y + obj_h >= y + MARIO_TAIL_HEAD_TO_TAIL + MARIO_TAIL_TAIL_WIDTH) ? 1 : 0;
 
+			CGame *game = CGame::GetInstance();
+
 			if (e->ny < 0) jumping = 0;
 			if (e->ny > 0)
 			{
@@ -340,6 +344,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 
+				coin->Affect(COIN_AFFECT_TYPE_GAINED);
 				if (coin->GetState() == COIN_STATE_AVAILABLE)
 					coin->SetState(COIN_STATE_UNAVAILABLE);
 
@@ -352,6 +357,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
 					{
+						AddStreakScore(goomba);
 						goomba->LevelDown();
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 					}
@@ -378,6 +384,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (e->ny < 0)
 				{
+					AddStreakScore(koopa);
 					if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT)
 						koopa->LevelDown();
 					else if (koopaState == KOOPA_STATE_WALKING_LEFT || koopaState == KOOPA_STATE_WALKING_RIGHT)
@@ -421,6 +428,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (canBeHitBySpinning)
 					{
 						koopa->HitKoopa((int)nx);
+						AddStreakScore(koopa);
 					}
 					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) &&
 						(state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT ||
@@ -435,6 +443,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 						else
 							koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
+						AddStreakScore(koopa);
 					}
 					else if (koopaState == KOOPA_STATE_LYING_UP)
 					{
@@ -443,6 +452,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
 						else
 							koopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
+						AddStreakScore(koopa);
 					}
 					else
 					{
@@ -560,6 +570,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	// reset scoring streak to 0
+	if (!jumping) scoreStreak = 0;
 }
 
 void CMario::Render()
@@ -1516,6 +1529,29 @@ void CMario::StartSwitchingZone(int direction)
 		minFlyingY = y;
 		maxFlyingY = y + height;
 		flyingDirection = FLYING_DIRECTION_DOWN;
+	}
+}
+
+void CMario::AddStreakScore(CGameObject* coObject)
+{
+	scoreStreak++;
+	int addingScore = 0;
+	vector<int> scoreSet = { MARIO_SCORE_100, MARIO_SCORE_200, MARIO_SCORE_400, MARIO_SCORE_800,
+	MARIO_SCORE_1000, MARIO_SCORE_2000, MARIO_SCORE_4000, MARIO_SCORE_8000, MARIO_SCORE_1UP };
+
+	if (scoreStreak <= scoreSet.size()) addingScore = scoreSet[scoreStreak - 1];
+	else addingScore = scoreSet[scoreSet.size() - 1];
+		
+	AddScore(addingScore, coObject);
+}
+
+void CMario::AddScore(int score, CGameObject* coObject)
+{
+	if (score != MARIO_SCORE_1UP) {
+		CGame::GetInstance()->AddScore(score);
+	}
+	else {
+		CGame::GetInstance()->AddLives(1);
 	}
 }
 

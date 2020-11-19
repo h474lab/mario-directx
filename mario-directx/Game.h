@@ -95,12 +95,15 @@ public:
 
 	int GetScore() { return score; }
 	void SetScore(int score) { this->score = score; }
+	void AddScore(int score) { this->score += score; }
 
 	int GetLives() { return lives; }
 	void SetLives(int lives) { this->lives = lives; }
+	void AddLives(int lives) { this->lives += lives; }
 
 	int GetMoney() { return money; }
 	void SetMoney(int money) { this->money = money; }
+	void AddMoney(int money) { this->money += money; }
 
 	static CGame * GetInstance();
 

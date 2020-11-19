@@ -1,5 +1,6 @@
 #include "QuestionBrick.h"
 #include "Utils.h"
+#include "Coin.h"
 
 CQuestionBrick::CQuestionBrick()
 {
@@ -41,6 +42,8 @@ int CQuestionBrick::HitQuestionBrick(int side)
 		objects.pop_back();
 		
 		obj->SetFlyingDirection(FLYING_DIRECTION_UP, -side);
+
+		if (dynamic_cast<CCoin*>(obj)) ((CCoin*)obj)->Affect(COIN_AFFECT_TYPE_GAINED);
 		return 1;
 	}
 	return 0;

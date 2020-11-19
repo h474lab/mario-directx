@@ -1,5 +1,6 @@
 #include "Coin.h"
 #include "Utils.h"
+#include "Game.h"
 
 CCoin::CCoin()
 {
@@ -16,6 +17,16 @@ void CCoin::SetPosition(float x, float y)
 	CGameObject::SetPosition(x, y);
 	minFlyingY = y - 4 * COIN_BBOX_HEIGHT;
 	maxFlyingY = y - 2 * COIN_BBOX_HEIGHT;
+}
+
+void CCoin::Affect(int type)
+{
+	if (type == COIN_AFFECT_TYPE_GAINED)
+	{
+		CGame* game = CGame::GetInstance();
+		game->AddScore(COIN_SCORE_GAINED);
+		game->AddMoney(COIN_MONEY_GAINED);
+	}
 }
 
 void CCoin::SetDisappearingState()

@@ -37,9 +37,11 @@ void CMushroom::Gain(CMario* player)
 	switch (level)
 	{
 	case MUSHROOM_LEVEL_1UP:
+		player->AddScore(MARIO_SCORE_1UP, this);
 		break;
 	case MUSHROOM_LEVEL_SUPER:
 		player->LevelUp();
+		player->AddScore(MARIO_SCORE_1000, this);
 		break;
 	}
 }
