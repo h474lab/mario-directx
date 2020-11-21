@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define SCORE_FLYING_SPEED_Y	0.003f
+#define SCORE_FLYING_SPEED_Y	0.3f
 #define SCORE_STAYING_TIME		1000
 
 #define SCORE_ANI_100	0
@@ -30,3 +30,16 @@ public:
 	virtual void Render();
 };
 
+typedef CScore* LPSCORE;
+
+class CScores
+{
+	vector<LPSCORE> scores;
+	static CScores* __instance;
+public:
+	void CreateNewScoreObject(int score, CGameObject *object);
+	void Update(DWORD dt);
+	void Render();
+
+	static CScores* GetInstance();
+};

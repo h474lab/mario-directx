@@ -21,6 +21,7 @@
 #include "ShortFireTrap.h"
 #include "Leaf.h"
 #include "Camera.h"
+#include "Score.h"
 
 using namespace std;
 
@@ -387,6 +388,9 @@ void CPlayScene::Update(DWORD dt)
 		objects[i]->Update(dt, &coObjects);
 	}
 
+	// update score animations
+	CScores::GetInstance()->Update(dt);
+
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
@@ -403,6 +407,7 @@ void CPlayScene::Update(DWORD dt)
 	float px, py;
 	player->GetPosition(px, py);
 
+	// set camera position
 	float pLeft, pTop, pRight, pBottom;
 	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
 	float pWidth = pRight - pLeft;
@@ -465,6 +470,9 @@ void CPlayScene::Render()
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+
+	// render score animation
+	CScores::GetInstance()->Render();
 
 	HUD->Render();
 }

@@ -67,7 +67,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (jumping) running = 0;
 
-	if (!fly)
+	if (fly == 0)
 	{
 		if (flyJump && _lastVy >= 0.0f)
 		{
@@ -75,7 +75,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			vy -= MARIO_FLY_JUMP_SPEED_Y * dt;
 		}
 	}
-	else if (fly)
+	else if (fly == 1)
 	{
 		if (flyJump)
 		{
@@ -1555,10 +1555,7 @@ void CMario::AddScore(int score, CGameObject* coObject)
 		CGame::GetInstance()->AddLives(1);
 	}
 
-	float object_x, object_y;
-	coObject->GetPosition(object_x, object_y);
-	CScore *scoreAnim = new CScore();
-	scoreAnim->SetPosition(object_x, object_y);
+	CScores::GetInstance()->CreateNewScoreObject(score, coObject);
 }
 
 /*
