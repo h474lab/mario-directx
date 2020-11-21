@@ -196,10 +196,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		int body_spinning = MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH;
 		int body_facing = MARIO_TAIL_FACING_SCREEN_WIDTH;
 
-		if (vx != 0)
-			CCamera::GetInstance()->LockCamera(0);
-		else
+		if (state == MARIO_STATE_IDLE)
 			CCamera::GetInstance()->LockCamera(1);
+		else
+		{
+			if (nx > 0) vx = MARIO_SPINNING_SPEED_X;
+			else vx = -MARIO_SPINNING_SPEED_X;
+			CCamera::GetInstance()->LockCamera(0);
+		}
 
 		if (spinning_time > MARIO_SPINNING_TIME)
 		{

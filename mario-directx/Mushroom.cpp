@@ -46,7 +46,6 @@ void CMushroom::Gain(CMario* player)
 	}
 }
 
-
 void CMushroom::SetPosition(float x, float y)
 {
 	CGameObject::SetPosition(x, y);
@@ -123,7 +122,6 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (unsigned int i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-
 			
 			if (dynamic_cast<CTube*>(e->obj) && e->nx != 0)
 			{
@@ -135,7 +133,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CMario*>(e->obj))
 			{
 				CMario* mario = dynamic_cast<CMario*>(e->obj);
-
+				SetState(MUSHROOM_STATE_UNAVAILABLE);
 				Gain(mario);
 			}
 			else
