@@ -188,6 +188,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else turning = 0;
 	}
 
+	// when Mario is attacking using his tail
 	if (spinning)
 	{
 		spinningTime = (DWORD)GetTickCount64();
@@ -201,61 +202,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			CCamera::GetInstance()->LockCamera(1);
 
 		if (spinning_time > MARIO_SPINNING_TIME)
-		{
-			spinning = 0;
-			spinning_start = 0;
-			if (nx > 0)
-				x += MARIO_TAIL_SPINNING_LENGTH - MARIO_TAIL_NORMAL_LENGTH;
-		}
-		// phase 5
-		else if (spinning_time >= MARIO_SPINNING_TIME * 4.0f / 5.0f - MARIO_SPINNING_PHASE_ERROR)
-		{
-			if (spinningPhase == 4)
-			{
-				if (nx > 0)
-				{
-					x -= MARIO_TAIL_SPINNING_LENGTH;
-					SetTail(x, x + MARIO_TAIL_SPINNING_LENGTH);
-				}
-				else
-				{
-					x -= body_spinning - body_facing;
-					SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
-				}
-				spinningPhase++;
-				hittableTail = 0;
-			}
-		}
-		// phase 4
-		else if (spinning_time >= MARIO_SPINNING_TIME * 3.0f / 5.0f - MARIO_SPINNING_PHASE_ERROR)
-		{
-			if (spinningPhase == 3)
-			{
-				if (nx < 0)
-				{
-					x += MARIO_TAIL_SPINNING_LENGTH + body_spinning - body_facing;
-				}
-				spinningPhase++;
-				hittableTail = 0;
-			}
-		}
-		// phase 3
-		else if (spinning_time >= MARIO_SPINNING_TIME * 2.0f / 5.0f - MARIO_SPINNING_PHASE_ERROR)
-		{
-			if (spinningPhase == 2)
-			{
-				hittableTail = 1;
-				if (nx < 0)
-				{
-					x -= (body_spinning - body_facing + MARIO_TAIL_SPINNING_LENGTH);
-					SetTail(x, x + MARIO_TAIL_SPINNING_LENGTH);
-				}
-				else SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
-				spinningPhase++;
-			}
-		}
-		// phase 2
-		else if (spinning_time >= MARIO_SPINNING_TIME / 5.0f - MARIO_SPINNING_PHASE_ERROR)
 		{
 			if (spinningPhase == 1)
 			{
@@ -271,6 +217,49 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				spinningPhase++;
 				hittableTail = 0;
 			}
+			else if (spinningPhase == 2)
+			{
+				hittableTail = 1;
+				if (nx < 0)
+				{
+					x -= (body_spinning - body_facing + MARIO_TAIL_SPINNING_LENGTH);
+					SetTail(x, x + MARIO_TAIL_SPINNING_LENGTH);
+				}
+				else SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
+				spinningPhase++;
+			}
+			else if (spinningPhase == 3)
+			{
+				if (nx < 0)
+				{
+					x += MARIO_TAIL_SPINNING_LENGTH + body_spinning - body_facing;
+				}
+				spinningPhase++;
+				hittableTail = 0;
+			}
+			else if (spinningPhase == 4)
+			{
+				if (nx > 0)
+				{
+					x -= MARIO_TAIL_SPINNING_LENGTH;
+					SetTail(x, x + MARIO_TAIL_SPINNING_LENGTH);
+				}
+				else
+				{
+					x -= body_spinning - body_facing;
+					SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
+				}
+				spinningPhase++;
+				hittableTail = 0;
+			}
+			else
+			{
+				spinning = 0;
+				spinning_start = 0;
+				if (nx > 0)
+					x += MARIO_TAIL_SPINNING_LENGTH - MARIO_TAIL_NORMAL_LENGTH;
+			}
+			spinning_start = (DWORD)GetTickCount64();
 		}
 	}
 	else CCamera::GetInstance()->LockCamera(0);
@@ -578,19 +567,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CMario::Render()
 {
-	int ani = -1;
+	int res = -1;
 
-	if (level == MARIO_LEVEL_SMALL) ani = RenderSmallMario();
-	else if (level == MARIO_LEVEL_BIG) ani = RenderBigMario();
-	else if (level == MARIO_LEVEL_TAIL) ani = RenderTailMario();
-	else  ani = RenderFireMario();
+	if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
+	else if (level == MARIO_LEVEL_BIG) res = RenderBigMario();
+	else if (level == MARIO_LEVEL_TAIL) res = RenderTailMario();
+	else  res = RenderFireMario();
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
-	animation_set->at(ani)->Render(x, y, alpha);
-
-	//RenderBoundingBox();
+	animation_set->at(res)->Render(x, y, alpha);
 }
 
 int CMario::RenderSmallMario()
@@ -788,8 +775,48 @@ int CMario::RenderTailMario()
 		res = MARIO_ANI_TAIL_SWITCHING_SCENE;
 	else if (spinning)
 	{
-		if (nx > 0) res = MARIO_ANI_SPINNING_RIGHT;
-		else res = MARIO_ANI_SPINNING_LEFT;
+		if (nx > 0)
+		{
+			switch (spinningPhase)
+			{
+			case 1:
+				res = MARIO_ANI_TAIL_ATTACK_LEFT;
+				break;
+			case 2:
+				res = MARIO_ANI_FACING_THE_SCREEN;
+				break;
+			case 3:
+				res = MARIO_ANI_TAIL_ATTACK_RIGHT;
+				break;
+			case 4:
+				res = MARIO_ANI_FACING_DOWN_THE_SCREEN;
+				break;
+			case 5:
+				res = MARIO_ANI_TAIL_ATTACK_LEFT;
+				break;
+			}
+		}
+		else
+		{
+			switch (spinningPhase)
+			{
+			case 1:
+				res = MARIO_ANI_TAIL_ATTACK_RIGHT;
+				break;
+			case 2:
+				res = MARIO_ANI_FACING_THE_SCREEN;
+				break;
+			case 3:
+				res = MARIO_ANI_TAIL_ATTACK_LEFT;
+				break;
+			case 4:
+				res = MARIO_ANI_FACING_DOWN_THE_SCREEN;
+				break;
+			case 5:
+				res = MARIO_ANI_TAIL_ATTACK_RIGHT;
+				break;
+			}
+		}
 	}
 	else if (sitting)
 	{

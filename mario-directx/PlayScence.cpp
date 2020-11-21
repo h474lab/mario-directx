@@ -384,9 +384,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
-	{
 		objects[i]->Update(dt, &coObjects);
-	}
 
 	// update score animations
 	CScores::GetInstance()->Update(dt);
