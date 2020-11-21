@@ -228,7 +228,7 @@
 #define MARIO_SCORE_2000	2000
 #define MARIO_SCORE_4000	4000
 #define MARIO_SCORE_8000	8000
-#define MARIO_SCORE_1UP		-1
+#define MARIO_SCORE_1UP		-10
 
 class CMario : public CGameObject
 {

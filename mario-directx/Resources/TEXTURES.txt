@@ -9,4 +9,5 @@
 80	Resources\Textures\enemies-3.png	255	255	255
 90	Resources\Textures\mario_2.png	68	145	190
 100	Resources\Textures\font.png	0	224	142
+110	Resources\Textures\font.png	255	150	255
 120	Resources\Textures\leaves.png	255	128	192

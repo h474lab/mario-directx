@@ -175,6 +175,7 @@
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ShortFireTrap.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ShortFireTrap.h" />
     <ClInclude Include="Sprites.h" />

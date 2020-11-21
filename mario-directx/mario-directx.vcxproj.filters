@@ -133,6 +133,9 @@
     <Filter Include="Game Manager\Camera">
       <UniqueIdentifier>{d6ef6192-dc33-4792-b10b-975ddea569ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Score">
+      <UniqueIdentifier>{f2b2dc8e-847e-4191-8679-ec16e0f2da10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -261,6 +264,9 @@
     <ClCompile Include="PlayZone.cpp">
       <Filter>Game Manager\Scence\PlayScene\PlayZone</Filter>
     </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Objects\Score</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -388,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Game Manager\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Objects\Score</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -42,7 +42,7 @@ void CCoin::SetAppearingState()
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	if (state == COIN_STATE_UNAVAILABLE) background = 1;
-	UpdateFlying(dt);
+	if (flyingDirection != FLYING_DIRECTION_NOMOVE) UpdateFlying(dt);
 }
 
 void CCoin::Render()

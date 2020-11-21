@@ -19,6 +19,7 @@
 #include "Tube.h"
 #include "SquareBrick.h"
 #include "Camera.h"
+#include "Score.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -66,7 +67,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (jumping) running = 0;
 
-	if (fly == 0)
+	if (!fly)
 	{
 		if (flyJump && _lastVy >= 0.0f)
 		{
@@ -74,7 +75,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			vy -= MARIO_FLY_JUMP_SPEED_Y * dt;
 		}
 	}
-	else if (fly == 1)
+	else if (fly)
 	{
 		if (flyJump)
 		{
@@ -1553,6 +1554,11 @@ void CMario::AddScore(int score, CGameObject* coObject)
 	else {
 		CGame::GetInstance()->AddLives(1);
 	}
+
+	float object_x, object_y;
+	coObject->GetPosition(object_x, object_y);
+	CScore *scoreAnim = new CScore();
+	scoreAnim->SetPosition(object_x, object_y);
 }
 
 /*

@@ -129,8 +129,6 @@ void CKoopa::ChangeDirection()
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"\nvx, vy: %f, %f", vx, vy);
-
 	if (isHolden) return;
 
 	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
