@@ -545,9 +545,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_X) && mario->GetJumpingUp())
 		mario->SetState(MARIO_STATE_JUMPING);
 
-	int shiftButtonPressed = 0;
+	int skillButtonPressed = 0;
 	if (game->IsKeyDown(DIK_Z))
-		shiftButtonPressed = 1;
+		skillButtonPressed = 1;
 
 	if (game->IsKeyDown(DIK_DOWN))
 	{
@@ -565,17 +565,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (shiftButtonPressed)
-			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-		else
-			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		mario->SetMovingRight(skillButtonPressed);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (shiftButtonPressed)
-			mario->SetState(MARIO_STATE_RUNNING_LEFT);
-		else
-			mario->SetState(MARIO_STATE_WALKING_LEFT);
+		mario->SetMovingLeft(skillButtonPressed);
 	}
 	else
 		mario->SetState(MARIO_STATE_IDLE);

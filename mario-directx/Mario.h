@@ -20,13 +20,15 @@
 #define MARIO_FLY_SPEED_X			0.35f
 #define MARIO_FLY_TIME				500
 
-#define MARIO_SPINNING_SPEED_X		0.01f
+#define MARIO_SPINNING_SPEED_X		0.1f
+#define MARIO_FLYING_JUMP_SPEED_X	0.1f
+#define MARIO_FLYING_SPEED_X		0.3f
 
 #define MARIO_THROW_TIME			200
 
 #define MARIO_JUMP_DEFLECT_SPEED	0.3f
 #define MARIO_GRAVITY				0.002f
-#define MARIO_DIE_DEFLECT_SPEED		0.5f
+#define MARIO_DIE_DEFLECT_SPEED		0.3f
 #define MARIO_RUNNING_TIME			1000
 
 #define MARIO_SWITCHING_SCENE_SPEED	0.02f
@@ -302,6 +304,10 @@ public:
 	CMario(float x = 0.0f, float y = 0.0f);
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
+
+	void SetMovingLeft(int skillButtonPressed);
+	void SetMovingRight(int skillButtonPressed);
+
 	virtual void Render();
 	int RenderSmallMario();
 	int RenderBigMario();
@@ -310,21 +316,18 @@ public:
 
 	int IsJumping() { return jumping; }
 	void SetSittingState(int state);
-
 	void SetJumpingUp(int jumpingUp);
 	int GetJumpingUp() { return jumpingUp; }
-
 	void FlyJump();
 
+	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
 	void SetThrowing();
 	void ThrowFireball();
-
 	void setHoldenKoopa(CKoopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 
 	void LevelUp();
 	void LevelDown();
-
 	void SetState(int state);
 	void SetLevel(int l);
 
@@ -332,23 +335,17 @@ public:
 
 	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
-
-	void StartTurning(int dir) { turning = dir; turning_start = (DWORD)GetTickCount64(); running = 0; }
-
 	void StartKicking() { kicking = 1; kicking_start = (DWORD)GetTickCount64(); };
+	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
 
 	void StartSpinning();
 	int GetHittableTail() { return hittableTail; }
-
 	void SetTail(float start_x, float end_x);
 	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
 	
-	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
-
 	int GetPowerLevel() { return powerLevel; }
 
-	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
-
+	// ready to switch scene (up/down the tube)
 	void SetReadyUp(int state) { readyToUp = state; }
 	void SetReadyDown(int state) { readyToDown = state; }
 

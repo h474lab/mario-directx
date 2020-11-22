@@ -569,6 +569,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (!jumping) scoreStreak = 0;
 }
 
+void CMario::SetMovingLeft(int skillButtonPressed)
+{
+	if (skillButtonPressed)
+		SetState(MARIO_STATE_RUNNING_LEFT);
+	else
+		SetState(MARIO_STATE_WALKING_LEFT);
+
+	if (spinning) vx = -MARIO_SPINNING_SPEED_X;
+	else if (fly) vx = -MARIO_FLYING_SPEED_X;
+	else if (flyJump) vx = -MARIO_FLYING_JUMP_SPEED_X;
+}
+
+void CMario::SetMovingRight(int skillButtonPressed)
+{
+	if (skillButtonPressed)
+		SetState(MARIO_STATE_RUNNING_RIGHT);
+	else
+		SetState(MARIO_STATE_WALKING_RIGHT);
+
+	if (spinning) vx = MARIO_SPINNING_SPEED_X;
+	else if (fly) vx = MARIO_FLYING_SPEED_X;
+	else if (flyJump) vx = MARIO_FLYING_JUMP_SPEED_X;
+}
+
 void CMario::Render()
 {
 	int res = -1;
