@@ -23,6 +23,12 @@
 #define POWER_ARROW_POSITION_Y	8
 #define MAXIMUM_POWER_LEVEL		6
 
+#define DEFAULT_WORLD	0
+#define DEFAULT_MONEY	0
+#define DEFAULT_LIVES	0
+#define DEFAULT_SCORE	0
+#define DEFAULT_TIME	0
+
 class CScoreboard : public CGameObject
 {
 	int world;

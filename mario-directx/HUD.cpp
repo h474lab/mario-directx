@@ -2,10 +2,11 @@
 #include "Textures.h"
 #include "Game.h"
 
+CHUD* CHUD::__instance = NULL;
+
 CHUD::CHUD()
 {
 	background = 1;
-
 	scoreBoard = new CScoreboard();
 }
 
@@ -46,4 +47,10 @@ void CHUD::Render()
 	CGame::GetInstance()->Draw(x, y, hud, rect.left, rect.top, rect.right, rect.bottom);
 
 	scoreBoard->Render();
+}
+
+CHUD* CHUD::GetInstance()
+{
+	if (__instance == NULL) __instance = new CHUD();
+	return __instance;
 }

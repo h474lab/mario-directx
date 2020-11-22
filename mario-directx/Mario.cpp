@@ -20,6 +20,7 @@
 #include "SquareBrick.h"
 #include "Camera.h"
 #include "Score.h"
+#include "HUD.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -1604,10 +1605,10 @@ void CMario::AddStreakScore(CGameObject* coObject)
 void CMario::AddScore(int score, CGameObject* coObject)
 {
 	if (score != MARIO_SCORE_1UP) {
-		CGame::GetInstance()->AddScore(score);
+		CHUD::GetInstance()->AddScore(score);
 	}
 	else {
-		CGame::GetInstance()->AddLives(1);
+		CHUD::GetInstance()->AddLives(1);
 	}
 
 	CScores::GetInstance()->CreateNewScoreObject(score, coObject);

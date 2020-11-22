@@ -364,9 +364,7 @@ void CPlayScene::Load()
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
 	CTextures::GetInstance()->Add(ID_HUD_BG, L"Resources\\Textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
-
-	HUD = new CHUD();
-
+	
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
 
 	StartGameTime();
@@ -443,12 +441,11 @@ void CPlayScene::Update(DWORD dt)
 	camera->GetPosition(HUD_x, HUD_y);
 	HUD_y += GAME_PLAY_HEIGHT;
 
+	CHUD *HUD = CHUD::GetInstance();
+
 	HUD->SetPosition(HUD_x, HUD_y);
 	HUD->SetPowerLevel(player->GetPowerLevel());
 	HUD->SetWorld(this->world);
-	HUD->SetScore(game->GetScore());
-	HUD->SetLives(game->GetLives());
-	HUD->SetMoney(game->GetMoney());
 	HUD->SetRemainingTime((int)(GAMETIME - (GetTickCount64() - gameStartingTime)) / 1000);
 }
 
@@ -472,7 +469,7 @@ void CPlayScene::Render()
 	// render score animation
 	CScores::GetInstance()->Render();
 
-	HUD->Render();
+	CHUD::GetInstance()->Render();
 }
 
 /*
@@ -485,13 +482,6 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
-	
-	if (HUD)
-	{
-		HUD->Delete();
-		delete HUD;
-		HUD = NULL;
-	}
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneDirectory);
 }

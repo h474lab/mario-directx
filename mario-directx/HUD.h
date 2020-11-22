@@ -7,7 +7,8 @@
 
 class CHUD : public CGameObject
 {
-	CScoreboard *scoreBoard;
+	static CHUD* __instance;
+	CScoreboard* scoreBoard;
 public:
 	CHUD();
 
@@ -17,6 +18,10 @@ public:
 	void SetLives(int lives) { scoreBoard->SetLives(lives); }
 	void SetPowerLevel(int powerLevel) { scoreBoard->SetPowerLevel(powerLevel); }
 	void SetRemainingTime(int remainingTime) { scoreBoard->SetRemainingTime(remainingTime); }
+
+	void AddMoney(int money) { scoreBoard->SetMoney(scoreBoard->GetMoney() + money); }
+	void AddScore(int score) { scoreBoard->SetScore(scoreBoard->GetScore() + score); }
+	void AddLives(int lives) { scoreBoard->SetLives(scoreBoard->GetLives() + lives); }
 
 	int GetWorld() { return scoreBoard->GetWorld(); }
 	int GetMoney() { return scoreBoard->GetMoney(); }
@@ -31,5 +36,7 @@ public:
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Render();
+
+	static CHUD* GetInstance();
 };
 

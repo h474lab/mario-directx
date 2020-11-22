@@ -2,8 +2,6 @@
 
 CScoreboard::CScoreboard()
 {
-	score = lives = money = powerLevel = remainingTime = world = 0;
-
 	background = 1;
 
 	SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_SCOREBOARD));
@@ -42,6 +40,12 @@ CScoreboard::CScoreboard()
 
 	powerSign = new CPowerSign();
 	objectSet.push_back(powerSign);
+
+	SetWorld(DEFAULT_WORLD);
+	SetMoney(DEFAULT_MONEY);
+	SetLives(DEFAULT_LIVES);
+	SetScore(DEFAULT_SCORE);
+	SetRemainingTime(DEFAULT_TIME);
 }
 
 void CScoreboard::SetWorld(int world)

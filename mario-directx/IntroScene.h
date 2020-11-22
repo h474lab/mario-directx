@@ -2,5 +2,6 @@
 #include "Scence.h"
 class CIntroScene : public CScene
 {
+
 };
 

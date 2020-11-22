@@ -17,8 +17,7 @@
 class CPlayScene: public CScene
 {
 protected: 
-	CMario *player;					// A play scene has to have player, right? 
-	CHUD* HUD;
+	CMario *player;					// A play scene has to have player, right?
 
 	LPCWSTR tilesetFileName, tiledBackgroundFileName, objectsFileName;
 

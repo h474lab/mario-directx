@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "Utils.h"
 #include "Game.h"
+#include "HUD.h"
 
 CCoin::CCoin()
 {
@@ -23,9 +24,9 @@ void CCoin::Affect(int type)
 {
 	if (type == COIN_AFFECT_TYPE_GAINED)
 	{
-		CGame* game = CGame::GetInstance();
-		game->AddScore(COIN_SCORE_GAINED);
-		game->AddMoney(COIN_MONEY_GAINED);
+		CHUD* hud = CHUD::GetInstance();
+		hud->AddScore(COIN_SCORE_GAINED);
+		hud->AddMoney(COIN_MONEY_GAINED);
 	}
 }
 
