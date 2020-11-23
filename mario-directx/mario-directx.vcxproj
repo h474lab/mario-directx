@@ -149,6 +149,7 @@
     <ClCompile Include="BrickFragment.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Curtain.cpp" />
     <ClCompile Include="PlayZone.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FireTrap.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="SquareBrick.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="Tube.cpp" />
     <ClCompile Include="TubeEnemy.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -194,6 +196,7 @@
     <ClInclude Include="BrickFragment.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Curtain.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="FireTrap.h" />
     <ClInclude Include="Coin.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="SquareBrick.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tilemap.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="TubeEnemy.h" />
     <ClInclude Include="Utils.h" />

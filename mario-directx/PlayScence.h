@@ -19,14 +19,12 @@ class CPlayScene: public CScene
 protected: 
 	CMario *player;					// A play scene has to have player, right?
 
-	LPCWSTR tilesetFileName, tiledBackgroundFileName, objectsFileName;
+	LPCWSTR tilesetFileName, tiledBackgroundFileName;
 
 	int currentZone;
 	vector<CPlayZone> playZones;
 
 	int world;
-
-	vector<LPGAMEOBJECT> objects;
 
 	CTilemap* tiled_background;
 	float tile_x, tile_y;

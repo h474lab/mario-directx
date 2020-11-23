@@ -11,3 +11,5 @@
 100	Resources\Textures\font.png	0	224	142
 110	Resources\Textures\font.png	255	150	255
 120	Resources\Textures\leaves.png	255	128	192
+130	Resources\Textures\title.png	255	255	255
+140	Resources\Textures\title.png	255	242	0

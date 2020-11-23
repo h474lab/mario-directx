@@ -136,6 +136,15 @@
     <Filter Include="Objects\Score">
       <UniqueIdentifier>{f2b2dc8e-847e-4191-8679-ec16e0f2da10}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\IntroObjects">
+      <UniqueIdentifier>{751c665e-1384-4380-acf1-0a0e64c7eb66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\IntroObjects\Curtain">
+      <UniqueIdentifier>{580f2e55-ad5a-4c4d-866a-cbd28b9bfe36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\IntroObjects\Title">
+      <UniqueIdentifier>{61abbf97-4966-46ce-ad53-8e4dc64c13a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -267,6 +276,12 @@
     <ClCompile Include="Score.cpp">
       <Filter>Objects\Score</Filter>
     </ClCompile>
+    <ClCompile Include="Curtain.cpp">
+      <Filter>Objects\IntroObjects\Curtain</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Objects\IntroObjects\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -397,6 +412,12 @@
     </ClInclude>
     <ClInclude Include="Score.h">
       <Filter>Objects\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="Curtain.h">
+      <Filter>Objects\IntroObjects\Curtain</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>Objects\IntroObjects\Title</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #include "Scence.h"
+#include "Utils.h"
 
 CScene::CScene(int id, LPCWSTR filePath)
 {
