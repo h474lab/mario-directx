@@ -3,6 +3,8 @@
 #include "Game.h"
 #include "IntroOptions.h"
 
+#define CHANGE_BACKGROUND_COLOR_TIME	10000
+
 class CIntroScene : public CScene
 {
 protected:

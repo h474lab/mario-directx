@@ -17,8 +17,6 @@
 #define MAIN_WINDOW_TITLE L"SUPER MARIO BROS. 3"
 #define WINDOW_ICON_PATH L"mario_icon.ico"
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(156, 252, 240)
-//#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
@@ -60,7 +58,7 @@ void Render()
 	if (d3ddv->BeginScene())
 	{
 		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
+		d3ddv->ColorFill(bb, NULL, CGame::GetInstance()->GetBackgroundColor());
 
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 

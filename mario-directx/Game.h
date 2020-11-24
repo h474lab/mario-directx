@@ -17,6 +17,10 @@ using namespace std;
 
 #define KEYBOARD_BUFFER_SIZE 1024
 
+#define BACKGROUND_COLOR_INTRO_SCENE_BEFORE	D3DCOLOR_XRGB(0, 0, 0)
+#define BACKGROUND_COLOR_INTRO_SCENE_AFTER	D3DCOLOR_XRGB(255, 219, 161)
+#define BACKGROUND_COLOR_PLAY_SCENE			D3DCOLOR_XRGB(156, 252, 240)
+
 #define GAME_PLAY_HEIGHT	168
 
 class CGame
@@ -37,6 +41,8 @@ class CGame
 	DIDEVICEOBJECTDATA keyEvents[KEYBOARD_BUFFER_SIZE];		// Buffered keyboard data
 
 	LPKEYEVENTHANDLER keyHandler;
+	
+	D3DCOLOR background_color;
 
 	int screen_width;
 	int screen_height; 
@@ -92,6 +98,9 @@ public:
 
 	void SetPlayer(CMario* player) { this->player = player; }
 	CMario* GetPlayer() { return player; }
+
+	void SetBackgroundColor(D3DCOLOR color) { background_color = color; }
+	D3DCOLOR GetBackgroundColor() { return background_color; }
 
 	static CGame * GetInstance();
 

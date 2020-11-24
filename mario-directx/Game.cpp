@@ -468,12 +468,19 @@ void CGame::SwitchScene(int scene_id)
 
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];
-	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+	CGame* game = CGame::GetInstance();
+	game->SetKeyHandler(s->GetKeyEventHandler());
 
 	if (dynamic_cast<CIntroScene*>(s))
+	{
+		game->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_BEFORE);
 		CHUD::GetInstance()->SetState(HUD_STATE_INTRO_SCENE);
+	}
 	else
+	{
+		game->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_AFTER);
 		CHUD::GetInstance()->SetState(HUD_STATE_PLAY_SCENE);
+	}
 
 	s->Load();	
 }

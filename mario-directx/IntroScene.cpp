@@ -91,6 +91,8 @@ void CIntroScene::Load()
 
 void CIntroScene::Update(DWORD dt)
 {
+	if ((DWORD)GetTickCount64() - intro_start > CHANGE_BACKGROUND_COLOR_TIME) CGame::GetInstance()->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_AFTER);
+
 	LPINTROEVENTS intro_events = CIntroEvents::GetInstance();
 	while (true)
 	{
