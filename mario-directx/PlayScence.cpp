@@ -45,7 +45,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWST
 /*
 	Parse a line in section [OBJECTS] 
 */
-void CPlayScene::_ParseObjects(string line)
+void CPlayScene::ParseObjects(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -322,8 +322,6 @@ void CPlayScene::Load()
 	tiled_background->LoadTiles();
 	tiled_background->LoadMap();
 
-	CResources::GetInstance()->LoadResources();
-
 	// load map
 	wstring objectPath = wstring(sceneDirectory) + objectsFileName;
 	ifstream f;
@@ -335,7 +333,7 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#' || line == "") continue;
-		_ParseObjects(line);
+		ParseObjects(line);
 	}
 
 	f.close();

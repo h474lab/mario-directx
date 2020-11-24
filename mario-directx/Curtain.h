@@ -14,14 +14,14 @@
 #define CURTAIN_STATE_IDLE			0
 #define CURTAIN_STATE_PULLING_UP	1
 
-#define CURTAIN_PULLING_SPEED_Y		0.02f
+#define CURTAIN_PULLING_SPEED_Y		0.5f
 
 class CCurtain : public CGameObject
 {
 	int numRows;
 	int type;
 public:
-	CCurtain(int numberOfRows);
+	CCurtain(int numberOfRows, int type);
 
 	void SetType(int curtainType) { type = curtainType; }
 	

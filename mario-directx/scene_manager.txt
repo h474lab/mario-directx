@@ -1,9 +1,10 @@
 [SETTINGS]
-start	1
+start	0
 textures_path	Resources\TEXTURES.txt
 sprites_path	Resources\Sprites\
 animations_path	Resources\Animations\
 animation_sets_path	Resources\\AnimationSets\
 object_list	Resources\GAMEOBJECT_LIST.txt
 [SCENES]
+0	0	Scenes\Intro\	objects.txt
 1	1	1	Scenes\World1_1\	tileset.png	tiled_background.txt	0	-230	objects.txt	0	0	2816	-230	202	50	154	1	1984	2512	200	410	2144	300	0

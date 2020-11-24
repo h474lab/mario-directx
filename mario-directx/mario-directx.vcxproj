@@ -150,6 +150,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Curtain.cpp" />
+    <ClCompile Include="IntroEvent.cpp" />
     <ClCompile Include="PlayZone.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FireTrap.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GroundBricks.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="IntroEvent.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />

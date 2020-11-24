@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Utils.h"
 
+#include "IntroScene.h"
 #include "PlayScence.h"
 #include "Resources.h"
 #include "PlayZone.h"
@@ -179,8 +180,6 @@ void CGame::ProcessKeyboard()
 
 	keyHandler->KeyState((BYTE *)&keyStates);
 
-
-
 	// Collect all buffered events
 	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
 	hr = didv->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
@@ -351,20 +350,32 @@ void CGame::_ParseSection_SCENES(string line)
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 2) return;
+
+	LPCWSTR path;
+	LPCWSTR objectsFileName;
+	LPSCENE scene;
+
 	int id = atoi(tokens[0].c_str());
 	int scene_type = atoi(tokens[1].c_str());
 	switch (scene_type)
 	{
+	case SCENE_TYPE_INTRO:
+		path = ToLPCWSTR(tokens[2]);
+		objectsFileName = ToLPCWSTR(tokens[3]);
+
+		scene = new CIntroScene(id, path, objectsFileName);
+		scenes[id] = scene;
+		break;
 	case SCENE_TYPE_PLAY:
 		int world = atoi(tokens[2].c_str());
 
-		LPCWSTR path = ToLPCWSTR(tokens[3]);
+		path = ToLPCWSTR(tokens[3]);
 		LPCWSTR tilesetFileName = ToLPCWSTR(tokens[4]);
 		LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
 		float tile_startX = (float)atof(tokens[6].c_str());
 		float tile_startY = (float)atof(tokens[7].c_str());
 
-		LPCWSTR objectsFileName = ToLPCWSTR(tokens[8]);
+		objectsFileName = ToLPCWSTR(tokens[8]);
 
 		int currentZone = atoi(tokens[9].c_str());
 
@@ -396,7 +407,7 @@ void CGame::_ParseSection_SCENES(string line)
 		}
 		
 
-		LPSCENE scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
+		scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
 		scenes[id] = scene;
 		break;
 	}
@@ -439,6 +450,8 @@ void CGame::Load(LPCWSTR gameFile)
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n",gameFile);
 
+	CResources::GetInstance()->LoadResources();
+
 	SwitchScene(current_scene);
 }
 
@@ -448,10 +461,10 @@ void CGame::SwitchScene(int scene_id)
 
 	scenes[current_scene]->Unload();
 
-	CTextures::GetInstance()->Clear();
+	/*CTextures::GetInstance()->Clear();
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
-	CAnimationSets::GetInstance()->Clear();
+	CAnimationSets::GetInstance()->Clear();*/
 
 	current_scene = scene_id;
 	LPSCENE s = scenes[scene_id];

@@ -1,9 +1,10 @@
 #include "Curtain.h"
 
-CCurtain::CCurtain(int numberOfRows)
+CCurtain::CCurtain(int numberOfRows, int type)
 {
 	background = 1;
 	numRows = numberOfRows;
+	this->type = type;
 }
 
 void CCurtain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -22,6 +23,6 @@ void CCurtain::Render()
 		for (int i = 0; i < numRows - 1; i++)
 			animation_set->at(CURTAIN_ANI_MID)->Render(x, y + i * CURTAIN_SIZE_LARGE_HEIGHT);
 
-		animation_set->at(CURTAIN_ANI_END)->Render(x, y * (numRows - 1) * CURTAIN_SIZE_LARGE_HEIGHT);
+		animation_set->at(CURTAIN_ANI_END)->Render(x, y + (numRows - 1) * CURTAIN_SIZE_LARGE_HEIGHT);
 	}
 }
