@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "Curtain.h"
+#include "Title.h"
 #include "IntroEvent.h"
 #include "HUD.h"
 
@@ -21,18 +22,34 @@ void CIntroScene::ParseObjects(string line)
 	LPINTROEVENTS intro_events = CIntroEvents::GetInstance();
 
 	CGameObject* obj = NULL;
+	int currentCursor = -1;
+	
+	int numColumns;
+	int numRows;
+	int type;
 
 	switch (type_id)
 	{
 	case OBJECT_TYPE_INTRO_CURTAIN:
-		int numColumns = atoi(tokens[4].c_str());
-		int numRows = atoi(tokens[5].c_str());
-		int type = atoi(tokens[6].c_str());
+		numColumns = atoi(tokens[4].c_str());
+		numRows = atoi(tokens[5].c_str());
+		type = atoi(tokens[6].c_str());
 		obj = new CCurtain(numColumns, numRows, type);
 		objects.push_back(obj);
-		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[7].c_str()), atoi(tokens[8].c_str()));
-		intro_events->Add(event);
+		// put cursor = 7 in order to continue creating events
+		currentCursor = 7;
 		break;
+	case OBJECT_TYPE_INTRO_TITLE:
+		obj = new CTitle();
+		objects.push_back(obj);
+		currentCursor = 4;
+		break;
+	}
+
+	for (int i = currentCursor; i < tokens.size(); i += 2)
+	{
+		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[i].c_str()), atoi(tokens[i + 1].c_str()));
+		intro_events->Add(event);
 	}
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -81,7 +98,7 @@ void CIntroScene::Update(DWORD dt)
 		object->Update(dt);
 
 	float cx = 0;
-	float cy = CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
+	float cy = (int) CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
 
 	CCamera::GetInstance()->SetPosition(cx, cy);
 	CHUD::GetInstance()->SetPosition(cx, cy + GAME_PLAY_HEIGHT);
