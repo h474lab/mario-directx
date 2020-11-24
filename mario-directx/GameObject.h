@@ -12,6 +12,7 @@ using namespace std;
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define ID_HUD_BG	-1
 
+#define ID_ANI_SET_HUD_BACKGROUND	9900
 #define ID_ANI_SET_SCOREBOARD		9901
 #define ID_ANI_SET_CARDS			9902
 #define ID_ANI_SET_POWER_ARROW		9903

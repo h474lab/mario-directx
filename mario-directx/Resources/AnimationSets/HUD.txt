@@ -1,4 +1,8 @@
 # HUD
+# Background
+# -- Intro
+9900	99000	99001
+
 # Scoreboard
 9901	9901
 # Cards

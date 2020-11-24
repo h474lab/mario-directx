@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Curtain.h"
 #include "IntroEvent.h"
+#include "HUD.h"
 
 
 void CIntroScene::ParseObjects(string line)
@@ -79,13 +80,19 @@ void CIntroScene::Update(DWORD dt)
 	for (auto object : objects)
 		object->Update(dt);
 
-	CCamera::GetInstance()->SetPosition(0, 0);
+	float cx = 0;
+	float cy = CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
+
+	CCamera::GetInstance()->SetPosition(cx, cy);
+	CHUD::GetInstance()->SetPosition(cx, cy + GAME_PLAY_HEIGHT);
 }
 
 void CIntroScene::Render()
 {
 	for (auto object : objects)
 		object->Render();
+
+	CHUD::GetInstance()->Render();
 }
 
 void CIntroScene::Unload()

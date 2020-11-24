@@ -2,6 +2,15 @@
 #include "GameObject.h"
 #include "Scoreboard.h"
 
+#define HUD_STATE_INTRO_SCENE	0
+#define HUD_STATE_PLAY_SCENE	1
+
+#define HUD_ANI_BG_INTRO	0
+#define HUD_ANI_BG_PLAY		1
+
+#define HUD_BG_WIDTH			256
+#define HUD_RENDERING_COLUMN	2
+
 #define SCOREBOARD_POSITION_X	4
 #define SCOREBOARD_POSITION_Y	1
 
@@ -11,6 +20,8 @@ class CHUD : public CGameObject
 	CScoreboard* scoreBoard;
 public:
 	CHUD();
+
+	virtual void SetState(int state);
 
 	void SetWorld(int world) { scoreBoard->SetWorld(world); }
 	void SetMoney(int money) { scoreBoard->SetMoney(money); }

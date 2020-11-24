@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "HUD.h"
 
 CResources *CResources::__instance = NULL;
 
@@ -159,6 +160,8 @@ void CResources::LoadAnimationSets()
 			_ParseSection_ANIMATION_SETS(line);
 		}
 	}
+
+	CHUD::GetInstance()->SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_HUD_BACKGROUND));
 }
 
 void CResources::SetGameObjectList(LPCWSTR objectListPath)

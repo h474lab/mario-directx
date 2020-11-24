@@ -1,5 +1,6 @@
 #pragma once
 #include "Scence.h"
+#include "Game.h"
 
 class CIntroScene : public CScene
 {

@@ -13,6 +13,7 @@ void CCurtain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == CURTAIN_STATE_IDLE) return;
 	if (state == CURTAIN_STATE_PULLING_UP)
 		y -= CURTAIN_PULLING_SPEED_Y;
+	y = y * 10 / 10.0f;
 }
 
 void CCurtain::Render()

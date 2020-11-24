@@ -4,6 +4,9 @@
 #include "PowerArrow.h"
 #include "PowerSign.h"
 
+#define SCORE_BOARD_STATE_APPEAR	0
+#define SCORE_BOARD_STATE_DISAPPEAR	1
+
 #define WORLD_NUMBER_POSITION_X	38
 #define WORLD_NUMBER_POSITION_Y	8
 

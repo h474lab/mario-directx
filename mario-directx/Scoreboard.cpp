@@ -178,6 +178,7 @@ void CScoreboard::SetPosition(float x, float y)
 
 void CScoreboard::Render()
 {
+	if (state == SCORE_BOARD_STATE_DISAPPEAR) return;
 	animation_set->at(0)->Render(x, y);
 
 	for (unsigned int i = 0; i < objectSet.size(); i++)
