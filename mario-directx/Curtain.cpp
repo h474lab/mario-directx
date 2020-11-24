@@ -1,8 +1,9 @@
 #include "Curtain.h"
 
-CCurtain::CCurtain(int numberOfRows, int type)
+CCurtain::CCurtain(int numberOfColumns, int numberOfRows, int type)
 {
 	background = 1;
+	numColumns = numberOfColumns;
 	numRows = numberOfRows;
 	this->type = type;
 }
@@ -17,12 +18,19 @@ void CCurtain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCurtain::Render()
 {
 	if (type == CURTAIN_TYPE_COLLAPSED)
-		animation_set->at(CURTAIN_ANI_HEADING)->Render(x, y);
+	{
+		for (int i = 0; i < numColumns; i++)
+			animation_set->at(CURTAIN_ANI_HEADING)->Render(x + i * CURTAIN_SIZE_COLLAPSED_WIDTH, y);
+	}
 	else if (type == CURTAIN_TYPE_LARGE)
 	{
-		for (int i = 0; i < numRows - 1; i++)
-			animation_set->at(CURTAIN_ANI_MID)->Render(x, y + i * CURTAIN_SIZE_LARGE_HEIGHT);
-
-		animation_set->at(CURTAIN_ANI_END)->Render(x, y + (numRows - 1) * CURTAIN_SIZE_LARGE_HEIGHT);
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+			{
+				if (i < numRows - 1)
+					animation_set->at(CURTAIN_ANI_MID)->Render(x + j * CURTAIN_SIZE_LARGE_WIDTH, y + i * CURTAIN_SIZE_LARGE_HEIGHT);
+				else
+					animation_set->at(CURTAIN_ANI_END)->Render(x + j * CURTAIN_SIZE_LARGE_WIDTH, y + i * CURTAIN_SIZE_LARGE_HEIGHT);
+			}
 	}
 }

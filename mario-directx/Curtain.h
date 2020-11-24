@@ -2,7 +2,10 @@
 #include "GameObject.h"
 
 #define CURTAIN_SIZE_LARGE_HEIGHT		15
+#define CURTAIN_SIZE_LARGE_WIDTH		255
+
 #define CURTAIN_SIZE_COLLAPSED_HEIGHT	13
+#define CURTAIN_SIZE_COLLAPSED_WIDTH	255
 
 #define CURTAIN_TYPE_LARGE		0
 #define CURTAIN_TYPE_COLLAPSED	1
@@ -18,10 +21,11 @@
 
 class CCurtain : public CGameObject
 {
+	int numColumns;
 	int numRows;
 	int type;
 public:
-	CCurtain(int numberOfRows, int type);
+	CCurtain(int numberOfColumns, int numberOfRows, int type);
 
 	void SetType(int curtainType) { type = curtainType; }
 	

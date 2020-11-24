@@ -24,11 +24,12 @@ void CIntroScene::ParseObjects(string line)
 	switch (type_id)
 	{
 	case OBJECT_TYPE_INTRO_CURTAIN:
-		int numRows = atoi(tokens[4].c_str());
-		int type = atoi(tokens[5].c_str());
-		obj = new CCurtain(numRows, type);
+		int numColumns = atoi(tokens[4].c_str());
+		int numRows = atoi(tokens[5].c_str());
+		int type = atoi(tokens[6].c_str());
+		obj = new CCurtain(numColumns, numRows, type);
 		objects.push_back(obj);
-		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[6].c_str()), atoi(tokens[7].c_str()));
+		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[7].c_str()), atoi(tokens[8].c_str()));
 		intro_events->Add(event);
 		break;
 	}
