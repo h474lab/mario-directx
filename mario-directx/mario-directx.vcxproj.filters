@@ -148,6 +148,9 @@
     <Filter Include="Game Manager\Scence\IntroScene\IntroEvent">
       <UniqueIdentifier>{fff6dcf9-59e8-4bed-bb82-9ddfa3d2c10b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\IntroObjects\IntroOptions">
+      <UniqueIdentifier>{218e6fc6-b081-463e-a71d-08642007e2d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -288,6 +291,9 @@
     <ClCompile Include="IntroEvent.cpp">
       <Filter>Game Manager\Scence\IntroScene\IntroEvent</Filter>
     </ClCompile>
+    <ClCompile Include="IntroOptions.cpp">
+      <Filter>Objects\IntroObjects\IntroOptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -427,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="IntroEvent.h">
       <Filter>Game Manager\Scence\IntroScene\IntroEvent</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroOptions.h">
+      <Filter>Objects\IntroObjects\IntroOptions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

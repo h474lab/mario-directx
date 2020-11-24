@@ -44,6 +44,12 @@ void CIntroScene::ParseObjects(string line)
 		objects.push_back(obj);
 		currentCursor = 4;
 		break;
+	case OBJECT_TYPE_INTRO_OPTIONS:
+		obj = new CIntroOptions();
+		objects.push_back(obj);
+		gameModeMenu = dynamic_cast<CIntroOptions*>(obj);
+		currentCursor = 4;
+		break;
 	}
 
 	for (int i = currentCursor; i < tokens.size(); i += 2)
@@ -125,6 +131,12 @@ void CIntroScenceKeyHandler::KeyState(BYTE* states)
 
 void CIntroScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	if (KeyCode == DIK_DOWN || KeyCode == DIK_UP)
+	{
+		CIntroOptions* menu = ((CIntroScene*)scence)->GetMenu();
+		if (menu)
+			menu->SwitchFocusingOption();
+	}
 }
 
 void CIntroScenceKeyHandler::OnKeyUp(int KeyCode)
