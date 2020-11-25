@@ -24,9 +24,8 @@ void CIntroScene::ParseObjects(string line)
 	CGameObject* obj = NULL;
 	int currentCursor = -1;
 	
-	int numColumns;
-	int numRows;
-	int type;
+	int numColumns, numRows, type;
+	int sceneOption1, sceneOption2;
 
 	switch (type_id)
 	{
@@ -45,10 +44,12 @@ void CIntroScene::ParseObjects(string line)
 		currentCursor = 4;
 		break;
 	case OBJECT_TYPE_INTRO_OPTIONS:
-		obj = new CIntroOptions();
+		sceneOption1 = atoi(tokens[4].c_str());
+		sceneOption2 = atoi(tokens[5].c_str());
+		obj = new CIntroOptions(sceneOption1, sceneOption2);
 		objects.push_back(obj);
 		gameModeMenu = dynamic_cast<CIntroOptions*>(obj);
-		currentCursor = 4;
+		currentCursor = 6;
 		break;
 	}
 
@@ -133,11 +134,20 @@ void CIntroScenceKeyHandler::KeyState(BYTE* states)
 
 void CIntroScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	CIntroOptions* menu = ((CIntroScene*)scence)->GetMenu();
 	if (KeyCode == DIK_DOWN || KeyCode == DIK_UP)
 	{
-		CIntroOptions* menu = ((CIntroScene*)scence)->GetMenu();
 		if (menu)
 			menu->SwitchFocusingOption();
+	}
+
+	if (KeyCode == DIK_RETURN)
+	{
+		if (menu)
+		{
+			menu->SwitchSceneOption();
+			scence->Unload();
+		}
 	}
 }
 

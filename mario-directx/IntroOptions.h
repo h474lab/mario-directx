@@ -13,10 +13,12 @@
 class CIntroOptions : public CGameObject
 {
 	int focusingOption;
+	int sceneOption1, sceneOption2;
 public:
-	CIntroOptions();
+	CIntroOptions(int sceneOption1, int sceneOption2);
 
 	void SwitchFocusingOption();
+	void SwitchSceneOption();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
 	virtual void Render();
