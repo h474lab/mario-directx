@@ -8,12 +8,14 @@ struct CIntroEvent
 	CGameObject* object;
 	DWORD starting_time;
 	int state;
+	int level;
 
-	CIntroEvent(CGameObject* object, DWORD time, int state)
+	CIntroEvent(CGameObject* object, DWORD time, int state, int level)
 	{
 		this->object = object;
 		this->starting_time = time;
 		this->state = state;
+		this->level = level;
 	}
 
 	static bool compare(const LPINTROEVENT& a, LPINTROEVENT& b)

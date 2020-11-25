@@ -3,14 +3,14 @@
 #include "Game.h"
 #include "IntroOptions.h"
 
-#define CHANGE_BACKGROUND_COLOR_TIME	10000
+#define CHANGE_BACKGROUND_COLOR_TIME	9000
+#define MENU_APPEARING_TIME			9000
 
 class CIntroScene : public CScene
 {
 protected:
 	DWORD intro_start;
 	LPCWSTR objectsFileName;
-	vector<pair<DWORD, int>> events;
 
 	CIntroOptions *gameModeMenu;
 
@@ -19,6 +19,7 @@ public:
 	CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName);
 
 	CIntroOptions* GetMenu() { return gameModeMenu; }
+	void SetAppearingMenu() { intro_start = MENU_APPEARING_TIME; }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

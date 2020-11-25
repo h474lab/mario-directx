@@ -17,7 +17,7 @@
 #define CURTAIN_STATE_IDLE			0
 #define CURTAIN_STATE_PULLING_UP	1
 
-#define CURTAIN_PULLING_SPEED_Y		0.5f
+#define CURTAIN_PULLING_SPEED_Y		0.8f
 
 class CCurtain : public CGameObject
 {

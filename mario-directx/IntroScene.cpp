@@ -51,11 +51,16 @@ void CIntroScene::ParseObjects(string line)
 		gameModeMenu = dynamic_cast<CIntroOptions*>(obj);
 		currentCursor = 6;
 		break;
+	case OBJECT_TYPE_MARIO:
+		obj = new CMario();
+		objects.push_back(obj);
+		currentCursor = 4;
+		break;
 	}
 
-	for (int i = currentCursor; i < tokens.size(); i += 2)
+	for (int i = currentCursor; i < tokens.size(); i += 3)
 	{
-		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[i].c_str()), atoi(tokens[i + 1].c_str()));
+		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[i].c_str()), atoi(tokens[i + 1].c_str()), atoi(tokens[i + 2].c_str()));
 		intro_events->Add(event);
 	}
 
@@ -69,6 +74,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CSc
 {
 	intro_start = (DWORD) GetTickCount64();
 	this->objectsFileName = objectFileName;
+	this->gameModeMenu = NULL;
 	key_handler = new CIntroScenceKeyHandler(this);
 }
 
@@ -95,16 +101,32 @@ void CIntroScene::Update(DWORD dt)
 	if ((DWORD)GetTickCount64() - intro_start > CHANGE_BACKGROUND_COLOR_TIME) CGame::GetInstance()->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_AFTER);
 
 	LPINTROEVENTS intro_events = CIntroEvents::GetInstance();
+	vector<LPINTROEVENT> temp;
+	temp.clear();
 	while (true)
 	{
 		LPINTROEVENT event = intro_events->PeekNextEvent();
 		if (!event || event->starting_time > (DWORD)GetTickCount64() - intro_start) break;
 		event->object->SetState(event->state);
+		if (dynamic_cast<CMario*>(event->object))
+		{
+			((CMario*)event->object)->SetLevel(event->level);
+			temp.push_back(event);
+		}
 		intro_events->PopNextEvent();
 	}
 
+	for (LPINTROEVENT event : temp)
+	{
+		intro_events->Add(event);
+	}
+
+	vector<LPGAMEOBJECT> coObjects;
+	for (auto object : objects) coObjects.push_back(object);
+	coObjects.push_back(CHUD::GetInstance());
+
 	for (auto object : objects)
-		object->Update(dt);
+		object->Update(dt, &coObjects);
 
 	float cx = 0;
 	float cy = (int) CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
@@ -148,6 +170,7 @@ void CIntroScenceKeyHandler::OnKeyDown(int KeyCode)
 			menu->SwitchSceneOption();
 			scence->Unload();
 		}
+		else ((CIntroScene*)scence)->SetAppearingMenu();
 	}
 }
 

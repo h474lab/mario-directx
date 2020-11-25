@@ -18,9 +18,11 @@ void CHUD::SetState(int state)
 	{
 	case HUD_STATE_INTRO_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_DISAPPEAR);
+		background = 0;
 		break;
 	case HUD_STATE_PLAY_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_APPEAR);
+		background = 1;
 		break;
 	}
 }
@@ -44,6 +46,10 @@ void CHUD::SetPosition(float x, float y)
 
 void CHUD::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	left = x;
+	top = y;
+	right = left + CGame::GetInstance()->GetScreenWidth();
+	bottom = top + CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
 }
 
 void CHUD::Render()
