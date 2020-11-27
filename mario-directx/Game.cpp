@@ -5,6 +5,7 @@
 #include "Utils.h"
 
 #include "IntroScene.h"
+#include "MapScene.h"
 #include "PlayScence.h"
 #include "Resources.h"
 #include "PlayZone.h"
@@ -352,8 +353,11 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 
 	LPCWSTR path;
+	LPCWSTR tilesetFileName;
+	LPCWSTR tiledBackgroundFileName;
 	LPCWSTR objectsFileName;
 	LPSCENE scene;
+	int world;
 
 	int id = atoi(tokens[0].c_str());
 	int scene_type = atoi(tokens[1].c_str());
@@ -366,12 +370,21 @@ void CGame::_ParseSection_SCENES(string line)
 		scene = new CIntroScene(id, path, objectsFileName);
 		scenes[id] = scene;
 		break;
+	case SCENE_TYPE_MAP:
+		world = atoi(tokens[2].c_str());
+		path = ToLPCWSTR(tokens[3]);
+		tilesetFileName = ToLPCWSTR(tokens[4]);
+		tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
+		LPCWSTR mapNodeList = ToLPCWSTR(tokens[6]);
+
+		scene = new CMapScene(id, path, tilesetFileName, tiledBackgroundFileName, mapNodeList, world);
+		scenes[id] = scene;
+		break;
 	case SCENE_TYPE_PLAY:
 		int world = atoi(tokens[2].c_str());
-
 		path = ToLPCWSTR(tokens[3]);
-		LPCWSTR tilesetFileName = ToLPCWSTR(tokens[4]);
-		LPCWSTR tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
+		tilesetFileName = ToLPCWSTR(tokens[4]);
+		tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
 		float tile_startX = (float)atof(tokens[6].c_str());
 		float tile_startY = (float)atof(tokens[7].c_str());
 

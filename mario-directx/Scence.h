@@ -5,7 +5,8 @@
 #include "GameObject.h"
 
 #define SCENE_TYPE_INTRO	0
-#define SCENE_TYPE_PLAY		1
+#define SCENE_TYPE_MAP		1
+#define SCENE_TYPE_PLAY		2
 
 #define OBJECT_TYPE_MARIO			0
 #define OBJECT_TYPE_BRICK			1
