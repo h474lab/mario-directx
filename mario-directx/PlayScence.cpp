@@ -25,11 +25,10 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world) :
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world) :
 	CScene(id, filePath)
 {
-	this->tilesetFileName = tilesetFileName;
-	this->tiledBackgroundFileName = tiledBackgroundFileName;
+	this->tilemapId = tilemapId;
 	this->tile_x = tile_startX;
 	this->tile_y = tile_startY;
 
@@ -316,11 +315,10 @@ void CPlayScene::Load()
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneDirectory);
 
 	// load background
-	wstring tileset_path = wstring(sceneDirectory) + tilesetFileName;
-	wstring tile_path = wstring(sceneDirectory) + tiledBackgroundFileName;
-	tiled_background = new CTilemap(-10, 4, 11, tile_path.c_str(), tileset_path.c_str());
-	tiled_background->LoadTiles();
-	tiled_background->LoadMap();
+	CTilemaps* tiled_background = CTilemaps::GetInstance();
+	LPTILEMAP tilemap = tiled_background->Get(tilemapId);
+	tiled_background->Get(tilemapId)->LoadTiles();
+	tiled_background->Get(tilemapId)->LoadMap();
 
 	// load map
 	wstring objectPath = wstring(sceneDirectory) + objectsFileName;
@@ -438,7 +436,7 @@ void CPlayScene::Render()
 	float screen_width = CGame::GetInstance()->GetScreenWidth();
 	float screen_height = CGame::GetInstance()->GetScreenHeight();
 
-	tiled_background->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
+	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 
 	for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();

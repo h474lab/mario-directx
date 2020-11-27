@@ -151,6 +151,12 @@
     <Filter Include="Objects\IntroObjects\IntroOptions">
       <UniqueIdentifier>{218e6fc6-b081-463e-a71d-08642007e2d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Scence\MapScene">
+      <UniqueIdentifier>{06e345a1-c92f-464a-a582-7fa2d713dc2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Manager\Scence\MapScene\MapNode">
+      <UniqueIdentifier>{cda686f7-1d9d-45c6-b8f7-b8e8f367f688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -294,6 +300,12 @@
     <ClCompile Include="IntroOptions.cpp">
       <Filter>Objects\IntroObjects\IntroOptions</Filter>
     </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Game Manager\Scence\MapScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapNode.cpp">
+      <Filter>Game Manager\Scence\MapScene\MapNode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -436,6 +448,12 @@
     </ClInclude>
     <ClInclude Include="IntroOptions.h">
       <Filter>Objects\IntroObjects\IntroOptions</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Game Manager\Scence\MapScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CMapNode.h">
+      <Filter>Game Manager\Scence\MapScene\MapNode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

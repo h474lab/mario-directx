@@ -2,10 +2,8 @@
 #include "Textures.h"
 #include <fstream>
 
-CTilemap::CTilemap(int id, int numRows, int numColumns, LPCWSTR tileFilePath, LPCWSTR tilesetFilePath, int tileWidth, int tileHeight, D3DCOLOR transparentColor)
+CTilemap::CTilemap(int numRows, int numColumns, LPCWSTR tileFilePath, LPCWSTR tilesetFilePath, int tileWidth, int tileHeight, D3DCOLOR transparentColor)
 {
-	this->ID = id;
-
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
 
@@ -66,8 +64,6 @@ void CTilemap::LoadMap()
 				tile_line.push_back(spriteList->Get(tileID));
 			}
 			else tile_line.push_back(NULL);
-
-			//DebugOut(L"[INFO] Tile loaded Ok: id=%d, %s\n", tileID, tileFilePath);
 		}
 
 		tilemap.push_back(tile_line);
@@ -101,4 +97,28 @@ void CTilemap::DrawFullTilemap(float posX, float posY, float left, float top, fl
 		}
 
 	//spriteList->Get(-9887)->Draw(50, 150);
+}
+
+CTilemaps* CTilemaps::__instance = NULL;
+
+void CTilemaps::Add(int id, LPTILEMAP tilemap)
+{
+	tilemaps.insert(std::make_pair(id, tilemap));
+	tilemap->SetTilemapId(id);
+}
+
+LPTILEMAP CTilemaps::Get(int id)
+{
+	return tilemaps.at(id);
+}
+
+void CTilemaps::Clear()
+{
+	tilemaps.clear();
+}
+
+CTilemaps* CTilemaps::GetInstance()
+{
+	if (__instance == NULL) __instance = new CTilemaps();
+	return __instance;
 }

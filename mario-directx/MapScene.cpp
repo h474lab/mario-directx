@@ -12,12 +12,10 @@ void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 }
 
-CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR mapNodeList, int world)
+CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFilePath, LPCWSTR tiledBackgroundFilePath, LPCWSTR mapNodeList, int world) : CScene(id, filePath)
 {
-	this->id = id;
-	this->sceneDirectory = filePath;
-	this->tilesetFileName = tilesetFileName;
-	this->tiledBackgroundFileName = tiledBackgroundFileName;
+	this->tilesetFilePath = tilesetFilePath;
+	this->tiledBackgroundFilePath = tiledBackgroundFilePath;
 	this->mapNodeList = mapNodeList;
 	this->world = world;
 

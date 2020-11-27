@@ -4,10 +4,10 @@
 
 class CMapScene : public CScene
 {
-	LPCWSTR tiledBackgroundFileName, tilesetFileName, mapNodeList;
+	LPCWSTR tiledBackgroundFilePath, tilesetFilePath, mapNodeList;
 	int world;
 public:
-	CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFileName, LPCWSTR tiledBackgroundFileName, LPCWSTR mapNodeList, int world);
+	CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFilePath, LPCWSTR tiledBackgroundFilePath, LPCWSTR mapNodeList, int world);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

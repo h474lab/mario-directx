@@ -353,9 +353,10 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 2) return;
 
 	LPCWSTR path;
-	LPCWSTR tilesetFileName;
-	LPCWSTR tiledBackgroundFileName;
+	LPCWSTR tilesetFilePath;
+	LPCWSTR tiledBackgroundFilePath;
 	LPCWSTR objectsFileName;
+	LPCWSTR mapNodeList;
 	LPSCENE scene;
 	int world;
 
@@ -373,30 +374,36 @@ void CGame::_ParseSection_SCENES(string line)
 	case SCENE_TYPE_MAP:
 		world = atoi(tokens[2].c_str());
 		path = ToLPCWSTR(tokens[3]);
-		tilesetFileName = ToLPCWSTR(tokens[4]);
-		tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
-		LPCWSTR mapNodeList = ToLPCWSTR(tokens[6]);
+		tilesetFilePath = ToLPCWSTR(tokens[4]);
+		tiledBackgroundFilePath = ToLPCWSTR(tokens[5]);
+		mapNodeList = ToLPCWSTR(tokens[6]);
 
-		scene = new CMapScene(id, path, tilesetFileName, tiledBackgroundFileName, mapNodeList, world);
+		scene = new CMapScene(id, path, tilesetFilePath, tiledBackgroundFilePath, mapNodeList, world);
 		scenes[id] = scene;
 		break;
 	case SCENE_TYPE_PLAY:
 		int world = atoi(tokens[2].c_str());
 		path = ToLPCWSTR(tokens[3]);
-		tilesetFileName = ToLPCWSTR(tokens[4]);
-		tiledBackgroundFileName = ToLPCWSTR(tokens[5]);
-		float tile_startX = (float)atof(tokens[6].c_str());
-		float tile_startY = (float)atof(tokens[7].c_str());
+		tilesetFilePath = ToLPCWSTR(tokens[4]);
+		tiledBackgroundFilePath = ToLPCWSTR(tokens[5]);
+		int tiledBackgroundId = atoi(tokens[6].c_str());
+		int numRows = atoi(tokens[7].c_str());
+		int numColumns = atoi(tokens[8].c_str());
+		CTilemaps::GetInstance()->Add(tiledBackgroundId,
+			new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
 
-		objectsFileName = ToLPCWSTR(tokens[8]);
+		float tile_startX = (float)atof(tokens[9].c_str());
+		float tile_startY = (float)atof(tokens[10].c_str());
 
-		int currentZone = atoi(tokens[9].c_str());
+		objectsFileName = ToLPCWSTR(tokens[11]);
+
+		int currentZone = atoi(tokens[12].c_str());
 
 		vector<CPlayZone> playZones;
 		playZones.clear();
 
 		// information of each zone in the scene
-		unsigned int i = 10;
+		unsigned int i = 13;
 		while (i < tokens.size())
 		{
 			CPlayZone playZone;
@@ -420,7 +427,7 @@ void CGame::_ParseSection_SCENES(string line)
 		}
 		
 
-		scene = new CPlayScene(id, path, tilesetFileName, tiledBackgroundFileName, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
+		scene = new CPlayScene(id, path, tiledBackgroundId, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
 		scenes[id] = scene;
 		break;
 	}
