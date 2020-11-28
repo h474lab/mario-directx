@@ -2,7 +2,10 @@
 #include "Resources.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "MapNode.h"
 #include "HUD.h"
+
+#include "MapGate.h"
 
 CResources *CResources::__instance = NULL;
 
@@ -88,6 +91,44 @@ void CResources::_ParseSection_ANIMATION_SETS(string line)
 	CAnimationSets::GetInstance()->Add(ani_set_id, s);
 }
 
+
+void CResources::_ParseSection_MAP_NODE_SETS(string line)
+{
+	CMapNodeSets* mapNode_sets = CMapNodeSets::GetInstance();
+	vector<string> tokens = split(line);
+
+	int world = atoi(tokens[0].c_str());
+	
+	// import id and position of map node
+	int nodeId = atoi(tokens[1].c_str());
+	float x = atof(tokens[2].c_str());
+	float y = atof(tokens[3].c_str());
+
+	// import id of left, top, right, bottom node of this node
+	int leftNode = atoi(tokens[4].c_str());
+	int topNode = atoi(tokens[5].c_str());
+	int rightNode = atoi(tokens[6].c_str());
+	int bottomNode = atoi(tokens[7].c_str());
+
+	// load object
+	int object_id = atoi(tokens[8].c_str());
+	int scene_id;
+	int object_type, object_level;
+	CGameObject* obj = NULL;
+	switch (object_id)
+	{
+	case OBJECT_TYPE_MAP_GATE:
+		scene_id = atoi(tokens[9].c_str());
+		object_type = atoi(tokens[10].c_str());
+		object_level = atoi(tokens[11].c_str());
+		obj = new CMapGate(scene_id, x, y, object_level, object_type);
+		break;
+	}
+
+	if (!mapNode_sets->Exists(world)) mapNode_sets->Add(world, new CMapNodes());
+	mapNode_sets->Get(world)->Add(nodeId, new CMapNode(obj, x, y, leftNode, topNode, rightNode, bottomNode));
+}
+
 void CResources::LoadTextures()
 {
 	ifstream f;
@@ -164,6 +205,21 @@ void CResources::LoadAnimationSets()
 	CHUD::GetInstance()->SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_HUD_BACKGROUND));
 }
 
+void CResources::LoadMapNodes()
+{
+	ifstream f;
+	f.open(mapNodesPath);
+	while (!f.eof())
+	{
+		string line;
+		getline(f, line);
+
+		if (line[0] == '#' || line == "") continue;
+
+		_ParseSection_MAP_NODE_SETS(line);
+	}
+}
+
 void CResources::SetGameObjectList(LPCWSTR objectListPath)
 {
 	this->objectListPath = objectListPath;
@@ -188,6 +244,7 @@ void CResources::LoadResources()
 	LoadSprites();
 	LoadAnimations();
 	LoadAnimationSets();
+	LoadMapNodes();
 }
 
 CResources* CResources::GetInstance()

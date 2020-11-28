@@ -9,7 +9,10 @@
 #define BOTTOM_NODE	3
 
 class CMapNode;
-typedef int LPMAPNODE;
+typedef CMapNode* LPMAPNODE;
+
+class CMapNodes;
+typedef CMapNodes* LPMAPNODES;
 
 class CMapNode
 {
@@ -18,16 +21,28 @@ class CMapNode
 	int leftNode, rightNode, topNode, bottomNode;
 public:
 	CMapNode(CGameObject* object, float x, float y, int leftNode, int topNode, int rightNode, int bottomNode);
-	LPMAPNODE GetNode(int type);
+	int GetNode(int type);
+	CGameObject* GetNodeObject();
 };
 
 class CMapNodes
 {
-	static CMapNodes* __instance;
 	unordered_map<int, LPMAPNODE> mapNodes;
 public:
-	static CMapNodes* GetInstance();
 	void Add(int id, LPMAPNODE mapNode);
 	LPMAPNODE Get(int id);
+	vector<LPMAPNODE> GetAllNodes();
 	void Clear();
+};
+
+class CMapNodeSets
+{
+	static CMapNodeSets* __instance;
+	unordered_map<int, LPMAPNODES> mapNodeSets;
+public:
+	static CMapNodeSets* GetInstance();
+
+	int Exists(int world);
+	void Add(int world, LPMAPNODES mapNodes);
+	LPMAPNODES Get(int world);
 };

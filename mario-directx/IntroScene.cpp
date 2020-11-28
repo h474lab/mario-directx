@@ -8,7 +8,6 @@
 #include "IntroEvent.h"
 #include "HUD.h"
 
-
 void CIntroScene::ParseObjects(string line)
 {
 	vector<string> tokens = split(line);

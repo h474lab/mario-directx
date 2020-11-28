@@ -12,10 +12,8 @@ void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 }
 
-CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFilePath, LPCWSTR tiledBackgroundFilePath, LPCWSTR mapNodeList, int world) : CScene(id, filePath)
+CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR mapNodeList, int world) : CScene(id, filePath)
 {
-	this->tilesetFilePath = tilesetFilePath;
-	this->tiledBackgroundFilePath = tiledBackgroundFilePath;
 	this->mapNodeList = mapNodeList;
 	this->world = world;
 
@@ -24,14 +22,25 @@ CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFilePath, LPCWSTR 
 
 void CMapScene::Load()
 {
+	// load tiled-background
+	CTilemap* tilemap = CTilemaps::GetInstance()->Get(tilemapId);
+	tilemap->LoadTiles();
+	tilemap->LoadMap();
 }
 
 void CMapScene::Update(DWORD dt)
 {
+	
 }
 
 void CMapScene::Render()
 {
+	CMapNodeSets* mapNode_sets = CMapNodeSets::GetInstance();
+	vector<LPMAPNODE> mapNodes = mapNode_sets->Get(world)->GetAllNodes();
+	for (LPMAPNODE node : mapNodes)
+	{
+		node->GetNodeObject()->Render();
+	}
 }
 
 void CMapScene::Unload()

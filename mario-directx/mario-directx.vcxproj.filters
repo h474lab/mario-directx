@@ -157,6 +157,12 @@
     <Filter Include="Game Manager\Scence\MapScene\MapNode">
       <UniqueIdentifier>{cda686f7-1d9d-45c6-b8f7-b8e8f367f688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects">
+      <UniqueIdentifier>{d8a70be1-adc4-423d-b672-fbbbbae1fee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\MapObjects\MapGate">
+      <UniqueIdentifier>{6de6637f-df1a-4629-a5df-8ccc150d3bba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -303,8 +309,11 @@
     <ClCompile Include="MapScene.cpp">
       <Filter>Game Manager\Scence\MapScene</Filter>
     </ClCompile>
-    <ClCompile Include="CMapNode.cpp">
+    <ClCompile Include="MapNode.cpp">
       <Filter>Game Manager\Scence\MapScene\MapNode</Filter>
+    </ClCompile>
+    <ClCompile Include="MapGate.cpp">
+      <Filter>Objects\MapObjects\MapGate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,8 +461,11 @@
     <ClInclude Include="MapScene.h">
       <Filter>Game Manager\Scence\MapScene</Filter>
     </ClInclude>
-    <ClInclude Include="CMapNode.h">
+    <ClInclude Include="MapNode.h">
       <Filter>Game Manager\Scence\MapScene\MapNode</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGate.h">
+      <Filter>Objects\MapObjects\MapGate</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

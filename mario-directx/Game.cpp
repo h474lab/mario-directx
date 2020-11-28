@@ -342,6 +342,8 @@ void CGame::_ParseSection_SETTINGS(string line)
 		CResources::GetInstance()->SetAnimationSetsPath(ToLPCWSTR(tokens[1]));
 	else if (tokens[0] == "object_list")
 		CResources::GetInstance()->SetGameObjectList(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "map_node_list")
+		CResources::GetInstance()->SetMapNodesPath(ToLPCWSTR(tokens[1]));
 	else
 		DebugOut(L"[ERROR] Unknown game setting %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -382,7 +384,7 @@ void CGame::_ParseSection_SCENES(string line)
 		scenes[id] = scene;
 		break;
 	case SCENE_TYPE_PLAY:
-		int world = atoi(tokens[2].c_str());
+		world = atoi(tokens[2].c_str());
 		path = ToLPCWSTR(tokens[3]);
 		tilesetFilePath = ToLPCWSTR(tokens[4]);
 		tiledBackgroundFilePath = ToLPCWSTR(tokens[5]);

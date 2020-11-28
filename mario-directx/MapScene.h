@@ -1,13 +1,21 @@
 #pragma once
 #include "Scence.h"
+#include <fstream>
+
 #include "Tilemap.h"
+#include "MapNode.h"
+
+#include "MapMario.h"
 
 class CMapScene : public CScene
 {
-	LPCWSTR tiledBackgroundFilePath, tilesetFilePath, mapNodeList;
+	int tilemapId;
+	LPCWSTR mapNodeList;
 	int world;
+
+	CMapMario* CMario;
 public:
-	CMapScene(int id, LPCWSTR filePath, LPCWSTR tilesetFilePath, LPCWSTR tiledBackgroundFilePath, LPCWSTR mapNodeList, int world);
+	CMapScene(int id, LPCWSTR filePath, LPCWSTR mapNodeList, int world);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
