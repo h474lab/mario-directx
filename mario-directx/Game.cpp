@@ -361,6 +361,10 @@ void CGame::_ParseSection_SCENES(string line)
 	LPCWSTR mapNodeList;
 	LPSCENE scene;
 	int world;
+	
+	int tiledBackgroundId;
+	int numRows;
+	int numColumns;
 
 	int id = atoi(tokens[0].c_str());
 	int scene_type = atoi(tokens[1].c_str());
@@ -378,9 +382,14 @@ void CGame::_ParseSection_SCENES(string line)
 		path = ToLPCWSTR(tokens[3]);
 		tilesetFilePath = ToLPCWSTR(tokens[4]);
 		tiledBackgroundFilePath = ToLPCWSTR(tokens[5]);
-		mapNodeList = ToLPCWSTR(tokens[6]);
 
-		scene = new CMapScene(id, path, tilesetFilePath, tiledBackgroundFilePath, mapNodeList, world);
+		tiledBackgroundId = atoi(tokens[6].c_str());
+		numRows = atoi(tokens[7].c_str());
+		numColumns = atoi(tokens[8].c_str());
+		CTilemaps::GetInstance()->Add(tiledBackgroundId,
+			new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
+
+		scene = new CMapScene(id, path, tiledBackgroundId, world);
 		scenes[id] = scene;
 		break;
 	case SCENE_TYPE_PLAY:
@@ -388,9 +397,9 @@ void CGame::_ParseSection_SCENES(string line)
 		path = ToLPCWSTR(tokens[3]);
 		tilesetFilePath = ToLPCWSTR(tokens[4]);
 		tiledBackgroundFilePath = ToLPCWSTR(tokens[5]);
-		int tiledBackgroundId = atoi(tokens[6].c_str());
-		int numRows = atoi(tokens[7].c_str());
-		int numColumns = atoi(tokens[8].c_str());
+		tiledBackgroundId = atoi(tokens[6].c_str());
+		numRows = atoi(tokens[7].c_str());
+		numColumns = atoi(tokens[8].c_str());
 		CTilemaps::GetInstance()->Add(tiledBackgroundId,
 			new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
 

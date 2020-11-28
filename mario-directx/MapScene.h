@@ -10,12 +10,11 @@
 class CMapScene : public CScene
 {
 	int tilemapId;
-	LPCWSTR mapNodeList;
 	int world;
 
-	CMapMario* CMario;
+	CMapMario* mario;
 public:
-	CMapScene(int id, LPCWSTR filePath, LPCWSTR mapNodeList, int world);
+	CMapScene(int id, LPCWSTR filePath, int tilemapId, int world);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

@@ -113,15 +113,18 @@ void CResources::_ParseSection_MAP_NODE_SETS(string line)
 	// load object
 	int object_id = atoi(tokens[8].c_str());
 	int scene_id;
+	int ani_set;
 	int object_type, object_level;
 	CGameObject* obj = NULL;
 	switch (object_id)
 	{
 	case OBJECT_TYPE_MAP_GATE:
-		scene_id = atoi(tokens[9].c_str());
-		object_type = atoi(tokens[10].c_str());
-		object_level = atoi(tokens[11].c_str());
+		ani_set = atoi(tokens[9].c_str());
+		scene_id = atoi(tokens[10].c_str());
+		object_type = atoi(tokens[11].c_str());
+		object_level = atoi(tokens[12].c_str());
 		obj = new CMapGate(scene_id, x, y, object_level, object_type);
+		obj->SetAnimationSet(CAnimationSets::GetInstance()->Get(ani_set));
 		break;
 	}
 

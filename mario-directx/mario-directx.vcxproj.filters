@@ -163,6 +163,9 @@
     <Filter Include="Objects\MapObjects\MapGate">
       <UniqueIdentifier>{6de6637f-df1a-4629-a5df-8ccc150d3bba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects\MapMario">
+      <UniqueIdentifier>{ea3797b3-b53d-401e-a504-b80188a14ee4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -315,6 +318,9 @@
     <ClCompile Include="MapGate.cpp">
       <Filter>Objects\MapObjects\MapGate</Filter>
     </ClCompile>
+    <ClCompile Include="MapMario.cpp">
+      <Filter>Objects\MapObjects\MapMario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -466,6 +472,9 @@
     </ClInclude>
     <ClInclude Include="MapGate.h">
       <Filter>Objects\MapObjects\MapGate</Filter>
+    </ClInclude>
+    <ClInclude Include="MapMario.h">
+      <Filter>Objects\MapObjects\MapMario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

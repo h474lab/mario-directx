@@ -16,6 +16,7 @@ vector<LPMAPNODE> CMapNodes::GetAllNodes()
 	result.clear();
 	for (std::unordered_map<int, LPMAPNODE>::iterator it = mapNodes.begin(); it != mapNodes.end(); ++it)
 		result.push_back(it->second);
+	return result;
 }
 
 void CMapNodes::Clear()
@@ -47,6 +48,8 @@ CGameObject* CMapNode::GetNodeObject()
 {
 	return object;
 }
+
+CMapNodeSets* CMapNodeSets::__instance = NULL;
 
 CMapNodeSets* CMapNodeSets::GetInstance()
 {

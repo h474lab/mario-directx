@@ -12,10 +12,11 @@ void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 }
 
-CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR mapNodeList, int world) : CScene(id, filePath)
+CMapScene::CMapScene(int id, LPCWSTR filePath, int tilemapId, int world) : CScene(id, filePath)
 {
-	this->mapNodeList = mapNodeList;
+	this->tilemapId = tilemapId;
 	this->world = world;
+	this->mario = new CMapMario();
 
 	key_handler = new CMapScenceKeyHandler(this);
 }
@@ -30,16 +31,19 @@ void CMapScene::Load()
 
 void CMapScene::Update(DWORD dt)
 {
-	
+	mario->Update(dt);
 }
 
 void CMapScene::Render()
 {
+	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(0, 0);
+
 	CMapNodeSets* mapNode_sets = CMapNodeSets::GetInstance();
 	vector<LPMAPNODE> mapNodes = mapNode_sets->Get(world)->GetAllNodes();
 	for (LPMAPNODE node : mapNodes)
 	{
-		node->GetNodeObject()->Render();
+		CGameObject* nodeObject = node->GetNodeObject();
+		if (nodeObject) nodeObject->Render();
 	}
 }
 
