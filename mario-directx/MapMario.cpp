@@ -1,5 +1,11 @@
 #include "MapMario.h"
 
+CMapMario::CMapMario()
+{
+	level = MARIO_LEVEL_SMALL;
+	state = MAP_MARIO_STATE_IDLING;
+}
+
 void CMapMario::SetDestination(float x, float y)
 {
 	destination_x = x;

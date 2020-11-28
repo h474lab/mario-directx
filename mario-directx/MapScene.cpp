@@ -27,6 +27,13 @@ void CMapScene::Load()
 	CTilemap* tilemap = CTilemaps::GetInstance()->Get(tilemapId);
 	tilemap->LoadTiles();
 	tilemap->LoadMap();
+
+	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
+
+	float x, y;
+	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
+	mario->SetPosition(x, y);
+
 }
 
 void CMapScene::Update(DWORD dt)
@@ -45,6 +52,8 @@ void CMapScene::Render()
 		CGameObject* nodeObject = node->GetNodeObject();
 		if (nodeObject) nodeObject->Render();
 	}
+
+	mario->Render();
 }
 
 void CMapScene::Unload()

@@ -18,13 +18,18 @@
 #define MAP_MARIO_ANI_FIRE_MARIO	2
 #define MAP_MARIO_ANI_TAIL_MARIO	3
 
+#define MAP_MARIO_ANI_SET	9820
+
 class CMapMario : public CGameObject
 {
 	int level;
 	int movingDirection;
 	float destination_x, destination_y;
 public:
+	CMapMario();
+
 	void SetDestination(float x, float y);
+	void SetLevel(int level) { this->level = level; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

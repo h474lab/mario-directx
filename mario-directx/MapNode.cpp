@@ -3,11 +3,18 @@
 void CMapNodes::Add(int id, LPMAPNODE mapNode)
 {
 	mapNodes.insert(std::make_pair(id, mapNode));
+	if (mapNode == mapNodes.begin()->second)
+		currentNode = mapNode;
 }
 
 LPMAPNODE CMapNodes::Get(int id)
 {
 	return mapNodes.at(id);
+}
+
+LPMAPNODE CMapNodes::GetCurrentNode()
+{
+	return currentNode;
 }
 
 vector<LPMAPNODE> CMapNodes::GetAllNodes()

@@ -21,16 +21,20 @@ class CMapNode
 	int leftNode, rightNode, topNode, bottomNode;
 public:
 	CMapNode(CGameObject* object, float x, float y, int leftNode, int topNode, int rightNode, int bottomNode);
+	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	int GetNode(int type);
 	CGameObject* GetNodeObject();
 };
 
 class CMapNodes
 {
+	LPMAPNODE currentNode;
 	unordered_map<int, LPMAPNODE> mapNodes;
 public:
 	void Add(int id, LPMAPNODE mapNode);
 	LPMAPNODE Get(int id);
+	void SetCurrentNode(LPMAPNODE currentNode) { this->currentNode = currentNode; }
+	LPMAPNODE GetCurrentNode();
 	vector<LPMAPNODE> GetAllNodes();
 	void Clear();
 };
