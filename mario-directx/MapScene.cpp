@@ -1,5 +1,7 @@
 #include "MapScene.h"
 
+#include "MapGate.h"
+
 void CMapScenceKeyHandler::KeyState(BYTE* states)
 {
 }
@@ -29,6 +31,16 @@ void CMapScenceKeyHandler::OnKeyDown(int KeyCode)
 		case DIK_RIGHT:
 			nextNode = mapNodes->Get(currentNode->GetNode(RIGHT_NODE));
 			break;
+		case DIK_RETURN:
+			CGameObject* nodeObject = currentNode->GetNodeObject();
+			if (nodeObject)
+			{
+				if (dynamic_cast<CMapGate*>(nodeObject))
+				{
+					CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId());
+					scence->Unload();
+				}
+			}
 		}
 
 		if (nextNode)
@@ -92,4 +104,5 @@ void CMapScene::Render()
 
 void CMapScene::Unload()
 {
+	delete mario;
 }

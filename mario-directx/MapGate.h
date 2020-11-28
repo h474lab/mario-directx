@@ -49,6 +49,8 @@ class CMapGate : public CGameObject
 public:
 	CMapGate(int sceneId, float x, float y, int level, int type);
 
+	int GetSceneId() { return sceneId; }
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
 	virtual void Render();
 };
