@@ -30,7 +30,7 @@ protected:
 
 	DWORD gameStartingTime;
 
-	void ParseObjects(string line);
+	virtual void ParseObjects(string line);
 	
 public: 
 	CPlayScene(int id, LPCWSTR filePath, int tilemapId,float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world);

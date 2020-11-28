@@ -79,20 +79,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CSc
 
 void CIntroScene::Load()
 {
-	wstring objectPath = wstring(sceneDirectory) + objectsFileName;
-	ifstream f;
-	f.open(objectPath);
-
-	char str[MAX_SCENE_LINE];
-	while (f.getline(str, MAX_SCENE_LINE))
-	{
-		string line(str);
-
-		if (line[0] == '#' || line == "") continue;
-		ParseObjects(line);
-	}
-
-	f.close();
+	LoadObjects();
 }
 
 void CIntroScene::Update(DWORD dt)

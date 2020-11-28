@@ -150,6 +150,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="MapGate.cpp" />
+    <ClCompile Include="MapGrass.cpp" />
     <ClCompile Include="MapMario.cpp" />
     <ClCompile Include="MapNode.cpp" />
     <ClCompile Include="Curtain.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="MapGate.h" />
+    <ClInclude Include="MapGrass.h" />
     <ClInclude Include="MapMario.h" />
     <ClInclude Include="MapNode.h" />
     <ClInclude Include="Curtain.h" />

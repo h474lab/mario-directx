@@ -13,8 +13,10 @@ class CMapScene : public CScene
 	int world;
 
 	CMapMario* mario;
+
+	virtual void ParseObjects(string line);
 public:
-	CMapScene(int id, LPCWSTR filePath, int tilemapId, int world);
+	CMapScene(int id, LPCWSTR filePath, LPCWSTR objectList, int tilemapId, int world);
 
 	CMapMario* GetMario() { return mario; }
 	int GetWorld() { return world; }

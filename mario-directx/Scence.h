@@ -21,10 +21,13 @@ protected:
 	LPCWSTR sceneDirectory, objectsFileName;
 
 	vector<LPGAMEOBJECT> objects;
+	virtual void ParseObjects(string line) = 0;
 public: 
 	CScene(int id, LPCWSTR filePath);
 
 	CKeyEventHandler * GetKeyEventHandler() { return key_handler; }
+
+	void LoadObjects();
 
 	virtual void Load() = 0;
 	virtual void Unload() = 0;

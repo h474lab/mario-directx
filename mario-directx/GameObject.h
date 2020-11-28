@@ -49,6 +49,7 @@ using namespace std;
 #define OBJECT_TYPE_INTRO_TITLE		17
 #define OBJECT_TYPE_INTRO_OPTIONS	18
 #define OBJECT_TYPE_MAP_GATE		19
+#define OBJECT_TYPE_MAP_GRASS		20
 
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;

@@ -321,20 +321,7 @@ void CPlayScene::Load()
 	tiled_background->Get(tilemapId)->LoadMap();
 
 	// load map
-	wstring objectPath = wstring(sceneDirectory) + objectsFileName;
-	ifstream f;
-	f.open(objectPath);			
-
-	char str[MAX_SCENE_LINE];
-	while (f.getline(str, MAX_SCENE_LINE))
-	{
-		string line(str);
-
-		if (line[0] == '#' || line == "") continue;
-		ParseObjects(line);
-	}
-
-	f.close();
+	LoadObjects();
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 

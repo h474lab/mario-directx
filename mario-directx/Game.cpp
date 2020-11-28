@@ -389,7 +389,9 @@ void CGame::_ParseSection_SCENES(string line)
 		CTilemaps::GetInstance()->Add(tiledBackgroundId,
 			new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
 
-		scene = new CMapScene(id, path, tiledBackgroundId, world);
+		objectsFileName = ToLPCWSTR(tokens[9]);
+
+		scene = new CMapScene(id, path, objectsFileName, tiledBackgroundId, world);
 		scenes[id] = scene;
 		break;
 	case SCENE_TYPE_PLAY:

@@ -1,6 +1,7 @@
 #include "MapScene.h"
 
 #include "MapGate.h"
+#include "MapGrass.h"
 
 void CMapScenceKeyHandler::KeyState(BYTE* states)
 {
@@ -58,8 +59,37 @@ void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 }
 
-CMapScene::CMapScene(int id, LPCWSTR filePath, int tilemapId, int world) : CScene(id, filePath)
+void CMapScene::ParseObjects(string line)
 {
+	vector<string> tokens = split(line);
+
+	int type_id = atoi(tokens[0].c_str());
+	float x = atof(tokens[1].c_str());
+	float y = atof(tokens[2].c_str());
+	int ani_set_id = atoi(tokens[3].c_str());
+
+	int numRows, numColumns;
+
+	CGameObject* object = NULL;
+
+	switch (type_id)
+	{
+	case OBJECT_TYPE_MAP_GRASS:
+		numRows = atoi(tokens[4].c_str());
+		numColumns = atoi(tokens[5].c_str());
+		object = new CMapGrass(numRows, numColumns);
+		objects.push_back(object);
+		break;
+	}
+
+	object->SetAnimationSet(CAnimationSets::GetInstance()->Get(ani_set_id));
+	object->SetPosition(x, y);
+}
+
+CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR objectList, int tilemapId, int world) : CScene(id, filePath)
+{
+	this->objectsFileName = objectList;
+
 	this->tilemapId = tilemapId;
 	this->world = world;
 	this->mario = new CMapMario();
@@ -73,6 +103,8 @@ void CMapScene::Load()
 	CTilemap* tilemap = CTilemaps::GetInstance()->Get(tilemapId);
 	tilemap->LoadTiles();
 	tilemap->LoadMap();
+
+	LoadObjects();
 
 	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
 
@@ -99,10 +131,12 @@ void CMapScene::Render()
 		if (nodeObject) nodeObject->Render();
 	}
 
+	for (LPGAMEOBJECT object : objects)
+		object->Render();
+
 	mario->Render();
 }
 
 void CMapScene::Unload()
 {
-	delete mario;
 }

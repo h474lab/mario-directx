@@ -14,7 +14,7 @@ protected:
 
 	CIntroOptions *gameModeMenu;
 
-	void ParseObjects(string line);
+	virtual void ParseObjects(string line);
 public:
 	CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName);
 

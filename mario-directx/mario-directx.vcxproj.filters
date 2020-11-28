@@ -166,6 +166,9 @@
     <Filter Include="Objects\MapObjects\MapMario">
       <UniqueIdentifier>{ea3797b3-b53d-401e-a504-b80188a14ee4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects\MapGrass">
+      <UniqueIdentifier>{5162ecec-e1ac-4169-8f4c-887a00e7e2b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -321,6 +324,9 @@
     <ClCompile Include="MapMario.cpp">
       <Filter>Objects\MapObjects\MapMario</Filter>
     </ClCompile>
+    <ClCompile Include="MapGrass.cpp">
+      <Filter>Objects\MapObjects\MapGrass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -475,6 +481,9 @@
     </ClInclude>
     <ClInclude Include="MapMario.h">
       <Filter>Objects\MapObjects\MapMario</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGrass.h">
+      <Filter>Objects\MapObjects\MapGrass</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
