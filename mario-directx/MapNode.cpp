@@ -9,6 +9,7 @@ void CMapNodes::Add(int id, LPMAPNODE mapNode)
 
 LPMAPNODE CMapNodes::Get(int id)
 {
+	if (id == NULL_NODE) return NULL;
 	return mapNodes.at(id);
 }
 

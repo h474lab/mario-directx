@@ -16,6 +16,9 @@ class CMapScene : public CScene
 public:
 	CMapScene(int id, LPCWSTR filePath, int tilemapId, int world);
 
+	CMapMario* GetMario() { return mario; }
+	int GetWorld() { return world; }
+
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();

@@ -6,6 +6,40 @@ void CMapScenceKeyHandler::KeyState(BYTE* states)
 
 void CMapScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	CMapScene* mapScene = (CMapScene*)scence;
+	CMapMario* mario = mapScene->GetMario();
+	LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
+
+	LPMAPNODE currentNode = mapNodes->GetCurrentNode();
+	LPMAPNODE nextNode = NULL;
+
+	if (mario && mario->GetState() == MAP_MARIO_STATE_IDLING)
+	{
+		switch (KeyCode)
+		{
+		case DIK_UP:
+			nextNode = mapNodes->Get(currentNode->GetNode(TOP_NODE));
+			break;
+		case DIK_DOWN:
+			nextNode = mapNodes->Get(currentNode->GetNode(BOTTOM_NODE));
+			break;
+		case DIK_LEFT:
+			nextNode = mapNodes->Get(currentNode->GetNode(LEFT_NODE));
+			break;
+		case DIK_RIGHT:
+			nextNode = mapNodes->Get(currentNode->GetNode(RIGHT_NODE));
+			break;
+		}
+
+		if (nextNode)
+		{
+			mapNodes->SetCurrentNode(nextNode);
+			float x, y;
+			nextNode->GetPosition(x, y);
+			mario->SetDestination(x, y);
+			mario->SetState(MAP_MARIO_STATE_MOVING);
+		}
+	}
 }
 
 void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
