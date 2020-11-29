@@ -114,11 +114,7 @@ void CIntroScene::Update(DWORD dt)
 	for (auto object : objects)
 		object->Update(dt, &coObjects);
 
-	float cx = 0;
-	float cy = (int) CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
-
-	CCamera::GetInstance()->SetPosition(cx, cy);
-	CHUD::GetInstance()->SetPosition(cx, cy + GAME_PLAY_HEIGHT);
+	CHUD::GetInstance()->Update(dt);
 }
 
 void CIntroScene::Render()

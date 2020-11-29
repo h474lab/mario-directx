@@ -3,6 +3,9 @@
 #include "MapGate.h"
 #include "MapGrass.h"
 
+#include "Camera.h"
+#include "HUD.h"
+
 void CMapScenceKeyHandler::KeyState(BYTE* states)
 {
 }
@@ -112,11 +115,13 @@ void CMapScene::Load()
 	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
 	mario->SetPosition(x, y);
 
+	CCamera::GetInstance()->SetPosition(CAMERA_POSITION_X, CAMERA_POSITION_Y);
 }
 
 void CMapScene::Update(DWORD dt)
 {
 	mario->Update(dt);
+	CHUD::GetInstance()->Update(dt);
 }
 
 void CMapScene::Render()
@@ -135,6 +140,8 @@ void CMapScene::Render()
 		object->Render();
 
 	mario->Render();
+
+	CHUD::GetInstance()->Render();
 }
 
 void CMapScene::Unload()

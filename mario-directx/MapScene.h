@@ -7,6 +7,9 @@
 
 #include "MapMario.h"
 
+#define CAMERA_POSITION_X	-42.0f
+#define CAMERA_POSITION_Y	-10.0f
+
 class CMapScene : public CScene
 {
 	int tilemapId;

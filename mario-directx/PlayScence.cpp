@@ -405,7 +405,7 @@ void CPlayScene::Update(DWORD dt)
 
 	CHUD *HUD = CHUD::GetInstance();
 
-	HUD->SetPosition(HUD_x, HUD_y);
+	HUD->Update(dt);
 	HUD->SetPowerLevel(player->GetPowerLevel());
 	HUD->SetWorld(this->world);
 	HUD->SetRemainingTime((int)(GAMETIME - (GetTickCount64() - gameStartingTime)) / 1000);

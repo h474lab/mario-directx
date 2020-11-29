@@ -1,6 +1,7 @@
 #include "HUD.h"
 #include "Textures.h"
 #include "Game.h"
+#include "Camera.h"
 
 CHUD* CHUD::__instance = NULL;
 
@@ -52,6 +53,13 @@ void CHUD::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	bottom = top + CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
 }
 
+void CHUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	float cam_x, cam_y;
+	CCamera::GetInstance()->GetPosition(cam_x, cam_y);
+	SetPosition(cam_x, cam_y + GAME_PLAY_HEIGHT);
+}
+
 void CHUD::Render()
 {
 	for (int i = 0; i < HUD_RENDERING_COLUMN; i++)
@@ -59,7 +67,7 @@ void CHUD::Render()
 		if (state == HUD_STATE_INTRO_SCENE)
 			animation_set->at(HUD_ANI_BG_INTRO)->Render(x + i * HUD_BG_WIDTH, y);
 		else
-			animation_set->at(HUD_ANI_BG_PLAY)->Render(x + i * HUD_ANI_BG_PLAY, y);
+			animation_set->at(HUD_ANI_BG_PLAY)->Render(x + i * HUD_BG_WIDTH, y);
 	}
 
 	scoreBoard->Render();
