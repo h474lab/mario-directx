@@ -6,6 +6,7 @@
 
 #include "Sprites.h"
 #include "Animations.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -110,6 +111,8 @@ protected:
 
 	LPANIMATION_SET animation_set;
 
+	CGrid* grid;
+	CGameObject* nextObject, * previousObject;
 public: 
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -137,6 +140,11 @@ public:
 	void RenderBoundingBox();
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
+
+	void SetPreviousObject(CGameObject* object) { previousObject = object; }
+	CGameObject* GetPreviousObject() { return previousObject; }
+	void SetNextObject(CGameObject* object) { nextObject = object; }
+	CGameObject* GetNextObject() { return nextObject; }
 
 	LPCOLLISIONEVENT SweptAABBEx(LPGAMEOBJECT coO);
 	void CalcPotentialCollisions(vector<LPGAMEOBJECT> *coObjects, vector<LPCOLLISIONEVENT> &coEvents);
