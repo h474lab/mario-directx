@@ -145,6 +145,8 @@ void CResources::_ParseSection_GRID(string line)
 
 	int numRows = atoi(tokens[5].c_str());
 	int numColumns = atoi(tokens[6].c_str());
+
+	CGrids::GetInstance()->Add(id, new CGrid(start_x, start_y, end_x, end_y, numRows, numColumns));
 }
 
 void CResources::LoadTextures()

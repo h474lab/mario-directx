@@ -1,4 +1,6 @@
 #include "Grid.h"
+#include "Camera.h"
+#include "Game.h"
 
 void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 {
@@ -6,8 +8,9 @@ void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 	{
 		object->SetPreviousObject(NULL);
 		object->SetNextObject(NULL);
+		unit[row][column] = object;
 	}
-	else
+	else if (object != unit[row][column])
 	{
 		object->SetPreviousObject(NULL);
 		object->SetNextObject(unit[row][column]);
@@ -74,6 +77,40 @@ void CGrid::AddObject(LPGAMEOBJECT object)
 
 	InsertToGrid(object, row, column);
 }
+
+vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()
+{
+	vector<LPGAMEOBJECT> result;
+	result.clear();
+
+	float cam_x, cam_y;
+	CCamera::GetInstance()->GetPosition(cam_x, cam_y);
+
+	int screenWidth, screenHeight;
+	screenWidth = CGame::GetInstance()->GetScreenWidth();
+	screenHeight = CGame::GetInstance()->GetScreenHeight();
+
+	// find grid width and height
+	float gridHeight = end_y - start_y;
+	float gridWidth = end_x - start_x;
+
+	// calculate the height and width of each cell
+	float cellHeight = gridHeight / (float)numRows;
+	float cellWidth = gridWidth / (float)numColumns;
+
+	int cell_start_x = cam_x / cellWidth;
+	int cell_start_y = cam_y / cellHeight;
+	int cell_end_x = (cam_x + screenWidth) / cellWidth + 1;
+	int cell_end_y = (cam_y + screenHeight) / cellHeight + 1;
+
+	for (int i = cell_start_x; i <= cell_end_x; i++)
+		for (int j = cell_start_y; j <= cell_end_y; j++)
+				result.push_back(unit[j][i]);
+
+	return result;
+}
+
+CGrids* CGrids::__instance = NULL;
 
 CGrids* CGrids::GetInstance()
 {

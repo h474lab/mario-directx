@@ -25,7 +25,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world) :
+CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int gridId, int initialZone, vector<CPlayZone> playZones, int world) :
 	CScene(id, filePath)
 {
 	this->tilemapId = tilemapId;
@@ -33,6 +33,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_start
 	this->tile_y = tile_startY;
 
 	this->objectsFileName = objectsFileName;
+	this->gridId = gridId;
 
 	currentZone = initialZone;
 	this->playZones = playZones;
@@ -271,8 +272,8 @@ void CPlayScene::ParseObjects(string line)
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 	obj->SetAnimationSet(ani_set);
+		
 	objects.push_back(obj);
 	if (includedObj) objects.push_back(includedObj);
 }
@@ -322,10 +323,12 @@ void CPlayScene::Load()
 
 	// load map
 	LoadObjects();
+	for (int i = 0; i < objects.size(); i++)
+		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
 
-	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
+	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
-	CTextures::GetInstance()->Add(ID_HUD_BG, L"Resources\\Textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
+	//CTextures::GetInstance()->Add(ID_HUD_BG, L"Resources\\Textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
 	
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
 
@@ -334,17 +337,37 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
+	workingCellsInGrid = CGrids::GetInstance()->Get(gridId)->LoadCellsWithinCamera();
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
+	{
+		LPGAMEOBJECT currentObject = workingCell;
+		while (currentObject)
+		{
+			coObjects.push_back(currentObject);
+			currentObject = currentObject->GetNextObject();
+		}
+	}
+
+	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
+	{
+		LPGAMEOBJECT currentObject = workingCell;
+		while (currentObject)
+		{
+			currentObject->Update(dt, &coObjects);
+			currentObject = currentObject->GetNextObject();
+		}
+	}
+	player->Update(dt, &coObjects);
+
+	/*for (size_t i = 1; i < objects.size(); i++)
 	{
 		coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
-		objects[i]->Update(dt, &coObjects);
+		objects[i]->Update(dt, &coObjects);*/
 
 	// update score animations
 	CScores::GetInstance()->Update(dt);
@@ -425,8 +448,19 @@ void CPlayScene::Render()
 
 	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 
-	for (unsigned int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
+	{
+		LPGAMEOBJECT currentObject = workingCell;
+		while (currentObject)
+		{
+			currentObject->Render();
+			currentObject = currentObject->GetNextObject();
+		}
+	}
+	player->Render();
+
+	/*for (unsigned int i = 0; i < objects.size(); i++)
+		objects[i]->Render();*/
 
 	// render score animation
 	CScores::GetInstance()->Render();

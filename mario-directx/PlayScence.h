@@ -19,9 +19,12 @@ class CPlayScene: public CScene
 protected: 
 	CMario *player;					// A play scene has to have player, right?
 	int tilemapId;
+	int gridId;
 
 	int currentZone;
 	vector<CPlayZone> playZones;
+
+	vector<LPGAMEOBJECT> workingCellsInGrid;
 
 	int world;
 	float tile_x, tile_y;
@@ -33,7 +36,7 @@ protected:
 	virtual void ParseObjects(string line);
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath, int tilemapId,float tile_startX, float tile_startY, LPCWSTR objectsFileName, int initialZone, vector<CPlayZone> playZones, int world);
+	CPlayScene(int id, LPCWSTR filePath, int tilemapId,float tile_startX, float tile_startY, LPCWSTR objectsFileName, int gridId, int initialZone, vector<CPlayZone> playZones, int world);
 
 	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 

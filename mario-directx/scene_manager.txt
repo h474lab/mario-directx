@@ -6,7 +6,8 @@ animations_path	Resources\Animations\
 animation_sets_path	Resources\AnimationSets\
 object_list	Resources\GAMEOBJECT_LIST.txt
 map_node_list	Resources\MAPNODELIST.txt
+grid_list	Resources\GRIDLIST.txt
 [SCENES]
 0	0	Scenes\Intro\	objects.txt
-1	2	1	Scenes\World1_1\	Scenes\World1_1\tileset.png	Scenes\World1_1\tiled_background.txt	-10	4	11	0	-230	objects.txt	0	0	2816	-230	202	50	154	1	1984	2512	200	410	2144	300	0
+1	2	1	Scenes\World1_1\	Scenes\World1_1\tileset.png	Scenes\World1_1\tiled_background.txt	-10	4	11	0	-230	objects.txt	1	0	0	2816	-230	202	50	154	1	1984	2512	200	410	2144	300	0
 2	1	1	Scenes\map1_1\	Scenes\map1_1\tileset.png	Scenes\map1_1\tiled_background.txt	-11	4	16	objects.txt

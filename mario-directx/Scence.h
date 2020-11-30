@@ -21,8 +21,6 @@ protected:
 	int id;
 	LPCWSTR sceneDirectory, objectsFileName;
 
-	CGrid* grid;
-
 	vector<LPGAMEOBJECT> objects;
 	virtual void ParseObjects(string line) = 0;
 public: 

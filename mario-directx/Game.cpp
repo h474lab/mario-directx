@@ -344,6 +344,8 @@ void CGame::_ParseSection_SETTINGS(string line)
 		CResources::GetInstance()->SetGameObjectList(ToLPCWSTR(tokens[1]));
 	else if (tokens[0] == "map_node_list")
 		CResources::GetInstance()->SetMapNodesPath(ToLPCWSTR(tokens[1]));
+	else if (tokens[0] == "grid_list")
+		CResources::GetInstance()->SetGridListPath(ToLPCWSTR(tokens[1]));
 	else
 		DebugOut(L"[ERROR] Unknown game setting %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -366,9 +368,7 @@ void CGame::_ParseSection_SCENES(string line)
 	int numRows;
 	int numColumns;
 
-	float grid_start_x, grid_start_y;
-	float grid_end_x, grid_end_y;
-	float grid_num_rows, grid_num_columns;
+	int gridId;
 
 	int id = atoi(tokens[0].c_str());
 	int scene_type = atoi(tokens[1].c_str());
@@ -413,14 +413,15 @@ void CGame::_ParseSection_SCENES(string line)
 		float tile_startY = (float)atof(tokens[10].c_str());
 
 		objectsFileName = ToLPCWSTR(tokens[11]);
+		gridId = atoi(tokens[12].c_str());
 
-		int currentZone = atoi(tokens[12].c_str());
+		int currentZone = atoi(tokens[13].c_str());
 
 		vector<CPlayZone> playZones;
 		playZones.clear();
 
 		// information of each zone in the scene
-		unsigned int i = 13;
+		unsigned int i = 14;
 		while (i < tokens.size())
 		{
 			CPlayZone playZone;
@@ -444,7 +445,7 @@ void CGame::_ParseSection_SCENES(string line)
 		}
 		
 
-		scene = new CPlayScene(id, path, tiledBackgroundId, tile_startX, tile_startY, objectsFileName, currentZone, playZones, world);
+		scene = new CPlayScene(id, path, tiledBackgroundId, tile_startX, tile_startY, objectsFileName, gridId, currentZone, playZones, world);
 		scenes[id] = scene;
 		break;
 	}
