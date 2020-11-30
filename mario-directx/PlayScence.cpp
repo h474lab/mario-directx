@@ -117,8 +117,33 @@ void CPlayScene::ParseObjects(string line)
 	{
 		int numRows = atoi(tokens[4].c_str());
 		int numColumns = atoi(tokens[5].c_str());
-		obj = new CGroundBricks(numRows, numColumns);
-		break;
+		int position = 0;
+		for (int i = 0; i < numRows; i++)
+			for (int j = 0; j < numColumns; j++)
+			{
+				if (i == 0)
+				{
+					if (j == 0)
+						obj = new CGroundBricks(BRICK_POSITION_TOPLEFT);
+					else if (j == numColumns - 1)
+						obj = new CGroundBricks(BRICK_POSITION_TOPRIGHT);
+					else
+						obj = new CGroundBricks(BRICK_POSITION_TOPMID);
+				}
+				else if (i == numRows - 1)
+				{
+					if (j == 0)
+						obj = new CGroundBricks(BRICK_POSITION_BOTLEFT);
+					else if (j == numColumns - 1)
+						obj = new CGroundBricks(BRICK_POSITION_BOTRIGHT);
+					else
+						obj = new CGroundBricks(BRICK_POSITION_BOTMID);
+				}
+				obj->SetAnimationSet(animation_sets->Get(ani_set_id));
+				obj->SetPosition(x + j * BRICK_BBOX_WIDTH, y + i * BRICK_BBOX_HEIGHT);
+				objects.push_back(obj);
+			}
+		return;
 	}
 	case OBJECT_TYPE_COLORED_BLOCK:
 		{
