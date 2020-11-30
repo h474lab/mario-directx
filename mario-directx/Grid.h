@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include <stdlib.h>
 
 #define MAX_GRID_COLUMNS	100
 #define MAX_GRID_ROWS		100
@@ -16,7 +17,7 @@ private:
 	void InsertToGrid(LPGAMEOBJECT object, int row, int column);
 	void RemoveFromGrid(LPGAMEOBJECT object, int row, int column);
 public:
-	CGrid();
+	CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns);
 	void AddObject(LPGAMEOBJECT object);
 };
 

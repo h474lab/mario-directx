@@ -3,6 +3,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "MapNode.h"
+#include "Grid.h"
 #include "HUD.h"
 
 #include "MapGate.h"
@@ -132,6 +133,20 @@ void CResources::_ParseSection_MAP_NODE_SETS(string line)
 	mapNode_sets->Get(world)->Add(nodeId, new CMapNode(obj, x, y, leftNode, topNode, rightNode, bottomNode));
 }
 
+void CResources::_ParseSection_GRID(string line)
+{
+	vector<string> tokens = split(line);
+
+	int id = atoi(tokens[0].c_str());
+	float start_x = atof(tokens[1].c_str());
+	float end_x = atof(tokens[2].c_str());
+	float start_y = atof(tokens[3].c_str());
+	float end_y = atof(tokens[4].c_str());
+
+	int numRows = atoi(tokens[5].c_str());
+	int numColumns = atoi(tokens[6].c_str());
+}
+
 void CResources::LoadTextures()
 {
 	ifstream f;
@@ -223,6 +238,20 @@ void CResources::LoadMapNodes()
 	}
 }
 
+void CResources::LoadGridList()
+{
+	ifstream f;
+	f.open(gridListPath);
+	while (!f.eof())
+	{
+		string line;
+		getline(f, line);
+		if (line[0] == '#' || line == "") continue;
+
+		_ParseSection_GRID(line);
+	}
+}
+
 void CResources::SetGameObjectList(LPCWSTR objectListPath)
 {
 	this->objectListPath = objectListPath;
@@ -248,6 +277,7 @@ void CResources::LoadResources()
 	LoadAnimations();
 	LoadAnimationSets();
 	LoadMapNodes();
+	LoadGridList();
 }
 
 CResources* CResources::GetInstance()

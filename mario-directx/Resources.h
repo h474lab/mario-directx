@@ -13,18 +13,21 @@ private:
 	LPCWSTR objectListPath;
 	LPCWSTR texturesPath, spritesPath, animationsPath, animationSetsPath;
 	LPCWSTR mapNodesPath;
+	LPCWSTR gridListPath;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_MAP_NODE_SETS(string line);
+	void _ParseSection_GRID(string line);
 
 	void LoadTextures();
 	void LoadSprites();
 	void LoadAnimations();
 	void LoadAnimationSets();
 	void LoadMapNodes();
+	void LoadGridList();
 public:
 	void SetTexturesPath(LPCWSTR texturesPath) { this->texturesPath = texturesPath; }
 	void SetGameObjectList(LPCWSTR objectListPath);
@@ -32,6 +35,7 @@ public:
 	void SetAnimationsPath(LPCWSTR animationsPath) { this->animationsPath = animationsPath; }
 	void SetAnimationSetsPath(LPCWSTR animationSetsPath) { this->animationSetsPath = animationSetsPath; }
 	void SetMapNodesPath(LPCWSTR mapNodesPath) { this->mapNodesPath = mapNodesPath; }
+	void SetGridListPath(LPCWSTR gridListPath) { this->gridListPath = gridListPath; }
 
 	void LoadResources();
 

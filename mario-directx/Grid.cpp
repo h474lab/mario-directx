@@ -37,10 +37,18 @@ void CGrid::RemoveFromGrid(LPGAMEOBJECT object, int row, int column)
 	}
 }
 
-CGrid::CGrid()
+CGrid::CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns)
 {
-	for (int i = 0; i < MAX_GRID_COLUMNS; i++)
-		for (int j = 0; j < MAX_GRID_ROWS; j++)
+	this->start_x = start_x;
+	this->start_y = start_y;
+	this->end_x = end_x;
+	this->end_y = end_y;
+
+	this->numRows = numRows;
+	this->numColumns = numColumns;
+
+	for (int i = 0; i < MAX_GRID_ROWS; i++)
+		for (int j = 0; j < MAX_GRID_COLUMNS; j++)
 			unit[i][j] = NULL;
 }
 
