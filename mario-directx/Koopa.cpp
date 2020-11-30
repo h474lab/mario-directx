@@ -219,7 +219,17 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					SetState(state);
 				}
-				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CTube*>(e->obj))
+				else if (dynamic_cast<CGroundBricks*>(e->obj))
+				{
+					float brick_x, brick_y;
+					e->obj->GetPosition(brick_x, brick_y);
+
+					if (this->y + 10 > brick_y && !jumping)
+						ChangeDirection();
+					else if (jumping) ChangeDirection();
+					else SetState(state);
+				}
+				else if (dynamic_cast<CTube*>(e->obj))
 				{
 					ChangeDirection();
 				}

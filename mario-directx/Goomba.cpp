@@ -196,6 +196,15 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					koopaState == KOOPA_STATE_ROLLING_UP_LEFT || koopaState == KOOPA_STATE_ROLLING_UP_RIGHT)
 					HitGoomba(e->nx);
 			}
+			else if (dynamic_cast<CGroundBricks*>(e->obj))
+			{
+				float brick_x, brick_y;
+				e->obj->GetPosition(brick_x, brick_y);
+
+				if (this->y + GOOMBA_BBOX_HEIGHT > brick_y && !jumping)
+					changeDirection = 1;
+				else if (jumping) changeDirection = 1;
+			}
 			else if (e->nx != 0)
 			{
 				followingObject = NULL;
