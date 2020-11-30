@@ -6,7 +6,6 @@
 
 #include "Sprites.h"
 #include "Animations.h"
-#include "Grid.h"
 
 using namespace std;
 
@@ -111,7 +110,6 @@ protected:
 
 	LPANIMATION_SET animation_set;
 
-	CGrid* grid;
 	CGameObject* nextObject, * previousObject;
 public: 
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }

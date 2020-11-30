@@ -169,6 +169,9 @@
     <Filter Include="Objects\MapObjects\MapGrass">
       <UniqueIdentifier>{5162ecec-e1ac-4169-8f4c-887a00e7e2b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Grid">
+      <UniqueIdentifier>{94230053-f27e-41f6-b3da-a526b74efe23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -327,6 +330,9 @@
     <ClCompile Include="MapGrass.cpp">
       <Filter>Objects\MapObjects\MapGrass</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Game Manager\Grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -484,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="MapGrass.h">
       <Filter>Objects\MapObjects\MapGrass</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Game Manager\Grid</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -366,6 +366,10 @@ void CGame::_ParseSection_SCENES(string line)
 	int numRows;
 	int numColumns;
 
+	float grid_start_x, grid_start_y;
+	float grid_end_x, grid_end_y;
+	float grid_num_rows, grid_num_columns;
+
 	int id = atoi(tokens[0].c_str());
 	int scene_type = atoi(tokens[1].c_str());
 	switch (scene_type)

@@ -1,6 +1,6 @@
 #include "Grid.h"
 
-void CGrid::InsertToGrid(CGameObject* object, int row, int column)
+void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 {
 	if (!unit[row][column])
 	{
@@ -15,7 +15,7 @@ void CGrid::InsertToGrid(CGameObject* object, int row, int column)
 	}
 }
 
-void CGrid::RemoveFromGrid(CGameObject* object, int row, int column)
+void CGrid::RemoveFromGrid(LPGAMEOBJECT object, int row, int column)
 {
 	CGameObject* currentObject = unit[row][column];
 	while (currentObject)
@@ -44,7 +44,7 @@ CGrid::CGrid()
 			unit[i][j] = NULL;
 }
 
-void CGrid::AddObject(CGameObject* object)
+void CGrid::AddObject(LPGAMEOBJECT object)
 {
 	float obj_x, obj_y;
 	object->GetPosition(obj_x, obj_y);
@@ -65,4 +65,20 @@ void CGrid::AddObject(CGameObject* object)
 	int column = (obj_x - start_x) / cellWidth;
 
 	InsertToGrid(object, row, column);
+}
+
+CGrids* CGrids::GetInstance()
+{
+	if (__instance == NULL) __instance = new CGrids();
+	return __instance;
+}
+
+void CGrids::Add(int id, LPGRID grid)
+{
+	grids.insert(std::make_pair(id, grid));
+}
+
+LPGRID CGrids::Get(int id)
+{
+	return grids.at(id);
 }

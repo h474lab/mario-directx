@@ -3,6 +3,7 @@
 #include <d3dx9.h>
 #include "KeyEventHandler.h"
 #include "GameObject.h"
+#include "Grid.h"
 
 #define SCENE_TYPE_INTRO	0
 #define SCENE_TYPE_MAP		1
@@ -19,6 +20,8 @@ protected:
 	CKeyEventHandler * key_handler;
 	int id;
 	LPCWSTR sceneDirectory, objectsFileName;
+
+	CGrid* grid;
 
 	vector<LPGAMEOBJECT> objects;
 	virtual void ParseObjects(string line) = 0;
