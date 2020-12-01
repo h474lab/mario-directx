@@ -1,5 +1,5 @@
 #pragma once
-#include "Scence.h"
+#include "scene.h"
 #include <fstream>
 
 #include "Tilemap.h"
@@ -30,11 +30,11 @@ public:
 	virtual void Unload();
 };
 
-class CMapScenceKeyHandler : public CScenceKeyHandler
+class CMapSceneKeyHandler : public CSceneKeyHandler
 {
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CMapScenceKeyHandler(CScene* s) : CScenceKeyHandler(s) {};
+	CMapSceneKeyHandler(CScene* s) : CSceneKeyHandler(s) {};
 };

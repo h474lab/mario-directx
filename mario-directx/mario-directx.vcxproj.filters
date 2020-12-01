@@ -222,12 +222,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Game Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Scence.cpp">
-      <Filter>Game Manager\Scence</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScence.cpp">
-      <Filter>Game Manager\Scence\PlayScene</Filter>
-    </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Game Manager\Utils</Filter>
     </ClCompile>
@@ -333,6 +327,12 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Game Manager\Grid</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Game Manager\Scence</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Game Manager\Scence\PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -382,12 +382,6 @@
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Game Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Scence.h">
-      <Filter>Game Manager\Scence</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScence.h">
-      <Filter>Game Manager\Scence\PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Game Manager\Utils</Filter>
@@ -493,6 +487,12 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Game Manager\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Game Manager\Scence</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Game Manager\Scence\PlayScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

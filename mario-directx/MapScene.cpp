@@ -6,13 +6,13 @@
 #include "Camera.h"
 #include "HUD.h"
 
-void CMapScenceKeyHandler::KeyState(BYTE* states)
+void CMapSceneKeyHandler::KeyState(BYTE* states)
 {
 }
 
-void CMapScenceKeyHandler::OnKeyDown(int KeyCode)
+void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 {
-	CMapScene* mapScene = (CMapScene*)scence;
+	CMapScene* mapScene = (CMapScene*)scene;
 	CMapMario* mario = mapScene->GetMario();
 	LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
 
@@ -42,7 +42,7 @@ void CMapScenceKeyHandler::OnKeyDown(int KeyCode)
 				if (dynamic_cast<CMapGate*>(nodeObject))
 				{
 					CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId());
-					scence->Unload();
+					scene->Unload();
 				}
 			}
 		}
@@ -58,7 +58,7 @@ void CMapScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 }
 
-void CMapScenceKeyHandler::OnKeyUp(int KeyCode)
+void CMapSceneKeyHandler::OnKeyUp(int KeyCode)
 {
 }
 
@@ -97,7 +97,7 @@ CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR objectList, int tilemapId
 	this->world = world;
 	this->mario = new CMapMario();
 
-	key_handler = new CMapScenceKeyHandler(this);
+	key_handler = new CMapSceneKeyHandler(this);
 }
 
 void CMapScene::Load()

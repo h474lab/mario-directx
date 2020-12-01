@@ -1,5 +1,5 @@
 #pragma once
-#include "Scence.h"
+#include "scene.h"
 #include "Game.h"
 #include "IntroOptions.h"
 
@@ -28,11 +28,11 @@ public:
 };
 
 
-class CIntroScenceKeyHandler : public CScenceKeyHandler
+class CIntroSceneKeyHandler : public CSceneKeyHandler
 {
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CIntroScenceKeyHandler(CScene* s) : CScenceKeyHandler(s) {};
+	CIntroSceneKeyHandler(CScene* s) : CSceneKeyHandler(s) {};
 };

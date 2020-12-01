@@ -74,7 +74,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CSc
 	intro_start = (DWORD) GetTickCount64();
 	this->objectsFileName = objectFileName;
 	this->gameModeMenu = NULL;
-	key_handler = new CIntroScenceKeyHandler(this);
+	key_handler = new CIntroSceneKeyHandler(this);
 }
 
 void CIntroScene::Load()
@@ -132,13 +132,13 @@ void CIntroScene::Unload()
 	objects.clear();
 }
 
-void CIntroScenceKeyHandler::KeyState(BYTE* states)
+void CIntroSceneKeyHandler::KeyState(BYTE* states)
 {
 }
 
-void CIntroScenceKeyHandler::OnKeyDown(int KeyCode)
+void CIntroSceneKeyHandler::OnKeyDown(int KeyCode)
 {
-	CIntroOptions* menu = ((CIntroScene*)scence)->GetMenu();
+	CIntroOptions* menu = ((CIntroScene*)scene)->GetMenu();
 	if (KeyCode == DIK_DOWN || KeyCode == DIK_UP)
 	{
 		if (menu)
@@ -150,12 +150,12 @@ void CIntroScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (menu)
 		{
 			menu->SwitchSceneOption();
-			scence->Unload();
+			scene->Unload();
 		}
-		else ((CIntroScene*)scence)->SetAppearingMenu();
+		else ((CIntroScene*)scene)->SetAppearingMenu();
 	}
 }
 
-void CIntroScenceKeyHandler::OnKeyUp(int KeyCode)
+void CIntroSceneKeyHandler::OnKeyUp(int KeyCode)
 {
 }

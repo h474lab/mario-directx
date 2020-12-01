@@ -6,7 +6,7 @@
 
 #include "IntroScene.h"
 #include "MapScene.h"
-#include "PlayScence.h"
+#include "PlayScene.h"
 #include "Resources.h"
 #include "PlayZone.h"
 #include "Camera.h"

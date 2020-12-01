@@ -11,7 +11,7 @@
 #include "Brick.h"
 #include "Goomba.h"
 
-#include "PlayScence.h"
+#include "PlayScene.h"
 
 #define WINDOW_CLASS_NAME L"SampleWindow"
 #define MAIN_WINDOW_TITLE L"SUPER MARIO BROS. 3"

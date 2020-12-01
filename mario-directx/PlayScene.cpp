@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "PlayScence.h"
+#include "PlayScene.h"
 #include "Utils.h"
 #include "Resources.h"
 #include "Textures.h"
@@ -39,7 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_start
 	this->playZones = playZones;
 
 	this->world = world;
-	key_handler = new CPlayScenceKeyHandler(this);
+	key_handler = new CPlaySceneKeyHandler(this);
 }
 
 /*
@@ -534,9 +534,9 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneDirectory);
 }
 
-void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
+void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 {
-	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	CMario *mario = ((CPlayScene*)scene)->GetPlayer();
 	switch (KeyCode)
 	{
 	case DIK_X:
@@ -566,16 +566,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 }
 
-void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	CMario* mario = ((CPlayScene*)scene)->GetPlayer();
 	mario->SetJumpingUp(0);
 }
 
-void CPlayScenceKeyHandler::KeyState(BYTE *states)
+void CPlaySceneKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
-	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	CMario *mario = ((CPlayScene*)scene)->GetPlayer();
 
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;

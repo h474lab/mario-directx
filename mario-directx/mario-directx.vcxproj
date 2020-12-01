@@ -176,14 +176,14 @@
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="PiranhaPlant.cpp" />
-    <ClCompile Include="PlayScence.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="PowerArrow.cpp" />
     <ClCompile Include="PowerObject.cpp" />
     <ClCompile Include="PowerSign.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Resources.cpp" />
-    <ClCompile Include="Scence.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="ShortFireTrap.cpp" />
@@ -230,7 +230,7 @@
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="PiranhaPlant.h" />
-    <ClInclude Include="PlayScence.h" />
+    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PlayZone.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="PowerArrow.h" />
@@ -238,7 +238,7 @@
     <ClInclude Include="PowerSign.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Resources.h" />
-    <ClInclude Include="Scence.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="Scoreboard.h" />
     <ClInclude Include="ShortFireTrap.h" />
