@@ -121,6 +121,8 @@ void CMapScene::Load()
 void CMapScene::Update(DWORD dt)
 {
 	mario->Update(dt);
+	CHUD::GetInstance()->SetPowerLevel(0);
+	CHUD::GetInstance()->SetWorld(world);
 	CHUD::GetInstance()->Update(dt);
 }
 

@@ -514,9 +514,14 @@ void CGame::SwitchScene(int scene_id)
 		game->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_BEFORE);
 		CHUD::GetInstance()->SetState(HUD_STATE_INTRO_SCENE);
 	}
+	else if (dynamic_cast<CMapScene*>(s))
+	{
+		game->SetBackgroundColor(BACKGROUND_COLOR_MAP_SCENE);
+		CHUD::GetInstance()->SetState(HUD_STATE_MAP_SCENE);
+	}
 	else
 	{
-		game->SetBackgroundColor(BACKGROUND_COLOR_INTRO_SCENE_AFTER);
+		game->SetBackgroundColor(BACKGROUND_COLOR_PLAY_SCENE);
 		CHUD::GetInstance()->SetState(HUD_STATE_PLAY_SCENE);
 	}
 

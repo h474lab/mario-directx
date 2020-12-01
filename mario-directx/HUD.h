@@ -3,7 +3,8 @@
 #include "Scoreboard.h"
 
 #define HUD_STATE_INTRO_SCENE	0
-#define HUD_STATE_PLAY_SCENE	1
+#define HUD_STATE_MAP_SCENE		1
+#define HUD_STATE_PLAY_SCENE	2
 
 #define HUD_ANI_BG_INTRO	0
 #define HUD_ANI_BG_PLAY		1
