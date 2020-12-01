@@ -208,6 +208,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (spinning_time > MARIO_SPINNING_TIME)
 		{
+			// spinning phase 2
 			if (spinningPhase == 1)
 			{
 				if (nx > 0)
@@ -222,6 +223,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				spinningPhase++;
 				hittableTail = 0;
 			}
+			// spinning phase 3
 			else if (spinningPhase == 2)
 			{
 				hittableTail = 1;
@@ -233,6 +235,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				else SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
 				spinningPhase++;
 			}
+			// spinning phase 4
 			else if (spinningPhase == 3)
 			{
 				if (nx < 0)
@@ -242,6 +245,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				spinningPhase++;
 				hittableTail = 0;
 			}
+			// spinning phase 5
 			else if (spinningPhase == 4)
 			{
 				if (nx > 0)
@@ -255,12 +259,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					SetTail(x + MARIO_TAIL_SPINNING_WIDTH - MARIO_TAIL_SPINNING_LENGTH, x + MARIO_TAIL_SPINNING_WIDTH);
 				}
 				spinningPhase++;
-				hittableTail = 0;
+				hittableTail = 1;
 			}
+			// spinning phase 6
 			else
 			{
 				spinning = 0;
 				spinning_start = 0;
+				hittableTail = 0;
 				if (nx > 0)
 					x += MARIO_TAIL_SPINNING_LENGTH - MARIO_TAIL_NORMAL_LENGTH;
 			}
@@ -1557,6 +1563,11 @@ void CMario::StartSpinning()
 
 		spinningPhase = 1;
 	}
+}
+
+int CMario::GetHittableTail()
+{
+	return this->hittableTail;
 }
 
 void CMario::SetTail(float start_x, float end_x)

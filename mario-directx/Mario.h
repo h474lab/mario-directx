@@ -339,7 +339,7 @@ public:
 	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
 
 	void StartSpinning();
-	int GetHittableTail() { return hittableTail; }
+	int GetHittableTail();
 	void SetTail(float start_x, float end_x);
 	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
 	
