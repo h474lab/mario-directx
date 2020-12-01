@@ -65,91 +65,99 @@ void CPlayScene::ParseObjects(string line)
 	int fireball_ani_set;
 
 	CGameObject* includedObj = NULL;
-
+	vector<LPGAMEOBJECT> queuedObject;
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		fireball_ani_set = atoi(tokens[4].c_str());
-		if (player!=NULL) 
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
+			fireball_ani_set = atoi(tokens[4].c_str());
+			if (player != NULL)
+			{
+				DebugOut(L"[ERROR] MARIO object was created before!\n");
+				return;
+			}
+			obj = new CMario(x, y);
+			obj->SetPosition(x, y);
+			player = (CMario*)obj;
+
+			CGame::GetInstance()->SetPlayer(player);
+
+			for (int i = 0; i < nFireballs; i++)
+			{
+				fireball = new CFireball();
+				fireball->SetAnimationSet(animation_sets->Get(fireball_ani_set));
+				player->AddFireball(fireball);
+				queuedObject.push_back(fireball);
+			}
+
+			playZones[currentZone].GetPlayerStartPosition(x, y);
+
+			DebugOut(L"[INFO] Player object created!\n");
+			break;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;
-
-		CGame::GetInstance()->SetPlayer(player);
-
-		for (int i = 0; i < nFireballs; i++)
-		{
-			fireball = new CFireball();
-			fireball->SetAnimationSet(animation_sets->Get(fireball_ani_set));
-			player->AddFireball(fireball);
-			objects.push_back(fireball);
-		}
-
-		playZones[currentZone].GetPlayerStartPosition(x, y);
-
-		DebugOut(L"[INFO] Player object created!\n");
-		break;
 	case OBJECT_TYPE_GOOMBA: 
-	{
-		obj = new CGoomba();
-		dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[4].c_str()));
-		dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
-		break;
-	}
+		{
+			obj = new CGoomba();
+			obj->SetPosition(x, y);
+			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[4].c_str()));
+			dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
+			break;
+		}
 	case OBJECT_TYPE_BRICK: 
-	{
-		int numRows = atoi(tokens[4].c_str());
-		int numColumns = atoi(tokens[5].c_str());
-		for (int i = 0; i < numRows; i++)
-			for (int j = 0; j < numColumns; j++)
-			{
-				obj = new CBrick();
-				obj->SetPosition(x + BRICK_BBOX_WIDTH * j, y + BRICK_BBOX_HEIGHT * i);
-				obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-				objects.push_back(obj);
-			}
-		return;
-	}
+		{
+			int numRows = atoi(tokens[4].c_str());
+			int numColumns = atoi(tokens[5].c_str());
+			for (int i = 0; i < numRows; i++)
+				for (int j = 0; j < numColumns; j++)
+				{
+					obj = new CBrick();
+					obj->SetPosition(x + BRICK_BBOX_WIDTH * j, y + BRICK_BBOX_HEIGHT * i);
+					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
+					obj->SetPosition(x, y);
+					queuedObject.push_back(obj);
+				}
+			obj = NULL;
+			break;
+		}
 	case OBJECT_TYPE_GROUNDBRICK:
-	{
-		int numRows = atoi(tokens[4].c_str());
-		int numColumns = atoi(tokens[5].c_str());
-		int position = 0;
-		for (int i = 0; i < numRows; i++)
-			for (int j = 0; j < numColumns; j++)
-			{
-				if (i == 0)
+		{
+			int numRows = atoi(tokens[4].c_str());
+			int numColumns = atoi(tokens[5].c_str());
+			int position = 0;
+			for (int i = 0; i < numRows; i++)
+				for (int j = 0; j < numColumns; j++)
 				{
-					if (j == 0)
-						obj = new CGroundBricks(BRICK_POSITION_TOPLEFT);
-					else if (j == numColumns - 1)
-						obj = new CGroundBricks(BRICK_POSITION_TOPRIGHT);
-					else
-						obj = new CGroundBricks(BRICK_POSITION_TOPMID);
+					if (i == 0)
+					{
+						if (j == 0)
+							obj = new CGroundBricks(BRICK_POSITION_TOPLEFT);
+						else if (j == numColumns - 1)
+							obj = new CGroundBricks(BRICK_POSITION_TOPRIGHT);
+						else
+							obj = new CGroundBricks(BRICK_POSITION_TOPMID);
+					}
+					else if (i == numRows - 1)
+					{
+						if (j == 0)
+							obj = new CGroundBricks(BRICK_POSITION_BOTLEFT);
+						else if (j == numColumns - 1)
+							obj = new CGroundBricks(BRICK_POSITION_BOTRIGHT);
+						else
+							obj = new CGroundBricks(BRICK_POSITION_BOTMID);
+					}
+					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
+					obj->SetPosition(x + j * BRICK_BBOX_WIDTH, y + i * BRICK_BBOX_HEIGHT);
+					queuedObject.push_back(obj);
 				}
-				else if (i == numRows - 1)
-				{
-					if (j == 0)
-						obj = new CGroundBricks(BRICK_POSITION_BOTLEFT);
-					else if (j == numColumns - 1)
-						obj = new CGroundBricks(BRICK_POSITION_BOTRIGHT);
-					else
-						obj = new CGroundBricks(BRICK_POSITION_BOTMID);
-				}
-				obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-				obj->SetPosition(x + j * BRICK_BBOX_WIDTH, y + i * BRICK_BBOX_HEIGHT);
-				objects.push_back(obj);
-			}
-		return;
-	}
+			obj = NULL;
+			break;
+		}
 	case OBJECT_TYPE_COLORED_BLOCK:
 		{
 			int numRows = atoi(tokens[4].c_str());
 			int numColumns = atoi(tokens[5].c_str());
 			obj = new CColoredBlock(numRows, numColumns);
+			obj->SetPosition(x, y);
 			break;
 		}
 	case OBJECT_TYPE_TUBE:
@@ -182,7 +190,7 @@ void CPlayScene::ParseObjects(string line)
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CVenusFireTrap*)includedObj)->SetBullet(bullet);
 
-					objects.push_back(bullet);
+					queuedObject.push_back(bullet);
 					break;
 				case OBJECT_TYPE_SHORT_FIRE_TRAP:
 					includedObj = new CShortFireTrap();
@@ -196,12 +204,11 @@ void CPlayScene::ParseObjects(string line)
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CShortFireTrap*)includedObj)->SetBullet(bullet);
 
-					objects.push_back(bullet);
+					queuedObject.push_back(bullet);
 					break;
 				case OBJECT_TYPE_PIRANHA_PLANT:
 					includedObj = new CPiranhaPlant();
 					includedObj->SetAnimationSet(animation_sets->Get(obj_ani_set));
-					objects.push_back(includedObj);
 					break;
 				}
 
@@ -210,9 +217,11 @@ void CPlayScene::ParseObjects(string line)
 
 			if (includedObj)
 			{
-				objects.push_back(includedObj);
+				queuedObject.push_back(includedObj);
 				includedObj = NULL;
 			}
+
+			obj->SetPosition(x, y);
 			break;
 		}
 	case OBJECT_TYPE_QUESTIONBRICK: 
@@ -230,77 +239,91 @@ void CPlayScene::ParseObjects(string line)
 				{
 				case OBJECT_TYPE_COIN:
 					includedObj = new CCoin();
-					includedObj->SetAnimationSet(
-						animation_sets->Get(atoi(tokens[i + 1].c_str()))
-					);
-
+					includedObj->SetAnimationSet(animation_sets->Get(atoi(tokens[i + 1].c_str())));
 					brick->AddNewObject(includedObj);
-					objects.push_back(includedObj);
-					includedObj = NULL;
 					i += 2;
 					break;
 				case OBJECT_TYPE_MUSHROOM:
 					ani_set = atoi(tokens[i + 1].c_str());
 					mushroom_level = atoi(tokens[i + 2].c_str());
-
 					includedObj = new CMushroom(mushroom_level);
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
 					dynamic_cast<CMushroom*>(includedObj)->SetContainer(obj);
-
 					brick->AddNewObject(includedObj);
-					objects.push_back(includedObj);
-					includedObj = NULL;
 					i += 3;
 					break;
 				case OBJECT_TYPE_LEAF:
 					ani_set = atoi(tokens[i + 1].c_str());
-
 					includedObj = new CLeaf();
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
 					brick->AddNewObject(includedObj);
+					objects.push_back(includedObj);
+					includedObj = NULL;
 					i += 2;
 					break;
 				}
 
+				if (includedObj)
+				{
+					queuedObject.push_back(includedObj);
+					includedObj = NULL;
+				}
 			}
+
+			obj->SetPosition(x, y);
 			break;
 		}
 	case OBJECT_TYPE_SQUARE_BRICK:
-	{
-		obj = new CSquareBrick();
-		((CSquareBrick*)obj)->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
-
-		break;
-	}
-	case OBJECT_TYPE_COIN: obj = new CCoin(); break;
+		{
+			obj = new CSquareBrick();
+			obj->SetPosition(x, y);
+			((CSquareBrick*)obj)->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
+			break;
+		}
+	case OBJECT_TYPE_COIN:
+		{
+			obj = new CCoin();
+			obj->SetPosition(x, y);
+			break;
+		}
 	case OBJECT_TYPE_KOOPA:
 		{
 			obj = new CKoopa();
+			obj->SetPosition(x, y);
 			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[4].c_str()));
 			break;
 		}
-	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
+	case OBJECT_TYPE_BACKGROUND:
+		{
+			obj = new CBackground();
+			obj->SetPosition(x, y);
+			break;
+		}
 	case OBJECT_TYPE_PORTAL:
 		{	
 			float r = (float)atof(tokens[4].c_str());
 			float b = (float)atof(tokens[5].c_str());
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
+			obj->SetPosition(x, y);
+			break;
 		}
-		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
-	// General object setup
-	obj->SetPosition(x, y);
+	if (obj)
+	{
+		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+		obj->SetAnimationSet(ani_set);
+		objects.push_back(obj);
+	}
 
-	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-	obj->SetAnimationSet(ani_set);
-		
-	objects.push_back(obj);
-	if (includedObj) objects.push_back(includedObj);
+	if (!queuedObject.empty())
+	{
+		for (LPGAMEOBJECT object : queuedObject) objects.push_back(object);
+	}
 }
 
 void CPlayScene::ChangePlayZone(int zoneID)
@@ -374,6 +397,7 @@ void CPlayScene::Update(DWORD dt)
 			currentObject = currentObject->GetNextObject();
 		}
 	}
+	player->Update(dt, &coObjects);
 
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
@@ -384,7 +408,6 @@ void CPlayScene::Update(DWORD dt)
 			currentObject = currentObject->GetNextObject();
 		}
 	}
-	player->Update(dt, &coObjects);
 
 	/*for (size_t i = 1; i < objects.size(); i++)
 	{
