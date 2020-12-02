@@ -63,17 +63,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	float _lastVy = vy;
 
-	// Simple fall down
-	vy += MARIO_GRAVITY * dt;
-
 	if (jumping) running = 0;
 
+	if (jumpingUp && _lastVy <= 0.0f) vy -= MARIO_JUMP_SPEED_Y;
 	if (fly == 0)
 	{
 		if (flyJump && _lastVy >= 0.0f)
 		{
-			if (!jumping) flyJump = 0;
+			if (!jumping)
+				flyJump = 0;
 			vy -= MARIO_FLY_JUMP_SPEED_Y * dt;
+		}
+
+		if (flyJump && GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
+		{
+			flyJump = 0;
+			flyJump_start = 0;
 		}
 	}
 	else if (fly == 1)
@@ -87,6 +92,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			vy = (float)-MARIO_FLY_SPEED_Y * dt;
 		}
+
+		if (GetTickCount64() - flyJump_start > MARIO_FLY_TIME)
+		{
+			SetJumpingUp(0);
+			flyJump = 0;
+			fly = -1;
+		}
 	}
 	else
 	{
@@ -95,6 +107,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			flyJump = 0;
 			fly = 0;
 		}
+	}
+
+	if (jumpingUp && !flyJump && !fly)
+	{
+		if (lastStandingHeight - this->y > MARIO_JUMP_HEIGHT)
+			SetJumpingUp(0);
 	}
 
 	float lastX = x, lastY = y;
@@ -117,8 +135,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
 	}
 
+	// Simple fall down
+	vy += MARIO_GRAVITY;
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
+	//DebugOut(L"\ndy=%f, dt=%d", dy, dt);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -129,6 +151,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (state!=MARIO_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
+	// Fire Mario throws fireballs
 	if (throwing && (DWORD)GetTickCount64() - throwing_start > MARIO_THROW_TIME)
 	{
 		throwing = 0;
@@ -136,29 +159,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		ThrowFireball();
 	}
 
-	if (jumpingUp)
-	{
-		if (lastStandingHeight - this->y > MARIO_JUMP_HEIGHT)
-			SetJumpingUp(0);
-	}
-
-	if (fly == 0)
-	{
-		if (GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
-		{
-			flyJump = 0;
-			flyJump_start = 0;
-		}
-	}
-	else if (fly == 1)
-	{
-		if (GetTickCount64() - flyJump_start > MARIO_FLY_TIME)
-		{
-			jumpingUp = 0;
-			fly = -1;
-		}
-	}
-	
 	if (GetTickCount64() - kicking_start > MARIO_KICKING_TIME)
 	{
 		kicking = 0;
@@ -572,6 +572,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// reset scoring streak to 0
 	if (!jumping) scoreStreak = 0;
+
+	DebugOut(L"\nFly Jump: %d", flyJump);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
@@ -873,6 +875,7 @@ int CMario::RenderTailMario()
 					else if (vy < 0)
 					{
 						if (fly) res = MARIO_ANI_TAIL_FLY_RIGHT;
+						else if (flyJump) res = MARIO_ANI_TAIL_FLY_JUMP_RIGHT;
 						else res = MARIO_ANI_TAIL_JUMPING_RIGHT;
 					}
 					else
@@ -897,6 +900,7 @@ int CMario::RenderTailMario()
 					else if (vy < 0)
 					{
 						if (fly) res = MARIO_ANI_TAIL_FLY_LEFT;
+						else if (flyJump) res = MARIO_ANI_TAIL_FLY_JUMP_LEFT;
 						else res = MARIO_ANI_TAIL_JUMPING_LEFT;
 					}
 					else
@@ -1322,7 +1326,6 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMPING:
 		running = 0;
-		vy = -MARIO_JUMP_SPEED_Y;
 		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT) && !jumping)
 		{
 			jumping = 1;
