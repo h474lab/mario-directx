@@ -11,7 +11,7 @@
 //0.1f
 #define MARIO_JUMP_SPEED_X			0.1f
 #define MARIO_JUMP_SPEED_Y			0.25f
-#define MARIO_JUMP_UP_TIME			200
+#define MARIO_JUMP_HEIGHT			60.0f
 
 #define MARIO_FLY_JUMP_SPEED_Y		0.00199f
 #define MARIO_FLY_JUMP_TIME			300
@@ -257,7 +257,7 @@ class CMario : public CGameObject
 
 	// "Jumping Up" is the state that Mario can jump higher (or further) than normal jumping state
 	int jumpingUp;
-	DWORD jumpingUp_start;
+	int lastStandingHeight;
 
 	int flyJump;
 	DWORD flyJump_start;

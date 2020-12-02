@@ -136,10 +136,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		ThrowFireball();
 	}
 
-	if (GetTickCount64() - jumpingUp_start > MARIO_JUMP_UP_TIME)
+	if (jumpingUp)
 	{
-		jumpingUp = 0;
-		jumpingUp_start = 0;
+		if (lastStandingHeight - this->y > MARIO_JUMP_HEIGHT)
+			SetJumpingUp(0);
 	}
 
 	if (fly == 0)
@@ -155,7 +155,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (GetTickCount64() - flyJump_start > MARIO_FLY_TIME)
 		{
 			jumpingUp = 0;
-			jumpingUp_start = 0;
 			fly = -1;
 		}
 	}
@@ -338,7 +337,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (e->ny > 0)
 			{
 				jumpingUp = 0;
-				jumpingUp_start = 0;
 			}
 
 			if (dynamic_cast<CCoin*>(e->obj))
@@ -1130,8 +1128,7 @@ void CMario::SetSittingState(int state)
 void CMario::SetJumpingUp(int jumpingUp)
 {
 	this->jumpingUp = jumpingUp;
-	if (jumpingUp)
-		jumpingUp_start = (DWORD)GetTickCount64();
+	if (jumpingUp) lastStandingHeight = this->y;
 }
 
 void CMario::FlyJump()
