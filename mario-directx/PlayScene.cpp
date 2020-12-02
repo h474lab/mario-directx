@@ -113,7 +113,6 @@ void CPlayScene::ParseObjects(string line)
 					obj = new CBrick();
 					obj->SetPosition(x + BRICK_BBOX_WIDTH * j, y + BRICK_BBOX_HEIGHT * i);
 					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-					obj->SetPosition(x, y);
 					queuedObject.push_back(obj);
 				}
 			obj = NULL;
