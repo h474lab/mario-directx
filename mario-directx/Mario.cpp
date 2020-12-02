@@ -65,7 +65,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (jumping) running = 0;
 
-	if (jumpingUp && _lastVy <= 0.0f) vy -= MARIO_JUMP_SPEED_Y;
+	if (jumpingUp && _lastVy <= 0.0f) vy = -MARIO_JUMP_SPEED_Y;
 	if (fly == 0)
 	{
 		if (flyJump && _lastVy >= 0.0f)
@@ -140,7 +140,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
-	//DebugOut(L"\ndy=%f, dt=%d", dy, dt);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -572,8 +571,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// reset scoring streak to 0
 	if (!jumping) scoreStreak = 0;
-
-	DebugOut(L"\nFly Jump: %d", flyJump);
+	DebugOut(L"\ndy=%f, dt=%d", dy, dt);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
