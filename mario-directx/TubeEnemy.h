@@ -22,6 +22,8 @@ protected:
 	CGameObject* followingObject;
 	CBullet* bullet;
 public:
+	CTubeEnemy();
+
 	virtual void SetPosition(float x, float y) {}
 	void SetDirection(int direction) { this->direction = direction; }
 

@@ -1,5 +1,12 @@
 #include "Bullet.h"
 
+CBullet::CBullet()
+{
+	background = 0;
+	SetDirection(BULLET_FLYING_DIRECTION_MID_TOP_LEFT);
+	SetState(BULLET_STATE_ON_HOLD);
+}
+
 void CBullet::SetDirection(int direction)
 {
 	switch (direction)
@@ -42,7 +49,7 @@ void CBullet::SetDirection(int direction)
 
 float CBullet::GetDistance(int direction, float xM, float yM)
 {
-	float a, b, c;
+	float a = 0, b = 0, c = 0;
 	switch (direction)
 	{
 	case BULLET_FLYING_DIRECTION_BOT_LEFT:

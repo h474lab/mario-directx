@@ -1,6 +1,11 @@
 #include "TubeEnemy.h"
 #include "Mario.h"
 
+CTubeEnemy::CTubeEnemy()
+{
+	bullet = NULL;
+}
+
 void CTubeEnemy::Firing()
 {
 	this->SetState(TUBE_ENEMY_STATE_FIRE);

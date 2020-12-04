@@ -13,8 +13,8 @@ void CIntroScene::ParseObjects(string line)
 	vector<string> tokens = split(line);
 
 	int type_id = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets *animation_sets = CAnimationSets::GetInstance();
@@ -57,7 +57,7 @@ void CIntroScene::ParseObjects(string line)
 		break;
 	}
 
-	for (int i = currentCursor; i < tokens.size(); i += 3)
+	for (unsigned int i = currentCursor; i < tokens.size(); i += 3)
 	{
 		LPINTROEVENT event = new CIntroEvent(obj, atoi(tokens[i].c_str()), atoi(tokens[i + 1].c_str()), atoi(tokens[i + 2].c_str()));
 		intro_events->Add(event);
@@ -71,7 +71,7 @@ void CIntroScene::ParseObjects(string line)
 
 CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CScene(id, filePath) 
 {
-	intro_start = (DWORD) GetTickCount64();
+	intro_start = (DWORD) (DWORD)GetTickCount64();
 	this->objectsFileName = objectFileName;
 	this->gameModeMenu = NULL;
 	key_handler = new CIntroSceneKeyHandler(this);

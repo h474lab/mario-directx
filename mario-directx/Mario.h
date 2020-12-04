@@ -266,7 +266,7 @@ class CMario : public CGameObject
 
 	// "Jumping Up" is the state that Mario can jump higher (or further) than normal jumping state
 	int jumpingUp;
-	int lastStandingHeight;
+	float lastStandingHeight;
 
 	int flyJump;
 	DWORD flyJump_start;
@@ -313,7 +313,7 @@ class CMario : public CGameObject
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 
-	int scoreStreak;
+	unsigned int scoreStreak;
 
 	CGameObject* floor;
 

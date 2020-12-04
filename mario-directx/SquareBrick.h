@@ -14,7 +14,7 @@ class CSquareBrick : public CGameObject
 
 	LPANIMATION_SET fragmentAnimationSet;
 public:
-	CSquareBrick() { background = 0; SetState(SQUARE_BRICK_STATE_AVAILABLE); }
+	CSquareBrick();
 
 	void Destroy();
 

@@ -1,5 +1,12 @@
 #include "SquareBrick.h"
 
+CSquareBrick::CSquareBrick()
+{
+	background = 0;
+	SetState(SQUARE_BRICK_STATE_AVAILABLE);
+	fragmentAnimationSet = NULL;
+}
+
 void CSquareBrick::Destroy()
 {
 	background = 1;

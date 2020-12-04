@@ -5,7 +5,7 @@ CScore::CScore()
 {
 	background = 1;
 	SetState(SCORE_STATE_APPEAR);
-	score_start_appearing = GetTickCount64();
+	score_start_appearing = (DWORD)GetTickCount64();
 	SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_SCORE));
 }
 

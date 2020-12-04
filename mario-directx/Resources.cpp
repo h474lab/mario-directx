@@ -102,8 +102,8 @@ void CResources::_ParseSection_MAP_NODE_SETS(string line)
 	
 	// import id and position of map node
 	int nodeId = atoi(tokens[1].c_str());
-	float x = atof(tokens[2].c_str());
-	float y = atof(tokens[3].c_str());
+	float x = (float)atof(tokens[2].c_str());
+	float y = (float)atof(tokens[3].c_str());
 
 	// import id of left, top, right, bottom node of this node
 	int leftNode = atoi(tokens[4].c_str());
@@ -138,10 +138,10 @@ void CResources::_ParseSection_GRID(string line)
 	vector<string> tokens = split(line);
 
 	int id = atoi(tokens[0].c_str());
-	float start_x = atof(tokens[1].c_str());
-	float end_x = atof(tokens[2].c_str());
-	float start_y = atof(tokens[3].c_str());
-	float end_y = atof(tokens[4].c_str());
+	float start_x = (float)atof(tokens[1].c_str());
+	float end_x = (float)atof(tokens[2].c_str());
+	float start_y = (float)atof(tokens[3].c_str());
+	float end_y = (float)atof(tokens[4].c_str());
 
 	int numRows = atoi(tokens[5].c_str());
 	int numColumns = atoi(tokens[6].c_str());

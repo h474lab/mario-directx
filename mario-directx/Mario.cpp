@@ -54,7 +54,6 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"\nLevel Transform: %d", levelTransform);
 	if (levelTransform)
 	{
 		if (GetTickCount64() - stepStart > MARIO_LEVEL_TRANSFORMING_TIME)
@@ -66,7 +65,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				SetLevel(transform_lastLevel);
 
 			transformSteps++;
-			stepStart = GetTickCount64();
+			stepStart = (DWORD)GetTickCount64();
 		}
 
 		// Transforming has finished
@@ -101,7 +100,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			vy = -MARIO_FLY_JUMP_SPEED_Y;
 		}
 
-		if (flyJump && GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
+		if (flyJump && (DWORD)GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
 		{
 			flyJump = 0;
 			flyJump_start = 0;
@@ -1263,7 +1262,7 @@ void CMario::StartLevelTransform(int lastLevel, int newLevel)
 	transform_newLevel = newLevel;
 	transformSteps = 0;
 	levelTransform = 1;
-	stepStart = GetTickCount64();
+	stepStart = (DWORD)GetTickCount64();
 	SetLevel(transform_newLevel);
 }
 
@@ -1643,7 +1642,7 @@ void CMario::ReducePowerLevel()
 		if (GetTickCount64() - powerLevel_reduce_start > MARIO_POWER_LEVEL_REDUCING_TIME)
 		{
 			powerLevel--;
-			powerLevel_reduce_start = GetTickCount64();
+			powerLevel_reduce_start = (DWORD)GetTickCount64();
 		}
 	}
 }

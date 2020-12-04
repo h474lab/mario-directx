@@ -67,8 +67,8 @@ void CMapScene::ParseObjects(string line)
 	vector<string> tokens = split(line);
 
 	int type_id = atoi(tokens[0].c_str());
-	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	int numRows, numColumns;

@@ -326,7 +326,7 @@ void CPlayScene::ParseObjects(string line)
 	}
 }
 
-void CPlayScene::ChangePlayZone(int zoneID)
+void CPlayScene::ChangePlayZone(unsigned int zoneID)
 {
 	if (zoneID >= playZones.size())
 	{
@@ -371,7 +371,7 @@ void CPlayScene::Load()
 
 	// load map
 	LoadObjects();
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
 
 	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
@@ -497,8 +497,8 @@ void CPlayScene::Render()
 	playZones[currentZone].GetVerticalBounds(topBound, bottomBound);
 	playZones[currentZone].GetHorizontalBounds(leftBound, rightBound);
 
-	float screen_width = CGame::GetInstance()->GetScreenWidth();
-	float screen_height = CGame::GetInstance()->GetScreenHeight();
+	float screen_width = (float)CGame::GetInstance()->GetScreenWidth();
+	float screen_height = (float)CGame::GetInstance()->GetScreenHeight();
 
 	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 

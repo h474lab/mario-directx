@@ -15,6 +15,20 @@ CGameObject::CGameObject()
 	x = y = 0;
 	vx = vy = 0;
 	nx = 1;	
+	animation_set = NULL;
+	background = 0;
+
+	delayAfterMovingUp = 0;
+	delay_start = delay_time = 0;
+	flyingDirection = FLYING_DIRECTION_NOMOVE;
+	flyingSpeedY = 0.0f;
+	maxFlyingY = minFlyingY = 0;
+
+	previousObject = nextObject = NULL;
+	state = 0;
+
+	dt = 0;
+	dx = dy = 0;
 }
 
 void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)

@@ -360,7 +360,6 @@ void CGame::_ParseSection_SCENES(string line)
 	LPCWSTR tilesetFilePath;
 	LPCWSTR tiledBackgroundFilePath;
 	LPCWSTR objectsFileName;
-	LPCWSTR mapNodeList;
 	LPSCENE scene;
 	int world;
 	

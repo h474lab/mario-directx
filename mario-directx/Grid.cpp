@@ -72,8 +72,8 @@ void CGrid::AddObject(LPGAMEOBJECT object)
 	float cellWidth = gridWidth / (float)numColumns;
 
 	// calculate row and column of this object
-	int row = (obj_y - start_y) / cellHeight;
-	int column = (obj_x - start_x) / cellWidth;
+	int row = (int)((obj_y - start_y) / cellHeight);
+	int column = (int)((obj_x - start_x) / cellWidth);
 
 	InsertToGrid(object, row, column);
 }
@@ -98,10 +98,10 @@ vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()
 	float cellHeight = gridHeight / (float)numRows;
 	float cellWidth = gridWidth / (float)numColumns;
 
-	int cell_start_x = cam_x / cellWidth;
-	int cell_start_y = cam_y / cellHeight;
-	int cell_end_x = (cam_x + screenWidth) / cellWidth + 1;
-	int cell_end_y = (cam_y + screenHeight) / cellHeight + 1;
+	int cell_start_x = (int)(cam_x / cellWidth);
+	int cell_start_y = (int)(cam_y / cellHeight);
+	int cell_end_x = (int)((cam_x + screenWidth) / cellWidth + 1);
+	int cell_end_y = (int)((cam_y + screenHeight) / cellHeight + 1);
 
 	for (int i = cell_start_x; i <= cell_end_x; i++)
 		for (int j = cell_start_y; j <= cell_end_y; j++)

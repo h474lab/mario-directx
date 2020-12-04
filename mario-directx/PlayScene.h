@@ -39,7 +39,7 @@ public:
 
 	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 
-	void ChangePlayZone(int zoneID);
+	void ChangePlayZone(unsigned int zoneID);
 	void StartSettingCurrentZone();
 
 	virtual void Load();

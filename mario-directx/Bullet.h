@@ -26,7 +26,7 @@ class CBullet : public CGameObject
 {
 	int direction;
 public:
-	CBullet() { background = 0; SetState(BULLET_STATE_ON_HOLD); }
+	CBullet();
 
 	void SetDirection(int direction);
 

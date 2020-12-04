@@ -26,7 +26,7 @@ void CTitle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y += TITLE_DROPPING_SPEED;
 		return;
 	}
-	if ((state == TITLE_STATE_MONOCHROME_VIBRATING || state == TITLE_STATE_COLORFUL_VIBRATING) && GetTickCount64() - vibrate_start >= VIBRATING_TIME)
+	if ((state == TITLE_STATE_MONOCHROME_VIBRATING || state == TITLE_STATE_COLORFUL_VIBRATING) && (DWORD)GetTickCount64() - vibrate_start >= VIBRATING_TIME)
 	{
 		if (vibratingDirection == VIBRATING_DIRECTION_UP)
 		{

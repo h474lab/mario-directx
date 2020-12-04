@@ -4,6 +4,9 @@
 
 CTilemap::CTilemap(int numRows, int numColumns, LPCWSTR tileFilePath, LPCWSTR tilesetFilePath, int tileWidth, int tileHeight, D3DCOLOR transparentColor)
 {
+	this->ID = 0;
+	this->spriteList->Clear();
+
 	this->tileWidth = tileWidth;
 	this->tileHeight = tileHeight;
 
@@ -74,15 +77,15 @@ void CTilemap::LoadMap()
 
 void CTilemap::DrawFullTilemap(float posX, float posY, float left, float top, float right, float bottom)
 {
-	int start_x = 0, end_x = tilemap[0].size();
-	int start_y = 0, end_y = tilemap.size();
+	unsigned int start_x = 0, end_x = tilemap[0].size();
+	unsigned int start_y = 0, end_y = tilemap.size();
 
 	if (!(left == -1 || top == -1 || right == -1 || bottom == -1))
 	{
-		start_x = (left - posX) / tileWidth;
-		end_x = (right - posX) / tileWidth;
-		start_y = (top - posY) / tileHeight;
-		end_y = (bottom - posY) / tileHeight;
+		start_x = (unsigned int)(left - posX) / tileWidth;
+		end_x = (unsigned int)(right - posX) / tileWidth;
+		start_y = (unsigned int)(top - posY) / tileHeight;
+		end_y = (unsigned int)(bottom - posY) / tileHeight;
 	}
 
 	for (unsigned int i = start_y; i < end_y; i++)

@@ -28,7 +28,7 @@ class CIntroEvents
 {
 	static CIntroEvents *__instance;
 
-	int current_event;
+	unsigned int current_event;
 	vector<LPINTROEVENT> intro_events;
 public:
 	CIntroEvents() { current_event = -1; }
