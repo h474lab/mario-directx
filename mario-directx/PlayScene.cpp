@@ -399,6 +399,8 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	player->Update(dt, &coObjects);
+	if (player->GetLevelTransform()) return;
+
 	player->GetHittableTail();
 
 	//DebugOut(L"\nHittable Tail: %d", player->GetHittableTail());

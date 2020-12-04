@@ -13,6 +13,9 @@
 #define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			80.0f
 
+#define MARIO_LEVEL_TRANSFORMING_TIME	50
+#define MARIO_LEVEL_TRANSFORMING_STEPS	10
+
 #define MARIO_POWER_LEVEL_REDUCING_TIME	300
 
 #define MARIO_FLY_JUMP_SPEED_Y		0.02f
@@ -302,6 +305,11 @@ class CMario : public CGameObject
 	int lastFlyingDirection;
 	int allowSwichingZone;
 
+	int levelTransform;
+	int transform_lastLevel, transform_newLevel;
+	int transformSteps;
+	DWORD stepStart;
+
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 
@@ -334,6 +342,8 @@ public:
 	void setHoldenKoopa(CKoopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 
+	void StartLevelTransform(int lastLevel, int newLevel);
+	int GetLevelTransform() { return levelTransform; }
 	void LevelUp();
 	void LevelDown();
 	void SetState(int state);

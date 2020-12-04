@@ -25,6 +25,7 @@
 CMario::CMario(float x, float y) : CGameObject()
 {
 	level = MARIO_LEVEL_BIG;
+	levelTransform = 0;
 	untouchable = 0;
 	turning = 0;
 	kicking = 0;
@@ -53,7 +54,31 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"\nFly: %d", fly);
+	DebugOut(L"\nLevel Transform: %d", levelTransform);
+	if (levelTransform)
+	{
+		if (GetTickCount64() - stepStart > MARIO_LEVEL_TRANSFORMING_TIME)
+		{
+			// switch between two levels
+			if (level == transform_lastLevel)
+				SetLevel(transform_newLevel);
+			else
+				SetLevel(transform_lastLevel);
+
+			transformSteps++;
+			stepStart = GetTickCount64();
+		}
+
+		// Transforming has finished
+		if (transformSteps >= MARIO_LEVEL_TRANSFORMING_STEPS)
+		{
+			transformSteps = 0;
+			SetLevel(transform_newLevel);
+			levelTransform = 0;
+		}
+		return;
+	}
+
 	if (flyingDirection != FLYING_DIRECTION_NOMOVE)
 	{
 		UpdateFlying(dt);
@@ -1213,15 +1238,25 @@ void CMario::releaseKoopa()
 	holdenKoopa = NULL;
 }
 
+void CMario::StartLevelTransform(int lastLevel, int newLevel)
+{
+	transform_lastLevel = lastLevel;
+	transform_newLevel = newLevel;
+	transformSteps = 0;
+	levelTransform = 1;
+	stepStart = GetTickCount64();
+	SetLevel(transform_newLevel);
+}
+
 void CMario::LevelUp()
 {
 	if (level == MARIO_LEVEL_SMALL)
 	{
-		SetLevel(MARIO_LEVEL_BIG);
+		StartLevelTransform(level, MARIO_LEVEL_BIG);
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		SetLevel(MARIO_LEVEL_TAIL);
+		StartLevelTransform(level, MARIO_LEVEL_TAIL);
 	}
 }
 
@@ -1230,17 +1265,17 @@ void CMario::LevelDown()
 
 	if (level == MARIO_LEVEL_FIRE)
 	{
-		SetLevel(MARIO_LEVEL_BIG);
+		StartLevelTransform(level, MARIO_LEVEL_BIG);
 		StartUntouchable();
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
-		SetLevel(MARIO_LEVEL_BIG);
+		StartLevelTransform(level, MARIO_LEVEL_BIG);
 		StartUntouchable();
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		SetLevel(level = MARIO_LEVEL_SMALL);
+		StartLevelTransform(level, MARIO_LEVEL_SMALL);
 		StartUntouchable();
 	}
 	else {
