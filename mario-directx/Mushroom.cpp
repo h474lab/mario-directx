@@ -149,7 +149,6 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt, coObjects);
 		x += dx;
 		y += dy;
-
 	}
 }
 

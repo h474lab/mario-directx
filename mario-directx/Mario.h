@@ -23,7 +23,7 @@
 
 #define MARIO_FLY_SPEED_Y			0.06f
 #define MARIO_FLY_SPEED_X			0.4f
-#define MARIO_FLY_TIME				500
+#define MARIO_FLY_TIME				300
 
 #define MARIO_SPINNING_SPEED_X		0.1f
 #define MARIO_FLYING_JUMP_SPEED_X	0.1f
@@ -315,6 +315,8 @@ class CMario : public CGameObject
 
 	int scoreStreak;
 
+	CGameObject* floor;
+
 	DWORD now;
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -374,6 +376,8 @@ public:
 
 	void AddStreakScore(CGameObject* coObject);
 	void AddScore(int score, CGameObject* coObject);
+
+	CGameObject* GetFloor() { return floor; }
 
 	void Reset();
 

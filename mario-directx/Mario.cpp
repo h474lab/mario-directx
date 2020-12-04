@@ -364,7 +364,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			CGame *game = CGame::GetInstance();
 
-			if (e->ny < 0) jumping = 0;
+			if (e->ny < 0)
+			{
+				jumping = 0;
+				floor = e->obj;
+			}
+
 			if (e->ny > 0)
 			{
 				jumpingUp = 0;
@@ -585,6 +590,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				vy = lastVy;
 			}
 		}
+	}
+
+	if (jumping) floor = NULL;
+
+	if (floor)
+	{
+		float floor_x, floor_y;
+		floor->GetPosition(floor_x, floor_y);
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		float height = bottom - top;
+
+		if (y > floor_y - height)
+			y = floor_y - height;
 	}
 
 	if (holdenKoopa != NULL)
