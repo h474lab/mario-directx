@@ -149,6 +149,7 @@
     <ClCompile Include="BrickFragment.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="MapGate.cpp" />
     <ClCompile Include="MapGrass.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="BrickFragment.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="MapGate.h" />
     <ClInclude Include="MapGrass.h" />

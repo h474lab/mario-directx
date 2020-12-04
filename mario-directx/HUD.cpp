@@ -9,6 +9,9 @@ CHUD::CHUD()
 {
 	background = 1;
 	scoreBoard = new CScoreboard();
+	card_1 = new CCard();
+	card_2 = new CCard();
+	card_3 = new CCard();
 }
 
 void CHUD::SetState(int state)
@@ -19,13 +22,33 @@ void CHUD::SetState(int state)
 	{
 	case HUD_STATE_INTRO_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_DISAPPEAR);
+		card_1->SetState(CARD_STATE_HIDING);
+		card_2->SetState(CARD_STATE_HIDING);
+		card_3->SetState(CARD_STATE_HIDING);
 		background = 0;
 		break;
 	case HUD_STATE_PLAY_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_APPEAR);
+		card_1->SetState(CARD_STATE_BLANK);
+		card_2->SetState(CARD_STATE_BLANK);
+		card_3->SetState(CARD_STATE_BLANK);
 		background = 1;
 		break;
 	}
+}
+
+void CHUD::SetCards(int card_1_state, int card_2_state, int card_3_state)
+{
+	this->card_1->SetState(card_1_state);
+	this->card_2->SetState(card_2_state);
+	this->card_3->SetState(card_3_state);
+}
+
+void CHUD::GetCards(int& card_1_state, int& card_2_state, int& card_3_state)
+{
+	card_1_state = card_1->GetState();
+	card_2_state = card_2->GetState();
+	card_3_state = card_3->GetState();
 }
 
 void CHUD::Delete()
@@ -43,6 +66,10 @@ void CHUD::SetPosition(float x, float y)
 	CGameObject::SetPosition(x, y);
 
 	scoreBoard->SetPosition(x + SCOREBOARD_POSITION_X, y + SCOREBOARD_POSITION_Y);
+
+	card_1->SetPosition(x + CARD_1_POSITION_X, y + CARD_1_POSITION_Y);
+	card_2->SetPosition(x + CARD_2_POSITION_X, y + CARD_2_POSITION_Y);
+	card_3->SetPosition(x + CARD_3_POSITION_X, y + CARD_3_POSITION_Y);
 }
 
 void CHUD::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -71,6 +98,10 @@ void CHUD::Render()
 	}
 
 	scoreBoard->Render();
+
+	card_1->Render();
+	card_2->Render();
+	card_3->Render();
 }
 
 CHUD* CHUD::GetInstance()

@@ -91,9 +91,6 @@
     <Filter Include="Objects\HUD">
       <UniqueIdentifier>{c5cc99ce-37a2-496e-81f3-75067270e37d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Scoreboard">
-      <UniqueIdentifier>{df034a8d-1edd-4360-be36-bb7687292d94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\Number">
       <UniqueIdentifier>{98579ec9-10c3-403d-b379-c8b7ddc37a33}</UniqueIdentifier>
     </Filter>
@@ -171,6 +168,12 @@
     </Filter>
     <Filter Include="Game Manager\Grid">
       <UniqueIdentifier>{94230053-f27e-41f6-b3da-a526b74efe23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\HUD\Scoreboard">
+      <UniqueIdentifier>{df034a8d-1edd-4360-be36-bb7687292d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\HUD\Card">
+      <UniqueIdentifier>{25bbb7bb-ebc0-4c13-a1ef-ccabb2149193}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -256,7 +259,7 @@
       <Filter>Objects\HUD</Filter>
     </ClCompile>
     <ClCompile Include="Scoreboard.cpp">
-      <Filter>Objects\Scoreboard</Filter>
+      <Filter>Objects\HUD\Scoreboard</Filter>
     </ClCompile>
     <ClCompile Include="Number.cpp">
       <Filter>Objects\Number</Filter>
@@ -332,6 +335,9 @@
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Game Manager\Scence\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Objects\HUD\Card</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,7 +423,7 @@
       <Filter>Objects\HUD</Filter>
     </ClInclude>
     <ClInclude Include="Scoreboard.h">
-      <Filter>Objects\Scoreboard</Filter>
+      <Filter>Objects\HUD\Scoreboard</Filter>
     </ClInclude>
     <ClInclude Include="Number.h">
       <Filter>Objects\Number</Filter>
@@ -493,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Game Manager\Scence\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Objects\HUD\Card</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

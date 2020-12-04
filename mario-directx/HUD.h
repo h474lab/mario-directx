@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Scoreboard.h"
+#include "Card.h"
 
 #define HUD_STATE_INTRO_SCENE	0
 #define HUD_STATE_MAP_SCENE		1
@@ -15,15 +16,27 @@
 #define SCOREBOARD_POSITION_X	4
 #define SCOREBOARD_POSITION_Y	1
 
+#define CARD_1_POSITION_X	200
+#define CARD_1_POSITION_Y	2
+
+#define CARD_2_POSITION_X	225
+#define CARD_2_POSITION_Y	2
+
+#define CARD_3_POSITION_X	250
+#define CARD_3_POSITION_Y	2
+
 class CHUD : public CGameObject
 {
 	static CHUD* __instance;
 	CScoreboard* scoreBoard;
+
+	CCard* card_1, * card_2, * card_3;
 public:
 	CHUD();
 
 	virtual void SetState(int state);
-
+	
+	// Scoreboard
 	void SetWorld(int world) { scoreBoard->SetWorld(world); }
 	void SetMoney(int money) { scoreBoard->SetMoney(money); }
 	void SetScore(int score) { scoreBoard->SetScore(score); }
@@ -41,6 +54,10 @@ public:
 	int GetLives() { return scoreBoard->GetLives(); }
 	int GetPowerLevel() { return scoreBoard->GetPowerLevel(); }
 	int GetRemainingTime() { return scoreBoard->GetRemainingTime(); }
+
+	// Cards
+	void SetCards(int card_1_state, int card_2_state, int card_3_state);
+	void GetCards(int& card_1_state, int& card_2_state, int& card_3_state);
 
 	void Delete();
 
