@@ -115,12 +115,6 @@ void CGameObject::FilterCollision(
 			coEventsResult.push_back(coEvents[i]);
 		}
 	}
-
-	//DebugOut(L"\nmin_tx=%f", min_tx);
-	//DebugOut(L"\nmin_ty=%f", min_ty);
-
-	//if (min_ix>=0) coEventsResult.push_back(coEvents[min_ix]);
-	//if (min_iy>=0) coEventsResult.push_back(coEvents[min_iy]);
 }
 
 

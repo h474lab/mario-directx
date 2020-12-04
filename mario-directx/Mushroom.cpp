@@ -135,6 +135,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CMario* mario = dynamic_cast<CMario*>(e->obj);
 				SetState(MUSHROOM_STATE_UNAVAILABLE);
 				Gain(mario);
+				return;
 			}
 			else
 			{
