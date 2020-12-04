@@ -139,6 +139,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// set Power Level for displaying and identify flying ability of Mario
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
 	}
+	else ReducePowerLevel();
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
@@ -1579,6 +1580,18 @@ void CMario::SetTail(float start_x, float end_x)
 	tail_end_x = end_x;
 	tail_start_y = y + MARIO_TAIL_HEAD_TO_TAIL;
 	tail_end_y = tail_start_y + MARIO_TAIL_TAIL_WIDTH;
+}
+
+void CMario::ReducePowerLevel()
+{
+	if (powerLevel > 0)
+	{
+		if (GetTickCount64() - powerLevel_reduce_start > MARIO_POWER_LEVEL_REDUCING_TIME)
+		{
+			powerLevel--;
+			powerLevel_reduce_start = GetTickCount64();
+		}
+	}
 }
 
 void CMario::StartSwitchingZone(int direction)

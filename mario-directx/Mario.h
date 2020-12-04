@@ -13,6 +13,8 @@
 #define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			80.0f
 
+#define MARIO_POWER_LEVEL_REDUCING_TIME	300
+
 #define MARIO_FLY_JUMP_SPEED_Y		0.02f
 #define MARIO_FLY_JUMP_TIME			300
 
@@ -278,7 +280,9 @@ class CMario : public CGameObject
 	int lastRunning;
 	int running;
 	DWORD running_start;
+
 	int powerLevel;
+	DWORD powerLevel_reduce_start;
 
 	int kicking;
 	DWORD kicking_start;
@@ -348,6 +352,7 @@ public:
 	void GetTail(float &start_x, float &end_x, float &start_y, float &end_y) { start_x = tail_start_x; end_x = tail_end_x; start_y = tail_start_y; end_y = tail_end_y; }
 	
 	int GetPowerLevel() { return powerLevel; }
+	void ReducePowerLevel();
 
 	// ready to switch scene (up/down the tube)
 	void SetReadyUp(int state) { readyToUp = state; }

@@ -66,6 +66,7 @@ void CPlayScene::ParseObjects(string line)
 
 	CGameObject* includedObj = NULL;
 	vector<LPGAMEOBJECT> queuedObject;
+	queuedObject.clear();
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
