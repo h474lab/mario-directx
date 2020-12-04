@@ -10,14 +10,14 @@
 #define MARIO_SLIDING_SPEED_DOWN	0.02f
 //0.1f
 #define MARIO_JUMP_SPEED_X			0.1f
-#define MARIO_JUMP_SPEED_Y			0.1f
+#define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			80.0f
 
-#define MARIO_FLY_JUMP_SPEED_Y		0.0025f
+#define MARIO_FLY_JUMP_SPEED_Y		0.02f
 #define MARIO_FLY_JUMP_TIME			300
 
-#define MARIO_FLY_SPEED_Y			1.0/400.0f
-#define MARIO_FLY_SPEED_X			0.35f
+#define MARIO_FLY_SPEED_Y			0.06f
+#define MARIO_FLY_SPEED_X			0.4f
 #define MARIO_FLY_TIME				500
 
 #define MARIO_SPINNING_SPEED_X		0.1f
@@ -235,6 +235,10 @@
 #define MARIO_SCORE_4000	4000
 #define MARIO_SCORE_8000	8000
 #define MARIO_SCORE_1UP		-10
+
+#define MARIO_FLYING_STATE_UP	1
+#define MARIO_FLYING_STATE_DOWN	-1
+#define MARIO_FLYING_STATE_NONE	0
 
 class CMario : public CGameObject
 {

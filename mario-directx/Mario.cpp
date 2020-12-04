@@ -53,6 +53,7 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	DebugOut(L"\nFly: %d", fly);
 	if (flyingDirection != FLYING_DIRECTION_NOMOVE)
 	{
 		UpdateFlying(dt);
@@ -66,13 +67,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (jumping) running = 0;
 
 	if (jumpingUp && _lastVy <= 0.0f) vy = -MARIO_JUMP_SPEED_Y;
-	if (fly == 0)
+	if (fly == MARIO_FLYING_STATE_NONE)
 	{
 		if (flyJump && _lastVy >= 0.0f)
 		{
 			if (!jumping)
 				flyJump = 0;
-			vy -= MARIO_FLY_JUMP_SPEED_Y * dt;
+			vy = -MARIO_FLY_JUMP_SPEED_Y;
 		}
 
 		if (flyJump && GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
@@ -81,23 +82,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			flyJump_start = 0;
 		}
 	}
-	else if (fly == 1)
+	else if (fly == MARIO_FLYING_STATE_UP)
 	{
 		if (flyJump)
 		{
 			if (!jumping)
 			{
 				flyJump = 0;
-				fly = 0;
+				fly = MARIO_FLYING_STATE_NONE;
 			}
-			vy = (float)-MARIO_FLY_SPEED_Y * dt;
+			vy = (float)-MARIO_FLY_SPEED_Y;
 		}
 
 		if (GetTickCount64() - flyJump_start > MARIO_FLY_TIME)
 		{
 			SetJumpingUp(0);
 			flyJump = 0;
-			fly = -1;
+			fly = MARIO_FLYING_STATE_DOWN;
 		}
 	}
 	else
@@ -105,12 +106,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (!jumping)
 		{
 			flyJump = 0;
-			fly = 0;
+			fly = MARIO_FLYING_STATE_NONE;
 		}
 	}
 
 	if (jumpingUp && !flyJump && !fly)
 	{
+		// Mario can Jump for a specific height
 		if (lastStandingHeight - this->y > MARIO_JUMP_HEIGHT)
 			SetJumpingUp(0);
 	}
@@ -125,6 +127,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (running)
 	{
+		// when Mario running for an enough amount of time -> Start running fast
 		if (runningTime > MARIO_RUNNING_TIME)
 		{
 			if (nx > 0)
@@ -132,6 +135,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else
 				SetState(MARIO_STATE_RUNNING_FAST_LEFT);
 		}
+
+		// set Power Level for displaying and identify flying ability of Mario
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
 	}
 
@@ -143,7 +148,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
 	coEvents.clear();
 
 	// turn off collision when die 
@@ -158,12 +162,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		ThrowFireball();
 	}
 
+	// Mario stops kicking Koopa
 	if (GetTickCount64() - kicking_start > MARIO_KICKING_TIME)
 	{
 		kicking = 0;
 		kicking_start = 0;
 	}
 
+	// Mario changes his walking/running direction
 	if (turning)
 	{
 		if (vx > 0)
@@ -571,7 +577,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// reset scoring streak to 0
 	if (!jumping) scoreStreak = 0;
-	DebugOut(L"\ndy=%f, dt=%d", dy, dt);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
@@ -1324,11 +1329,11 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_JUMPING:
 		running = 0;
-		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT) && !jumping)
+		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT)/* && !jumping*/)
 		{
 			jumping = 1;
 			FlyJump();
-			fly = 1;
+			fly = MARIO_FLYING_STATE_UP;
 		}
 		stateCanBeChanged = 1;
 		break; 
