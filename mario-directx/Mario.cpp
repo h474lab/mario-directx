@@ -164,7 +164,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		// set Power Level for displaying and identify flying ability of Mario
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
 	}
-	else ReducePowerLevel();
+	else if (fly != MARIO_FLYING_STATE_UP) ReducePowerLevel();
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
