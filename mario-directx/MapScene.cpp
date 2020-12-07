@@ -13,47 +13,65 @@ void CMapSceneKeyHandler::KeyState(BYTE* states)
 void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMapScene* mapScene = (CMapScene*)scene;
-	CMapMario* mario = mapScene->GetMario();
-	LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
 
-	LPMAPNODE currentNode = mapNodes->GetCurrentNode();
-	LPMAPNODE nextNode = NULL;
-
-	if (mario && mario->GetState() == MAP_MARIO_STATE_IDLING)
+	if (CGame::GetInstance()->GetGameState() == GAME_STATE_PLAY)
 	{
+		CMapMario* mario = mapScene->GetMario();
+		LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
+
+		LPMAPNODE currentNode = mapNodes->GetCurrentNode();
+		LPMAPNODE nextNode = NULL;
+
+		if (mario && mario->GetState() == MAP_MARIO_STATE_IDLING)
+		{
+			switch (KeyCode)
+			{
+			case DIK_UP:
+				nextNode = mapNodes->Get(currentNode->GetNode(TOP_NODE));
+				break;
+			case DIK_DOWN:
+				nextNode = mapNodes->Get(currentNode->GetNode(BOTTOM_NODE));
+				break;
+			case DIK_LEFT:
+				nextNode = mapNodes->Get(currentNode->GetNode(LEFT_NODE));
+				break;
+			case DIK_RIGHT:
+				nextNode = mapNodes->Get(currentNode->GetNode(RIGHT_NODE));
+				break;
+			case DIK_RETURN:
+				CGameObject* nodeObject = currentNode->GetNodeObject();
+				if (nodeObject)
+				{
+					if (dynamic_cast<CMapGate*>(nodeObject))
+					{
+						CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId());
+						scene->Unload();
+					}
+				}
+			}
+
+			if (nextNode)
+			{
+				mapNodes->SetCurrentNode(nextNode);
+				float x, y;
+				nextNode->GetPosition(x, y);
+				mario->SetDestination(x, y);
+				mario->SetState(MAP_MARIO_STATE_MOVING);
+			}
+		}
+	}
+	else
+	{
+		CGameOverBox* gameOverBox = mapScene->GetGameOverBox();
+		
 		switch (KeyCode)
 		{
 		case DIK_UP:
-			nextNode = mapNodes->Get(currentNode->GetNode(TOP_NODE));
+			gameOverBox->SwitchOption();
 			break;
 		case DIK_DOWN:
-			nextNode = mapNodes->Get(currentNode->GetNode(BOTTOM_NODE));
+			gameOverBox->SwitchOption();
 			break;
-		case DIK_LEFT:
-			nextNode = mapNodes->Get(currentNode->GetNode(LEFT_NODE));
-			break;
-		case DIK_RIGHT:
-			nextNode = mapNodes->Get(currentNode->GetNode(RIGHT_NODE));
-			break;
-		case DIK_RETURN:
-			CGameObject* nodeObject = currentNode->GetNodeObject();
-			if (nodeObject)
-			{
-				if (dynamic_cast<CMapGate*>(nodeObject))
-				{
-					CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId());
-					scene->Unload();
-				}
-			}
-		}
-
-		if (nextNode)
-		{
-			mapNodes->SetCurrentNode(nextNode);
-			float x, y;
-			nextNode->GetPosition(x, y);
-			mario->SetDestination(x, y);
-			mario->SetState(MAP_MARIO_STATE_MOVING);
 		}
 	}
 }
@@ -111,7 +129,7 @@ void CMapScene::Load()
 
 	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
 
-	gameOverBox = new CGameOverBox();
+	this->gameOverBox = new CGameOverBox();
 	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
 
 	float x, y;

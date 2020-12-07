@@ -28,6 +28,7 @@ public:
 
 	CMapMario* GetMario() { return mario; }
 	int GetWorld() { return world; }
+	CGameOverBox* GetGameOverBox() { return gameOverBox; }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

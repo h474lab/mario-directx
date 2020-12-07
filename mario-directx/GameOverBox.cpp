@@ -1,4 +1,5 @@
 #include "GameOverBox.h"
+#include "Game.h"
 
 CGameOverBox::CGameOverBox()
 {
@@ -15,6 +16,19 @@ void CGameOverBox::SwitchOption()
 		focusingOption = BOX_FOCUS_OPTION_2;
 	else
 		focusingOption = BOX_FOCUS_OPTION_1;
+}
+
+void CGameOverBox::SetState(int state)
+{
+	switch (state)
+	{
+	case BOX_STATE_APPEAR:
+		CGame::GetInstance()->SetGameState(GAME_STATE_OVER);
+		break;
+	case BOX_STATE_DISAPPEAR:
+		CGame::GetInstance()->SetGameState(GAME_STATE_PLAY);
+		break;
+	}
 }
 
 void CGameOverBox::Render()

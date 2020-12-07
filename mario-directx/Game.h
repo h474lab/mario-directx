@@ -24,6 +24,9 @@ using namespace std;
 
 #define GAME_PLAY_HEIGHT	168
 
+#define GAME_STATE_PLAY		0
+#define GAME_STATE_OVER		1
+
 class CGame
 {
 	static CGame * __instance;
@@ -52,6 +55,8 @@ class CGame
 
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
+
+	int gameState;
 
 	int score;
 	int lives;
@@ -102,6 +107,9 @@ public:
 
 	void SetBackgroundColor(D3DCOLOR color) { background_color = color; }
 	D3DCOLOR GetBackgroundColor() { return background_color; }
+
+	int GetGameState() { return gameState; }
+	void SetGameState(int state) { gameState = state; }
 
 	static CGame * GetInstance();
 

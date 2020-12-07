@@ -488,6 +488,8 @@ void CGame::Load(LPCWSTR gameFile)
 
 	CResources::GetInstance()->LoadResources();
 
+	gameState = GAME_STATE_PLAY;
+
 	SwitchScene(current_scene);
 }
 
