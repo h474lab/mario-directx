@@ -184,6 +184,7 @@
     <ClCompile Include="PowerSign.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="Reward.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="PowerSign.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="Reward.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Score.h" />
     <ClInclude Include="Scoreboard.h" />

@@ -16,3 +16,4 @@
 150	Resources\Textures\overworld_1_1.png	0	0	255
 160	Resources\Textures\overworld_icons.png	64	128	0
 170	Resources\Textures\enemies_flipped.png	255	255	255
+180	Resources\Textures\world1_1.png	156	252	240

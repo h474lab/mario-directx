@@ -7,6 +7,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "Reward.h"
 #include "Background.h"
 #include "ColoredBlock.h"
 #include "Tube.h"
@@ -307,6 +308,12 @@ void CPlayScene::ParseObjects(string line)
 			float b = (float)atof(tokens[5].c_str());
 			int scene_id = atoi(tokens[6].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
+			obj->SetPosition(x, y);
+			break;
+		}
+	case OBJECT_TYPE_REWARD:
+		{
+			obj = new CReward();
 			obj->SetPosition(x, y);
 			break;
 		}

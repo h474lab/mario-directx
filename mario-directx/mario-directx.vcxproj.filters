@@ -175,6 +175,9 @@
     <Filter Include="Objects\HUD\Card">
       <UniqueIdentifier>{25bbb7bb-ebc0-4c13-a1ef-ccabb2149193}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Reward">
+      <UniqueIdentifier>{5d3cb14d-6392-4eb1-a6c1-7bb8658664d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -339,6 +342,9 @@
     <ClCompile Include="Card.cpp">
       <Filter>Objects\HUD\Card</Filter>
     </ClCompile>
+    <ClCompile Include="Reward.cpp">
+      <Filter>Objects\Reward</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -502,6 +508,9 @@
     </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Objects\HUD\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="Reward.h">
+      <Filter>Objects\Reward</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
