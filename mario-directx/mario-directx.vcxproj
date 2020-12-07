@@ -150,7 +150,9 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="GameOverBox.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Letter.cpp" />
     <ClCompile Include="MapGate.cpp" />
     <ClCompile Include="MapGrass.cpp" />
     <ClCompile Include="MapMario.cpp" />
@@ -207,7 +209,9 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="GameOverBox.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Letter.h" />
     <ClInclude Include="MapGate.h" />
     <ClInclude Include="MapGrass.h" />
     <ClInclude Include="MapMario.h" />

@@ -111,6 +111,9 @@ void CMapScene::Load()
 
 	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
 
+	gameOverBox = new CGameOverBox();
+	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
+
 	float x, y;
 	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
 	mario->SetPosition(x, y);
@@ -124,6 +127,9 @@ void CMapScene::Update(DWORD dt)
 	CHUD::GetInstance()->SetPowerLevel(0);
 	CHUD::GetInstance()->SetWorld(world);
 	CHUD::GetInstance()->Update(dt);
+
+	if (CHUD::GetInstance()->GetLives() < 0)
+		gameOverBox->SetState(BOX_STATE_APPEAR);
 }
 
 void CMapScene::Render()
@@ -142,6 +148,7 @@ void CMapScene::Render()
 		object->Render();
 
 	mario->Render();
+	gameOverBox->Render();
 
 	CHUD::GetInstance()->Render();
 }

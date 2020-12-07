@@ -6,9 +6,13 @@
 #include "MapNode.h"
 
 #include "MapMario.h"
+#include "GameOverBox.h"
 
 #define CAMERA_POSITION_X	-42.0f
 #define CAMERA_POSITION_Y	-10.0f
+
+#define GAME_OVER_BOX_POSITION_X	48.0f
+#define GAME_OVER_BOX_POSITION_Y	32.0f
 
 class CMapScene : public CScene
 {
@@ -16,6 +20,7 @@ class CMapScene : public CScene
 	int world;
 
 	CMapMario* mario;
+	CGameOverBox *gameOverBox;
 
 	virtual void ParseObjects(string line);
 public:

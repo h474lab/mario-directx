@@ -178,6 +178,9 @@
     <Filter Include="Objects\Reward">
       <UniqueIdentifier>{5d3cb14d-6392-4eb1-a6c1-7bb8658664d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects\GameOverBox">
+      <UniqueIdentifier>{95b26504-f3e0-40c2-a5c5-28d5285a442e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -345,6 +348,12 @@
     <ClCompile Include="Reward.cpp">
       <Filter>Objects\Reward</Filter>
     </ClCompile>
+    <ClCompile Include="Letter.cpp">
+      <Filter>Objects\Letter</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverBox.cpp">
+      <Filter>Objects\MapObjects\GameOverBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -511,6 +520,12 @@
     </ClInclude>
     <ClInclude Include="Reward.h">
       <Filter>Objects\Reward</Filter>
+    </ClInclude>
+    <ClInclude Include="Letter.h">
+      <Filter>Objects\Letter</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverBox.h">
+      <Filter>Objects\MapObjects\GameOverBox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
