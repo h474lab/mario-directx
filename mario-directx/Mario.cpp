@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Score.h"
 #include "HUD.h"
+#include "EndGameTrigger.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -383,6 +384,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					coin->SetState(COIN_STATE_UNAVAILABLE);
 
 				keepMoving = 1;
+			}
+			else if (dynamic_cast<CEndGameTrigger*>(e->obj))
+			{
+				SetState(MARIO_STATE_DIE);
+				return;
 			}
 			else if (dynamic_cast<CGoomba *>(e->obj))
 			{

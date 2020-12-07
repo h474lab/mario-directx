@@ -7,6 +7,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "EndGameTrigger.h"
 #include "Background.h"
 #include "ColoredBlock.h"
 #include "Tube.h"
@@ -24,6 +25,8 @@
 #include "Score.h"
 
 using namespace std;
+
+#define NO_ANI_SET	-1
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_startX, float tile_startY, LPCWSTR objectsFileName, int gridId, int initialZone, vector<CPlayZone> playZones, int world) :
 	CScene(id, filePath)
@@ -313,7 +316,7 @@ void CPlayScene::ParseObjects(string line)
 		return;
 	}
 
-	if (obj)
+	if (obj && ani_set_id != NO_ANI_SET)
 	{
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
@@ -474,6 +477,9 @@ void CPlayScene::Update(DWORD dt)
 
 	CCamera* camera = CCamera::GetInstance();
 	camera->SetPosition((float)((int)cx), (float)((int)cy));
+
+	if (py > cy + (float)game->GetScreenHeight())
+		player->SetState(MARIO_STATE_DIE);
 	
 	// set parameters for HUD
 	float HUD_x, HUD_y;
