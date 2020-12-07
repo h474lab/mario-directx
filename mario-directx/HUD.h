@@ -59,6 +59,8 @@ public:
 	void SetCards(int card_1_state, int card_2_state, int card_3_state);
 	void GetCards(int& card_1_state, int& card_2_state, int& card_3_state);
 
+	void AddCard(int state);
+
 	void Delete();
 
 	virtual void SetPosition(float x, float y);

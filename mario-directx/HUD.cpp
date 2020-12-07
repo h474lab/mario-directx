@@ -22,16 +22,12 @@ void CHUD::SetState(int state)
 	{
 	case HUD_STATE_INTRO_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_DISAPPEAR);
-		card_1->SetState(CARD_STATE_HIDING);
-		card_2->SetState(CARD_STATE_HIDING);
-		card_3->SetState(CARD_STATE_HIDING);
+		SetCards(CARD_STATE_HIDING, CARD_STATE_HIDING, CARD_STATE_HIDING);
 		background = 0;
 		break;
 	case HUD_STATE_PLAY_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_APPEAR);
-		card_1->SetState(CARD_STATE_BLANK);
-		card_2->SetState(CARD_STATE_BLANK);
-		card_3->SetState(CARD_STATE_BLANK);
+		SetCards(CARD_STATE_APPEAR, CARD_STATE_APPEAR, CARD_STATE_APPEAR);
 		background = 1;
 		break;
 	}
@@ -49,6 +45,16 @@ void CHUD::GetCards(int& card_1_state, int& card_2_state, int& card_3_state)
 	card_1_state = card_1->GetState();
 	card_2_state = card_2->GetState();
 	card_3_state = card_3->GetState();
+}
+
+void CHUD::AddCard(int type)
+{
+	if (card_1->GetType() == CARD_TYPE_BLANK)
+		card_1->SetType(type);
+	else if (card_2->GetType() == CARD_TYPE_BLANK)
+		card_2->SetType(type);
+	else if (card_3->GetType() == CARD_TYPE_BLANK)
+		card_3->SetType(type);
 }
 
 void CHUD::Delete()

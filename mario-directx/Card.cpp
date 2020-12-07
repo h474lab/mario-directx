@@ -4,6 +4,8 @@ CCard::CCard()
 {
 	background = 1;
 	SetAnimationSet(CAnimationSets::GetInstance()->Get(ID_ANI_SET_CARDS));
+
+	type = CARD_TYPE_BLANK;
 }
 
 void CCard::Render()
@@ -13,16 +15,16 @@ void CCard::Render()
 	int ani = 0;
 	switch (state)
 	{
-	case CARD_STATE_BLANK:
+	case CARD_TYPE_BLANK:
 		ani = CARD_ANI_BLANK;
 		break;
-	case CARD_STATE_MUSHROOM:
+	case CARD_TYPE_MUSHROOM:
 		ani = CARD_ANI_MUSHROOM;
 		break;
-	case CARD_STATE_FLOWER:
+	case CARD_TYPE_FLOWER:
 		ani = CARD_ANI_FLOWER;
 		break;
-	case CARD_STATE_STAR:
+	case CARD_TYPE_STAR:
 		ani = CARD_ANI_STAR;
 		break;
 	}
