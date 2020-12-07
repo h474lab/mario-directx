@@ -7,7 +7,6 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-#include "EndGameTrigger.h"
 #include "Background.h"
 #include "ColoredBlock.h"
 #include "Tube.h"
@@ -584,6 +583,9 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CMario *mario = ((CPlayScene*)scene)->GetPlayer();
+
+	// not allow controlling while transforming level
+	if (mario->GetLevelTransform()) return;
 
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
