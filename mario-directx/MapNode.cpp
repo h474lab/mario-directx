@@ -1,5 +1,7 @@
 #include "MapNode.h"
 
+#include "MapGate.h"
+
 void CMapNodes::Add(int id, LPMAPNODE mapNode)
 {
 	mapNodes.insert(std::make_pair(id, mapNode));
@@ -74,6 +76,25 @@ int CMapNodeSets::Exists(int world)
 void CMapNodeSets::Add(int world, LPMAPNODES mapNodes)
 {
 	mapNodeSets.insert(std::make_pair(world, mapNodes));
+}
+
+void CMapNodeSets::ResetNodes(int world)
+{
+	LPMAPNODES mapNodes = Get(world);
+
+	vector<LPMAPNODE> nodeList = mapNodes->GetAllNodes();
+	for each (LPMAPNODE node in nodeList)
+	{
+		LPGAMEOBJECT object = node->GetNodeObject();
+
+		if (object)
+		{
+			if (dynamic_cast<CMapGate*>(object))
+			{
+				object->SetState(MAPGATE_STATE_OPEN);
+			}
+		}
+	}
 }
 
 LPMAPNODES CMapNodeSets::Get(int world)

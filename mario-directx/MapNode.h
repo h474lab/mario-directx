@@ -48,5 +48,6 @@ public:
 
 	int Exists(int world);
 	void Add(int world, LPMAPNODES mapNodes);
+	void ResetNodes(int world);
 	LPMAPNODES Get(int world);
 };
