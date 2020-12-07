@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Score.h"
 #include "HUD.h"
+#include "Reward.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -587,6 +588,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				
 				if (canBeHitBySpinning || e->ny > 0)
 					squareBrick->Destroy();
+			}
+			else if (dynamic_cast<CReward*>(e->obj))
+			{
+				CReward* reward = dynamic_cast<CReward*>(e->obj);
+				reward->Gain();
+				keepMoving = 1;
 			}
 		}
 

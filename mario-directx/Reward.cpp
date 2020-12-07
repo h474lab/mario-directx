@@ -1,4 +1,5 @@
 #include "Reward.h"
+#include "HUD.h"
 
 CReward::CReward()
 {
@@ -6,6 +7,19 @@ CReward::CReward()
 	type = REWARD_TYPE_MUSHROOM;
 	state = REWARD_STATE_AVAILABLE;
 	switching_start = (DWORD)GetTickCount64();
+}
+
+void CReward::SetState(int state)
+{
+	CGameObject::SetState(state);
+	if (state == REWARD_STATE_ACQUIRED)
+	{
+		background = 1;
+	}
+	else
+	{
+		background = 0;
+	}
 }
 
 int CReward::GetNextRewardType()
@@ -16,6 +30,26 @@ int CReward::GetNextRewardType()
 		return REWARD_TYPE_STAR;
 	
 	return REWARD_TYPE_MUSHROOM;
+}
+
+void CReward::Gain()
+{
+	CHUD* hud = CHUD::GetInstance();
+
+	switch (type)
+	{
+	case REWARD_TYPE_MUSHROOM:
+		hud->AddCard(CARD_TYPE_MUSHROOM);
+		break;
+	case REWARD_TYPE_FLOWER:
+		hud->AddCard(CARD_TYPE_FLOWER);
+		break;
+	case REWARD_TYPE_STAR:
+		hud->AddCard(CARD_TYPE_STAR);
+		break;
+	}
+
+	SetState(REWARD_STATE_ACQUIRED);
 }
 
 void CReward::GetBoundingBox(float& left, float& top, float& right, float& bottom)

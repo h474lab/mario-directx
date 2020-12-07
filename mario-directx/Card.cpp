@@ -13,7 +13,7 @@ void CCard::Render()
 	if (state == CARD_STATE_HIDING) return;
 
 	int ani = 0;
-	switch (state)
+	switch (type)
 	{
 	case CARD_TYPE_BLANK:
 		ani = CARD_ANI_BLANK;
