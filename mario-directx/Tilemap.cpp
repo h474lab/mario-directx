@@ -5,6 +5,7 @@
 CTilemap::CTilemap(int numRows, int numColumns, LPCWSTR tileFilePath, LPCWSTR tilesetFilePath, int tileWidth, int tileHeight, D3DCOLOR transparentColor)
 {
 	this->ID = 0;
+	this->spriteList = CSprites::GetInstance();
 	this->spriteList->Clear();
 
 	this->tileWidth = tileWidth;
@@ -31,7 +32,6 @@ void CTilemap::LoadTiles()
 
 	LPDIRECT3DTEXTURE9 texture = textures->Get(ID);
 
-	spriteList = CSprites::GetInstance();
 	int position = 0;;
 	for (int i = 0; i < numRows; i++)
 	{

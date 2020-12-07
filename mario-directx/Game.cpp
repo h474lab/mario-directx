@@ -405,8 +405,7 @@ void CGame::_ParseSection_SCENES(string line)
 		tiledBackgroundId = atoi(tokens[6].c_str());
 		numRows = atoi(tokens[7].c_str());
 		numColumns = atoi(tokens[8].c_str());
-		CTilemaps::GetInstance()->Add(tiledBackgroundId,
-			new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
+		CTilemaps::GetInstance()->Add(tiledBackgroundId, new CTilemap(numRows, numColumns, tiledBackgroundFilePath, tilesetFilePath));
 
 		float tile_startX = (float)atof(tokens[9].c_str());
 		float tile_startY = (float)atof(tokens[10].c_str());

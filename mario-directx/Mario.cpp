@@ -416,16 +416,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 				int koopaState = koopa->GetState();
 
-				if (e->ny < 0)
+				if (e->ny != 0)
 				{
-					AddStreakScore(koopa);
-					if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT)
-						koopa->LevelDown();
-					else if (koopaState == KOOPA_STATE_WALKING_LEFT || koopaState == KOOPA_STATE_WALKING_RIGHT)
-						koopa->SetState(KOOPA_STATE_LYING_DOWN);
-					else if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT)
-						koopa->SetState(KOOPA_STATE_LYING_DOWN);
-					else if (koopaState == KOOPA_STATE_LYING_DOWN || koopaState == KOOPA_STATE_LYING_UP)
+					if (e->ny < 0)
+					{
+						AddStreakScore(koopa);
+						if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT)
+							koopa->LevelDown();
+						else if (koopaState == KOOPA_STATE_WALKING_LEFT || koopaState == KOOPA_STATE_WALKING_RIGHT)
+							koopa->SetState(KOOPA_STATE_LYING_DOWN);
+						else if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT)
+							koopa->SetState(KOOPA_STATE_LYING_DOWN);
+						vy = -MARIO_JUMP_DEFLECT_SPEED;
+					}
+					else if (e->ny > 0)
+					{
+						if (koopaState != KOOPA_STATE_LYING_UP && koopaState != KOOPA_STATE_LYING_DOWN)
+						{
+							keepMoving = 1;
+							LevelDown();
+						}
+					}
+					
+					if (koopaState == KOOPA_STATE_LYING_DOWN || koopaState == KOOPA_STATE_LYING_UP)
 					{
 						float left, top, right, bottom;
 						GetBoundingBox(left, top, right, bottom);
@@ -455,7 +468,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						}
 						continue;
 					}
-					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
 				else if (e->nx != 0)
 				{
