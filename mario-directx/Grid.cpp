@@ -50,6 +50,14 @@ CGrid::CGrid(float start_x, float start_y, float end_x, float end_y, int numRows
 	this->numRows = numRows;
 	this->numColumns = numColumns;
 
+	// find grid width and height
+	float gridHeight = end_y - start_y;
+	float gridWidth = end_x - start_x;
+
+	// calculate the height and width of each cell
+	cellHeight = gridHeight / (float)numRows;
+	cellWidth = gridWidth / (float)numColumns;
+
 	for (int i = 0; i < MAX_GRID_ROWS; i++)
 		for (int j = 0; j < MAX_GRID_COLUMNS; j++)
 			unit[i][j] = NULL;
@@ -63,19 +71,46 @@ void CGrid::AddObject(LPGAMEOBJECT object)
 	// if the object is not in the grid area -> return
 	if (obj_x > end_x || obj_x < start_x || obj_y > end_y || obj_y < start_y) return;
 
-	// find grid width and height
-	float gridHeight = end_y - start_y;
-	float gridWidth = end_x - start_x;
-
-	// calculate the height and width of each cell
-	float cellHeight = gridHeight / (float)numRows;
-	float cellWidth = gridWidth / (float)numColumns;
-
 	// calculate row and column of this object
 	int row = (int)((obj_y - start_y) / cellHeight);
 	int column = (int)((obj_x - start_x) / cellWidth);
 
+	object->SetGridPosition(row, column);
 	InsertToGrid(object, row, column);
+}
+
+void CGrid::UpdateObject(CGameObject* object)
+{
+	// get last position in grid
+	int oldGridRow = -1, oldGridColumn = -1;
+	object->GetGridPosition(oldGridRow, oldGridColumn);
+
+	// get current position in the scene
+	float obj_x, obj_y;
+	object->GetPosition(obj_x, obj_y);
+
+	// get expected row/column in grid
+	int expectedRow = (int)((obj_y - start_y) / cellHeight);
+	int expectedColumn = (int)((obj_x - start_x) / cellWidth);
+
+	// should not continue change object's grid cell
+	if (oldGridRow == expectedRow && oldGridColumn == expectedColumn) return;
+
+	// remove object from last cell
+	// if object is the first one in cell
+	if (object->GetPreviousObject() == NULL)
+	{
+		unit[oldGridRow][oldGridColumn] = object->GetNextObject();
+	}
+	// if object is in the middle of linked list
+	else
+	{
+		object->GetPreviousObject()->SetNextObject(object->GetNextObject());
+		object->GetNextObject()->SetPreviousObject(object->GetPreviousObject());
+	}
+
+	// add object to the new cell
+	AddObject(object);
 }
 
 vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()

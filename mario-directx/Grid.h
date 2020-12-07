@@ -14,11 +14,14 @@ private:
 	float start_x, start_y;
 	float end_x, end_y;
 
+	float cellWidth, cellHeight;
+
 	void InsertToGrid(LPGAMEOBJECT object, int row, int column);
 	void RemoveFromGrid(LPGAMEOBJECT object, int row, int column);
 public:
 	CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns);
 	void AddObject(LPGAMEOBJECT object);
+	void UpdateObject(CGameObject* object);
 	vector<LPGAMEOBJECT> LoadCellsWithinCamera();
 };
 

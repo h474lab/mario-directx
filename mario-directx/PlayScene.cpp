@@ -412,8 +412,6 @@ void CPlayScene::Update(DWORD dt)
 
 	player->GetHittableTail();
 
-	//DebugOut(L"\nHittable Tail: %d", player->GetHittableTail());
-
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
 		LPGAMEOBJECT currentObject = workingCell;

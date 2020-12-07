@@ -113,13 +113,12 @@ protected:
 	LPANIMATION_SET animation_set;
 
 	CGameObject* nextObject, * previousObject;
+	int grid_row, grid_column;
 public: 
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
-
-	virtual void Affect(int type) {}
 
 	int GetState() { return this->state; }
 
@@ -141,6 +140,8 @@ public:
 
 	void SetAnimationSet(LPANIMATION_SET ani_set) { animation_set = ani_set; }
 
+	void SetGridPosition(int row, int column) { grid_row = row; grid_column = column; }
+	void GetGridPosition(int& row, int& column) { row = grid_row, column = grid_column; }
 	void SetPreviousObject(CGameObject* object) { previousObject = object; }
 	CGameObject* GetPreviousObject() { return previousObject; }
 	void SetNextObject(CGameObject* object) { nextObject = object; }
