@@ -9,6 +9,7 @@
 #include "HUD.h"
 #include "Tilemap.h"
 #include "PlayZone.h"
+#include "MapScene.h"
 
 #define GAMETIME	301000
 

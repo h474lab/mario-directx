@@ -482,15 +482,24 @@ void CPlayScene::Update(DWORD dt)
 	CCamera* camera = CCamera::GetInstance();
 	camera->SetPosition((float)((int)cx), (float)((int)cy));
 
-	if (py > cy + (float)game->GetScreenHeight())
+	CHUD* HUD = CHUD::GetInstance();
+
+	if (player->OutOfCamera())
+	{
+		// Kill Mario
 		player->SetState(MARIO_STATE_DIE);
+		HUD->SetLives(HUD->GetLives() - 1);
+
+		// load Map Scene
+		game->SwitchMapScene(world);
+		this->Unload();
+		return;
+	}
 	
 	// set parameters for HUD
 	float HUD_x, HUD_y;
 	camera->GetPosition(HUD_x, HUD_y);
 	HUD_y += GAME_PLAY_HEIGHT;
-
-	CHUD *HUD = CHUD::GetInstance();
 
 	HUD->Update(dt);
 	HUD->SetPowerLevel(player->GetPowerLevel());

@@ -1666,6 +1666,16 @@ void CMario::ReducePowerLevel()
 	}
 }
 
+int CMario::OutOfCamera()
+{
+	float cx, cy;
+	CCamera::GetInstance()->GetPosition(cx, cy);
+
+	// Mario is out of camera (y axis)
+	if (y > cy + (float)CGame::GetInstance()->GetScreenHeight()) return 1;
+	return 0;
+}
+
 void CMario::StartSwitchingZone(int direction)
 {
 	float l, t, r, b;

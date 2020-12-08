@@ -20,6 +20,7 @@ void CGameOverBox::SwitchOption()
 
 void CGameOverBox::SetState(int state)
 {
+	CGameObject::SetState(state);
 	switch (state)
 	{
 	case BOX_STATE_APPEAR:

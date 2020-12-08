@@ -528,6 +528,21 @@ void CGame::SwitchScene(int scene_id)
 	s->Load();	
 }
 
+void CGame::SwitchMapScene(int world)
+{
+	for (auto& it : scenes)
+	{
+		if (dynamic_cast<CMapScene*>(it.second))
+		{
+			if (((CMapScene*)it.second)->GetWorld() == world)
+			{
+				SwitchScene(it.first);
+				return;
+			}
+		}
+	}
+}
+
 void CGame::ChangePlayZone(int zoneID)
 {
 	if (dynamic_cast<CPlayScene*>(scenes[current_scene]))

@@ -369,6 +369,7 @@ public:
 	// ready to switch scene (up/down the tube)
 	void SetReadyUp(int state) { readyToUp = state; }
 	void SetReadyDown(int state) { readyToDown = state; }
+	int OutOfCamera();
 
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }
