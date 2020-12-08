@@ -457,6 +457,8 @@ void CGame::Load(LPCWSTR gameFile)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
 
+	player = new CMario();
+
 	ifstream f;
 	f.open(gameFile);
 	char str[MAX_GAME_LINE];
@@ -488,7 +490,6 @@ void CGame::Load(LPCWSTR gameFile)
 
 	CResources::GetInstance()->LoadResources();
 
-	player = new CMario();
 	gameState = GAME_STATE_PLAY;
 
 	SwitchScene(current_scene);

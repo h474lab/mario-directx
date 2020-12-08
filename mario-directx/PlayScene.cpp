@@ -76,14 +76,8 @@ void CPlayScene::ParseObjects(string line)
 	case OBJECT_TYPE_MARIO:
 		{
 			fireball_ani_set = atoi(tokens[4].c_str());
-			if (player != NULL)
-			{
-				DebugOut(L"[ERROR] MARIO object was created before!\n");
-				return;
-			}
-			obj = CGame::GetInstance()->GetPlayer();
+			obj = player;
 			obj->SetPosition(x, y);
-			player = (CMario*)obj;
 
 			for (int i = 0; i < nFireballs; i++)
 			{
@@ -377,14 +371,12 @@ void CPlayScene::Load()
 	tiled_background->Get(tilemapId)->LoadTiles();
 	tiled_background->Get(tilemapId)->LoadMap();
 
+	this->player = CGame::GetInstance()->GetPlayer();
+
 	// load map
 	LoadObjects();
 	for (unsigned int i = 0; i < objects.size(); i++)
 		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
-
-	//CTextures::GetInstance()->Add(ID_TEX_BBOX, L"Resources\\Textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
-
-	//CTextures::GetInstance()->Add(ID_HUD_BG, L"Resources\\Textures\\black-bg.png", D3DCOLOR_XRGB(255, 255, 255));
 	
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
 
@@ -538,6 +530,8 @@ void CPlayScene::Render()
 
 	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 
+	if (player->GetFlyingDirection() != FLYING_DIRECTION_NOMOVE) player->Render();
+
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
 		LPGAMEOBJECT currentObject = workingCell;
@@ -547,7 +541,8 @@ void CPlayScene::Render()
 			currentObject = currentObject->GetNextObject();
 		}
 	}
-	player->Render();
+	
+	if (player->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE) player->Render();
 
 	/*for (unsigned int i = 0; i < objects.size(); i++)
 		objects[i]->Render();*/

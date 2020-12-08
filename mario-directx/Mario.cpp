@@ -681,7 +681,7 @@ void CMario::Render()
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
-	animation_set->at(res)->Render(x, y, alpha);
+	if (res != -1) animation_set->at(res)->Render(x, y, alpha);
 }
 
 int CMario::RenderSmallMario()
