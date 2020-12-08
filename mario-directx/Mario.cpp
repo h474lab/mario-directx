@@ -55,6 +55,8 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
+
 	if (levelTransform)
 	{
 		if (GetTickCount64() - stepStart > MARIO_LEVEL_TRANSFORMING_TIME)
@@ -593,6 +595,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CReward* reward = dynamic_cast<CReward*>(e->obj);
 				reward->Gain();
+				passedTheLevel = 1;
 				keepMoving = 1;
 			}
 		}
@@ -1671,8 +1674,10 @@ int CMario::OutOfCamera()
 	float cx, cy;
 	CCamera::GetInstance()->GetPosition(cx, cy);
 
-	// Mario is out of camera (y axis)
-	if (y > cy + (float)CGame::GetInstance()->GetScreenHeight()) return 1;
+	// Mario is out of camera
+	if (y > cy + (float)CGame::GetInstance()->GetScreenHeight() || 
+		x > cx + (float)CGame::GetInstance()->GetScreenWidth())
+		return 1;
 	return 0;
 }
 

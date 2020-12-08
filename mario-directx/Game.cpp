@@ -493,7 +493,7 @@ void CGame::Load(LPCWSTR gameFile)
 	SwitchScene(current_scene);
 }
 
-void CGame::SwitchScene(int scene_id)
+void CGame::SwitchScene(int scene_id, CMapNode *gate)
 {
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);
 
@@ -521,6 +521,7 @@ void CGame::SwitchScene(int scene_id)
 	}
 	else
 	{
+		((CPlayScene*)s)->SetGate(gate);
 		game->SetBackgroundColor(BACKGROUND_COLOR_PLAY_SCENE);
 		CHUD::GetInstance()->SetState(HUD_STATE_PLAY_SCENE);
 	}

@@ -44,7 +44,7 @@ void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 				{
 					if (dynamic_cast<CMapGate*>(nodeObject))
 					{
-						CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId());
+						CGame::GetInstance()->SwitchScene(((CMapGate*)nodeObject)->GetSceneId(), currentNode);
 						scene->Unload();
 					}
 				}

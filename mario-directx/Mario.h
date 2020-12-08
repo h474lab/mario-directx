@@ -314,6 +314,7 @@ class CMario : public CGameObject
 	float start_y;
 
 	unsigned int scoreStreak;
+	int passedTheLevel;
 
 	CGameObject* floor;
 
@@ -369,7 +370,9 @@ public:
 	// ready to switch scene (up/down the tube)
 	void SetReadyUp(int state) { readyToUp = state; }
 	void SetReadyDown(int state) { readyToDown = state; }
+
 	int OutOfCamera();
+	int PassedTheLevel() { return passedTheLevel; }
 
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }

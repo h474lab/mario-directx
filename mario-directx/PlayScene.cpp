@@ -23,6 +23,7 @@
 #include "Leaf.h"
 #include "Camera.h"
 #include "Score.h"
+#include "MapGate.h"
 
 using namespace std;
 
@@ -454,12 +455,16 @@ void CPlayScene::Update(DWORD dt)
 	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
 	float pWidth = pRight - pLeft;
 
-	if (px < minPixelWidth) px = minPixelWidth;
-	else if (px > maxPixelWidth - pWidth) px = maxPixelWidth - pWidth;
+	// no bounding when Mario won the game
+	if (!player->PassedTheLevel())
+	{
+		if (px < minPixelWidth) px = minPixelWidth;
+		else if (px > maxPixelWidth - pWidth) px = maxPixelWidth - pWidth;
 
-	if (py < minPixelHeight) py = minPixelHeight;
+		if (py < minPixelHeight) py = minPixelHeight;
 
-	player->SetPosition(px, py);
+		player->SetPosition(px, py);
+	}
 
 	float cx, cy;
 	player->GetPosition(cx, cy);
@@ -486,9 +491,23 @@ void CPlayScene::Update(DWORD dt)
 
 	if (player->OutOfCamera())
 	{
-		// Kill Mario
-		player->SetState(MARIO_STATE_DIE);
-		HUD->SetLives(HUD->GetLives() - 1);
+		// Kill Mario if he has lost
+		if (!player->PassedTheLevel())
+		{
+			player->SetState(MARIO_STATE_DIE);
+			HUD->SetLives(HUD->GetLives() - 1);
+		}
+		else
+		{
+			LPGAMEOBJECT gateObject = gate->GetNodeObject();
+			if (gateObject)
+			{
+				if (dynamic_cast<CMapGate*>(gateObject))
+				{
+					((CMapGate*)gateObject)->SetState(MAPGATE_STATE_CLOSED);
+				}
+			}
+		}
 
 		// load Map Scene
 		game->SwitchMapScene(world);

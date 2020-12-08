@@ -22,6 +22,9 @@ protected:
 	int tilemapId;
 	int gridId;
 
+	// the gate from which Mario got in!
+	CMapNode* gate;
+
 	int currentZone;
 	vector<CPlayZone> playZones;
 
@@ -42,6 +45,8 @@ public:
 
 	void ChangePlayZone(unsigned int zoneID);
 	void StartSettingCurrentZone();
+
+	void SetGate(CMapNode* gate) { this->gate = gate; }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
