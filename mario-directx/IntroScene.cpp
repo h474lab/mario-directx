@@ -80,6 +80,7 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CSc
 void CIntroScene::Load()
 {
 	LoadObjects();
+	CCamera::GetInstance()->SetPosition(0.0f, 32.0f);
 }
 
 void CIntroScene::Update(DWORD dt)

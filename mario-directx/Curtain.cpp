@@ -18,6 +18,8 @@ void CCurtain::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CCurtain::Render()
 {
+	if (state == CURTAIN_STATE_HIDE) return;
+
 	if (type == CURTAIN_TYPE_COLLAPSED)
 	{
 		for (int i = 0; i < numColumns; i++)

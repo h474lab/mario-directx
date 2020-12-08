@@ -10,7 +10,6 @@ class CIntroScene : public CScene
 {
 protected:
 	DWORD intro_start;
-	LPCWSTR objectsFileName;
 
 	CIntroOptions *gameModeMenu;
 

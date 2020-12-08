@@ -25,6 +25,11 @@ void CHUD::SetState(int state)
 		SetCards(CARD_STATE_HIDING, CARD_STATE_HIDING, CARD_STATE_HIDING);
 		background = 0;
 		break;
+	case HUD_STATE_MAP_SCENE:
+		scoreBoard->SetState(SCORE_BOARD_STATE_APPEAR);
+		SetCards(CARD_STATE_APPEAR, CARD_STATE_APPEAR, CARD_STATE_APPEAR);
+		background = 1;
+		break;
 	case HUD_STATE_PLAY_SCENE:
 		scoreBoard->SetState(SCORE_BOARD_STATE_APPEAR);
 		SetCards(CARD_STATE_APPEAR, CARD_STATE_APPEAR, CARD_STATE_APPEAR);

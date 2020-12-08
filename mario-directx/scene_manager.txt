@@ -1,5 +1,5 @@
 [SETTINGS]
-start	2
+start	0
 textures_path	Resources\TEXTURES.txt
 sprites_path	Resources\Sprites\
 animations_path	Resources\Animations\
