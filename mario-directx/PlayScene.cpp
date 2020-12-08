@@ -81,11 +81,9 @@ void CPlayScene::ParseObjects(string line)
 				DebugOut(L"[ERROR] MARIO object was created before!\n");
 				return;
 			}
-			obj = new CMario(x, y);
+			obj = CGame::GetInstance()->GetPlayer();
 			obj->SetPosition(x, y);
 			player = (CMario*)obj;
-
-			CGame::GetInstance()->SetPlayer(player);
 
 			for (int i = 0; i < nFireballs; i++)
 			{

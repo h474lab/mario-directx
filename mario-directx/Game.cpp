@@ -488,6 +488,7 @@ void CGame::Load(LPCWSTR gameFile)
 
 	CResources::GetInstance()->LoadResources();
 
+	player = new CMario();
 	gameState = GAME_STATE_PLAY;
 
 	SwitchScene(current_scene);
