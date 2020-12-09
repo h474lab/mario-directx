@@ -193,6 +193,7 @@
     <ClCompile Include="ShortFireTrap.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="SquareBrick.cpp" />
+    <ClCompile Include="StarCircle.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="Title.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="ShortFireTrap.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="SquareBrick.h" />
+    <ClInclude Include="StarCircle.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="Title.h" />

@@ -184,6 +184,9 @@
     <Filter Include="Objects\MapObjects\WelcomeBox">
       <UniqueIdentifier>{776f60a6-1736-461e-83cf-c9a0475e07de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects\StartCircle">
+      <UniqueIdentifier>{9ce8c3b9-c849-420d-a381-6473861d3374}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -360,6 +363,9 @@
     <ClCompile Include="WelcomeBox.cpp">
       <Filter>Objects\MapObjects\WelcomeBox</Filter>
     </ClCompile>
+    <ClCompile Include="StarCircle.cpp">
+      <Filter>Objects\MapObjects\StartCircle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -535,6 +541,9 @@
     </ClInclude>
     <ClInclude Include="WelcomeBox.h">
       <Filter>Objects\MapObjects\WelcomeBox</Filter>
+    </ClInclude>
+    <ClInclude Include="StarCircle.h">
+      <Filter>Objects\MapObjects\StartCircle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "MapNode.h"
 
 #include "MapMario.h"
+#include "StarCircle.h"
 #include "GameOverBox.h"
 #include "WelcomeBox.h"
 
@@ -23,6 +24,7 @@ class CMapScene : public CScene
 	float start_pos_x, start_pos_y;
 
 	CMapMario* mario;
+	CStarCircle* starCircle;
 	CWelcomeBox* welcomeBox;
 	CGameOverBox *gameOverBox;
 

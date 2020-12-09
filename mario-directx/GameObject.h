@@ -23,6 +23,7 @@ using namespace std;
 
 #define ID_ANI_SET_GAME_OVER_BOX	9860
 #define ID_ANI_SET_WELCOME_BOX		9861
+#define ID_ANI_SET_STAR				9862
 
 #define FLYING_DIRECTION_NOMOVE		0
 #define FLYING_DIRECTION_UP			1

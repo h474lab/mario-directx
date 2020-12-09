@@ -135,6 +135,9 @@ void CMapScene::Load()
 	this->gameOverBox = new CGameOverBox();
 	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
 
+	this->starCircle = new CStarCircle(50.0f, 50.0f);
+	starCircle->SetState(STAR_CIRCLE_STATE_EXPANDING);
+
 	float x, y;
 	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
 	mario->SetPosition(x, y);
@@ -168,6 +171,7 @@ void CMapScene::Update(DWORD dt)
 		welcomeBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
 	}
 	welcomeBox->Update(dt);
+	starCircle->Update(dt);
 }
 
 void CMapScene::Render()
@@ -190,6 +194,7 @@ void CMapScene::Render()
 	welcomeBox->Render();
 
 	CHUD::GetInstance()->Render();
+	starCircle->Render();
 }
 
 void CMapScene::Unload()
