@@ -187,16 +187,26 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (unsigned int i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			
-			if (e->ny < 0) jumping = 0;
 
-			if (e->ny < 0 && (dynamic_cast<CColoredBlock*>(e->obj) || dynamic_cast<CSquareBrick*>(e->obj)))
+			if (e->ny < 0)
 			{
+				jumping = 0;
+
 				float l, t, r, b;
 				e->obj->GetBoundingBox(l, t, r, b);
 
-				leftEdge = l - 7;
-				rightEdge = r + 7;
+				if (dynamic_cast<CColoredBlock*>(e->obj))
+				{
+					if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_LEFT_EDGE)
+						leftEdge = l - 7;
+					else if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_RIGHT_EDGE)
+						rightEdge = r + 7;
+				}
+				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				{
+					leftEdge = l - 7;
+					rightEdge = r + 7;
+				}
 			}
 			else if (e->nx != 0)
 			{

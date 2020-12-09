@@ -152,8 +152,42 @@ void CPlayScene::ParseObjects(string line)
 		{
 			int numRows = atoi(tokens[4].c_str());
 			int numColumns = atoi(tokens[5].c_str());
-			obj = new CColoredBlock(numRows, numColumns);
-			obj->SetPosition(x, y);
+
+			for (int i = 0; i < numRows; i++)
+				for (int j = 0; j < numColumns; j++)
+				{
+					if (i == 0)
+					{
+						if (j == 0)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_LEFT);
+						else if (j == numColumns - 1)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_RIGHT);
+						else
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_MID);
+					}
+					else if (i == numRows - 1)
+					{
+						if (j == 0)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_LEFT);
+						else if (j == numColumns - 1)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_RIGHT);
+						else
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_MID);
+					}
+					else
+					{
+						if (j == 0)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_LEFT);
+						else if (j == numColumns - 1)
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_RIGHT);
+						else
+							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_MID);
+					}
+					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
+					obj->SetPosition(x + j * COLORED_BLOCK_CELL_WIDTH, y + i * COLORED_BLOCK_CELL_HEIGHT);
+					queuedObject.push_back(obj);
+				}
+			obj = NULL;
 			break;
 		}
 	case OBJECT_TYPE_TUBE:

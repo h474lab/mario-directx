@@ -1,6 +1,16 @@
 #pragma once
 #include "GameObject.h"
 
+#define COLORED_BLOCK_TYPE_TOP_LEFT		0
+#define COLORED_BLOCK_TYPE_TOP_MID		1
+#define COLORED_BLOCK_TYPE_TOP_RIGHT	2
+#define COLORED_BLOCK_TYPE_MID_LEFT		3
+#define COLORED_BLOCK_TYPE_MID_MID		4
+#define COLORED_BLOCK_TYPE_MID_RIGHT	5
+#define COLORED_BLOCK_TYPE_BOT_LEFT		6
+#define COLORED_BLOCK_TYPE_BOT_MID		7
+#define COLORED_BLOCK_TYPE_BOT_RIGHT	8
+
 #define COLORED_BLOCK_ANI_TOP_LEFT	0
 #define COLORED_BLOCK_ANI_TOP_MID	1
 #define COLORED_BLOCK_ANI_TOP_RIGHT	2
@@ -22,16 +32,17 @@
 #define BRICK_SHADOW_WIDTH			8
 #define BRICK_SHADOW_HEIGHT			8
 
+#define COLORED_CELL_LEFT_EDGE	-1
+#define COLORED_CELL_RIGHT_EDGE	1
+
 class CColoredBlock : public CGameObject
 {
-	int numRows, numColumns;
+	int type;
 public:
-	CColoredBlock(int rows, int columns) 
-	{ 
-		numRows = rows;
-		numColumns = columns;
-		background = 0;
-	}
+	CColoredBlock(int type);
+	int IsTop();
+	int IsEdge();
+
 	virtual void Render();
 	void RenderShadow();
 

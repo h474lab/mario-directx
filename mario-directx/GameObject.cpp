@@ -125,6 +125,8 @@ void CGameObject::FilterCollision(
 		}
 
 		if (c->t < 1.0f /*min_ty*/  && c->ny != 0) {
+			if (dynamic_cast<CColoredBlock*>(c->obj) && (!((CColoredBlock*)c->obj)->IsTop() || c->ny > 0))
+				continue;
 			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 			coEventsResult.push_back(coEvents[i]);
 		}

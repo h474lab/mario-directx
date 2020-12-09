@@ -1,30 +1,58 @@
 #include "ColoredBlock.h"
 
+CColoredBlock::CColoredBlock(int type)
+{
+	background = 0;
+	this->type = type;
+}
+
+int CColoredBlock::IsTop()
+{
+	if (type == COLORED_BLOCK_TYPE_TOP_LEFT || type == COLORED_BLOCK_TYPE_TOP_MID || type == COLORED_BLOCK_TYPE_TOP_RIGHT)
+		return 1;
+	return 0;
+}
+
+int CColoredBlock::IsEdge()
+{
+	if (type == COLORED_BLOCK_TYPE_TOP_LEFT || type == COLORED_BLOCK_TYPE_BOT_LEFT)
+		return COLORED_CELL_LEFT_EDGE;
+	else if (type == COLORED_BLOCK_TYPE_TOP_RIGHT || type == COLORED_BLOCK_TYPE_BOT_RIGHT)
+		return COLORED_CELL_RIGHT_EDGE;
+	return 0;
+}
+
 void CColoredBlock::Render()
 {
-	int cellWidth = COLORED_BLOCK_CELL_WIDTH;
-	int cellHeight = COLORED_BLOCK_CELL_HEIGHT;
-
-	float lastX = x + cellWidth * (numColumns - 1);
-	float lastY = y + cellHeight * (numRows - 1);
-
-	animation_set->at(COLORED_BLOCK_ANI_TOP_LEFT)->Render(x, y);
-	animation_set->at(COLORED_BLOCK_ANI_TOP_RIGHT)->Render(lastX, y);
-	animation_set->at(COLORED_BLOCK_ANI_BOT_LEFT)->Render(x, lastY);
-	animation_set->at(COLORED_BLOCK_ANI_BOT_RIGHT)->Render(lastX, lastY);
-
-	for (float i = x + cellWidth; i < lastX; i += cellWidth)
+	switch (type)
 	{
-		animation_set->at(COLORED_BLOCK_ANI_TOP_MID)->Render(i, y);
-		animation_set->at(COLORED_BLOCK_ANI_BOT_MID)->Render(i, lastY);
-		for (float j = y + cellHeight; j < lastY; j += cellHeight)
-			animation_set->at(COLORED_BLOCK_ANI_MID_MID)->Render(i, j);
-	}
-
-	for (float i = y + cellHeight; i < lastY; i += cellHeight)
-	{
-		animation_set->at(COLORED_BLOCK_ANI_MID_LEFT)->Render(x, i);
-		animation_set->at(COLORED_BLOCK_ANI_MID_RIGHT)->Render(lastX, i);
+	case COLORED_BLOCK_TYPE_TOP_LEFT:
+		animation_set->at(COLORED_BLOCK_ANI_TOP_LEFT)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_TOP_MID:
+		animation_set->at(COLORED_BLOCK_ANI_TOP_MID)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_TOP_RIGHT:
+		animation_set->at(COLORED_BLOCK_ANI_TOP_RIGHT)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_MID_LEFT:
+		animation_set->at(COLORED_BLOCK_ANI_MID_LEFT)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_MID_MID:
+		animation_set->at(COLORED_BLOCK_ANI_MID_MID)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_MID_RIGHT:
+		animation_set->at(COLORED_BLOCK_ANI_MID_RIGHT)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_BOT_LEFT:
+		animation_set->at(COLORED_BLOCK_ANI_BOT_LEFT)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_BOT_MID:
+		animation_set->at(COLORED_BLOCK_ANI_BOT_MID)->Render(x, y);
+		break;
+	case COLORED_BLOCK_TYPE_BOT_RIGHT:
+		animation_set->at(COLORED_BLOCK_ANI_BOT_RIGHT)->Render(x, y);
+		break;
 	}
 
 	RenderShadow();
@@ -32,33 +60,35 @@ void CColoredBlock::Render()
 
 void CColoredBlock::RenderShadow()
 {
-	int width = BRICK_SHADOW_WIDTH;
-	int height = BRICK_SHADOW_HEIGHT;
-
-	float bRight = x + numColumns * COLORED_BLOCK_CELL_WIDTH;
-	float bBottom = y + numRows * COLORED_BLOCK_CELL_HEIGHT;
-
-	float startX = x + width;
-	float startY = y + height;
-
-	//float endX = bRight + width;
-	//float endY = bBottom + height;
-
-	animation_set->at(BRICK_SHADOW_TOP)->Render(bRight, startY);
-	animation_set->at(BRICK_SHADOW_LEFT)->Render(startX, bBottom);
-	animation_set->at(BRICK_SHADOW_RIGHT)->Render(bRight, bBottom);
-
-	for (float i = startX + width; i < bRight; i += width)
-		animation_set->at(BRICK_SHADOW_MID)->Render(i, bBottom);
-
-	for (float i = startY + height; i < bBottom; i += height)
-		animation_set->at(BRICK_SHADOW_MID)->Render(bRight, i);
+	switch (type)
+	{
+	case COLORED_BLOCK_TYPE_BOT_LEFT:
+		animation_set->at(BRICK_SHADOW_LEFT)->Render(x + BRICK_SHADOW_WIDTH, y + COLORED_BLOCK_CELL_HEIGHT);
+		break;
+	case COLORED_BLOCK_TYPE_BOT_MID:
+		animation_set->at(BRICK_SHADOW_MID)->Render(x, y + COLORED_BLOCK_CELL_HEIGHT);
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + BRICK_SHADOW_WIDTH, y + COLORED_BLOCK_CELL_HEIGHT);
+		break;
+	case COLORED_BLOCK_TYPE_TOP_RIGHT:
+		animation_set->at(BRICK_SHADOW_TOP)->Render(x + COLORED_BLOCK_CELL_WIDTH, y + BRICK_SHADOW_HEIGHT);
+		break;
+	case COLORED_BLOCK_TYPE_MID_RIGHT:
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + COLORED_BLOCK_CELL_WIDTH, y);
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + COLORED_BLOCK_CELL_WIDTH, y + BRICK_SHADOW_HEIGHT);
+		break;
+	case COLORED_BLOCK_TYPE_BOT_RIGHT:
+		animation_set->at(BRICK_SHADOW_MID)->Render(x, y + COLORED_BLOCK_CELL_HEIGHT);
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + BRICK_SHADOW_WIDTH, y + COLORED_BLOCK_CELL_HEIGHT);
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + COLORED_BLOCK_CELL_WIDTH, y);
+		animation_set->at(BRICK_SHADOW_MID)->Render(x + COLORED_BLOCK_CELL_WIDTH, y + BRICK_SHADOW_HEIGHT);
+		animation_set->at(BRICK_SHADOW_RIGHT)->Render(x + COLORED_BLOCK_CELL_WIDTH, y + COLORED_BLOCK_CELL_HEIGHT);
+	}
 }
 
 void CColoredBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = x + numColumns * COLORED_BLOCK_CELL_WIDTH;
-	b = y + numRows * COLORED_BLOCK_CELL_HEIGHT;
+	r = x + COLORED_BLOCK_CELL_WIDTH;
+	b = y + COLORED_BLOCK_CELL_HEIGHT;
 }
