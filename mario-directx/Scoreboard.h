@@ -28,7 +28,7 @@
 
 #define DEFAULT_WORLD	0
 #define DEFAULT_MONEY	0
-#define DEFAULT_LIVES	0
+#define DEFAULT_LIVES	4
 #define DEFAULT_SCORE	0
 #define DEFAULT_TIME	0
 

@@ -27,6 +27,7 @@ using namespace std;
 
 #define GAME_STATE_PLAY		0
 #define GAME_STATE_OVER		1
+#define GAME_STATE_WELCOME	2
 
 class CGame
 {

@@ -60,7 +60,7 @@ void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 			}
 		}
 	}
-	else
+	else if (CGame::GetInstance()->GetGameState() == GAME_STATE_OVER)
 	{
 		CGameOverBox* gameOverBox = mapScene->GetGameOverBox();
 		
@@ -115,6 +115,7 @@ CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR objectList, int tilemapId
 	this->world = world;
 	this->mario = new CMapMario();
 
+
 	key_handler = new CMapSceneKeyHandler(this);
 }
 
@@ -129,12 +130,16 @@ void CMapScene::Load()
 
 	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
 
+	this->welcomeBox = new CWelcomeBox();
+
 	this->gameOverBox = new CGameOverBox();
 	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
 
 	float x, y;
 	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
 	mario->SetPosition(x, y);
+	start_pos_x = x;
+	start_pos_y = y;
 
 	CCamera::GetInstance()->SetPosition(CAMERA_POSITION_X, CAMERA_POSITION_Y);
 }
@@ -142,12 +147,27 @@ void CMapScene::Load()
 void CMapScene::Update(DWORD dt)
 {
 	mario->Update(dt);
-	CHUD::GetInstance()->SetPowerLevel(0);
-	CHUD::GetInstance()->SetWorld(world);
-	CHUD::GetInstance()->Update(dt);
+	CHUD* hud = CHUD::GetInstance();
 
-	if (CHUD::GetInstance()->GetLives() < 0)
+	hud->SetPowerLevel(0);
+	hud->SetWorld(world);
+	hud->Update(dt);
+
+	if (hud->GetLives() < 0)
 		gameOverBox->SetState(BOX_STATE_APPEAR);
+
+	if (CGame::GetInstance()->GetGameState() == GAME_STATE_WELCOME)
+	{
+		// show welcome box
+		welcomeBox->SetState(WELCOME_BOX_STATE_APPEAR);
+		// set parameters
+		welcomeBox->SetWorld(world);
+		welcomeBox->SetLives(CHUD::GetInstance()->GetLives());
+		welcomeBox->SetMario(mario, start_pos_x, start_pos_y);
+		// locate welcome box
+		welcomeBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
+	}
+	welcomeBox->Update(dt);
 }
 
 void CMapScene::Render()
@@ -165,8 +185,9 @@ void CMapScene::Render()
 	for (LPGAMEOBJECT object : objects)
 		object->Render();
 
-	mario->Render();
+	if (CGame::GetInstance()->GetGameState() != GAME_STATE_WELCOME) mario->Render();
 	gameOverBox->Render();
+	welcomeBox->Render();
 
 	CHUD::GetInstance()->Render();
 }

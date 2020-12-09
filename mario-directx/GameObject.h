@@ -20,7 +20,9 @@ using namespace std;
 #define ID_ANI_SET_NUMBERS			9905
 #define ID_ANI_SET_LETTERS			9906
 #define ID_ANI_SET_SCORE			9907
+
 #define ID_ANI_SET_GAME_OVER_BOX	9860
+#define ID_ANI_SET_WELCOME_BOX		9861
 
 #define FLYING_DIRECTION_NOMOVE		0
 #define FLYING_DIRECTION_UP			1

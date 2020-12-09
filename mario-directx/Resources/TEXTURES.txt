@@ -18,3 +18,4 @@
 170	Resources\Textures\enemies_flipped.png	255	255	255
 180	Resources\Textures\world1_1.png	156	252	240
 190	Resources\Textures\gameover.png	68	34	0
+200	Resources\Textures\welcome_board.png	68	34	0

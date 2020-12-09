@@ -181,6 +181,9 @@
     <Filter Include="Objects\MapObjects\GameOverBox">
       <UniqueIdentifier>{95b26504-f3e0-40c2-a5c5-28d5285a442e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\MapObjects\WelcomeBox">
+      <UniqueIdentifier>{776f60a6-1736-461e-83cf-c9a0475e07de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -354,6 +357,9 @@
     <ClCompile Include="GameOverBox.cpp">
       <Filter>Objects\MapObjects\GameOverBox</Filter>
     </ClCompile>
+    <ClCompile Include="WelcomeBox.cpp">
+      <Filter>Objects\MapObjects\WelcomeBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -526,6 +532,9 @@
     </ClInclude>
     <ClInclude Include="GameOverBox.h">
       <Filter>Objects\MapObjects\GameOverBox</Filter>
+    </ClInclude>
+    <ClInclude Include="WelcomeBox.h">
+      <Filter>Objects\MapObjects\WelcomeBox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

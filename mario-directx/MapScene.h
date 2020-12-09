@@ -7,6 +7,7 @@
 
 #include "MapMario.h"
 #include "GameOverBox.h"
+#include "WelcomeBox.h"
 
 #define CAMERA_POSITION_X	-42.0f
 #define CAMERA_POSITION_Y	-10.0f
@@ -19,7 +20,10 @@ class CMapScene : public CScene
 	int tilemapId;
 	int world;
 
+	float start_pos_x, start_pos_y;
+
 	CMapMario* mario;
+	CWelcomeBox* welcomeBox;
 	CGameOverBox *gameOverBox;
 
 	virtual void ParseObjects(string line);

@@ -150,6 +150,8 @@ void CIntroSceneKeyHandler::OnKeyDown(int KeyCode)
 	{
 		if (menu)
 		{
+			CGame::GetInstance()->SetGameState(GAME_STATE_WELCOME);
+			CHUD::GetInstance()->SetLives(DEFAULT_LIVES);
 			menu->SwitchSceneOption();
 			scene->Unload();
 		}

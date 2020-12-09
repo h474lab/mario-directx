@@ -200,6 +200,7 @@
     <ClCompile Include="TubeEnemy.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VenusFireTrap.cpp" />
+    <ClCompile Include="WelcomeBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -259,6 +260,7 @@
     <ClInclude Include="TubeEnemy.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="VenusFireTrap.h" />
+    <ClInclude Include="WelcomeBox.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
