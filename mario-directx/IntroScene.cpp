@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Curtain.h"
 #include "Title.h"
+#include "Mushroom.h"
 #include "IntroEvent.h"
 #include "HUD.h"
 
@@ -25,6 +26,7 @@ void CIntroScene::ParseObjects(string line)
 	
 	int numColumns, numRows, type;
 	int sceneOption1, sceneOption2;
+	int level;
 
 	switch (type_id)
 	{
@@ -54,6 +56,12 @@ void CIntroScene::ParseObjects(string line)
 		obj = new CMario();
 		objects.push_back(obj);
 		currentCursor = 4;
+		break;
+	case OBJECT_TYPE_MUSHROOM:
+		level = atoi(tokens[4].c_str());
+		obj = new CMushroom(level);
+		objects.push_back(obj);
+		currentCursor = 5;
 		break;
 	}
 
