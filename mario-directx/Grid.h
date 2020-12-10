@@ -8,7 +8,7 @@
 class CGrid
 {
 private:
-	LPGAMEOBJECT unit[MAX_GRID_COLUMNS][MAX_GRID_ROWS];
+	LPGAMEOBJECT cells[MAX_GRID_COLUMNS][MAX_GRID_ROWS];
 
 	int numRows, numColumns;
 	float start_x, start_y;

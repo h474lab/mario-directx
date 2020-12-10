@@ -1,5 +1,11 @@
 #include "ShortFireTrap.h"
 
+CShortFireTrap::CShortFireTrap()
+{
+	background = 0;
+	renderScore = RENDER_SCORE_SHORT_FIRE_TRAP;
+}
+
 void CShortFireTrap::SetPosition(float x, float y)
 {
 	CFireTrap::SetPosition(x, y);

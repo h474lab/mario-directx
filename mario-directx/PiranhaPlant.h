@@ -10,7 +10,7 @@
 class CPiranhaPlant : public CTubeEnemy
 {
 public:
-	CPiranhaPlant() { background = 0; }
+	CPiranhaPlant();
 	virtual void SetPosition(float x, float y);
 
 	virtual void SetAppearingState(int state) { SetState(TUBE_ENEMY_STATE_IDLE); }

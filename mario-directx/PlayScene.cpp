@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 #include "PlayScene.h"
 #include "Utils.h"
@@ -287,7 +288,7 @@ void CPlayScene::ParseObjects(string line)
 					includedObj = new CLeaf();
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
 					brick->AddNewObject(includedObj);
-					objects.push_back(includedObj);
+					queuedObject.push_back(includedObj);
 					includedObj = NULL;
 					i += 2;
 					break;
@@ -354,12 +355,27 @@ void CPlayScene::ParseObjects(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		objects.push_back(obj);
+		obj->SetObjectPriority(objects.size());
 	}
 
 	if (!queuedObject.empty())
 	{
-		for (LPGAMEOBJECT object : queuedObject) objects.push_back(object);
+		for (LPGAMEOBJECT object : queuedObject)
+		{
+			objects.push_back(object);
+			object->SetObjectPriority(objects.size());
+		}
 	}
+}
+
+bool CPlayScene::RenderCompare(CGameObject* a, CGameObject* b)
+{
+	if (a->GetRenderScore() < b->GetRenderScore()) return true;
+	if (a->GetRenderScore() == b->GetRenderScore())
+	{
+		if (a->GetObjectPriority() > b->GetObjectPriority()) return true;
+	}
+	return false;
 }
 
 void CPlayScene::ChangePlayZone(unsigned int zoneID)
@@ -443,17 +459,11 @@ void CPlayScene::Update(DWORD dt)
 		while (currentObject)
 		{
 			currentObject->Update(dt, &coObjects);
+			LPGAMEOBJECT temp = currentObject;
 			currentObject = currentObject->GetNextObject();
+			CGrids::GetInstance()->Get(gridId)->UpdateObject(temp);
 		}
 	}
-
-	/*for (size_t i = 1; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}
-
-	for (size_t i = 0; i < objects.size(); i++)
-		objects[i]->Update(dt, &coObjects);*/
 
 	// update score animations
 	CScores::GetInstance()->Update(dt);
@@ -566,20 +576,26 @@ void CPlayScene::Render()
 
 	if (player->GetFlyingDirection() != FLYING_DIRECTION_NOMOVE) player->Render();
 
+	workingCellsInGrid = CGrids::GetInstance()->Get(gridId)->LoadCellsWithinCamera();
+	vector<CGameObject*> renderObjects;
+	renderObjects.clear();
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
 		LPGAMEOBJECT currentObject = workingCell;
 		while (currentObject)
 		{
-			currentObject->Render();
+			renderObjects.push_back(currentObject);
 			currentObject = currentObject->GetNextObject();
 		}
 	}
-	
-	if (player->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE) player->Render();
 
-	/*for (unsigned int i = 0; i < objects.size(); i++)
-		objects[i]->Render();*/
+	std::sort(renderObjects.begin(), renderObjects.end(), RenderCompare);
+	for each (CGameObject * object in renderObjects)
+	{
+		object->Render();
+	}
+		
+	if (player->GetFlyingDirection() == FLYING_DIRECTION_NOMOVE) player->Render();
 
 	// render score animation
 	CScores::GetInstance()->Render();

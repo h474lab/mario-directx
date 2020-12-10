@@ -10,7 +10,7 @@
 class CShortFireTrap : public CFireTrap
 {
 public:
-	CShortFireTrap() { background = 0; }
+	CShortFireTrap();
 	
 	virtual void SetPosition(float x, float y);
 

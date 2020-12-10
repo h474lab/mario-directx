@@ -5,6 +5,7 @@ CSquareBrick::CSquareBrick()
 	background = 0;
 	SetState(SQUARE_BRICK_STATE_AVAILABLE);
 	fragmentAnimationSet = NULL;
+	renderScore = RENDER_SCORE_SQUARE_BRICK;
 }
 
 void CSquareBrick::Destroy()

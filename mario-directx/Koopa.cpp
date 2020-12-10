@@ -12,7 +12,8 @@ CKoopa::CKoopa()
 {
 	background = 0;
 	SetState(KOOPA_STATE_WALKING_LEFT);
-	//SetState(KOOPA_STATE_LYING_DOWN);
+
+	renderScore = RENDER_SCORE_KOOPA;
 }
 
 void CKoopa::LevelDown()

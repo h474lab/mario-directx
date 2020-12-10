@@ -5,6 +5,8 @@ CMushroom::CMushroom(int level)
 	background = 0;
 	SetLevel(level);
 	SetState(MUSHROOM_STATE_IDLE);
+
+	renderScore = RENDER_SCORE_MUSHROOM;
 }
 
 void CMushroom::SetState(int state)

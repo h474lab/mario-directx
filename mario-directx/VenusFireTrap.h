@@ -21,7 +21,7 @@
 class CVenusFireTrap : public CFireTrap
 {
 public:
-	CVenusFireTrap() { background = 0; }
+	CVenusFireTrap();
 
 	virtual void SetPosition(float x, float y);
 

@@ -56,6 +56,26 @@ using namespace std;
 #define OBJECT_TYPE_MAP_GRASS		20
 #define OBJECT_TYPE_REWARD			21
 
+
+#define RENDER_SCORE_COLORED_BLOCK		0
+#define RENDER_SCORE_GROUNDBRICK		1
+#define RENDER_SCORE_BRICK				2
+#define RENDER_SCORE_VENUS_FIRE_TRAP	3
+#define RENDER_SCORE_SHORT_FIRE_TRAP	4
+#define RENDER_SCORE_PIRANHA_PLANT		5
+#define RENDER_SCORE_TUBE				6
+#define RENDER_SCORE_MUSHROOM			7
+#define RENDER_SCORE_QUESTIONBRICK		8
+#define RENDER_SCORE_SQUARE_BRICK		9
+#define RENDER_SCORE_COIN				10
+#define RENDER_SCORE_LEAF				11
+#define RENDER_SCORE_REWARD				12
+#define RENDER_SCORE_GOOMBA				13
+#define RENDER_SCORE_KOOPA				14
+#define RENDER_SCORE_FIREBALL			15
+#define RENDER_SCORE_BULLET				16
+#define RENDER_SCORE_BRICK_FRAGMENT		17
+
 class CGameObject; 
 typedef CGameObject * LPGAMEOBJECT;
 
@@ -117,6 +137,9 @@ protected:
 
 	CGameObject* nextObject, * previousObject;
 	int grid_row, grid_column;
+
+	int renderScore;
+	int objectPriority;
 public: 
 	virtual void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -169,6 +192,9 @@ public:
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 
+	int GetRenderScore() { return renderScore; }
+	void SetObjectPriority(int priority) { objectPriority = priority; }
+	int GetObjectPriority() { return objectPriority; }
 
 	~CGameObject();
 };

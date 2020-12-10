@@ -18,7 +18,7 @@ class CFireball : public CGameObject
 {
 	int direction;
 public:
-	CFireball() { background = 0; SetState(FIREBALL_STATE_ON_HOLD); }
+	CFireball();
 
 	void SetDirection(int direction);
 

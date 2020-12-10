@@ -1,5 +1,12 @@
 #include "BrickFragment.h"
 
+CBrickFragment::CBrickFragment()
+{
+	background = 1;
+	SetState(FRAGMENT_STATE_HIDE);
+	renderScore = RENDER_SCORE_BRICK_FRAGMENT;
+}
+
 void CBrickFragment::Hit()
 {
 	if (pos == FRAGMENT_POSITION_BOT_LEFT || pos == FRAGMENT_POSITION_BOT_RIGHT)

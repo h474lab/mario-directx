@@ -10,6 +10,13 @@
 #include "ColoredBlock.h"
 #include "SquareBrick.h"
 
+CFireball::CFireball()
+{
+	background = 0;
+	SetState(FIREBALL_STATE_ON_HOLD);
+	renderScore = RENDER_SCORE_FIREBALL;
+}
+
 void CFireball::SetDirection(int direction)
 {
 	if (direction == FIREBALL_DIRECTION_LEFT)

@@ -11,6 +11,8 @@ CCoin::CCoin()
 	flyingSpeedY = COIN_FLYING_SPEED_Y;
 	delayAfterMovingUp = 0;
 	disappear = 1;
+
+	renderScore = RENDER_SCORE_COIN;
 }
 
 void CCoin::SetPosition(float x, float y)

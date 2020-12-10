@@ -1,5 +1,12 @@
 #include "GroundBricks.h"
 
+CGroundBricks::CGroundBricks(int position)
+{
+	background = 0;
+	renderScore = RENDER_SCORE_GROUNDBRICK;
+	this->position = position;
+}
+
 void CGroundBricks::Render()
 {
 	int ani = -1;

@@ -10,6 +10,8 @@ CQuestionBrick::CQuestionBrick()
 	SetState(QUESTIONBRICK_STATE_CONTAINING_OBJECTS);
 	delayAfterMovingUp = 0;
 	disappear = 0;
+
+	renderScore = RENDER_SCORE_QUESTIONBRICK;
 }
 
 void CQuestionBrick::SetPosition(float x, float y)

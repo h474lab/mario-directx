@@ -28,7 +28,7 @@ class CBrickFragment : public CGameObject
 
 	DWORD available_start;
 public:
-	CBrickFragment() { background = 1; SetState(FRAGMENT_STATE_HIDE); }
+	CBrickFragment();
 	void SetPos(int pos) { this->pos = pos; }
 
 	void Hit();

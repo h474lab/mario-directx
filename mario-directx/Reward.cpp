@@ -7,6 +7,7 @@ CReward::CReward()
 	type = REWARD_TYPE_MUSHROOM;
 	state = REWARD_STATE_AVAILABLE;
 	switching_start = (DWORD)GetTickCount64();
+	renderScore = RENDER_SCORE_REWARD;
 }
 
 void CReward::SetState(int state)

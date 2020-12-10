@@ -5,6 +5,7 @@
 CLeaf::CLeaf()
 {
 	background = 1;
+	renderScore = RENDER_SCORE_LEAF;
 }
 
 void CLeaf::SetPosition(float x, float y)

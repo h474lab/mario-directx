@@ -10,6 +10,7 @@ CGoomba::CGoomba()
 	level = GOOMBA_LEVEL_PARA_GOOMBA;
 	state = GOOMBA_STATE_DIE;
 	SetState(GOOMBA_STATE_WALKING_LEFT);
+	renderScore = RENDER_SCORE_GOOMBA;
 }
 
 void CGoomba::ChangeDirection()

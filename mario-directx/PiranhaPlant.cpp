@@ -1,5 +1,11 @@
 #include "PiranhaPlant.h"
 
+CPiranhaPlant::CPiranhaPlant()
+{
+	background = 0;
+	renderScore = RENDER_SCORE_PIRANHA_PLANT;
+}
+
 void CPiranhaPlant::SetPosition(float x, float y)
 {
 	this->x = x;

@@ -6,6 +6,7 @@ CTube::CTube(int numRows, int lidType, int zoneID)
 	this->numRows = numRows;
 	this->lidType = lidType;
 	this->doorToZone = zoneID;
+	renderScore = RENDER_SCORE_TUBE;
 }
 
 void CTube::SetPosition(float x, float y)

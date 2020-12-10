@@ -1,6 +1,12 @@
 #include "VenusFireTrap.h"
 #include "Utils.h"
 
+CVenusFireTrap::CVenusFireTrap()
+{
+	background = 0;
+	renderScore = RENDER_SCORE_VENUS_FIRE_TRAP;
+}
+
 void CVenusFireTrap::SetPosition(float x, float y)
 {
 	CFireTrap::SetPosition(x, y);

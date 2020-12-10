@@ -5,6 +5,7 @@ CBullet::CBullet()
 	background = 0;
 	SetDirection(BULLET_FLYING_DIRECTION_MID_TOP_LEFT);
 	SetState(BULLET_STATE_ON_HOLD);
+	renderScore = RENDER_SCORE_BULLET;
 }
 
 void CBullet::SetDirection(int direction)

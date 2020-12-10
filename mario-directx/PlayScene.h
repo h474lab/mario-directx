@@ -38,6 +38,7 @@ protected:
 	DWORD gameStartingTime;
 
 	virtual void ParseObjects(string line);
+	static bool RenderCompare(CGameObject* a, CGameObject* b);
 public: 
 	CPlayScene(int id, LPCWSTR filePath, int tilemapId,float tile_startX, float tile_startY, LPCWSTR objectsFileName, int gridId, int initialZone, vector<CPlayZone> playZones, int world);
 

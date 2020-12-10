@@ -23,7 +23,7 @@ class CGroundBricks : public CGameObject
 private:
 	int position;
 public:
-	CGroundBricks(int position) { background = 0; this->position = position; }
+	CGroundBricks(int position);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };

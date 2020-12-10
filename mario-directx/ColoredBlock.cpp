@@ -4,6 +4,7 @@ CColoredBlock::CColoredBlock(int type)
 {
 	background = 0;
 	this->type = type;
+	renderScore = RENDER_SCORE_COLORED_BLOCK;
 }
 
 int CColoredBlock::IsTop()

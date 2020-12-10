@@ -1,5 +1,11 @@
 #include "Brick.h"
 
+CBrick::CBrick()
+{
+	background = 0;
+	renderScore = RENDER_SCORE_BRICK;
+}
+
 void CBrick::Render()
 {
 	animation_set->at(0)->Render(x, y);

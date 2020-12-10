@@ -4,29 +4,30 @@
 
 void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 {
-	if (!unit[row][column])
+	if (!cells[row][column])
 	{
 		object->SetPreviousObject(NULL);
 		object->SetNextObject(NULL);
-		unit[row][column] = object;
+		cells[row][column] = object;
 	}
-	else if (object != unit[row][column])
+	else
 	{
+		cells[row][column]->SetPreviousObject(object);
 		object->SetPreviousObject(NULL);
-		object->SetNextObject(unit[row][column]);
-		unit[row][column] = object;
+		object->SetNextObject(cells[row][column]);
+		cells[row][column] = object;
 	}
 }
 
 void CGrid::RemoveFromGrid(LPGAMEOBJECT object, int row, int column)
 {
-	CGameObject* currentObject = unit[row][column];
+	CGameObject* currentObject = cells[row][column];
 	while (currentObject)
 	{
 		if (currentObject == object)
 		{
 			// if removing object is the first object in the list -> set the next object as the first object
-			if (currentObject == unit[row][column]) unit[row][column] = currentObject->GetNextObject();
+			if (currentObject == cells[row][column]) cells[row][column] = currentObject->GetNextObject();
 
 			// change next and previous object's next and previous object
 			currentObject->GetPreviousObject()->SetNextObject(currentObject->GetNextObject());
@@ -60,7 +61,7 @@ CGrid::CGrid(float start_x, float start_y, float end_x, float end_y, int numRows
 
 	for (int i = 0; i < MAX_GRID_ROWS; i++)
 		for (int j = 0; j < MAX_GRID_COLUMNS; j++)
-			unit[i][j] = NULL;
+			cells[i][j] = NULL;
 }
 
 void CGrid::AddObject(LPGAMEOBJECT object)
@@ -100,13 +101,13 @@ void CGrid::UpdateObject(CGameObject* object)
 	// if object is the first one in cell
 	if (object->GetPreviousObject() == NULL)
 	{
-		unit[oldGridRow][oldGridColumn] = object->GetNextObject();
+		cells[oldGridRow][oldGridColumn] = object->GetNextObject();
 	}
 	// if object is in the middle of linked list
 	else
 	{
-		object->GetPreviousObject()->SetNextObject(object->GetNextObject());
-		object->GetNextObject()->SetPreviousObject(object->GetPreviousObject());
+		if (object->GetPreviousObject()) object->GetPreviousObject()->SetNextObject(object->GetNextObject());
+		if (object->GetNextObject()) object->GetNextObject()->SetPreviousObject(object->GetPreviousObject());
 	}
 
 	// add object to the new cell
@@ -125,22 +126,14 @@ vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()
 	screenWidth = CGame::GetInstance()->GetScreenWidth();
 	screenHeight = CGame::GetInstance()->GetScreenHeight();
 
-	// find grid width and height
-	float gridHeight = end_y - start_y;
-	float gridWidth = end_x - start_x;
-
-	// calculate the height and width of each cell
-	float cellHeight = gridHeight / (float)numRows;
-	float cellWidth = gridWidth / (float)numColumns;
-
 	int cell_start_x = (int)(cam_x / cellWidth);
 	int cell_start_y = (int)(cam_y / cellHeight);
-	int cell_end_x = (int)((cam_x + screenWidth) / cellWidth + 1);
-	int cell_end_y = (int)((cam_y + screenHeight) / cellHeight + 1);
+	int cell_end_x = (int)((cam_x + screenWidth) / cellWidth);
+	int cell_end_y = (int)((cam_y + screenHeight) / cellHeight);
 
 	for (int i = cell_start_x; i <= cell_end_x; i++)
 		for (int j = cell_start_y; j <= cell_end_y; j++)
-				result.push_back(unit[j][i]);
+				result.push_back(cells[j][i]);
 
 	return result;
 }
