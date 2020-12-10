@@ -39,6 +39,9 @@
 #define MARIO_SWITCHING_SCENE_SPEED	0.02f
 
 #define MARIO_STATE_IDLE				0
+#define MARIO_STATE_IDLE_LEFT			50
+#define MARIO_STATE_SIT_RIGHT			60
+#define MARIO_STATE_SIT_LEFT			70
 #define MARIO_STATE_WALKING_RIGHT		100
 #define MARIO_STATE_WALKING_LEFT		200
 #define MARIO_STATE_RUNNING_RIGHT		300
@@ -181,10 +184,39 @@
 
 #define MARIO_ANI_DIE					112
 
+// Luigi animations
+#define LUIGI_ANI_IDLE_RIGHT		113
+#define LUIGI_ANI_IDLE_LEFT			114
+#define LUIGI_ANI_WALK_RIGHT		115
+#define LUIGI_ANI_WALK_LEFT			116
+#define LUIGI_ANI_RUN_RIGHT			117
+#define LUIGI_ANI_RUN_LEFT			118
+#define LUIGI_ANI_RUN_FAST_RIGHT	119
+#define LUIGI_ANI_RUN_FAST_LEFT		120
+#define LUIGI_ANI_JUMP_RIGHT		121
+#define LUIGI_ANI_JUMP_LEFT			122
+#define LUIGI_ANI_TURN_LEFT			123
+#define LUIGI_ANI_TURN_RIGHT		124
+#define LUIGI_ANI_KICK_LEFT			125
+#define LUIGI_ANI_KICK_RIGHT		126
+
+#define LUIGI_ANI_HOLD_KOOPA_IDLE_RIGHT		127
+#define LUIGI_ANI_HOLD_KOOPA_IDLE_LEFT		128
+#define LUIGI_ANI_HOLD_KOOPA_WALK_RIGHT		129
+#define LUIGI_ANI_HOLD_KOOPA_WALK_LEFT		130
+#define LUIGI_ANI_HOLD_KOOPA_RUN_RIGHT		131
+#define LUIGI_ANI_HOLD_KOOPA_RUN_LEFT		132
+#define LUIGI_ANI_SIT_RIGHT					133
+#define LUIGI_ANI_SIT_LEFT					134
+#define LUIGI_ANI_HOLD_KOOPA_JUMP_RIGHT		135
+#define LUIGI_ANI_HOLD_KOOPA_JUMP_LEFT		136
+#define LUIGI_ANI_SWITCH_SCENE				137
+
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_TAIL	3
 #define MARIO_LEVEL_FIRE	4
+#define MARIO_LEVEL_LUIGI	10
 
 #define MARIO_FIRE_BBOX_WIDTH	15
 #define MARIO_FIRE_BBOX_HEIGHT	27
@@ -316,6 +348,8 @@ class CMario : public CGameObject
 	unsigned int scoreStreak;
 	int passedTheLevel;
 
+	int isInIntro;
+
 	CGameObject* floor;
 
 	DWORD now;
@@ -332,6 +366,7 @@ public:
 	int RenderBigMario();
 	int RenderTailMario();
 	int RenderFireMario();
+	int RenderLuigi();
 
 	int IsJumping() { return jumping; }
 	void SetSittingState(int state);
@@ -382,6 +417,8 @@ public:
 	void AddScore(int score, CGameObject* coObject);
 
 	CGameObject* GetFloor() { return floor; }
+
+	void SetInIntro(int value) { isInIntro = value; }
 
 	void Reset();
 

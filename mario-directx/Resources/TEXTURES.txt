@@ -20,3 +20,4 @@
 190	Resources\Textures\gameover.png	68	34	0
 200	Resources\Textures\welcome_board.png	68	34	0
 210	Resources\Textures\star.png	255	242	0
+220	Resources\Textures\Luigi.png	255	255	255

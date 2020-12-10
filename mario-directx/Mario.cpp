@@ -46,6 +46,7 @@ CMario::CMario(float x, float y) : CGameObject()
 	allowSwichingZone = 0;
 
 	scoreStreak = 0;
+	isInIntro = 0;
 
 	start_x = x; 
 	start_y = y; 
@@ -676,7 +677,8 @@ void CMario::Render()
 	if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
 	else if (level == MARIO_LEVEL_BIG) res = RenderBigMario();
 	else if (level == MARIO_LEVEL_TAIL) res = RenderTailMario();
-	else  res = RenderFireMario();
+	else if (level == MARIO_LEVEL_FIRE) res = RenderFireMario();
+	else if (level == MARIO_LEVEL_LUIGI) res = RenderLuigi();
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
@@ -785,7 +787,7 @@ int CMario::RenderBigMario()
 	else if (sitting)
 	{
 		if (nx > 0) res = MARIO_ANI_BIG_SITTING_RIGHT;
-		else MARIO_ANI_BIG_SITTING_LEFT;
+		else res = MARIO_ANI_BIG_SITTING_LEFT;
 	}
 	else if (turning)
 	{
@@ -1151,17 +1153,114 @@ int CMario::RenderFireMario()
 	return res;
 }
 
+int CMario::RenderLuigi()
+{
+	int res = -1;
+
+	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+		res = LUIGI_ANI_SWITCH_SCENE;
+	else if (sitting)
+	{
+		if (nx > 0) res = LUIGI_ANI_SIT_RIGHT;
+		else LUIGI_ANI_SIT_LEFT;
+	}
+	else if (turning)
+	{
+		if (vx > 0) res = LUIGI_ANI_TURN_LEFT;
+		else res = LUIGI_ANI_TURN_RIGHT;
+	}
+	else
+	{
+		if (vx == 0)
+		{
+			if (nx > 0)
+			{
+				if (jumping)
+				{
+					if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_JUMP_RIGHT;
+					else res = LUIGI_ANI_JUMP_RIGHT;
+				}
+				else if (kicking) res = LUIGI_ANI_KICK_RIGHT;
+				else
+				{
+					if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_IDLE_RIGHT;
+					else res = LUIGI_ANI_IDLE_RIGHT;
+				}
+			}
+			else
+			{
+				if (jumping)
+				{
+					if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_JUMP_LEFT;
+					else res = LUIGI_ANI_JUMP_LEFT;
+				}
+				else if (kicking) res = LUIGI_ANI_KICK_LEFT;
+				else
+				{
+					if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_IDLE_LEFT;
+					else res = LUIGI_ANI_IDLE_LEFT;
+				}
+			}
+		}
+		else if (vx > 0)
+		{
+			if (jumping)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_JUMP_RIGHT;
+				else res = LUIGI_ANI_JUMP_RIGHT;
+
+			}
+			else if (kicking) res = LUIGI_ANI_KICK_RIGHT;
+			else if (vx * nx == MARIO_WALKING_SPEED)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_WALK_RIGHT;
+				else res = LUIGI_ANI_WALK_RIGHT;
+			}
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = LUIGI_ANI_RUN_FAST_RIGHT;
+			else
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_RIGHT;
+				else res = LUIGI_ANI_RUN_RIGHT;
+			}
+		}
+		else if (vx < 0)
+		{
+			if (jumping)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_JUMP_LEFT;
+				else res = LUIGI_ANI_JUMP_LEFT;
+
+			}
+			else if (kicking) res = LUIGI_ANI_KICK_LEFT;
+			else if (vx * nx == MARIO_WALKING_SPEED)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_WALK_LEFT;
+				else res = LUIGI_ANI_WALK_LEFT;
+			}
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = LUIGI_ANI_RUN_FAST_LEFT;
+			else
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_LEFT;
+				else res = LUIGI_ANI_RUN_LEFT;
+			}
+		}
+	}
+	return res;
+}
+
 void CMario::SetSittingState(int state)
 {
 	int lastSittingState = sitting;
 
-	if (GetState() == MARIO_STATE_DIE)
+	if (state == MARIO_STATE_DIE)
 	{
 		sitting = 0;
 		return;
 	}
 
-	if ((GetState() == MARIO_STATE_IDLE || jumping == 1) && level != MARIO_LEVEL_SMALL)
+	if ((state == MARIO_STATE_IDLE || jumping == 1) && level != MARIO_LEVEL_SMALL)
+		sitting = state;
+	else if (isInIntro)
 		sitting = state;
 	else
 		sitting = 0;
@@ -1419,6 +1518,24 @@ void CMario::SetState(int state)
 		vx = 0;
 		stateCanBeChanged = 1;
 		break;
+	case MARIO_STATE_IDLE_LEFT:
+		running = 0;
+		SetSittingState(0);
+		if (holdenKoopa) releaseKoopa();
+		vx = 0;
+		nx = -1;
+		stateCanBeChanged = 1;
+		break;
+	case MARIO_STATE_SIT_LEFT:
+		SetSittingState(1);
+		vx = 0;
+		nx = -1;
+		break;
+	case MARIO_STATE_SIT_RIGHT:
+		SetSittingState(1);
+		vx = 0;
+		nx = 1;
+		break;
 	case MARIO_STATE_DIE:
 		running = 0;
 		if (holdenKoopa) releaseKoopa();
@@ -1591,7 +1708,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = y + MARIO_TAIL_BBOX_HEIGHT;
 		}
 	}
-	else if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_LUIGI)
 	{
 		leftMargin = MARIO_BIG_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_BIG_BBOX_MARGIN_RIGHT;

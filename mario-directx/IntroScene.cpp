@@ -94,12 +94,15 @@ void CIntroScene::Update(DWORD dt)
 	{
 		LPINTROEVENT event = intro_events->PeekNextEvent();
 		if (!event || event->starting_time > (DWORD)GetTickCount64() - intro_start) break;
-		event->object->SetState(event->state);
 		if (dynamic_cast<CMario*>(event->object))
 		{
-			((CMario*)event->object)->SetLevel(event->level);
+			CMario* mario = dynamic_cast<CMario*>(event->object);
+			mario->SetInIntro(1);
+			mario->SetLevel(event->level);
 			temp.push_back(event);
+			if (event->state == MARIO_STATE_JUMPING) mario->SetJumpingUp(1);
 		}
+		event->object->SetState(event->state);
 		intro_events->PopNextEvent();
 	}
 

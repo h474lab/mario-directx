@@ -2,6 +2,10 @@
 100	1001	100
 #idle big left
 101	1021	100
+#idle big luigi right
+10000	1101	100
+#idle big luigi left
+10010	1121	100
 #idle small right
 102	2001	100
 #idle small left
@@ -19,6 +23,10 @@
 110	1001	100	1002	100	1003	100
 #walk left big
 111	1021	100	1022	100	1023	100
+#walk right big luigi
+10100	1101	100	1102	100	1103	100
+#walk left big luigi
+10110	1121	100	1122	100	1123	100
 #walk right small
 112	2001	40	2002	40
 #walk left small
@@ -36,6 +44,10 @@
 120	1001	10	1002	10	1003	10
 #run left big
 121	1021	10	1022	10	1023	10
+# run right big luigi
+10200	1101	10	1102	10	1103	10
+# run left big luigi
+10210	1121	10	1122	10	1123	10
 #run right small
 122	2001	10	2002	10
 #run left small
@@ -53,6 +65,10 @@
 130	1004	5	1005	5	1006	5
 # run faster left big
 131	1024	5	1025	5	1026	5
+# run faster right big luigi
+10300	1101	5	1102	5	1103	5
+# run faster left big luigi
+10310	1121	5	1122	5	1123	5
 # run faster right small
 132	2003	5	2004	5
 # run faster left small
@@ -74,6 +90,10 @@
 142	1007	100
 #jump left big
 143	1027	100
+#jump right big luigi
+10420	1107	100
+#jump left big luigi
+10430	1127	100
 #jump right tail
 144	3008	100
 #jump left tail
@@ -109,6 +129,10 @@
 162	1008	100
 #turn right big
 163	1028	100
+#turn left big luigi
+10620	1108	100
+#turn right big luigi
+10630	1128	100
 #turn left tail
 164	3015	100
 #turn right tail
@@ -126,6 +150,10 @@
 172	1009	100
 #kick right big
 173	1029	100
+#kick left big luigi
+10720	1109	100
+#kick right big luigi
+10730	1129	100
 #kick left tail
 174	3016	100
 #kick right tail
@@ -143,6 +171,10 @@
 182	1010	100
 # hold koopa idle left big
 183	1030	100
+# hold koopa idle right big luigi
+10820	1110	100
+# hold koopa idle left big luigi
+10830	1130	100
 # hold koopa idle right tail
 184	3017	100
 # hold koopa idle left tail
@@ -160,6 +192,10 @@
 192	1010	100	1011	100	1012	100
 # hold koopa walk left big
 193	1030	100	1031	100	1032	100
+# hold koopa walk right big luigi
+10920	1110	100	1111	100	1112	100
+# hold koopa walk left big luigi
+10930	1130	100	1131	100	1132	100
 # hold koopa walk right tail
 194	3017	100	3018	100	3019	100
 # hold koopa walk left tail
@@ -177,6 +213,10 @@
 202	1010	10	1011	10	1012	10
 # hold koopa run left big
 203	1030	10	1031	10	1032	10
+# hold koopa run right big luigi
+20020	1110	10	1111	10	1112	10
+# hold koopa run left big luigi
+20030	1130	10	1131	10	1132	10
 # hold koopa run right tail
 204	3017	10	3018	10	3019	10
 # hold koopa run left tail
@@ -190,6 +230,10 @@
 210	1013	100
 # big sit left
 211	1033	100
+# big luigi sit right
+20100	1113	100
+# big luigi sit left
+20110	1133	100
 # tail sit right
 212	3020	100
 # tail sit left
@@ -207,6 +251,10 @@
 222	1014	100
 # hold koopa jump left big
 223	1034	100
+# hold koopa jump right big luigi
+20220	1114	100
+# hold koopa jump left big luigi
+20230	1134	100
 # hold koopa jump right tail
 224	3021	100
 # hold koopa jump left tail
@@ -234,6 +282,8 @@
 260	2040	100
 #switch scene big
 261	1040	100
+#switch scene big luigi
+20610	1140	100
 #switch scene tail
 262	3070	100
 #switch scene fire
