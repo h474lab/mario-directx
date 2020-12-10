@@ -97,6 +97,9 @@ void CGrid::UpdateObject(CGameObject* object)
 	// should not continue change object's grid cell
 	if (oldGridRow == expectedRow && oldGridColumn == expectedColumn) return;
 
+	if (dynamic_cast<CKoopa*>(object) && (object->GetState() == KOOPA_STATE_ROLLING_DOWN_LEFT || object->GetState() == KOOPA_STATE_ROLLING_DOWN_RIGHT))
+		DebugOut(L"\nFrom [%d, %d] to [%d, %d]", oldGridRow, oldGridColumn, expectedRow, expectedColumn);
+
 	// remove object from last cell
 	// if object is the first one in cell
 	if (object->GetPreviousObject() == NULL)

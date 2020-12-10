@@ -425,6 +425,7 @@ void CPlayScene::Load()
 
 	// load map
 	LoadObjects();
+	// add objects to grid
 	for (unsigned int i = 0; i < objects.size(); i++)
 		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
 	
