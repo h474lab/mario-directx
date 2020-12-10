@@ -5,7 +5,9 @@
 #include "Camera.h"
 #include "Curtain.h"
 #include "Title.h"
+#include "Goomba.h"
 #include "Mushroom.h"
+
 #include "IntroEvent.h"
 #include "HUD.h"
 
@@ -63,6 +65,11 @@ void CIntroScene::ParseObjects(string line)
 		objects.push_back(obj);
 		currentCursor = 5;
 		break;
+	case OBJECT_TYPE_GOOMBA:
+		obj = new CGoomba();
+		objects.push_back(obj);
+		currentCursor = 4;
+		break;
 	}
 
 	for (unsigned int i = currentCursor; i < tokens.size(); i += 3)
@@ -109,6 +116,11 @@ void CIntroScene::Update(DWORD dt)
 			mario->SetLevel(event->level);
 			temp.push_back(event);
 			if (event->state == MARIO_STATE_JUMPING) mario->SetJumpingUp(1);
+		}
+		else if (dynamic_cast<CGoomba*>(event->object))
+		{
+			CGoomba* goomba = dynamic_cast<CGoomba*>(event->object);
+			goomba->SetLevel(event->level);
 		}
 		event->object->SetState(event->state);
 		intro_events->PopNextEvent();
