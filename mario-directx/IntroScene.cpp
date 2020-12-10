@@ -7,6 +7,7 @@
 #include "Title.h"
 #include "Goomba.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 
 #include "IntroEvent.h"
 #include "HUD.h"
@@ -67,6 +68,11 @@ void CIntroScene::ParseObjects(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA:
 		obj = new CGoomba();
+		objects.push_back(obj);
+		currentCursor = 4;
+		break;
+	case OBJECT_TYPE_LEAF:
+		obj = new CLeaf();
 		objects.push_back(obj);
 		currentCursor = 4;
 		break;
