@@ -23,9 +23,17 @@
 #define STAR_CIRCLE_EXPANDING_SPEED		0.03f
 #define STAR_CIRCLE_COLLAPSING_SPEED	-0.03f
 
+#define STAR_CIRCLE_MOVING_SPEED_X		0.4f
+#define STAR_CIRCLE_MOVING_SPEED_Y		0.4f
+
 #define STAR_CIRCLE_STATE_HIDING		0
 #define STAR_CIRCLE_STATE_EXPANDING		1
 #define STAR_CIRCLE_STATE_COLLAPSING	2
+
+#define STAR_CIRCLE_DIRECTION_UP	0
+#define STAR_CIRCLE_DIRECTION_DOWN	1
+#define STAR_CIRCLE_DIRECTION_LEFT	2
+#define STAR_CIRCLE_DIRECTION_RIGHT	3
 
 class CStar : public CGameObject
 {
@@ -49,8 +57,11 @@ class CStarCircle
 	float x, y;
 	int state;
 	DWORD timer;
+
+	float destination_x, destination_y;
+	int direction_x, direction_y;
 public:
-	CStarCircle(float x, float y);
+	CStarCircle(float x, float y, float des_x, float des_y);
 
 	int GetState() { return state; }
 	void SetState(int state);

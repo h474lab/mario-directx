@@ -65,7 +65,7 @@ void CStar::Render()
 	animation_set->at(STAR_ANI_ROTATING_STAR)->Render(x, y);
 }
 
-CStarCircle::CStarCircle(float x, float y)
+CStarCircle::CStarCircle(float x, float y, float des_x, float des_y)
 {
 	state = STAR_CIRCLE_STATE_HIDING;
 
@@ -79,6 +79,18 @@ CStarCircle::CStarCircle(float x, float y)
 	stars[7] = new CStar(STAR_POSITION_BOT_RIGHT_EDGE);
 
 	SetPosition(x, y);
+
+	this->destination_x = des_x;
+	this->destination_y = des_y;
+
+	if (x > destination_x)
+		direction_x = STAR_CIRCLE_DIRECTION_LEFT;
+	else
+		direction_x = STAR_CIRCLE_DIRECTION_RIGHT;
+	if (y > destination_y)
+		direction_y = STAR_CIRCLE_DIRECTION_UP;
+	else
+		direction_y = STAR_CIRCLE_DIRECTION_DOWN;
 }
 
 void CStarCircle::SetState(int state)
@@ -111,7 +123,7 @@ void CStarCircle::Update(DWORD dt)
 	{
 	case STAR_CIRCLE_STATE_HIDING:
 		CGame::GetInstance()->SetGameState(GAME_STATE_PLAY);
-		break;
+		return;
 	case STAR_CIRCLE_STATE_EXPANDING:
 		for (int i = 0; i < 8; i++)
 		{
@@ -130,6 +142,47 @@ void CStarCircle::Update(DWORD dt)
 		if ((DWORD)GetTickCount64() - timer > STAR_CIRCLE_COLLAPSING_TIME)
 			SetState(STAR_CIRCLE_STATE_HIDING);
 		break;
+	}
+
+	float last_x = x, last_y = y;
+
+	if (x != destination_x || y != destination_y)
+	{
+		if (direction_x == STAR_CIRCLE_DIRECTION_LEFT)
+		{
+			if (x > destination_x)
+				x -= STAR_CIRCLE_MOVING_SPEED_X;
+			else
+				x = destination_x;
+		}
+		else
+		{
+			if (x < destination_x)
+				x += STAR_CIRCLE_MOVING_SPEED_X;
+			else
+				x = destination_x;
+		}
+		if (direction_y == STAR_CIRCLE_DIRECTION_UP)
+		{
+			if (y > destination_y)
+				y -= STAR_CIRCLE_MOVING_SPEED_Y;
+			else
+				y = destination_y;
+		}
+		else
+		{
+			if (y < destination_y)
+				y += STAR_CIRCLE_MOVING_SPEED_Y;
+			else
+				y = destination_y;
+		}
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		float sX, sY;
+		stars[i]->GetPosition(sX, sY);
+		stars[i]->SetPosition(sX + x - last_x, sY + y - last_y);
 	}
 }
 

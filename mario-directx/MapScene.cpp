@@ -189,7 +189,7 @@ void CMapScene::Update(DWORD dt)
 		// load star circle when welcome box has been disappeared
 		if (welcomeBox->GetState() == WELCOME_BOX_STATE_DISAPPEAR && !starCircle)
 		{
-			starCircle = new CStarCircle(STAR_CIRCLE_POSITION_X, STAR_CIRCLE_POSITION_Y);
+			starCircle = new CStarCircle(STAR_CIRCLE_POSITION_X, STAR_CIRCLE_POSITION_Y, start_pos_x, start_pos_y);
 			starCircle->SetPosition(STAR_CIRCLE_POSITION_X, STAR_CIRCLE_POSITION_Y);
 			starCircle->SetState(STAR_CIRCLE_STATE_EXPANDING);
 		}
