@@ -59,6 +59,7 @@ class CGame
 	int current_scene; 
 
 	int gameState;
+	int lastGameState;
 
 	int score;
 	int lives;
@@ -112,7 +113,8 @@ public:
 	D3DCOLOR GetBackgroundColor() { return background_color; }
 
 	int GetGameState() { return gameState; }
-	void SetGameState(int state) { gameState = state; }
+	void SetGameState(int state) { lastGameState = gameState; gameState = state; }
+	int GetLastGameState() { return lastGameState; }
 
 	static CGame * GetInstance();
 

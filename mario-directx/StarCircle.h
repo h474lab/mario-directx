@@ -52,7 +52,9 @@ class CStarCircle
 public:
 	CStarCircle(float x, float y);
 
+	int GetState() { return state; }
 	void SetState(int state);
+
 	void SetPosition(float x, float y);
 	void Update(DWORD dt);
 	void Render();

@@ -27,7 +27,6 @@ class CWelcomeBox : public CGameObject
 	CNumber* world;
 	CNumber* lives[2];
 	CMapMario* mario;
-	float mario_starting_x, mario_starting_y;
 
 	DWORD appearing_time;
 public:
@@ -35,7 +34,7 @@ public:
 
 	void SetWorld(int world);
 	void SetLives(int lives);
-	void SetMario(CMapMario* mario, float savedPosX = 0.0f, float savedPosY = 0.0f);
+	void SetMario(CMapMario* mario);
 
 	virtual void SetPosition(float x, float y);
 

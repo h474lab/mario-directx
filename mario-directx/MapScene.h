@@ -16,6 +16,9 @@
 #define GAME_OVER_BOX_POSITION_X	48.0f
 #define GAME_OVER_BOX_POSITION_Y	32.0f
 
+#define STAR_CIRCLE_POSITION_X	80.0f
+#define STAR_CIRCLE_POSITION_Y	60.0f
+
 class CMapScene : public CScene
 {
 	int tilemapId;

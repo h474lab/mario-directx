@@ -42,11 +42,9 @@ void CWelcomeBox::SetLives(int lives)
 	}
 }
 
-void CWelcomeBox::SetMario(CMapMario* mario, float savedPosX, float savedPosY)
+void CWelcomeBox::SetMario(CMapMario* mario)
 {
 	this->mario = mario;
-	this->mario_starting_x = savedPosX;
-	this->mario_starting_y = savedPosY;
 }
 
 void CWelcomeBox::SetPosition(float x, float y)
@@ -72,7 +70,6 @@ void CWelcomeBox::SetState(int state)
 		appearing_time = (DWORD)GetTickCount64();
 		break;
 	case WELCOME_BOX_STATE_DISAPPEAR:
-		game->SetGameState(GAME_STATE_PLAY);
 		break;
 	}
 }
@@ -84,7 +81,6 @@ void CWelcomeBox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((DWORD)GetTickCount64() - appearing_time > WELCOME_BOX_APPEARING_TIME)
 	{
 		SetState(WELCOME_BOX_STATE_DISAPPEAR);
-		mario->SetPosition(mario_starting_x, mario_starting_y);
 	}
 }
 

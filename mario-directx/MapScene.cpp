@@ -115,6 +115,9 @@ CMapScene::CMapScene(int id, LPCWSTR filePath, LPCWSTR objectList, int tilemapId
 	this->world = world;
 	this->mario = new CMapMario();
 
+	this->starCircle = NULL;
+	this->welcomeBox = NULL;
+	this->gameOverBox = NULL;
 
 	key_handler = new CMapSceneKeyHandler(this);
 }
@@ -126,30 +129,48 @@ void CMapScene::Load()
 	tilemap->LoadTiles();
 	tilemap->LoadMap();
 
+	// load object list
 	LoadObjects();
 
+	// initialize boxes
+	this->welcomeBox = new CWelcomeBox();
+	this->gameOverBox = new CGameOverBox();
+
+	// set animation set for Map Mario
 	mario->SetAnimationSet(CAnimationSets::GetInstance()->Get(MAP_MARIO_ANI_SET));
 
-	this->welcomeBox = new CWelcomeBox();
-
-	this->gameOverBox = new CGameOverBox();
-	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
-
-	this->starCircle = new CStarCircle(50.0f, 50.0f);
-	starCircle->SetState(STAR_CIRCLE_STATE_EXPANDING);
-
+	// load nodes and put Mario in current node
 	float x, y;
 	CMapNodeSets::GetInstance()->Get(world)->GetCurrentNode()->GetPosition(x, y);
 	mario->SetPosition(x, y);
 	start_pos_x = x;
 	start_pos_y = y;
 
+	// set parameters for welcome box
+	welcomeBox->SetWorld(world);
+	welcomeBox->SetLives(CHUD::GetInstance()->GetLives());
+	welcomeBox->SetMario(mario);
+
+	// set position for game over box
+	gameOverBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
+
+	// if game state is "welcome"
+	if (CGame::GetInstance()->GetGameState() == GAME_STATE_WELCOME)
+	{
+		// show welcome box
+		welcomeBox->SetState(WELCOME_BOX_STATE_APPEAR);
+	}
+
+	// set camera position
 	CCamera::GetInstance()->SetPosition(CAMERA_POSITION_X, CAMERA_POSITION_Y);
 }
 
 void CMapScene::Update(DWORD dt)
 {
 	mario->Update(dt);
+	if (welcomeBox) welcomeBox->Update(dt);
+	if (starCircle) starCircle->Update(dt);
+
 	CHUD* hud = CHUD::GetInstance();
 
 	hud->SetPowerLevel(0);
@@ -159,19 +180,28 @@ void CMapScene::Update(DWORD dt)
 	if (hud->GetLives() < 0)
 		gameOverBox->SetState(BOX_STATE_APPEAR);
 
-	if (CGame::GetInstance()->GetGameState() == GAME_STATE_WELCOME)
+	CGame* game = CGame::GetInstance();
+
+	if (game->GetGameState() == GAME_STATE_WELCOME)
 	{
-		// show welcome box
-		welcomeBox->SetState(WELCOME_BOX_STATE_APPEAR);
-		// set parameters
-		welcomeBox->SetWorld(world);
-		welcomeBox->SetLives(CHUD::GetInstance()->GetLives());
-		welcomeBox->SetMario(mario, start_pos_x, start_pos_y);
 		// locate welcome box
 		welcomeBox->SetPosition(GAME_OVER_BOX_POSITION_X, GAME_OVER_BOX_POSITION_Y);
+		// load star circle when welcome box has been disappeared
+		if (welcomeBox->GetState() == WELCOME_BOX_STATE_DISAPPEAR && !starCircle)
+		{
+			starCircle = new CStarCircle(STAR_CIRCLE_POSITION_X, STAR_CIRCLE_POSITION_Y);
+			starCircle->SetPosition(STAR_CIRCLE_POSITION_X, STAR_CIRCLE_POSITION_Y);
+			starCircle->SetState(STAR_CIRCLE_STATE_EXPANDING);
+		}
 	}
-	welcomeBox->Update(dt);
-	starCircle->Update(dt);
+	else if (game->GetLastGameState() == GAME_STATE_WELCOME && starCircle)
+	{
+		if (starCircle->GetState() == STAR_CIRCLE_STATE_HIDING)
+		{
+			mario->SetPosition(start_pos_x, start_pos_y);
+			starCircle = NULL;
+		}
+	}
 }
 
 void CMapScene::Render()
@@ -190,11 +220,11 @@ void CMapScene::Render()
 		object->Render();
 
 	if (CGame::GetInstance()->GetGameState() != GAME_STATE_WELCOME) mario->Render();
-	gameOverBox->Render();
-	welcomeBox->Render();
+	if (gameOverBox) gameOverBox->Render();
+	if (welcomeBox) welcomeBox->Render();
 
 	CHUD::GetInstance()->Render();
-	starCircle->Render();
+	if (starCircle) starCircle->Render();
 }
 
 void CMapScene::Unload()

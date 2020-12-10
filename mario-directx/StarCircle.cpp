@@ -1,4 +1,5 @@
 #include "StarCircle.h"
+#include "Game.h"
 
 CStar::CStar(int position)
 {
@@ -109,7 +110,8 @@ void CStarCircle::Update(DWORD dt)
 	switch (state)
 	{
 	case STAR_CIRCLE_STATE_HIDING:
-		return;
+		CGame::GetInstance()->SetGameState(GAME_STATE_PLAY);
+		break;
 	case STAR_CIRCLE_STATE_EXPANDING:
 		for (int i = 0; i < 8; i++)
 		{
@@ -133,6 +135,7 @@ void CStarCircle::Update(DWORD dt)
 
 void CStarCircle::Render()
 {
+	if (state == STAR_CIRCLE_STATE_HIDING) return;
 	for (int i = 0; i < 8; i++)
 		stars[i]->Render();
 }
