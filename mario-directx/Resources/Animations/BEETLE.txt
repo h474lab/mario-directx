@@ -1,0 +1,10 @@
+# Beetle walk left
+2200	22000	100	22001	100
+# Beetle walk right
+2201	22002	100	22003	100
+# Beetle lying
+2202	22004	100
+# Beetle rolling
+2203	22004	50	22005	50	22006	50	22007	50
+# Beetle flying out
+2204	22008	100

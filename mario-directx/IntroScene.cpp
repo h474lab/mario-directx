@@ -9,6 +9,7 @@
 #include "Mushroom.h"
 #include "Leaf.h"
 #include "Koopa.h"
+#include "Beetle.h"
 
 #include "IntroEvent.h"
 #include "HUD.h"
@@ -84,6 +85,11 @@ void CIntroScene::ParseObjects(string line)
 		objects.push_back(obj);
 		currentCursor = 4;
 		break;
+	case OBJECT_TYPE_BEETLE:
+		obj = new CBeetle();
+		objects.push_back(obj);
+		currentCursor = 4;
+		break;
 	}
 
 	for (unsigned int i = currentCursor; i < tokens.size(); i += 3)
@@ -128,7 +134,8 @@ void CIntroScene::Update(DWORD dt)
 			CMario* mario = dynamic_cast<CMario*>(event->object);
 			mario->SetInIntro(1);
 			temp.push_back(event);
-			if (event->state == MARIO_STATE_JUMPING) mario->SetJumpingUp(1);
+			if (event->state == MARIO_STATE_JUMPING) 
+				mario->SetJumpingUp(1);
 			if (event->state == MARIO_STATE_FLY_JUMP_LEFT)
 			{
 				if ((DWORD)GetTickCount64() - mario_flyjump_timer > MARIO_FLY_JUMP_PUSHING_TIME)
@@ -148,6 +155,11 @@ void CIntroScene::Update(DWORD dt)
 				goomba->SetLevel(event->level);
 				event->object->SetState(event->state);
 			}
+		}
+		else if (dynamic_cast<CBeetle*>(event->object))
+		{
+			CBeetle* beetle = dynamic_cast<CBeetle*>(event->object);
+			beetle->SetState(event->state);
 		}
 		else
 		{
