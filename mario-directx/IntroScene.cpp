@@ -57,9 +57,11 @@ void CIntroScene::ParseObjects(string line)
 		currentCursor = 6;
 		break;
 	case OBJECT_TYPE_MARIO:
+		level = atoi(tokens[4].c_str());
 		obj = new CMario();
+		((CMario*)obj)->SetLevel(level);
 		objects.push_back(obj);
-		currentCursor = 4;
+		currentCursor = 5;
 		break;
 	case OBJECT_TYPE_MUSHROOM:
 		level = atoi(tokens[4].c_str());
@@ -125,16 +127,32 @@ void CIntroScene::Update(DWORD dt)
 		{
 			CMario* mario = dynamic_cast<CMario*>(event->object);
 			mario->SetInIntro(1);
-			mario->SetLevel(event->level);
 			temp.push_back(event);
 			if (event->state == MARIO_STATE_JUMPING) mario->SetJumpingUp(1);
+			if (event->state == MARIO_STATE_FLY_JUMP_LEFT)
+			{
+				if ((DWORD)GetTickCount64() - mario_flyjump_timer > MARIO_FLY_JUMP_PUSHING_TIME)
+				{
+					mario_flyjump_timer = (DWORD)GetTickCount64();
+					mario->SetJumpingUp(0);
+					mario->FlyJump();
+				}
+			}
+			event->object->SetState(event->state);
 		}
 		else if (dynamic_cast<CGoomba*>(event->object))
 		{
 			CGoomba* goomba = dynamic_cast<CGoomba*>(event->object);
-			goomba->SetLevel(event->level);
+			if (goomba->GetState() != GOOMBA_STATE_DIE)
+			{
+				goomba->SetLevel(event->level);
+				event->object->SetState(event->state);
+			}
 		}
-		event->object->SetState(event->state);
+		else
+		{
+			event->object->SetState(event->state);
+		}
 		intro_events->PopNextEvent();
 	}
 

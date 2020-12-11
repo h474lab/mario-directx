@@ -56,7 +56,6 @@ using namespace std;
 #define OBJECT_TYPE_MAP_GRASS		20
 #define OBJECT_TYPE_REWARD			21
 
-
 #define RENDER_SCORE_COLORED_BLOCK		0
 #define RENDER_SCORE_GROUNDBRICK		1
 #define RENDER_SCORE_BRICK				2

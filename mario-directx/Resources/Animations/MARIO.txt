@@ -289,5 +289,10 @@
 #switch scene fire
 263	2040	100
 
+# jump out
+901	9001	100
+# look up
+902	9002	100
+
 #die
 999	2099	100

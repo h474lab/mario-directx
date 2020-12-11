@@ -786,7 +786,11 @@ int CMario::RenderBigMario()
 {
 	int res = -1;
 
-	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
+	if (state == MARIO_STATE_JUMPING_OUT)
+		res = MARIO_ANI_INTRO_JUMPING_OUT;
+	else if (state == MARIO_STATE_LOOKING_UP)
+		res = MARIO_ANI_INTRO_LOOKING_UP;
+	else if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
 		res = MARIO_ANI_BIG_SWITCHING_SCENE;
 	else if (sitting)
 	{
@@ -1546,6 +1550,16 @@ void CMario::SetState(int state)
 		vy = -MARIO_DIE_DEFLECT_SPEED;
 		stateCanBeChanged = 1;
 		break;
+	case MARIO_STATE_JUMPING_OUT:
+		stateCanBeChanged = 1;
+		break;
+	case MARIO_STATE_LOOKING_UP:
+		stateCanBeChanged = 1;
+		break;
+	case MARIO_STATE_FLY_JUMP_LEFT:
+		SetMovingLeft(0);
+		stateCanBeChanged = 1;
+		break;
 	}
 
 	if (jumping && vx != 0)
@@ -1719,7 +1733,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 
 		if (nx < 0) swap(leftMargin, rightMargin);
 
-		if (state == MARIO_STATE_IDLE)
+		if (state == MARIO_STATE_IDLE || state == MARIO_STATE_JUMPING_OUT || state == MARIO_STATE_LOOKING_UP)
 			left = x + leftMargin;
 		if (sitting)
 		{
