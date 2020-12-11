@@ -74,6 +74,14 @@ void CKoopa::SetState(int state)
 		vy = -KOOPA_JUMPING_SPEED_Y;
 		nx = 1;
 		break;
+	case KOOPA_STATE_DROPPING:
+		vx = 0;
+		break;
+	case KOOPA_STATE_INTRO_JUMP_LEFT:
+		vx = -KOOPA_INTRO_JUMP_SPEED_X;
+		vy = -KOOPA_INTRO_JUMP_SPEED_Y;
+		nx = -1;
+		break;
 	}
 }
 
@@ -130,7 +138,7 @@ void CKoopa::ChangeDirection()
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isHolden) return;
+	if (isHolden || state == KOOPA_STATE_UNAVAILABLE) return;
 
 	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
 	{
@@ -285,8 +293,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopa::Render()
 {
-	int ani = -1;
+	if (state == KOOPA_STATE_UNAVAILABLE) return;
 
+	int ani = -1;
 	switch (state)
 	{
 	case KOOPA_STATE_WALKING_LEFT:
@@ -321,6 +330,12 @@ void CKoopa::Render()
 		break;
 	case KOOPA_STATE_FLYING_OUT:
 		ani = KOOPA_ANI_LYING_UP;
+		break;
+	case KOOPA_STATE_DROPPING:
+		ani = KOOPA_ANI_LYING_DOWN;
+		break;
+	case KOOPA_STATE_INTRO_JUMP_LEFT:
+		ani = KOOPA_ANI_ROLLING_DOWN;
 		break;
 	}
 	animation_set->at(ani)->Render(x, y);

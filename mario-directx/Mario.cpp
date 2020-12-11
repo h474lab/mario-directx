@@ -435,6 +435,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					else if (e->ny > 0)
 					{
+						if (isInIntro)
+						{
+							continue;
+						}
 						if (koopaState != KOOPA_STATE_LYING_UP && koopaState != KOOPA_STATE_LYING_DOWN)
 						{
 							keepMoving = 1;

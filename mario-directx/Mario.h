@@ -419,6 +419,7 @@ public:
 	CGameObject* GetFloor() { return floor; }
 
 	void SetInIntro(int value) { isInIntro = value; }
+	int GetInIntro(int value) { return isInIntro; }
 
 	void Reset();
 
