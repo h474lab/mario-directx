@@ -38,7 +38,7 @@ void CBeetle::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CBeetle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == BEETLE_STATE_UNAVAILABLE) return;
-	
+
 	float lastVx = vx, lastVy = vy;
 
 	vy += BEETLE_GRAVITY;
@@ -49,7 +49,7 @@ void CBeetle::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
 
-	if (coEvents.size() == 0)
+	if (coEvents.size() == 0 || state == BEETLE_STATE_FLYING_OUT)
 	{
 		x += dx;
 		y += dy;
@@ -82,6 +82,8 @@ void CBeetle::Render()
 		ani = BEETLE_ANI_WALKING_LEFT;
 	else if (state == BEETLE_STATE_WALKING_RIGHT)
 		ani = BEETLE_ANI_WALKING_RIGHT;
+	else if (state == BEETLE_STATE_FLYING_OUT)
+		ani = BEETLE_ANI_FLYING_OUT;
 
 	if (ani != BEETLE_ANI_NONE) animation_set->at(ani)->Render(x, y);
 }

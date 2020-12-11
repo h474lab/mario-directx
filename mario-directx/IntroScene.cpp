@@ -185,10 +185,10 @@ void CIntroScene::Update(DWORD dt)
 
 void CIntroScene::Render()
 {
+	CHUD::GetInstance()->Render();
+
 	for (auto object : objects)
 		object->Render();
-
-	CHUD::GetInstance()->Render();
 }
 
 void CIntroScene::Unload()

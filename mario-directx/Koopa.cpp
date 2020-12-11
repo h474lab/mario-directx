@@ -7,6 +7,7 @@
 #include "Tube.h"
 #include "QuestionBrick.h"
 #include "SquareBrick.h"
+#include "Beetle.h"
 
 CKoopa::CKoopa()
 {
@@ -267,6 +268,12 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
 						squareBrick->Destroy();
 					ChangeDirection();
+				}
+				else if (dynamic_cast<CBeetle*>(e->obj))
+				{
+					CBeetle* beetle = dynamic_cast<CBeetle*>(e->obj);
+					beetle->KickBeetleOut(nx);
+					SetState(state);
 				}
 				else SetState(state);
 			}
