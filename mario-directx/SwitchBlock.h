@@ -15,6 +15,9 @@
 #define SWITCH_BLOCK_HEIGHT	15
 #define SWITCH_BLOCK_WIDTH	16
 
+#define SWITCH_BLOCK_AREA_X		64.0f
+#define SWITCH_BLOCK_AREA_Y		48.0f
+
 class CSwitchBlock : public CGameObject
 {
 	vector <CGameObject*> objects, savingObjects;

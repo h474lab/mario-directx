@@ -434,9 +434,29 @@ void CPlayScene::Load()
 
 	// load map
 	LoadObjects();
-	// add objects to grid
+
 	for (unsigned int i = 0; i < objects.size(); i++)
+	{
+		// add nearby square objects to switch block
+		if (dynamic_cast<CSwitchBlock*>(objects[i]))
+		{
+			CSwitchBlock* switchBlock = dynamic_cast<CSwitchBlock*>(objects[i]);
+			float block_x, block_y;
+			switchBlock->GetPosition(block_x, block_y);
+			for (unsigned int j = 0; j < objects.size(); j++)
+				if (dynamic_cast<CSquareBrick*>(objects[j]))
+				{
+					float brick_x, brick_y;
+					objects[j]->GetPosition(brick_x, brick_y);
+
+					if (abs(brick_x - block_x) < SWITCH_BLOCK_AREA_X && abs(brick_y - block_y) < SWITCH_BLOCK_AREA_Y)
+						switchBlock->AddObject(objects[j]);
+				}
+		}
+
+		// add objects to grid
 		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
+	}
 	
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
 
