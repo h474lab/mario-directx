@@ -1,4 +1,5 @@
 #include "MapMario.h"
+#include "Game.h"
 
 CMapMario::CMapMario()
 {
@@ -19,8 +20,9 @@ void CMapMario::SetDestination(float x, float y)
 
 void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	SetLevel(CGame::GetInstance()->GetPlayer()->GetLevel());
 	if (state == MAP_MARIO_STATE_IDLING) return;
-	
+
 	switch (movingDirection)
 	{
 	case MAP_MARIO_MOVING_DIRECTION_UP:

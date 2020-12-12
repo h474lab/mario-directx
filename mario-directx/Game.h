@@ -106,7 +106,7 @@ public:
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
 	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
 
-	void SetPlayer(CMario* player) { this->player = player; }
+	void SetPlayer(CMario* player);
 	CMario* GetPlayer() { return player; }
 
 	void SetBackgroundColor(D3DCOLOR color) { background_color = color; }

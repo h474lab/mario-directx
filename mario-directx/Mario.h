@@ -400,6 +400,7 @@ public:
 	void LevelDown();
 	void SetState(int state);
 	void SetLevel(int l);
+	int GetLevel() { return level; }
 
 	void GetMargins(int& leftMargin, int& rightMargin);
 

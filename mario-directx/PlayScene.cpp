@@ -610,10 +610,14 @@ void CPlayScene::Render()
 void CPlayScene::Unload()
 {
 	for (unsigned int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	{
+		objects[i]->SetPreviousObject(NULL);
+		objects[i]->SetNextObject(NULL);
+		if (!dynamic_cast<CMario*>(objects[i])) delete objects[i];
+	}
 
+	CGrids::GetInstance()->Get(gridId)->ClearCells();
 	objects.clear();
-	player = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneDirectory);
 }

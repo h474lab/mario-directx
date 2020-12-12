@@ -312,6 +312,11 @@ void CGame::SweptAABB(
 
 }
 
+void CGame::SetPlayer(CMario* player)
+{
+	this->player = player;
+}
+
 CGame *CGame::GetInstance()
 {
 	if (__instance == NULL) __instance = new CGame();
@@ -457,7 +462,7 @@ void CGame::Load(LPCWSTR gameFile)
 {
 	DebugOut(L"[INFO] Start loading game file : %s\n", gameFile);
 
-	player = new CMario();
+	SetPlayer(new CMario());
 
 	ifstream f;
 	f.open(gameFile);

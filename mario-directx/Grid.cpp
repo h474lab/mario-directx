@@ -59,9 +59,7 @@ CGrid::CGrid(float start_x, float start_y, float end_x, float end_y, int numRows
 	cellHeight = gridHeight / (float)numRows;
 	cellWidth = gridWidth / (float)numColumns;
 
-	for (int i = 0; i < MAX_GRID_ROWS; i++)
-		for (int j = 0; j < MAX_GRID_COLUMNS; j++)
-			cells[i][j] = NULL;
+	ClearCells();
 }
 
 void CGrid::AddObject(LPGAMEOBJECT object)
@@ -115,6 +113,13 @@ void CGrid::UpdateObject(CGameObject* object)
 
 	// add object to the new cell
 	AddObject(object);
+}
+
+void CGrid::ClearCells()
+{
+	for (int i = 0; i < MAX_GRID_ROWS; i++)
+		for (int j = 0; j < MAX_GRID_COLUMNS; j++)
+			cells[i][j] = NULL;
 }
 
 vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()

@@ -22,6 +22,7 @@ public:
 	CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns);
 	void AddObject(LPGAMEOBJECT object);
 	void UpdateObject(CGameObject* object);
+	void ClearCells();
 	vector<LPGAMEOBJECT> LoadCellsWithinCamera();
 };
 
