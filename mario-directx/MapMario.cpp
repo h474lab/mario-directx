@@ -27,7 +27,7 @@ void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 	case MAP_MARIO_MOVING_DIRECTION_UP:
 		if (this->y > destination_y)
-			y -= MAP_MARIO_MOVING_SPEED_Y;
+			y -= MAP_MARIO_MOVING_SPEED_Y * dt;
 		else
 		{
 			y = destination_y;
@@ -36,7 +36,7 @@ void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		break;
 	case MAP_MARIO_MOVING_DIRECTION_DOWN:
 		if (this->y < destination_y)
-			y += MAP_MARIO_MOVING_SPEED_Y;
+			y += MAP_MARIO_MOVING_SPEED_Y * dt;
 		else
 		{
 			y = destination_y;
@@ -45,7 +45,7 @@ void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		break;
 	case MAP_MARIO_MOVING_DIRECTION_LEFT:
 		if (this->x > destination_x)
-			x -= MAP_MARIO_MOVING_SPEED_X;
+			x -= MAP_MARIO_MOVING_SPEED_X * dt;
 		else
 		{
 			x = destination_x;
@@ -54,7 +54,7 @@ void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		break;
 	case MAP_MARIO_MOVING_DIRECTION_RIGHT:
 		if (this->x < destination_x)
-			x += MAP_MARIO_MOVING_SPEED_X;
+			x += MAP_MARIO_MOVING_SPEED_X * dt;
 		else
 		{
 			x = destination_x;

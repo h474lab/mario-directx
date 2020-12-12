@@ -2,8 +2,8 @@
 #include "GameObject.h"
 #include "Mario.h"
 
-#define MAP_MARIO_MOVING_SPEED_X	0.5f
-#define MAP_MARIO_MOVING_SPEED_Y	0.5f
+#define MAP_MARIO_MOVING_SPEED_X	0.1f
+#define MAP_MARIO_MOVING_SPEED_Y	0.1f
 
 #define MAP_MARIO_STATE_MOVING	0
 #define MAP_MARIO_STATE_IDLING	1
