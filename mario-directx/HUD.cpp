@@ -85,10 +85,22 @@ void CHUD::SetPosition(float x, float y)
 
 void CHUD::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x;
+	CGame* game = CGame::GetInstance();
+	float screenWidth = (float)game->GetScreenWidth();
+	float screenHeight = (float)game->GetScreenHeight();
+
+	if (state == HUD_STATE_INTRO_SCENE)
+	{
+		left = x - screenWidth;
+		right = x + 2 * screenWidth;
+	}
+	else
+	{
+		left = x;
+		right = left + screenWidth;
+	}
 	top = y;
-	right = left + CGame::GetInstance()->GetScreenWidth();
-	bottom = top + CGame::GetInstance()->GetScreenHeight() - GAME_PLAY_HEIGHT;
+	bottom = top + screenHeight - GAME_PLAY_HEIGHT;
 }
 
 void CHUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

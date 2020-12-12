@@ -134,9 +134,9 @@ void CIntroScene::Update(DWORD dt)
 			CMario* mario = dynamic_cast<CMario*>(event->object);
 			mario->SetInIntro(1);
 			temp.push_back(event);
-			if (event->state == MARIO_STATE_JUMPING) 
+			if (event->state == MARIO_STATE_JUMPING)
 				mario->SetJumpingUp(1);
-			if (event->state == MARIO_STATE_FLY_JUMP_LEFT)
+			else if (event->state == MARIO_STATE_FLY_JUMP_LEFT)
 			{
 				if ((DWORD)GetTickCount64() - mario_flyjump_timer > MARIO_FLY_JUMP_PUSHING_TIME)
 				{

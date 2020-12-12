@@ -40,6 +40,7 @@
 
 #define MARIO_STATE_IDLE				0
 #define MARIO_STATE_IDLE_LEFT			50
+#define MARIO_STATE_IDLE_LEFT_HOLD_KOOPA	55
 #define MARIO_STATE_SIT_RIGHT			60
 #define MARIO_STATE_SIT_LEFT			70
 #define MARIO_STATE_JUMPING_OUT			80
@@ -54,6 +55,7 @@
 #define MARIO_STATE_TURNING_RIGHT		700
 #define MARIO_STATE_RUNNING_FAST_LEFT	800
 #define MARIO_STATE_RUNNING_FAST_RIGHT	900
+#define MARIO_STATE_UNAVAILABLE			990
 #define MARIO_STATE_DIE					1000
 
 #define MARIO_ANI_BIG_IDLE_RIGHT		0
@@ -291,6 +293,7 @@ class CMario : public CGameObject
 
 	// Koopa that Mario is holding
 	CKoopa* holdenKoopa;
+	int allowHodingKoopa;
 
 	// State in the last frame
 	int lastState;
@@ -383,6 +386,8 @@ public:
 	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
 	void SetThrowing();
 	void ThrowFireball();
+
+	void SetAllowHoldingKoopa(int value) { allowHodingKoopa = value; }
 	void setHoldenKoopa(CKoopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
 	void releaseKoopa();
 

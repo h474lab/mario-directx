@@ -56,6 +56,7 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
 	if (levelTransform)
@@ -676,6 +677,8 @@ void CMario::SetMovingRight(int skillButtonPressed)
 
 void CMario::Render()
 {
+	if (state == MARIO_STATE_UNAVAILABLE) return;
+
 	int res = -1;
 
 	if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
@@ -1441,10 +1444,11 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
+		background = 0;
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 0;
-			if (holdenKoopa) releaseKoopa();
+			if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
 			vx = MARIO_WALKING_SPEED;
 			nx = 1;
 			stateCanBeChanged = 1;
@@ -1452,10 +1456,11 @@ void CMario::SetState(int state)
 		else if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_WALKING_LEFT:
+		background = 0;
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 0;
-			if (holdenKoopa) releaseKoopa();
+			if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
 			vx = -MARIO_WALKING_SPEED;
 			nx = -1;
 			stateCanBeChanged = 1;
@@ -1463,6 +1468,7 @@ void CMario::SetState(int state)
 		else  if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
+		background = 0;
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 1;
@@ -1473,6 +1479,7 @@ void CMario::SetState(int state)
 		else  if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
+		background = 0;
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			running = 1;
@@ -1483,6 +1490,7 @@ void CMario::SetState(int state)
 		else if (!turning) turning = 1;
 		break;
 	case MARIO_STATE_RUNNING_FAST_RIGHT:
+		background = 0;
 		if ((last_nx > 0 && !turning) || jumping)
 		{
 			running = 1;
@@ -1497,6 +1505,7 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_RUNNING_FAST_LEFT:
+		background = 0;
 		if (last_nx < 0 && !turning)
 		{
 			running = 1;
@@ -1511,6 +1520,7 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_JUMPING:
+		background = 0;
 		running = 0;
 		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT)/* && !jumping*/)
 		{
@@ -1521,43 +1531,58 @@ void CMario::SetState(int state)
 		stateCanBeChanged = 1;
 		break; 
 	case MARIO_STATE_IDLE:
+		background = 0;
 		running = 0;
-		if (holdenKoopa) releaseKoopa();
+		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
 		vx = 0;
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_IDLE_LEFT:
+		background = 0;
 		running = 0;
 		SetSittingState(0);
-		if (holdenKoopa) releaseKoopa();
+		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
 		vx = 0;
 		nx = -1;
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_SIT_LEFT:
+		background = 0;
 		SetSittingState(1);
 		vx = 0;
 		nx = -1;
 		break;
 	case MARIO_STATE_SIT_RIGHT:
+		background = 0;
 		SetSittingState(1);
 		vx = 0;
 		nx = 1;
 		break;
 	case MARIO_STATE_DIE:
 		running = 0;
-		if (holdenKoopa) releaseKoopa();
+		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
 		vy = -MARIO_DIE_DEFLECT_SPEED;
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_JUMPING_OUT:
+		background = 0;
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_LOOKING_UP:
+		background = 0;
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_FLY_JUMP_LEFT:
+		background = 0;
 		SetMovingLeft(0);
+		stateCanBeChanged = 1;
+		break;
+	case MARIO_STATE_IDLE_LEFT_HOLD_KOOPA:
+		allowHodingKoopa = 1;
+		SetState(MARIO_STATE_IDLE_LEFT);
+		break;
+	case MARIO_STATE_UNAVAILABLE:
+		background = 1;
 		stateCanBeChanged = 1;
 		break;
 	}

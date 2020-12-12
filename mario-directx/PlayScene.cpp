@@ -654,6 +654,10 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
 	CMario* mario = ((CPlayScene*)scene)->GetPlayer();
 	mario->SetJumpingUp(0);
+	if (KeyCode == DIK_Z)
+	{
+		mario->SetAllowHoldingKoopa(0);
+	}
 }
 
 void CPlaySceneKeyHandler::KeyState(BYTE *states)
@@ -672,7 +676,10 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 
 	int skillButtonPressed = 0;
 	if (game->IsKeyDown(DIK_Z))
+	{
+		mario->SetAllowHoldingKoopa(1);
 		skillButtonPressed = 1;
+	}
 
 	if (game->IsKeyDown(DIK_DOWN))
 	{
