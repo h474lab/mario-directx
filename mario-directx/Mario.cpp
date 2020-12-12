@@ -1420,8 +1420,15 @@ void CMario::LevelDown()
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
-		StartLevelTransform(level, MARIO_LEVEL_BIG);
-		StartUntouchable();
+		if (isInIntro)
+		{
+			StartLevelTransform(level, MARIO_LEVEL_SMALL);
+		}
+		else
+		{
+			StartLevelTransform(level, MARIO_LEVEL_BIG);
+			StartUntouchable();
+		}
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
@@ -1571,6 +1578,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_LOOKING_UP:
 		background = 0;
 		stateCanBeChanged = 1;
+		break;
+	case MARIO_STATE_JUMPING_LEFT:
+		background = 0;
+		SetJumpingUp(1);
+		SetState(MARIO_STATE_JUMPING);
+		SetMovingDirection(MOVING_DIRECTION_LEFT);
 		break;
 	case MARIO_STATE_FLY_JUMP_LEFT:
 		background = 0;

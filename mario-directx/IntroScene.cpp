@@ -133,6 +133,7 @@ void CIntroScene::Update(DWORD dt)
 		{
 			CMario* mario = dynamic_cast<CMario*>(event->object);
 			mario->SetInIntro(1);
+			mario->SetAllowHoldingKoopa(0);
 			temp.push_back(event);
 			if (event->state == MARIO_STATE_JUMPING)
 				mario->SetJumpingUp(1);
@@ -145,6 +146,8 @@ void CIntroScene::Update(DWORD dt)
 					mario->FlyJump();
 				}
 			}
+			else
+				mario->SetJumpingUp(0);
 			event->object->SetState(event->state);
 		}
 		else if (dynamic_cast<CGoomba*>(event->object))
