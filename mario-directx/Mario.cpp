@@ -683,7 +683,11 @@ void CMario::Render()
 
 	int res = -1;
 
-	if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
+	if (levelTransform && (transform_lastLevel == MARIO_LEVEL_TAIL || transform_newLevel == MARIO_LEVEL_TAIL) && !isInIntro)
+		res = MARIO_ANI_TAIL_TRANSFORM;
+	else if (levelTransform && transform_newLevel == MARIO_LEVEL_TAIL)
+		res = MARIO_ANI_TAIL_TRANSFORM;
+	else if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
 	else if (level == MARIO_LEVEL_BIG) res = RenderBigMario();
 	else if (level == MARIO_LEVEL_TAIL) res = RenderTailMario();
 	else if (level == MARIO_LEVEL_FIRE) res = RenderFireMario();
