@@ -113,10 +113,14 @@ void CIntroScene::ParseObjects(string line)
 CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CScene(id, filePath) 
 {
 	intro_start = (DWORD) (DWORD)GetTickCount64();
+	skip = 0;
+
 	this->objectsFileName = objectFileName;
 	this->gameModeMenu = NULL;
+
 	mario_flyjump_timer = 0;
 	renderIntroTreeLater = 0;
+
 	key_handler = new CIntroSceneKeyHandler(this);
 }
 
@@ -133,6 +137,23 @@ void CIntroScene::Update(DWORD dt)
 	LPINTROEVENTS intro_events = CIntroEvents::GetInstance();
 	vector<LPINTROEVENT> temp;
 	temp.clear();
+
+	if (skip)
+	{
+		intro_start = (DWORD)GetTickCount64() - MENU_APPEARING_TIME;
+		while (intro_events->PeekNextEvent()->starting_time < MENU_APPEARING_TIME)
+		{
+			LPINTROEVENT event = intro_events->PeekNextEvent();
+			if (dynamic_cast<CTitle*>(intro_events->PeekNextEvent()->object))
+			{
+				event->object->SetPosition(INTRO_TITLE_POSITION_X, INTRO_TITLE_POSITION_Y);
+			}
+			event->object->SetState(event->state);
+			intro_events->PopNextEvent();
+		}
+		skip = 0;
+	}
+
 	while (true)
 	{
 		LPINTROEVENT event = intro_events->PeekNextEvent();
@@ -247,7 +268,7 @@ void CIntroSceneKeyHandler::OnKeyDown(int KeyCode)
 
 	if (KeyCode == DIK_RETURN)
 	{
-		if (menu)
+		if (menu->GetState() == OPTIONS_STATE_AVAILABLE)
 		{
 			CGame::GetInstance()->SetGameState(GAME_STATE_WELCOME);
 			CHUD::GetInstance()->SetLives(DEFAULT_LIVES);

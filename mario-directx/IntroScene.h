@@ -5,17 +5,21 @@
 #include "IntroTree.h"
 
 #define CHANGE_BACKGROUND_COLOR_TIME	9000
-#define MENU_APPEARING_TIME				9000
+#define MENU_APPEARING_TIME				29000
 
 #define MARIO_FLY_JUMP_PUSHING_TIME		270
 
 #define INTRO_TREE_RENDER_BEFORE	0
 #define INTRO_TREE_RENDER_AFTER		1
 
+#define INTRO_TITLE_POSITION_X		70.0f
+#define INTRO_TITLE_POSITION_Y		48.0f
+
 class CIntroScene : public CScene
 {
 protected:
 	DWORD intro_start;
+	int skip;
 
 	vector<CIntroTree*> introTrees;
 	int renderIntroTreeLater;
@@ -27,7 +31,7 @@ public:
 	CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName);
 
 	CIntroOptions* GetMenu() { return gameModeMenu; }
-	void SetAppearingMenu() { intro_start = MENU_APPEARING_TIME; }
+	void SetAppearingMenu() { skip = 1; }
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

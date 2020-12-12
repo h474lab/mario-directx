@@ -369,7 +369,7 @@ void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = l + KOOPA_JUMPING_WIDTH;
 		b = t + KOOPA_JUMPING_HEIGHT - 2;
 	}
-	else if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT || KOOPA_STATE_RUNNING_RIGHT)
+	else if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT || state == KOOPA_STATE_RUNNING_RIGHT)
 	{
 		r = l + KOOPA_STANDING_WIDTH;
 		b = t + KOOPA_STANDING_HEIGHT - 2;
