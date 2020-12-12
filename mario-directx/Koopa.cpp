@@ -46,9 +46,11 @@ void CKoopa::SetState(int state)
 		break;
 	case KOOPA_STATE_LYING_DOWN:
 		vx = 0.0f;
+		lying_start = (DWORD)GetTickCount64();
 		break;
 	case KOOPA_STATE_LYING_UP:
 		vx = 0.0f;
+		lying_start = (DWORD)GetTickCount64();
 		break;
 	case KOOPA_STATE_ROLLING_UP_LEFT:
 		vx = -KOOPA_ROLLING_SPEED;
@@ -89,6 +91,12 @@ void CKoopa::SetState(int state)
 		nx = 1;
 		break;
 	}
+}
+
+void CKoopa::WakeUp()
+{
+	y -= KOOPA_STANDING_HEIGHT - KOOPA_LYING_HEIGHT;
+	SetState(KOOPA_STATE_WALKING_LEFT);
 }
 
 void CKoopa::HitKoopa(int direction)
@@ -144,6 +152,12 @@ void CKoopa::ChangeDirection()
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
+	{
+		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
+			WakeUp();
+	}
+
 	if (isHolden || state == KOOPA_STATE_UNAVAILABLE) return;
 
 	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)

@@ -59,6 +59,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
+	if (holdenKoopa && !isInIntro)
+	{
+		if (holdenKoopa->GetState() != KOOPA_STATE_LYING_DOWN || holdenKoopa->GetState() != KOOPA_STATE_LYING_UP)
+			releaseKoopa();
+	}
+
 	if (levelTransform)
 	{
 		if (GetTickCount64() - stepStart > MARIO_LEVEL_TRANSFORMING_TIME)

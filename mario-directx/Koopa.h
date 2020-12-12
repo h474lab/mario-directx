@@ -4,6 +4,8 @@
 #define KOOPA_LEVEL_TROOPA		0
 #define KOOPA_LEVEL_PARATROOPA	1
 
+#define KOOPA_LYING_TIME		10000
+
 #define KOOPA_WALKING_SPEED			0.030f
 #define KOOPA_ROLLING_SPEED			0.25f
 #define KOOPA_GRAVITY				0.001f
@@ -77,6 +79,8 @@ private:
 	int flying;
 	DWORD flying_start;
 
+	DWORD lying_start;
+
 	int isHolden;
 public:
 	CKoopa();
@@ -86,6 +90,8 @@ public:
 
 	virtual void SetState(int state);
 	void SetHolden(int holdenState) { isHolden = holdenState; background = isHolden; }
+
+	void WakeUp();
 
 	void HitKoopa(int direction);
 	void KickKoopaOut(int direction);
