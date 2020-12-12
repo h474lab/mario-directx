@@ -8,6 +8,7 @@
 #include "QuestionBrick.h"
 #include "SquareBrick.h"
 #include "Beetle.h"
+#include "HUD.h"
 
 CKoopa::CKoopa()
 {
@@ -82,6 +83,10 @@ void CKoopa::SetState(int state)
 		vx = -KOOPA_INTRO_JUMP_SPEED_X;
 		vy = -KOOPA_INTRO_JUMP_SPEED_Y;
 		nx = -1;
+		break;
+	case KOOPA_STATE_RUNNING_RIGHT:
+		vx = KOOPA_RUNNING_RIGHT_SPEED;
+		nx = 1;
 		break;
 	}
 }
@@ -194,6 +199,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (ny != 0) vy = 0;
 
 		jumping = 1;
+		int applyEdges = 0;
 		for (unsigned int i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -211,11 +217,13 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						leftEdge = l - 7;
 					else if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_RIGHT_EDGE)
 						rightEdge = r + 7;
+					applyEdges = 1;
 				}
 				else if (dynamic_cast<CSquareBrick*>(e->obj))
 				{
 					leftEdge = l - 7;
 					rightEdge = r + 7;
+					applyEdges = 1;
 				}
 			}
 			else if (e->nx != 0)
@@ -239,7 +247,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					SetState(state);
 				}
-				else if (dynamic_cast<CGroundBricks*>(e->obj))
+				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CHUD*>(e->obj))
 				{
 					float brick_x, brick_y;
 					e->obj->GetPosition(brick_x, brick_y);
@@ -285,7 +293,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		GetBoundingBox(l, t, r, b);
 		float width = r - l;
 
-		if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT)
+		if ((state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT) && applyEdges)
 		{
 			if (x < leftEdge) SetState(KOOPA_STATE_WALKING_RIGHT);
 			else if (x + width > rightEdge) SetState(KOOPA_STATE_WALKING_LEFT);
@@ -344,6 +352,9 @@ void CKoopa::Render()
 	case KOOPA_STATE_INTRO_JUMP_LEFT:
 		ani = KOOPA_ANI_ROLLING_DOWN;
 		break;
+	case KOOPA_STATE_RUNNING_RIGHT:
+		ani = KOOPA_ANI_RUNNING_RIGHT;
+		break;
 	}
 	animation_set->at(ani)->Render(x, y);
 }
@@ -358,7 +369,7 @@ void CKoopa::GetBoundingBox(float& l, float& t, float& r, float& b)
 		r = l + KOOPA_JUMPING_WIDTH;
 		b = t + KOOPA_JUMPING_HEIGHT - 2;
 	}
-	else if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT)
+	else if (state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT || KOOPA_STATE_RUNNING_RIGHT)
 	{
 		r = l + KOOPA_STANDING_WIDTH;
 		b = t + KOOPA_STANDING_HEIGHT - 2;

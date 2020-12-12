@@ -15,6 +15,10 @@
 4007	40003	50	40004	50	40005	50	40006	50
 # fly to the left
 4008	40013	50	40014	50	40015	50	40016	50
+# walk to the right
+4009	40001	50	40002	50
+# walk to the left
+4010	40011	50	40012	50
 
 # GREEN
 # walk to the right

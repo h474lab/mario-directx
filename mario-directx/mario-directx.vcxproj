@@ -153,6 +153,7 @@
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="GameOverBox.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="IntroTree.cpp" />
     <ClCompile Include="Letter.cpp" />
     <ClCompile Include="MapGate.cpp" />
     <ClCompile Include="MapGrass.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="GameOverBox.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="IntroTree.h" />
     <ClInclude Include="Letter.h" />
     <ClInclude Include="MapGate.h" />
     <ClInclude Include="MapGrass.h" />

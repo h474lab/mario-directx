@@ -190,6 +190,9 @@
     <Filter Include="Objects\Beetle">
       <UniqueIdentifier>{6c4fb957-1e73-4877-a4e0-8679b6056ea3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\IntroObjects\IntroTree">
+      <UniqueIdentifier>{d3e9f45d-2521-4245-a19b-4b76ec66650d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -372,6 +375,9 @@
     <ClCompile Include="Beetle.cpp">
       <Filter>Objects\Beetle</Filter>
     </ClCompile>
+    <ClCompile Include="IntroTree.cpp">
+      <Filter>Objects\IntroObjects\IntroTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -553,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="Beetle.h">
       <Filter>Objects\Beetle</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroTree.h">
+      <Filter>Objects\IntroObjects\IntroTree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

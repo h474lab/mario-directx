@@ -90,6 +90,12 @@ void CIntroScene::ParseObjects(string line)
 		objects.push_back(obj);
 		currentCursor = 4;
 		break;
+	case OBJECT_TYPE_INTRO_TREE:
+		level = atoi(tokens[4].c_str());
+		obj = new CIntroTree(level);
+		objects.push_back(obj);
+		currentCursor = 5;
+		break;
 	}
 
 	for (unsigned int i = currentCursor; i < tokens.size(); i += 3)
@@ -109,6 +115,8 @@ CIntroScene::CIntroScene(int id, LPCWSTR filePath, LPCWSTR objectFileName) : CSc
 	intro_start = (DWORD) (DWORD)GetTickCount64();
 	this->objectsFileName = objectFileName;
 	this->gameModeMenu = NULL;
+	mario_flyjump_timer = 0;
+	renderIntroTreeLater = 0;
 	key_handler = new CIntroSceneKeyHandler(this);
 }
 
@@ -164,6 +172,14 @@ void CIntroScene::Update(DWORD dt)
 			CBeetle* beetle = dynamic_cast<CBeetle*>(event->object);
 			beetle->SetState(event->state);
 		}
+		else if (dynamic_cast<CIntroTree*>(event->object))
+		{
+			if (event->level == INTRO_TREE_RENDER_AFTER)
+				renderIntroTreeLater = 1;
+			else
+				renderIntroTreeLater = 0;
+			event->object->SetState(event->state);
+		}
 		else
 		{
 			event->object->SetState(event->state);
@@ -190,8 +206,23 @@ void CIntroScene::Render()
 {
 	CHUD::GetInstance()->Render();
 
+	vector<CIntroTree*> queuedIntroTrees;
+	queuedIntroTrees.clear();
+
 	for (auto object : objects)
+	{
+		if (renderIntroTreeLater && dynamic_cast<CIntroTree*>(object))
+		{
+			queuedIntroTrees.push_back(dynamic_cast<CIntroTree*>(object));
+			continue;
+		}
 		object->Render();
+	}
+
+	for (auto queuedObject : queuedIntroTrees)
+	{
+		queuedObject->Render();
+	}
 }
 
 void CIntroScene::Unload()
