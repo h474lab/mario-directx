@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "SquareBrick.h"
 
 #define SWITCH_BLOCK_FLYING_SPEED_Y	0.04f
 #define SWITCHING_TIME	2000
@@ -16,9 +17,15 @@
 
 class CSwitchBlock : public CGameObject
 {
+	vector <CGameObject*> objects, savingObjects;
+	DWORD switching_start;
 public:
 	CSwitchBlock();
+
+	void AddObject(CGameObject* object);
+
 	void Switch();
+	void SwitchBack();
 	
 	virtual void SetAppearingState() { SetState(SWITCH_BLOCK_STATE_UNPRESSED); }
 	virtual void SetDisappearingState() { SetState(SWITCH_BLOCK_STATE_UNAVAILABLE); }
