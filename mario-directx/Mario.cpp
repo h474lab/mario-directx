@@ -13,6 +13,7 @@
 #include "Koopa.h"
 #include "QuestionBrick.h"
 #include "Mushroom.h"
+#include "SwitchBlock.h"
 #include "Bullet.h"
 #include "TubeEnemy.h"
 #include "Leaf.h"
@@ -613,6 +614,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				reward->Gain();
 				passedTheLevel = 1;
 				keepMoving = 1;
+			}
+			else if (dynamic_cast<CSwitchBlock*>(e->obj))
+			{
+				CSwitchBlock* switchBlock = dynamic_cast<CSwitchBlock*>(e->obj);
+				if (e->ny < 0) switchBlock->Switch();
 			}
 		}
 
