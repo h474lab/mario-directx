@@ -764,7 +764,11 @@ int CMario::RenderSmallMario()
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_WALKING_RIGHT;
 				else res = MARIO_ANI_SMALL_WALKING_RIGHT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_SMALL_RUNNING_FASTER_RIGHT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_RIGHT;
+				else res = MARIO_ANI_SMALL_RUNNING_FASTER_RIGHT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_RIGHT;
@@ -785,7 +789,11 @@ int CMario::RenderSmallMario()
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_WALKING_LEFT;
 				else res = MARIO_ANI_SMALL_WALKING_LEFT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_SMALL_RUNNING_FASTER_LEFT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_LEFT;
+				else res = MARIO_ANI_SMALL_RUNNING_FASTER_LEFT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_RUNNING_LEFT;
@@ -863,7 +871,11 @@ int CMario::RenderBigMario()
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_WALKING_RIGHT;
 				else res = MARIO_ANI_BIG_WALKING_RIGHT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_BIG_RUNNING_FASTER_RIGHT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_RIGHT;
+				else res = MARIO_ANI_BIG_RUNNING_FASTER_RIGHT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_RIGHT;
@@ -884,7 +896,11 @@ int CMario::RenderBigMario()
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_WALKING_LEFT;
 				else res = MARIO_ANI_BIG_WALKING_LEFT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_BIG_RUNNING_FASTER_LEFT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_LEFT;
+				else res = MARIO_ANI_BIG_RUNNING_FASTER_LEFT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_RUNNING_LEFT;
@@ -1034,7 +1050,11 @@ int CMario::RenderTailMario()
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_WALKING_RIGHT;
 				else res = MARIO_ANI_TAIL_WALKING_RIGHT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_TAIL_RUNNING_FASTER_RIGHT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_RIGHT;
+				else res = MARIO_ANI_TAIL_RUNNING_FASTER_RIGHT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_RIGHT;
@@ -1064,7 +1084,11 @@ int CMario::RenderTailMario()
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_WALKING_LEFT;
 				else res = MARIO_ANI_TAIL_WALKING_LEFT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_TAIL_RUNNING_FASTER_LEFT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_LEFT;
+				else res = MARIO_ANI_TAIL_RUNNING_FASTER_LEFT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_RUNNING_LEFT;
@@ -1143,7 +1167,11 @@ int CMario::RenderFireMario()
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_WALKING_RIGHT;
 				else res = MARIO_ANI_FIRE_WALKING_RIGHT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_FIRE_RUNNING_FASTER_RIGHT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_RIGHT;
+				else res = MARIO_ANI_FIRE_RUNNING_FASTER_RIGHT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_RIGHT;
@@ -1164,7 +1192,11 @@ int CMario::RenderFireMario()
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_WALKING_LEFT;
 				else res = MARIO_ANI_FIRE_WALKING_LEFT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = MARIO_ANI_FIRE_RUNNING_FASTER_LEFT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_LEFT;
+				else res = MARIO_ANI_FIRE_RUNNING_FASTER_LEFT;
+			}
 			else
 			{
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_RUNNING_LEFT;
@@ -1238,7 +1270,11 @@ int CMario::RenderLuigi()
 				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_WALK_RIGHT;
 				else res = LUIGI_ANI_WALK_RIGHT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = LUIGI_ANI_RUN_FAST_RIGHT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_RIGHT;
+				else res = LUIGI_ANI_RUN_FAST_RIGHT;
+			}
 			else
 			{
 				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_RIGHT;
@@ -1259,7 +1295,11 @@ int CMario::RenderLuigi()
 				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_WALK_LEFT;
 				else res = LUIGI_ANI_WALK_LEFT;
 			}
-			else if (vx * nx == MARIO_RUNNING_FAST_SPEED) res = LUIGI_ANI_RUN_FAST_LEFT;
+			else if (vx * nx == MARIO_RUNNING_FAST_SPEED)
+			{
+				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_LEFT;
+				else res = LUIGI_ANI_RUN_FAST_LEFT;
+			}
 			else
 			{
 				if (holdenKoopa) res = LUIGI_ANI_HOLD_KOOPA_RUN_LEFT;

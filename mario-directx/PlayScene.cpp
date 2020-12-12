@@ -18,6 +18,7 @@
 #include "Koopa.h"
 #include "GroundBricks.h"
 #include "Mushroom.h"
+#include "SwitchBlock.h"
 #include "VenusFireTrap.h"
 #include "PiranhaPlant.h"
 #include "ShortFireTrap.h"
@@ -290,6 +291,13 @@ void CPlayScene::ParseObjects(string line)
 					brick->AddNewObject(includedObj);
 					queuedObject.push_back(includedObj);
 					includedObj = NULL;
+					i += 2;
+					break;
+				case OBJECT_TYPE_SWITCH_BLOCK:
+					ani_set = atoi(tokens[i + 1].c_str());
+					includedObj = new CSwitchBlock();
+					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
+					brick->AddNewObject(includedObj);
 					i += 2;
 					break;
 				}
