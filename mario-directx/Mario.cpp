@@ -26,7 +26,7 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	level = MARIO_LEVEL_SMALL;
 	levelTransform = 0;
 	untouchable = 0;
 	turning = 0;
@@ -34,7 +34,6 @@ CMario::CMario(float x, float y) : CGameObject()
 
 	holdenKoopa = NULL;
 
-	state = MARIO_STATE_IDLE;
 	SetState(MARIO_STATE_IDLE);
 
 	flyingDirection = lastFlyingDirection = FLYING_DIRECTION_NOMOVE;

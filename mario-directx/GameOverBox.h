@@ -17,6 +17,7 @@ public:
 	CGameOverBox();
 
 	void SwitchOption();
+	int GetFocusingOption() { return focusingOption; }
 
 	virtual void SetState(int state);
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}

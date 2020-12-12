@@ -421,7 +421,8 @@ void CPlayScene::Load()
 	tiled_background->Get(tilemapId)->LoadTiles();
 	tiled_background->Get(tilemapId)->LoadMap();
 
-	this->player = CGame::GetInstance()->GetPlayer();
+	player = CGame::GetInstance()->GetPlayer();
+	player->SetState(MARIO_STATE_IDLE);
 
 	// load map
 	LoadObjects();

@@ -13,12 +13,11 @@ void CMapSceneKeyHandler::KeyState(BYTE* states)
 void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMapScene* mapScene = (CMapScene*)scene;
+	CMapMario* mario = mapScene->GetMario();
+	LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
 
 	if (CGame::GetInstance()->GetGameState() == GAME_STATE_PLAY)
 	{
-		CMapMario* mario = mapScene->GetMario();
-		LPMAPNODES mapNodes = CMapNodeSets::GetInstance()->Get(mapScene->GetWorld());
-
 		LPMAPNODE currentNode = mapNodes->GetCurrentNode();
 		LPMAPNODE nextNode = NULL;
 
@@ -71,6 +70,16 @@ void CMapSceneKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		case DIK_DOWN:
 			gameOverBox->SwitchOption();
+			break;
+		case DIK_RETURN:
+			switch (gameOverBox->GetFocusingOption())
+			{
+			case BOX_ANI_FOCUS_OPTION_1:
+				CMapNodeSets::GetInstance()->ResetNodes(mapScene->GetWorld());
+				CHUD::GetInstance()->SetLives(DEFAULT_LIVES);
+				CGame::GetInstance()->SwitchMapScene(mapScene->GetWorld());
+			}
+			gameOverBox->SetState(BOX_STATE_DISAPPEAR);
 			break;
 		}
 	}
@@ -175,6 +184,7 @@ void CMapScene::Update(DWORD dt)
 
 	hud->SetPowerLevel(0);
 	hud->SetWorld(world);
+	hud->SetRemainingTime(0);
 	hud->Update(dt);
 
 	if (hud->GetLives() < 0)
