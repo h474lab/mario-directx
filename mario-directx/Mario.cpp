@@ -17,6 +17,7 @@
 #include "TubeEnemy.h"
 #include "Leaf.h"
 #include "Tube.h"
+#include "GroundBricks.h"
 #include "SquareBrick.h"
 #include "Camera.h"
 #include "Score.h"
@@ -372,6 +373,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				jumping = 0;
 				floor = e->obj;
+				// reset score streak
+				if (dynamic_cast<CQuestionBrick*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
+					dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CTube*>(e->obj) ||
+					dynamic_cast<CSquareBrick*>(e->obj)) scoreStreak = 0;
 			}
 
 			if (e->ny > 0)
@@ -646,9 +651,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
-	// reset scoring streak to 0
-	if (!jumping) scoreStreak = 0;
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
@@ -1394,6 +1396,7 @@ void CMario::StartLevelTransform(int lastLevel, int newLevel)
 	transform_newLevel = newLevel;
 	transformSteps = 0;
 	levelTransform = 1;
+	SetState(MARIO_STATE_IDLE);
 	stepStart = (DWORD)GetTickCount64();
 	SetLevel(transform_newLevel);
 }
