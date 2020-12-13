@@ -20,7 +20,8 @@
 
 class CSwitchBlock : public CGameObject
 {
-	vector <CGameObject*> objects, savingObjects;
+	vector <CGameObject*> objects;
+	vector <CGameObject*> savingObjects;
 	DWORD switching_start;
 public:
 	CSwitchBlock();

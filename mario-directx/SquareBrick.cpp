@@ -28,6 +28,16 @@ void CSquareBrick::Destroy()
 	for (int i = 0; i < 4; i++) fragments[i]->Hit();
 }
 
+CSquareBrick* CSquareBrick::Duplicate()
+{
+	CSquareBrick* result = new CSquareBrick();
+	result->SetPosition(x, y);
+	result->SetState(state);
+	result->SetAnimationSet(animation_set);
+	result->SetFragmentAnimationSet(fragmentAnimationSet);
+	return result;
+}
+
 void CSquareBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == SQUARE_BRICK_STATE_AVAILABLE && CanBeHitByTail()) Destroy();

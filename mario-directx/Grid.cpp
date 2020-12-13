@@ -103,6 +103,7 @@ void CGrid::UpdateObject(CGameObject* object)
 	if (object->GetPreviousObject() == NULL)
 	{
 		cells[oldGridRow][oldGridColumn] = object->GetNextObject();
+		if (object->GetNextObject()) object->GetNextObject()->SetPreviousObject(NULL);
 	}
 	// if object is in the middle of linked list
 	else
@@ -113,6 +114,33 @@ void CGrid::UpdateObject(CGameObject* object)
 
 	// add object to the new cell
 	AddObject(object);
+}
+
+void CGrid::ReplaceObject(CGameObject* object_1, CGameObject* object_2)
+{
+	for (int i = 0; i < numRows; i++)
+		for (int j = 0; j < numColumns; j++)
+		{
+			CGameObject* currentObject = cells[i][j];
+			while (currentObject)
+			{
+				if (currentObject == object_1)
+				{
+					object_2->SetPreviousObject(currentObject->GetPreviousObject());
+					object_2->SetNextObject(currentObject->GetNextObject());
+
+					if (currentObject->GetPreviousObject() == NULL)
+						cells[i][j] = object_2;
+					else
+						currentObject->GetPreviousObject()->SetNextObject(object_2);
+
+					if (currentObject->GetNextObject()) currentObject->GetNextObject()->SetPreviousObject(object_2);
+
+					return;
+				}
+				currentObject = currentObject->GetNextObject();
+			}
+		}
 }
 
 void CGrid::ClearCells()

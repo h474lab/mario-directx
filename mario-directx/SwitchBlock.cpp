@@ -1,5 +1,7 @@
 #include "SwitchBlock.h"
 #include "Coin.h"
+#include "Utils.h"
+#include "Grid.h"
 
 CSwitchBlock::CSwitchBlock()
 {
@@ -8,6 +10,7 @@ CSwitchBlock::CSwitchBlock()
 
 void CSwitchBlock::AddObject(CGameObject* object)
 {
+	DebugOut(L"\nAdd Object pointer: %p", object);
 	objects.push_back(object);
 }
 
@@ -15,12 +18,22 @@ void CSwitchBlock::Switch()
 {
 	SetState(SWITCH_BLOCK_STATE_PRESSED);
 	switching_start = (DWORD)GetTickCount64();
-	for each (auto object in objects)
+
+	savingObjects.clear();
+	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSquareBrick*>(object))
+		savingObjects.push_back(objects[i]);
+		if (dynamic_cast<CSquareBrick*>(objects[i]))
 		{
-			savingObjects.push_back(object);
-			object = new CCoin();
+			float x, y;
+			objects[i]->GetPosition(x, y);
+
+			CGameObject* coin = new CCoin();
+			coin->SetPosition(x, y);
+			coin->SetAnimationSet(animation_set);
+			objects[i] = coin;
+
+			CGrids::GetInstance()->Get(1)->ReplaceObject(savingObjects[i], objects[i]);
 		}
 	}
 }
@@ -31,8 +44,8 @@ void CSwitchBlock::SwitchBack()
 	{
 		if (dynamic_cast<CCoin*>(objects[i]))
 		{
-			if (objects[i]->GetState() == COIN_STATE_AVAILABLE) objects[i] = savingObjects[i];
-			else delete savingObjects[i];
+			if (objects[i]->GetState() == COIN_STATE_AVAILABLE)
+				CGrids::GetInstance()->Get(1)->ReplaceObject(objects[i], savingObjects[i]);
 		}
 	}
 }
