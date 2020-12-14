@@ -296,6 +296,7 @@ void CPlayScene::ParseObjects(string line)
 				case OBJECT_TYPE_SWITCH_BLOCK:
 					ani_set = atoi(tokens[i + 1].c_str());
 					includedObj = new CSwitchBlock();
+					((CSwitchBlock*)includedObj)->SetGridId(gridId);
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
 					brick->AddNewObject(includedObj);
 					i += 2;
@@ -314,9 +315,12 @@ void CPlayScene::ParseObjects(string line)
 		}
 	case OBJECT_TYPE_SQUARE_BRICK:
 		{
-			obj = new CSquareBrick();
+			CSquareBrick* brick = new CSquareBrick;
+			brick->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
+			brick->SetCoinAnimationSet(animation_sets->Get(atoi(tokens[5].c_str())));
+
+			obj = brick;
 			obj->SetPosition(x, y);
-			((CSquareBrick*)obj)->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
 			break;
 		}
 	case OBJECT_TYPE_COIN:

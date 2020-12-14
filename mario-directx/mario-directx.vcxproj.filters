@@ -193,6 +193,9 @@
     <Filter Include="Objects\IntroObjects\IntroTree">
       <UniqueIdentifier>{d3e9f45d-2521-4245-a19b-4b76ec66650d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\SwitchBlock">
+      <UniqueIdentifier>{3bd7a927-b568-4ca2-a5f6-ac924ea95389}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -378,7 +381,9 @@
     <ClCompile Include="IntroTree.cpp">
       <Filter>Objects\IntroObjects\IntroTree</Filter>
     </ClCompile>
-    <ClCompile Include="SwitchBlock.cpp" />
+    <ClCompile Include="SwitchBlock.cpp">
+      <Filter>Objects\SwitchBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -564,6 +569,8 @@
     <ClInclude Include="IntroTree.h">
       <Filter>Objects\IntroObjects\IntroTree</Filter>
     </ClInclude>
-    <ClInclude Include="SwitchBlock.h" />
+    <ClInclude Include="SwitchBlock.h">
+      <Filter>Objects\SwitchBlock</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

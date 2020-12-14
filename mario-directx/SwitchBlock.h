@@ -20,13 +20,19 @@
 
 class CSwitchBlock : public CGameObject
 {
+	// objects vector (originally contains switch block addresses) will be replaced by coins
 	vector <CGameObject*> objects;
+	// square bricks will be saved in savingObjects for future replacement
 	vector <CGameObject*> savingObjects;
+	// grid id is used to get grid containing square bricks
+	int gridId;
+	// when switch block is pressed
 	DWORD switching_start;
 public:
 	CSwitchBlock();
 
 	void AddObject(CGameObject* object);
+	void SetGridId(int id) { gridId = id; }
 
 	void Switch();
 	void SwitchBack();

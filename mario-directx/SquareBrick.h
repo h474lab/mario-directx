@@ -11,13 +11,15 @@
 class CSquareBrick : public CGameObject
 {
 	CBrickFragment *fragments[4];
-
+	LPANIMATION_SET replacingCoinAnimationSet;
 	LPANIMATION_SET fragmentAnimationSet;
 public:
 	CSquareBrick();
 
 	void Destroy();
-
+	
+	void SetCoinAnimationSet(LPANIMATION_SET ani_set) { replacingCoinAnimationSet = ani_set; }
+	LPANIMATION_SET GetCoinAnimationSet() { return replacingCoinAnimationSet; }
 	void SetFragmentAnimationSet(LPANIMATION_SET ani_set) { fragmentAnimationSet = ani_set; }
 
 	CSquareBrick* Duplicate();

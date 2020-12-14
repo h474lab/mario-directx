@@ -25,15 +25,18 @@ void CSwitchBlock::Switch()
 		savingObjects.push_back(objects[i]);
 		if (dynamic_cast<CSquareBrick*>(objects[i]))
 		{
+			CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(objects[i]);
+			CGameObject* coin = new CCoin();
+
+			if (squareBrick->GetState() != SQUARE_BRICK_STATE_AVAILABLE) continue;
+
 			float x, y;
 			objects[i]->GetPosition(x, y);
-
-			CGameObject* coin = new CCoin();
 			coin->SetPosition(x, y);
-			coin->SetAnimationSet(animation_set);
+			coin->SetAnimationSet(squareBrick->GetCoinAnimationSet());
 			objects[i] = coin;
 
-			CGrids::GetInstance()->Get(1)->ReplaceObject(savingObjects[i], objects[i]);
+			CGrids::GetInstance()->Get(gridId)->ReplaceObject(savingObjects[i], objects[i]);
 		}
 	}
 }
