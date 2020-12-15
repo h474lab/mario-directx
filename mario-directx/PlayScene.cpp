@@ -440,6 +440,7 @@ void CPlayScene::Load()
 	player->SetPassedTheLevel(0);
 
 	endGamePanel->SetType(BACKGROUND_TYPE_END_GAME_PANEL);
+	endGamePanel->SetState(BACKGROUND_STATE_HIDE);
 
 	// load map
 	LoadObjects();
@@ -531,6 +532,8 @@ void CPlayScene::Update(DWORD dt)
 	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
 	float pWidth = pRight - pLeft;
 
+	CHUD* HUD = CHUD::GetInstance();
+
 	// no bounding when Mario won the game
 	if (!player->PassedTheLevel())
 	{
@@ -543,6 +546,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else
 	{
+		endGamePanel->SetCardType(HUD->GetNearliestCard()->GetType());
 		endGamePanel->SetState(BACKGROUND_STATE_APPEAR);
 	}
 
@@ -569,8 +573,6 @@ void CPlayScene::Update(DWORD dt)
 
 	if (endGamePanel)
 		endGamePanel->SetPosition(cx, cy);
-
-	CHUD* HUD = CHUD::GetInstance();
 
 	if (player->OutOfCamera())
 	{

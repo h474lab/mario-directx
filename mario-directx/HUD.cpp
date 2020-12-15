@@ -52,6 +52,15 @@ void CHUD::GetCards(int& card_1_state, int& card_2_state, int& card_3_state)
 	card_3_state = card_3->GetState();
 }
 
+CCard* CHUD::GetNearliestCard()
+{
+	if (card_3->GetType() != CARD_TYPE_BLANK)
+		return card_3;
+	if (card_2->GetType() != CARD_TYPE_BLANK)
+		return card_2;
+	return card_1;
+}
+
 void CHUD::AddCard(int type)
 {
 	if (card_1->GetType() == CARD_TYPE_BLANK)
