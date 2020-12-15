@@ -64,7 +64,12 @@ void CReward::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CReward::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// stop updating when Reward has been acquired
-	if (state == REWARD_STATE_ACQUIRED) return;
+	if (state == REWARD_STATE_ACQUIRED) vy = -REWARD_ACQUIRED_FLYING_SPEED_Y;
+
+	// update reward speed
+	CGameObject::Update(dt);
+	x += dx;
+	y += dy;
 
 	// switching type after an amount of time
 	if ((DWORD)GetTickCount64() - switching_start > REWARD_DELAY_SWICHING_TYPE_TIME)
@@ -76,19 +81,26 @@ void CReward::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CReward::Render()
 {
-	if (state == REWARD_STATE_ACQUIRED) return;
-
 	int ani = -1;
 	switch (type)
 	{
 	case REWARD_TYPE_MUSHROOM:
-		ani = REWARD_ANI_MUSHROOM;
+		if (state == REWARD_STATE_ACQUIRED)
+			ani = REWARD_ANI_MUSHROOM_ACQUIRED;
+		else
+			ani = REWARD_ANI_MUSHROOM;
 		break;
 	case REWARD_TYPE_FLOWER:
-		ani = REWARD_ANI_FLOWER;
+		if (state == REWARD_STATE_ACQUIRED)
+			ani = REWARD_ANI_FLOWER_ACQUIRED;
+		else
+			ani = REWARD_ANI_FLOWER;
 		break;
 	case REWARD_TYPE_STAR:
-		ani = REWARD_ANI_STAR;
+		if (state == REWARD_STATE_ACQUIRED)
+			ani = REWARD_ANI_STAR_ACQUIRED;
+		else
+			ani = REWARD_ANI_STAR;
 		break;
 	}
 
