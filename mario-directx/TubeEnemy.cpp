@@ -8,6 +8,10 @@ CTubeEnemy::CTubeEnemy()
 
 void CTubeEnemy::Firing()
 {
+	if ((DWORD)GetTickCount64() - firing_start < TUBE_ENEMY_FIRING_DELAY) return;
+	
+	firing_start = (DWORD)GetTickCount64();
+	int state = bullet->GetState();
 	this->SetState(TUBE_ENEMY_STATE_FIRE);
 
 	bullet->SetState(BULLET_STATE_FLY);
@@ -51,7 +55,6 @@ void CTubeEnemy::Firing()
 void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == TUBE_ENEMY_STATE_DIE) return;
-	
 	UpdateFlying(dt);
 
 	CGameObject::Update(dt);

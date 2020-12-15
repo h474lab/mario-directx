@@ -3,6 +3,8 @@
 #include "Bullet.h"
 #include "Tube.h"
 
+#define TUBE_ENEMY_FIRING_DELAY			3000
+
 #define TUBE_ENEMY_STATE_POINT			0
 #define TUBE_ENEMY_STATE_FIRE			1
 #define TUBE_ENEMY_STATE_IDLE			2
@@ -21,6 +23,7 @@ protected:
 
 	CGameObject* followingObject;
 	CBullet* bullet;
+	DWORD firing_start;
 public:
 	CTubeEnemy();
 

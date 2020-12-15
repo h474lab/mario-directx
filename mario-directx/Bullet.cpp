@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Utils.h"
 
 CBullet::CBullet()
 {
@@ -91,6 +92,11 @@ float CBullet::GetDistance(int direction, float xM, float yM)
 	return abs(a * xM + b * yM + c) / sqrt(a * a + b * b);
 }
 
+void CBullet::SetState(int state)
+{
+	CGameObject::SetState(state);
+}
+
 void CBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
@@ -104,13 +110,14 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == BULLET_STATE_ON_HOLD) return;
 
 	CGameObject::Update(dt);
-
 	x += dx;
 	y += dy;
 }
 
 void CBullet::Render()
 {
+	if (state == BULLET_STATE_ON_HOLD) return;
+
 	if (state == BULLET_STATE_FLY)
 		animation_set->at(0)->Render(x, y);
 }
