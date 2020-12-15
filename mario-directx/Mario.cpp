@@ -387,7 +387,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (e->ny > 0)
 			{
-				jumpingUp = 0;
+				// ignore disallowing jumping up when Mario collides with Coin, Leaf, Mushroom and Reward
+				if (!dynamic_cast<CCoin*>(e->obj) || dynamic_cast<CLeaf*>(e->obj) || dynamic_cast<CMushroom*>(e->obj) || dynamic_cast<CReward*>(e->obj))
+					jumpingUp = 0;
 			}
 
 			if (dynamic_cast<CCoin*>(e->obj))

@@ -435,6 +435,7 @@ void CPlayScene::Load()
 
 	player = CGame::GetInstance()->GetPlayer();
 	player->SetState(MARIO_STATE_IDLE);
+	player->SetPassedTheLevel(0);
 
 	// load map
 	LoadObjects();
@@ -567,6 +568,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			player->SetState(MARIO_STATE_DIE);
 			HUD->SetLives(HUD->GetLives() - 1);
+			player->SetLevel(MARIO_LEVEL_SMALL);
 		}
 		else
 		{

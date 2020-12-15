@@ -423,6 +423,7 @@ public:
 
 	int OutOfCamera();
 	int PassedTheLevel() { return passedTheLevel; }
+	void SetPassedTheLevel(int state) { passedTheLevel = state; }
 
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }
