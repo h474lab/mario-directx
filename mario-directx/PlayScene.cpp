@@ -46,6 +46,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_start
 
 	this->world = world;
 	key_handler = new CPlaySceneKeyHandler(this);
+
+	this->endGamePanel = new CBackground();
 }
 
 /*
@@ -437,6 +439,8 @@ void CPlayScene::Load()
 	player->SetState(MARIO_STATE_IDLE);
 	player->SetPassedTheLevel(0);
 
+	endGamePanel->SetType(BACKGROUND_TYPE_END_GAME_PANEL);
+
 	// load map
 	LoadObjects();
 
@@ -537,6 +541,10 @@ void CPlayScene::Update(DWORD dt)
 
 		player->SetPosition(px, py);
 	}
+	else
+	{
+		endGamePanel->SetState(BACKGROUND_STATE_APPEAR);
+	}
 
 	float cx, cy;
 	player->GetPosition(cx, cy);
@@ -558,6 +566,9 @@ void CPlayScene::Update(DWORD dt)
 
 	CCamera* camera = CCamera::GetInstance();
 	camera->SetPosition((float)((int)cx), (float)((int)cy));
+
+	if (endGamePanel)
+		endGamePanel->SetPosition(cx, cy);
 
 	CHUD* HUD = CHUD::GetInstance();
 
@@ -612,6 +623,8 @@ void CPlayScene::Render()
 	float screen_height = (float)CGame::GetInstance()->GetScreenHeight();
 
 	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
+
+	if (endGamePanel && endGamePanel->GetState() == BACKGROUND_STATE_APPEAR) endGamePanel->Render();
 
 	if (player->GetFlyingDirection() != FLYING_DIRECTION_NOMOVE) player->Render();
 

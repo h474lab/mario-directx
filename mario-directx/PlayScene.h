@@ -10,6 +10,7 @@
 #include "Tilemap.h"
 #include "PlayZone.h"
 #include "MapScene.h"
+#include "Background.h"
 
 #define GAMETIME	301000
 
@@ -24,6 +25,7 @@ protected:
 
 	// the gate from which Mario got in!
 	CMapNode* gate;
+	CBackground* endGamePanel;
 
 	int currentZone;
 	vector<CPlayZone> playZones;

@@ -1,14 +1,35 @@
 #include "Background.h"
 
-void CBackground::Render()
+CBackground::CBackground()
 {
-	animation_set->at(0)->Render(x, y);
+	background = 1;
+	SetState(BACKGROUND_STATE_HIDE);
 }
 
-void CBackground::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CBackground::SetType(int type)
 {
-	l = x;
-	t = y;
-	r = l + BACKGROUND_WIDTH;
-	b = t + BACKGROUND_HEIGHT;
+	CAnimationSets* ani_sets = CAnimationSets::GetInstance();
+	switch (type)
+	{
+	case BACKGROUND_TYPE_END_GAME_PANEL:
+		SetAnimationSet(ani_sets->GetInstance()->Get(ID_ANI_SET_END_GAME_PANEL));
+		break;
+	}
+	this->type = type;
+}
+
+void CBackground::SetPosition(float x, float y)
+{
+	if (type == BACKGROUND_TYPE_END_GAME_PANEL)
+	{
+		this->x = x + END_GAME_PANEL_PADDING_LEFT;
+		this->y = y + END_GAME_PANEL_PADDING_TOP;
+	}
+	else CGameObject::SetPosition(x, y);
+}
+
+void CBackground::Render()
+{
+	if (state == BACKGROUND_STATE_HIDE) return;
+	if (animation_set) animation_set->at(0)->Render(x, y);
 }
