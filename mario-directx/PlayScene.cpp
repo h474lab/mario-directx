@@ -71,7 +71,7 @@ void CPlayScene::ParseObjects(string line)
 	CGameObject *obj = NULL;
 
 	CFireball* fireball = NULL;
-	int nFireballs = 2; // define the maximum number of Mario fireballs which are not destroyed at a time
+	int nFireballs = MARIO_MAX_FIREBALL_NUMBER; // define the maximum number of Mario fireballs which are not destroyed at a time
 	int fireball_ani_set; // animation set using for rendering fireball
 
 	// this object is hidden inside another one

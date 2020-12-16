@@ -12,6 +12,7 @@
 #define MARIO_JUMP_SPEED_X			0.1f
 #define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			80.0f
+#define MARIO_MAX_FIREBALL_NUMBER	2
 
 #define MARIO_LEVEL_TRANSFORMING_TIME	50
 #define MARIO_LEVEL_TRANSFORMING_STEPS	10
@@ -267,9 +268,13 @@
 #define MARIO_BIG_SITTING_BBOX_WIDTH	14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT	18
 
-#define MARIO_UNTOUCHABLE_TIME	2000
+#define MARIO_UNTOUCHABLE_TIME	3000
 #define MARIO_KICKING_TIME		1000
 #define MARIO_SPINNING_TIME		100
+
+#define MARIO_UNTOUCHABLE_CHANGING_ALPHA_TIME	200
+#define MARIO_UNTOUCHABLE_ALPHA_LOW				0
+#define MARIO_UNTOUCHABLE_ALPHA_HIGH			255
 
 #define MARIO_SWITCHING_ZONE_DIRECTION_UP	0
 #define MARIO_SWITCHING_ZONE_DIRECTION_DOWN	1
@@ -360,7 +365,10 @@ class CMario : public CGameObject
 	unsigned int scoreStreak;
 	int passedTheLevel;
 
-	int isInIntro;
+	int renderAlpha; // Mario's alpha when rendering
+	DWORD alpha_switch_start;
+
+	int isInIntro; // Mario is currently in Intro Scene
 
 	CGameObject* floor;
 

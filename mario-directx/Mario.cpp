@@ -706,10 +706,20 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_FIRE) res = RenderFireMario();
 	else if (level == MARIO_LEVEL_LUIGI) res = RenderLuigi();
 
-	int alpha = 255;
-	if (untouchable) alpha = 128;
+	renderAlpha = MARIO_UNTOUCHABLE_ALPHA_HIGH;
+	if (untouchable)
+	{
+		if ((DWORD)GetTickCount64() - alpha_switch_start > MARIO_UNTOUCHABLE_CHANGING_ALPHA_TIME)
+		{
+			if (renderAlpha == MARIO_UNTOUCHABLE_ALPHA_HIGH)
+				renderAlpha = MARIO_UNTOUCHABLE_ALPHA_LOW;
+			else
+				renderAlpha = MARIO_UNTOUCHABLE_ALPHA_HIGH;
+			alpha_switch_start = (DWORD)GetTickCount64();
+		}
+	}
 
-	if (res != -1) animation_set->at(res)->Render(x, y, alpha);
+	if (res != -1) animation_set->at(res)->Render(x, y, renderAlpha);
 }
 
 int CMario::RenderSmallMario()
@@ -1475,8 +1485,8 @@ void CMario::LevelDown()
 
 	if (level == MARIO_LEVEL_FIRE)
 	{
-		StartLevelTransform(level, MARIO_LEVEL_BIG);
 		StartUntouchable();
+		StartLevelTransform(level, MARIO_LEVEL_BIG);
 	}
 	else if (level == MARIO_LEVEL_TAIL)
 	{
@@ -1486,14 +1496,14 @@ void CMario::LevelDown()
 		}
 		else
 		{
-			StartLevelTransform(level, MARIO_LEVEL_BIG);
 			StartUntouchable();
+			StartLevelTransform(level, MARIO_LEVEL_BIG);
 		}
 	}
 	else if (level == MARIO_LEVEL_BIG)
 	{
-		StartLevelTransform(level, MARIO_LEVEL_SMALL);
 		StartUntouchable();
+		StartLevelTransform(level, MARIO_LEVEL_SMALL);
 	}
 	else {
 		DebugOut(L"\nDIE");
