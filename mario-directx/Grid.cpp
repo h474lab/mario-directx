@@ -4,12 +4,14 @@
 
 void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 {
+	// when current object is the first one in the cell
 	if (!cells[row][column])
 	{
 		object->SetPreviousObject(NULL);
 		object->SetNextObject(NULL);
 		cells[row][column] = object;
 	}
+	// add it into the list at the first position
 	else
 	{
 		cells[row][column]->SetPreviousObject(object);
@@ -116,6 +118,7 @@ void CGrid::UpdateObject(CGameObject* object)
 	AddObject(object);
 }
 
+// replace object_1 by object_2 in the grid
 void CGrid::ReplaceObject(CGameObject* object_1, CGameObject* object_2)
 {
 	for (int i = 0; i < numRows; i++)
@@ -124,11 +127,14 @@ void CGrid::ReplaceObject(CGameObject* object_1, CGameObject* object_2)
 			CGameObject* currentObject = cells[i][j];
 			while (currentObject)
 			{
+				// [gotcha!!] found the object to be replaced
 				if (currentObject == object_1)
 				{
+					// set new object (object_2) nearby objects
 					object_2->SetPreviousObject(currentObject->GetPreviousObject());
 					object_2->SetNextObject(currentObject->GetNextObject());
 
+					// clear current object from the list
 					if (currentObject->GetPreviousObject() == NULL)
 						cells[i][j] = object_2;
 					else
@@ -136,8 +142,10 @@ void CGrid::ReplaceObject(CGameObject* object_1, CGameObject* object_2)
 
 					if (currentObject->GetNextObject()) currentObject->GetNextObject()->SetPreviousObject(object_2);
 
+					// after completing replacing -> done
 					return;
 				}
+				// on the other hand, continue getting the next object in the list
 				currentObject = currentObject->GetNextObject();
 			}
 		}
@@ -152,6 +160,12 @@ void CGrid::ClearCells()
 
 vector<LPGAMEOBJECT> CGrid::LoadCellsWithinCamera()
 {
+	/*
+		The camera edges is:
+			width [cam_x, cam_x + screenWidth]
+			height [cam_y, cam_y + screenHeight]
+	*/
+
 	vector<LPGAMEOBJECT> result;
 	result.clear();
 

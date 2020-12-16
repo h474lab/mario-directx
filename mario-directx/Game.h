@@ -48,6 +48,7 @@ class CGame
 
 	LPKEYEVENTHANDLER keyHandler;
 	
+	// background color of the game
 	D3DCOLOR background_color;
 
 	int screen_width;
@@ -60,10 +61,6 @@ class CGame
 
 	int gameState;
 	int lastGameState;
-
-	int score;
-	int lives;
-	int money;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
@@ -80,7 +77,7 @@ public:
 	void Load(LPCWSTR gameFile);
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void SwitchScene(int scene_id, CMapNode* gate = NULL);
-	void SwitchMapScene(int world);
+	void SwitchMapScene(int world); // switching into Map Scene with world id
 
 	void ChangePlayZone(int zoneID);
 

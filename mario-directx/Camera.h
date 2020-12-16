@@ -4,7 +4,7 @@ class CCamera
 {
 private:
 	float x, y;
-	int lock = 0;
+	int lock = 0;	// not allow camera to change its position
 	static CCamera* __instance;
 public:
 	void LockCamera(int value) { lock = value; }

@@ -335,21 +335,21 @@ void CGame::_ParseSection_SETTINGS(string line)
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 2) return;
-	if (tokens[0] == "start")
+	if (tokens[0] == "start")	// the starting scene at the begining of the game
 		current_scene = atoi(tokens[1].c_str());
-	else if (tokens[0] == "textures_path")
+	else if (tokens[0] == "textures_path")	// folder contains textures
 		CResources::GetInstance()->SetTexturesPath(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "sprites_path")
+	else if (tokens[0] == "sprites_path")	// folder contains sprites
 		CResources::GetInstance()->SetSpritesPath(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "animations_path")
+	else if (tokens[0] == "animations_path")	// folder contains animations
 		CResources::GetInstance()->SetAnimationsPath(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "animation_sets_path")
+	else if (tokens[0] == "animation_sets_path")	// folder contains animation sets
 		CResources::GetInstance()->SetAnimationSetsPath(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "object_list")
+	else if (tokens[0] == "object_list")	// text file contains object to be imported
 		CResources::GetInstance()->SetGameObjectList(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "map_node_list")
+	else if (tokens[0] == "map_node_list")	// text file defines list of map nodes in the game
 		CResources::GetInstance()->SetMapNodesPath(ToLPCWSTR(tokens[1]));
-	else if (tokens[0] == "grid_list")
+	else if (tokens[0] == "grid_list")	// text file defines list of grids of each play scene
 		CResources::GetInstance()->SetGridListPath(ToLPCWSTR(tokens[1]));
 	else
 		DebugOut(L"[ERROR] Unknown game setting %s\n", ToWSTR(tokens[0]).c_str());

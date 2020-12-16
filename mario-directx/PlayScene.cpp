@@ -67,14 +67,20 @@ void CPlayScene::ParseObjects(string line)
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
+	// temporary variable that used to store adding object
 	CGameObject *obj = NULL;
-	CFireball* fireball = NULL;
-	int nFireballs = 2;
-	int fireball_ani_set;
 
+	CFireball* fireball = NULL;
+	int nFireballs = 2; // define the maximum number of Mario fireballs which are not destroyed at a time
+	int fireball_ani_set; // animation set using for rendering fireball
+
+	// this object is hidden inside another one
 	CGameObject* includedObj = NULL;
+
+	// store everything that needs to be added into objects list later
 	vector<LPGAMEOBJECT> queuedObject;
 	queuedObject.clear();
+
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
@@ -119,11 +125,13 @@ void CPlayScene::ParseObjects(string line)
 			obj = NULL;
 			break;
 		}
+	// create a group of ground bricks
 	case OBJECT_TYPE_GROUNDBRICK:
 		{
 			int numRows = atoi(tokens[4].c_str());
 			int numColumns = atoi(tokens[5].c_str());
 			int position = 0;
+			// define each brick's position in the group
 			for (int i = 0; i < numRows; i++)
 				for (int j = 0; j < numColumns; j++)
 				{
@@ -411,6 +419,7 @@ void CPlayScene::ChangePlayZone(unsigned int zoneID)
 	waitingZone = zoneID;
 }
 
+// switching play zone and put player into his new position
 void CPlayScene::StartSettingCurrentZone()
 {
 	if (waitingZone == -1) return;
@@ -435,10 +444,12 @@ void CPlayScene::Load()
 	tiled_background->Get(tilemapId)->LoadTiles();
 	tiled_background->Get(tilemapId)->LoadMap();
 
+	// set initial state of Mario
 	player = CGame::GetInstance()->GetPlayer();
 	player->SetState(MARIO_STATE_IDLE);
 	player->SetPassedTheLevel(0);
 
+	// load end game panel and hide it
 	endGamePanel->SetType(BACKGROUND_TYPE_END_GAME_PANEL);
 	endGamePanel->SetState(BACKGROUND_STATE_HIDE);
 
@@ -478,6 +489,7 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+	// get working cells (inside the camera area) in the grid in order to update objects that are contained in them
 	workingCellsInGrid = CGrids::GetInstance()->Get(gridId)->LoadCellsWithinCamera();
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -492,9 +504,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	player->Update(dt, &coObjects);
-	if (player->GetLevelTransform()) return;
-
-	player->GetHittableTail();
+	if (player->GetLevelTransform()) return;	// while Mario is transforming his level -> skip updating
 
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
@@ -514,6 +524,7 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
+	// when player is in proper position for switching -> start switching play zone
 	if (player->GetAllowSwitchingZone())
 		StartSettingCurrentZone();
 
@@ -535,6 +546,7 @@ void CPlayScene::Update(DWORD dt)
 	CHUD* HUD = CHUD::GetInstance();
 
 	// no bounding when Mario won the game
+	// otherwise, put him back inside the camera
 	if (!player->PassedTheLevel())
 	{
 		if (px < minPixelWidth) px = minPixelWidth;
@@ -566,6 +578,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > maxPixelHeight - screenHeight) cy = maxPixelHeight - screenHeight;
 	else if (cy < minPixelHeight) cy = minPixelHeight;
 
+	// set camera lower to spare space for HUD
 	cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
 
 	CCamera* camera = CCamera::GetInstance();
@@ -585,6 +598,7 @@ void CPlayScene::Update(DWORD dt)
 		}
 		else
 		{
+			// when Mario won the level -> close the gate
 			LPGAMEOBJECT gateObject = gate->GetNodeObject();
 			if (gateObject)
 			{
@@ -617,6 +631,7 @@ void CPlayScene::Render()
 	float cx, cy;
 	CCamera::GetInstance()->GetPosition(cx, cy);
 
+	// get zone's bounds to set tilemap rendering area
 	float topBound, bottomBound, leftBound, rightBound;
 	playZones[currentZone].GetVerticalBounds(topBound, bottomBound);
 	playZones[currentZone].GetHorizontalBounds(leftBound, rightBound);
@@ -624,13 +639,19 @@ void CPlayScene::Render()
 	float screen_width = (float)CGame::GetInstance()->GetScreenWidth();
 	float screen_height = (float)CGame::GetInstance()->GetScreenHeight();
 
+	// draw tilemap within the camera
 	CTilemaps::GetInstance()->Get(tilemapId)->DrawFullTilemap(tile_x, tile_y, cx, cy, (cx + screen_width < rightBound) ? cx + screen_width : rightBound, (cy + screen_height < bottomBound) ? cy + screen_height : bottomBound);
 
+	// when end game panel is ready to appear, render it!
 	if (endGamePanel && endGamePanel->GetState() == BACKGROUND_STATE_APPEAR) endGamePanel->Render();
 
+	// render Mario before other objects when he is switching playzone
 	if (player->GetFlyingDirection() != FLYING_DIRECTION_NOMOVE) player->Render();
 
+	// get cells standing inside the camera
 	workingCellsInGrid = CGrids::GetInstance()->Get(gridId)->LoadCellsWithinCamera();
+
+	// get all objects to be rendered
 	vector<CGameObject*> renderObjects;
 	renderObjects.clear();
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
@@ -642,8 +663,10 @@ void CPlayScene::Render()
 			currentObject = currentObject->GetNextObject();
 		}
 	}
-
+	
+	// because there are objects needs to be set in front of others and behind other ones, each of them is created a rendering score (or priority)
 	std::sort(renderObjects.begin(), renderObjects.end(), RenderCompare);
+
 	for each (CGameObject * object in renderObjects)
 	{
 		object->Render();
@@ -654,6 +677,7 @@ void CPlayScene::Render()
 	// render score animation
 	CScores::GetInstance()->Render();
 
+	// ... and HUD
 	CHUD::GetInstance()->Render();
 }
 
@@ -678,6 +702,10 @@ void CPlayScene::Unload()
 void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 {
 	CMario *mario = ((CPlayScene*)scene)->GetPlayer();
+
+	float mario_x, mario_y;
+	mario->GetPosition(mario_x, mario_y);
+
 	switch (KeyCode)
 	{
 	case DIK_X:
@@ -690,9 +718,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		mario->StartSpinning();
 		mario->SetThrowing();
 		break;
-	case DIK_A: 
-		mario->Reset();
+	case DIK_A:
+		mario->Reset();	// put Mario back to his starting position
 		break;
+	// ========== TESTING KEYs
 	case DIK_S:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
 		break;
@@ -704,6 +733,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_F:
 		mario->SetLevel(MARIO_LEVEL_FIRE);
+		break;
+	case DIK_L:
+		mario->SetPosition(mario_x + 1000.0f, mario_y - 50.0f); // take Mario's position away! 
+		break;
 	}
 }
 

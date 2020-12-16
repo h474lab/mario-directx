@@ -20,23 +20,30 @@ class CPlayScene: public CScene
 {
 protected: 
 	CMario *player;					// A play scene has to have player, right?
+	// id of tilemap and grid - which are used to access tilemap and grid in their sets
 	int tilemapId;
 	int gridId;
 
 	// the gate from which Mario got in!
 	CMapNode* gate;
+	// panel that appear to notify user that Mario has passed the level
 	CBackground* endGamePanel;
 
+	// game play zone that Mario is in
 	int currentZone;
+	// a combination of play zones in the play scene
 	vector<CPlayZone> playZones;
 
+	// all cells in current grid including in the camera
 	vector<LPGAMEOBJECT> workingCellsInGrid;
 
 	int world;
 	float tile_x, tile_y;
-
+	
+	// when Mario swich from this play zone to others, take zone (into which Mario will switch) into waiting position
 	int waitingZone;
 
+	// time has passed since the game started
 	DWORD gameStartingTime;
 
 	virtual void ParseObjects(string line);
@@ -56,9 +63,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CMario * GetPlayer() { return player; } 
-
-	//friend class CPlaySceneKeyHandler;
+	CMario * GetPlayer() { return player; }
 };
 
 class CPlaySceneKeyHandler : public CSceneKeyHandler
