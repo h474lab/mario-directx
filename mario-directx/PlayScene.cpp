@@ -412,7 +412,7 @@ void CPlayScene::ChangePlayZone(unsigned int zoneID, float mario_switch_x, float
 
 	player->SetSittingState(0);
 	// set start position using for later switching
-	playZones[waitingZone].SetPlayerStartPosition(mario_switch_x, mario_switch_y);
+	playZones[zoneID].SetPlayerStartPosition(mario_switch_x, mario_switch_y);
 	waitingZone = zoneID;
 }
 
