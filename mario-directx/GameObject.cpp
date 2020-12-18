@@ -95,6 +95,19 @@ void CGameObject::CalcPotentialCollisions(
 		}
 
 	std::sort(coEvents.begin(), coEvents.end(), CCollisionEvent::compare);
+
+	/*for (unsigned int i = 0; i < coEvents.size(); i++)
+	{
+		LPCOLLISIONEVENT event = SweptAABBEx(coEvents[i]->obj);
+		
+		if (event->t >= 0.0f && event->t <= 1.0f)
+		{
+			float remainingTime = 1.0f - event->t;
+			float dotprod = (vx * event->ny + vy * event->nx);
+			vx = dotprod * event->ny;
+			vy = dotprod * event->nx;
+		}
+	}*/
 }
 
 void CGameObject::FilterCollision(

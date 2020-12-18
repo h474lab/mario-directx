@@ -28,6 +28,7 @@ class CSwitchBlock : public CGameObject
 	int gridId;
 	// when switch block is pressed
 	DWORD switching_start;
+	int hasBeenSwitched;
 public:
 	CSwitchBlock();
 

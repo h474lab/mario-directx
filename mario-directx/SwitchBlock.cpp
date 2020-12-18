@@ -6,6 +6,7 @@
 CSwitchBlock::CSwitchBlock()
 {
 	SetState(SWITCH_BLOCK_STATE_UNAVAILABLE);
+	hasBeenSwitched = 0;
 }
 
 void CSwitchBlock::AddObject(CGameObject* object)
@@ -23,15 +24,15 @@ void CSwitchBlock::Switch()
 	for (int i = 0; i < objects.size(); i++)
 	{
 		savingObjects.push_back(objects[i]);
-		if (dynamic_cast<CSquareBrick*>(objects[i]))
+		if (dynamic_cast<CSquareBrick*>(savingObjects[i]))
 		{
-			CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(objects[i]);
+			CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(savingObjects[i]);
 			CGameObject* coin = new CCoin();
 
 			if (squareBrick->GetState() != SQUARE_BRICK_STATE_AVAILABLE) continue;
 
 			float x, y;
-			objects[i]->GetPosition(x, y);
+			savingObjects[i]->GetPosition(x, y);
 			coin->SetPosition(x, y);
 			coin->SetAnimationSet(squareBrick->GetCoinAnimationSet());
 			objects[i] = coin;
@@ -48,7 +49,7 @@ void CSwitchBlock::SwitchBack()
 		if (dynamic_cast<CCoin*>(objects[i]))
 		{
 			if (objects[i]->GetState() == COIN_STATE_AVAILABLE)
-				CGrids::GetInstance()->Get(1)->ReplaceObject(objects[i], savingObjects[i]);
+				CGrids::GetInstance()->Get(gridId)->ReplaceObject(objects[i], savingObjects[i]);
 		}
 	}
 }
@@ -102,8 +103,11 @@ void CSwitchBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == SWITCH_BLOCK_STATE_PRESSED)
 	{
-		if ((DWORD)GetTickCount64() - switching_start > SWITCHING_TIME)
+		if ((DWORD)GetTickCount64() - switching_start > SWITCHING_TIME && !hasBeenSwitched)
+		{
 			SwitchBack();
+			hasBeenSwitched = 1;
+		}
 	}
 }
 

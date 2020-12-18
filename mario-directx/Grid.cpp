@@ -23,24 +23,21 @@ void CGrid::InsertToGrid(LPGAMEOBJECT object, int row, int column)
 
 void CGrid::RemoveFromGrid(LPGAMEOBJECT object, int row, int column)
 {
-	CGameObject* currentObject = cells[row][column];
-	while (currentObject)
+	// if object is the first one in cell
+	if (object->GetPreviousObject() == NULL)
 	{
-		if (currentObject == object)
-		{
-			// if removing object is the first object in the list -> set the next object as the first object
-			if (currentObject == cells[row][column]) cells[row][column] = currentObject->GetNextObject();
-
-			// change next and previous object's next and previous object
-			currentObject->GetPreviousObject()->SetNextObject(currentObject->GetNextObject());
-			currentObject->GetNextObject()->SetPreviousObject(currentObject->GetPreviousObject());
-
-			// re-set current object's previous and next object to NULL
-			currentObject->SetPreviousObject(NULL);
-			currentObject->SetNextObject(NULL);
-		}
-		currentObject = currentObject->GetNextObject();
+		cells[row][column] = object->GetNextObject();
+		if (object->GetNextObject()) object->GetNextObject()->SetPreviousObject(NULL);
 	}
+	// if object is in the middle of linked list
+	else
+	{
+		if (object->GetPreviousObject()) object->GetPreviousObject()->SetNextObject(object->GetNextObject());
+		if (object->GetNextObject()) object->GetNextObject()->SetPreviousObject(object->GetPreviousObject());
+	}
+
+	object->SetNextObject(NULL);
+	object->SetPreviousObject(NULL);
 }
 
 CGrid::CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns)
@@ -121,34 +118,74 @@ void CGrid::UpdateObject(CGameObject* object)
 // replace object_1 by object_2 in the grid
 void CGrid::ReplaceObject(CGameObject* object_1, CGameObject* object_2)
 {
-	for (int i = 0; i < numRows; i++)
-		for (int j = 0; j < numColumns; j++)
-		{
-			CGameObject* currentObject = cells[i][j];
-			while (currentObject)
-			{
-				// [gotcha!!] found the object to be replaced
-				if (currentObject == object_1)
-				{
-					// set new object (object_2) nearby objects
-					object_2->SetPreviousObject(currentObject->GetPreviousObject());
-					object_2->SetNextObject(currentObject->GetNextObject());
+	float x, y;
+	object_1->GetPosition(x, y);
+	// get row and column of this object
+	int row, column;
+	object_1->GetGridPosition(row, column);
+	// remove object from cell
+	RemoveFromGrid(object_1, row, column);
+	// add new object to grid
+	AddObject(object_2);
 
-					// clear current object from the list
-					if (currentObject->GetPreviousObject() == NULL)
-						cells[i][j] = object_2;
-					else
-						currentObject->GetPreviousObject()->SetNextObject(object_2);
 
-					if (currentObject->GetNextObject()) currentObject->GetNextObject()->SetPreviousObject(object_2);
+	//for (int i = 0; i < numRows; i++)
+	//	for (int j = 0; j < numColumns; j++)
+	//	{
+	//		CGameObject* currentObject = cells[i][j];
+	//		while (currentObject)
+	//		{
+	//			 [gotcha!!] found the object to be replaced
+	//			if (currentObject == object_1)
+	//			{
+	//				object_2->SetPreviousObject(NULL);
+	//				object_2->SetNextObject(NULL);
 
-					// after completing replacing -> done
-					return;
-				}
-				// on the other hand, continue getting the next object in the list
-				currentObject = currentObject->GetNextObject();
-			}
-		}
+	//				 if object is the first one in cell
+	//				if (object_1->GetPreviousObject() == NULL)
+	//				{
+	//					cells[i][j] = object_2;
+	//					if (object_1->GetNextObject()) object_1->GetNextObject()->SetPreviousObject(object_2);
+	//				}
+	//				 if object is in the middle of linked list
+	//				else
+	//				{
+	//					if (object_1->GetPreviousObject()) object_1->GetPreviousObject()->SetNextObject(object_2);
+	//					if (object_1->GetNextObject()) object_1->GetNextObject()->SetPreviousObject(object_2);
+	//				}
+
+	//				if (object_1->GetPreviousObject()) object_2->SetPreviousObject(object_1->GetPreviousObject());
+	//				if (object_1->GetNextObject()) object_2->SetNextObject(object_1->GetNextObject());
+
+	//				object_1->SetPreviousObject(NULL);
+	//				object_1->SetNextObject(NULL);
+
+	//				object_2->SetPreviousObject(NULL);
+	//				object_2->SetNextObject(NULL);
+
+	//				// set new object (object_2) nearby objects
+	//				object_2->SetPreviousObject(currentObject->GetPreviousObject());
+	//				object_2->SetNextObject(currentObject->GetNextObject());
+
+	//				// clear current object from the list
+	//				if (currentObject->GetPreviousObject() == NULL)
+	//					cells[i][j] = object_2;
+	//				else
+	//					currentObject->GetPreviousObject()->SetNextObject(object_2);
+
+	//				if (currentObject->GetNextObject())
+	//					currentObject->GetNextObject()->SetPreviousObject(object_2);
+
+	//				object_1->SetPreviousObject(NULL);
+	//				object_1->SetNextObject(NULL);
+
+	//				 after completing replacing -> done
+	//				return;
+	//			}
+	//			 on the other hand, continue getting the next object in the list
+	//			currentObject = currentObject->GetNextObject();
+	//		}
+	//	}
 }
 
 void CGrid::ClearCells()
