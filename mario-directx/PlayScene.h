@@ -53,7 +53,7 @@ public:
 
 	void StartGameTime() { gameStartingTime = (DWORD)GetTickCount64(); }
 
-	void ChangePlayZone(unsigned int zoneID);
+	void ChangePlayZone(unsigned int zoneID, float mario_switch_x, float mario_switch_y);
 	void StartSettingCurrentZone();
 
 	void SetGate(CMapNode* gate) { this->gate = gate; }

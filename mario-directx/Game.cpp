@@ -441,10 +441,10 @@ void CGame::_ParseSection_SCENES(string line)
 			float marioStartingY = (float)atof(tokens[i + 5].c_str());
 			playZone.SetPlayerStartPosition(marioStartingX, marioStartingY);
 
-			playZone.SetAllowSavingPosition(atoi(tokens[i + 6].c_str()));
+			//playZone.SetAllowSavingPosition(atoi(tokens[i + 6].c_str()));
 
 			playZones.push_back(playZone);
-			i += 7;
+			i += 6;
 		}
 		
 
@@ -551,11 +551,11 @@ void CGame::SwitchMapScene(int world)
 	}
 }
 
-void CGame::ChangePlayZone(int zoneID)
+void CGame::ChangePlayZone(int zoneID, float marioSwitchX, float marioSwitchY)
 {
 	if (dynamic_cast<CPlayScene*>(scenes[current_scene]))
 	{
 		CPlayScene *playScene = dynamic_cast<CPlayScene*>(scenes[current_scene]);
-		playScene->ChangePlayZone(zoneID);
+		playScene->ChangePlayZone(zoneID, marioSwitchX, marioSwitchY);
 	}
 }

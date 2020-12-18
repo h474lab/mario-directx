@@ -207,14 +207,16 @@ void CPlayScene::ParseObjects(string line)
 			int numRows = atoi(tokens[4].c_str());
 			int lidType = atoi(tokens[5].c_str());
 			int zoneID = atoi(tokens[6].c_str());
-			obj = new CTube(numRows, lidType, zoneID);
+			float xSwitch = (float)atof(tokens[7].c_str());
+			float ySwitch = (float)atof(tokens[8].c_str());
+			obj = new CTube(numRows, lidType, zoneID, xSwitch, ySwitch);
 			CTube* tube = dynamic_cast<CTube*>(obj);
 			tube->SetFollowingObject(player);
 
-			if (tokens.size() > 7)
+			if (tokens.size() > 9)
 			{
-				int obj_type = atoi(tokens[7].c_str());
-				int obj_ani_set = atoi(tokens[8].c_str());
+				int obj_type = atoi(tokens[9].c_str());
+				int obj_ani_set = atoi(tokens[10].c_str());
 				int bullet_ani_set;
 				CBullet* bullet = NULL;
 
@@ -227,7 +229,7 @@ void CPlayScene::ParseObjects(string line)
 					if (player)
 						dynamic_cast<CVenusFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[9].c_str());
+					bullet_ani_set = atoi(tokens[11].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CVenusFireTrap*)includedObj)->SetBullet(bullet);
@@ -241,7 +243,7 @@ void CPlayScene::ParseObjects(string line)
 					if (player)
 						dynamic_cast<CShortFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[9].c_str());
+					bullet_ani_set = atoi(tokens[11].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CShortFireTrap*)includedObj)->SetBullet(bullet);
@@ -400,22 +402,17 @@ bool CPlayScene::RenderCompare(CGameObject* a, CGameObject* b)
 	return false;
 }
 
-void CPlayScene::ChangePlayZone(unsigned int zoneID)
+void CPlayScene::ChangePlayZone(unsigned int zoneID, float mario_switch_x, float mario_switch_y)
 {
 	if (zoneID >= playZones.size())
 	{
 		DebugOut(L"[INFO] Cannot switch to Zone %d!\n", zoneID);
 		return;
 	}
-	if (playZones[currentZone].GetAllowSavingPosition())
-	{
-		float x, y;
-		float l, t, r, b;
-		player->SetSittingState(0);
-		player->GetPosition(x, y);
-		player->GetBoundingBox(l, t, r, b);
-		playZones[currentZone].SetPlayerStartPosition(x, y);
-	}
+
+	player->SetSittingState(0);
+	// set start position using for later switching
+	playZones[waitingZone].SetPlayerStartPosition(mario_switch_x, mario_switch_y);
 	waitingZone = zoneID;
 }
 

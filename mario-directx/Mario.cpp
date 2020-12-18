@@ -598,7 +598,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (zoneToSwitch != TUBE_ZONE_NO_DOOR) {
 					if ((lidType == TUBE_TYPE_UPPER_LID && e->ny < 0 && readyToDown) || (lidType == TUBE_TYPE_LOWER_LID && e->ny > 0 && readyToUp))
 					{
-						CGame::GetInstance()->ChangePlayZone(zoneToSwitch);
+						float switch_x, switch_y;
+						tube->GetSwitchingPosition(switch_x, switch_y);
+						CGame::GetInstance()->ChangePlayZone(zoneToSwitch, switch_x, switch_y);
 						StartSwitchingZone((readyToUp) ? MARIO_SWITCHING_ZONE_DIRECTION_UP : MARIO_SWITCHING_ZONE_DIRECTION_DOWN);
 					}
 				}

@@ -1,11 +1,15 @@
 #include "Tube.h"
 #include "Utils.h"
 
-CTube::CTube(int numRows, int lidType, int zoneID)
+CTube::CTube(int numRows, int lidType, int zoneID, float xSwitch, float ySwitch)
 {
 	this->numRows = numRows;
 	this->lidType = lidType;
+	
 	this->doorToZone = zoneID;
+	this->xSwitch = xSwitch;
+	this->ySwitch = ySwitch;
+
 	renderScore = RENDER_SCORE_TUBE;
 }
 

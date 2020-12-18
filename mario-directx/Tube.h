@@ -27,14 +27,16 @@ class CTube : public CGameObject
 {
 	int numRows;
 	int lidType;
+	
 	int doorToZone;
+	float xSwitch, ySwitch;
 
 	CGameObject* followingObject;
 	CGameObject* object;
 	DWORD objectDelay_start;
 	int objLastState;
 public:
-	CTube(int numRows, int lidType, int zoneID);
+	CTube(int numRows, int lidType, int zoneID, float xSwitch, float ySwitch);
 
 	void StartDelayingObject() { objectDelay_start = (DWORD)GetTickCount64(); }
 
@@ -43,6 +45,8 @@ public:
 	void SetFollowingObject(CGameObject* obj) { followingObject = obj; }
 
 	int GetZoneToSwitch() { return doorToZone; }
+	void GetSwitchingPosition(float& switch_x, float& switch_y) { switch_x = xSwitch; switch_y = ySwitch; }
+
 	int GetLidType() { return lidType; }
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);

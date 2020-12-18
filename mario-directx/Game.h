@@ -79,7 +79,7 @@ public:
 	void SwitchScene(int scene_id, CMapNode* gate = NULL);
 	void SwitchMapScene(int world); // switching into Map Scene with world id
 
-	void ChangePlayZone(int zoneID);
+	void ChangePlayZone(int zoneID, float marioSwitchX, float marioSwitchY);
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }
