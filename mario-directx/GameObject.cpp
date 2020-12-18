@@ -130,6 +130,8 @@ void CGameObject::FilterCollision(
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 
+		if (dynamic_cast<CMario*>(c->obj)) continue;
+
 		if (c->t < 1.0f /*min_tx*/ && c->nx != 0) {
 			if (dynamic_cast<CColoredBlock*>(c->obj))
 				continue;

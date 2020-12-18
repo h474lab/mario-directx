@@ -706,21 +706,21 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
-	case DIK_X:
+	case DIK_S:
 		if (mario->IsJumping())
 			mario->FlyJump();
 		else
 			mario->SetJumpingUp(1);
 		break;
-	case DIK_Z:
+	case DIK_A:
 		mario->StartSpinning();
 		mario->SetThrowing();
 		break;
-	case DIK_A:
+	case DIK_R:
 		mario->Reset();	// put Mario back to his starting position
 		break;
 	// ========== TESTING KEYs
-	case DIK_S:
+	case DIK_N:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
 		break;
 	case DIK_B:
@@ -745,7 +745,7 @@ void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
 	CMario* mario = ((CPlayScene*)scene)->GetPlayer();
 	mario->SetJumpingUp(0);
-	if (KeyCode == DIK_Z)
+	if (KeyCode == DIK_A)
 	{
 		mario->SetAllowHoldingKoopa(0);
 	}
@@ -762,11 +762,11 @@ void CPlaySceneKeyHandler::KeyState(BYTE *states)
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 
-	if (game->IsKeyDown(DIK_X) && mario->GetJumpingUp())
+	if (game->IsKeyDown(DIK_S) && mario->GetJumpingUp())
 		mario->SetState(MARIO_STATE_JUMPING);
 
 	int skillButtonPressed = 0;
-	if (game->IsKeyDown(DIK_Z))
+	if (game->IsKeyDown(DIK_A))
 	{
 		mario->SetAllowHoldingKoopa(1);
 		skillButtonPressed = 1;
