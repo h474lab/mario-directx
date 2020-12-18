@@ -18,6 +18,7 @@
 #define MARIO_LEVEL_TRANSFORMING_STEPS	10
 
 #define MARIO_POWER_LEVEL_REDUCING_TIME	300
+#define MARIO_MAXIMUM_POWER_LEVEL		6.0f
 
 #define MARIO_FLY_JUMP_SPEED_Y		0.02f
 #define MARIO_FLY_JUMP_TIME			300
@@ -359,6 +360,8 @@ class CMario : public CGameObject
 	int transformSteps;
 	DWORD stepStart;
 
+	int gainedMagicWings;
+
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 
@@ -436,6 +439,8 @@ public:
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }
 	void SetAllowSwitchingZone(int value) { allowSwichingZone = value; }
+
+	void SetMagicWings(int state) { gainedMagicWings = state; }
 
 	void AddStreakScore(CGameObject* coObject);
 	void AddScore(int score, CGameObject* coObject);

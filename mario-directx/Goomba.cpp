@@ -86,8 +86,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (state == GOOMBA_STATE_DISAPPEARED) return;
 
-	float lastX, lastY;
-	GetPosition(lastX, lastY);
+	float lastVx, lastVy;
+	GetSpeed(lastVx, lastVy);
 
 	if (level == GOOMBA_LEVEL_PARA_GOOMBA)
 	{
@@ -184,7 +184,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (e->nx != 0 || e->ny < 0)
 				{
 					CMario* mario = dynamic_cast<CMario*>(e->obj);
-
 					if (!mario->GetUntouchable()) mario->LevelDown();
 				}
 			}
@@ -215,8 +214,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (changeDirection)
 			ChangeDirection();
-		else
-			SetState(state);
+		else SetState(state);
 
 		CGameObject::Update(dt, coObjects);
 		x += dx;

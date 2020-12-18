@@ -592,6 +592,7 @@ void CPlayScene::Update(DWORD dt)
 			player->SetState(MARIO_STATE_DIE);
 			HUD->SetLives(HUD->GetLives() - 1);
 			player->SetLevel(MARIO_LEVEL_SMALL);
+			player->SetMagicWings(0);
 		}
 		else
 		{
@@ -730,6 +731,9 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_F:
 		mario->SetLevel(MARIO_LEVEL_FIRE);
+		break;
+	case DIK_M:
+		mario->SetMagicWings(1);
 		break;
 	case DIK_L:
 		mario->SetPosition(mario_x + 1000.0f, mario_y - 50.0f); // take Mario's position away! 

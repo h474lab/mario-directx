@@ -42,6 +42,8 @@ CMario::CMario(float x, float y) : CGameObject()
 	jumping = 0;
 	background = 0;
 
+	gainedMagicWings = 0;
+
 	running = 0;
 	lastRunning = 0;
 	allowSwichingZone = 0;
@@ -173,9 +175,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 
 		// set Power Level for displaying and identify flying ability of Mario
-		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * 6.0f);
+		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * MAXIMUM_POWER_LEVEL);
 	}
 	else if (fly != MARIO_FLYING_STATE_UP) ReducePowerLevel();
+
+	if (gainedMagicWings) powerLevel = MAXIMUM_POWER_LEVEL;
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
@@ -428,6 +432,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						}
 					}
 				}
+				keepMoving = 1;
 			}
 			else if (dynamic_cast<CKoopa*>(e->obj))
 			{
@@ -1601,7 +1606,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_JUMPING:
 		background = 0;
 		running = 0;
-		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT)/* && !jumping*/)
+		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT || gainedMagicWings)/* && !jumping*/)
 		{
 			jumping = 1;
 			FlyJump();
