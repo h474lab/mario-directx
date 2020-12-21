@@ -270,7 +270,7 @@
 #define MARIO_BIG_SITTING_BBOX_HEIGHT	18
 
 #define MARIO_UNTOUCHABLE_TIME	3000
-#define MARIO_KICKING_TIME		1000
+#define MARIO_KICKING_TIME		300
 #define MARIO_SPINNING_TIME		100
 
 #define MARIO_UNTOUCHABLE_CHANGING_ALPHA_TIME	200
@@ -417,7 +417,9 @@ public:
 
 	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
-	void StartKicking() { kicking = 1; kicking_start = (DWORD)GetTickCount64(); };
+	void StartKicking() { 
+		kicking = 1; kicking_start = (DWORD)GetTickCount64(); 
+	};
 	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
 
 	void StartSpinning();

@@ -59,12 +59,13 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	DebugOut(L"\nAllowHoldingKoopa: %d", allowHodingKoopa);
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
 	if (holdenKoopa && !isInIntro)
 	{
-		if (holdenKoopa->GetState() != KOOPA_STATE_LYING_DOWN || holdenKoopa->GetState() != KOOPA_STATE_LYING_UP)
+		if (holdenKoopa->GetState() != KOOPA_STATE_WALKING_LEFT || holdenKoopa->GetState() != KOOPA_STATE_WALKING_RIGHT)
 			releaseKoopa();
 	}
 
@@ -481,7 +482,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						if (koopa_x > x)
 						{
 							nx = 1;
-							kicking = 1;
+							if (!allowHodingKoopa) StartKicking();
 							if (koopaState == KOOPA_STATE_LYING_DOWN)
 								koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 							else
@@ -490,7 +491,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						else
 						{
 							nx = -1;
-							kicking = 1;
+							if (!allowHodingKoopa) StartKicking();
 							if (koopaState == KOOPA_STATE_LYING_DOWN)
 								koopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
 							else
@@ -514,7 +515,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					else if (koopaState == KOOPA_STATE_LYING_DOWN)
 					{
-						kicking = 1;
+						if (!allowHodingKoopa) StartKicking();
 						if (e->nx < 0)
 							koopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
 						else
@@ -523,7 +524,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					else if (koopaState == KOOPA_STATE_LYING_UP)
 					{
-						kicking = 1;
+						if (!allowHodingKoopa) StartKicking();
 						if (e->nx < 0)
 							koopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
 						else
