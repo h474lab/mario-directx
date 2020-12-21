@@ -294,7 +294,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (dynamic_cast<CBeetle*>(e->obj))
 				{
 					CBeetle* beetle = dynamic_cast<CBeetle*>(e->obj);
-					beetle->KickBeetleOut(nx);
+					beetle->KickBeetleOut((int)nx);
 					SetState(state);
 				}
 				else SetState(state);

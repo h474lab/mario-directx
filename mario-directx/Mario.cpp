@@ -59,13 +59,12 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"\nAllowHoldingKoopa: %d", allowHodingKoopa);
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
 	if (holdenKoopa && !isInIntro)
 	{
-		if (holdenKoopa->GetState() != KOOPA_STATE_WALKING_LEFT || holdenKoopa->GetState() != KOOPA_STATE_WALKING_RIGHT)
+		if (holdenKoopa->GetState() != KOOPA_STATE_LYING_DOWN && holdenKoopa->GetState() != KOOPA_STATE_LYING_UP)
 			releaseKoopa();
 	}
 

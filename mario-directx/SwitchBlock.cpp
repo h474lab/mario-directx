@@ -21,7 +21,7 @@ void CSwitchBlock::Switch()
 	switching_start = (DWORD)GetTickCount64();
 
 	savingObjects.clear();
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		savingObjects.push_back(objects[i]);
 		if (dynamic_cast<CSquareBrick*>(savingObjects[i]))
@@ -44,7 +44,7 @@ void CSwitchBlock::Switch()
 
 void CSwitchBlock::SwitchBack()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CCoin*>(objects[i]))
 		{

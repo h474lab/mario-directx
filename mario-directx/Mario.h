@@ -417,9 +417,7 @@ public:
 
 	int GetUntouchable() { return untouchable; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
-	void StartKicking() { 
-		kicking = 1; kicking_start = (DWORD)GetTickCount64(); 
-	};
+	void StartKicking() { kicking = 1; kicking_start = (DWORD)GetTickCount64(); };
 	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
 
 	void StartSpinning();

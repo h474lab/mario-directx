@@ -8,7 +8,6 @@ CWelcomeBox::CWelcomeBox()
 	appearing_time = 0;
 
 	world = new CNumber();
-	world->SetCurrentNumber(DEFAULT_WORLD);
 
 	this->lives[0] = new CNumber();
 	this->lives[1] = new CNumber();
