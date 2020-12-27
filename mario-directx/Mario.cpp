@@ -716,10 +716,12 @@ void CMario::Render()
 
 	int res = -1;
 
+	// Mario turns into smoke when transforming from/into Racoon level
 	if (levelTransform && (transform_lastLevel == MARIO_LEVEL_TAIL || transform_newLevel == MARIO_LEVEL_TAIL) && !isInIntro)
 		res = MARIO_ANI_TAIL_TRANSFORM;
 	else if (levelTransform && transform_newLevel == MARIO_LEVEL_TAIL)
 		res = MARIO_ANI_TAIL_TRANSFORM;
+	// Render based on current level of Mario
 	else if (level == MARIO_LEVEL_SMALL) res = RenderSmallMario();
 	else if (level == MARIO_LEVEL_BIG) res = RenderBigMario();
 	else if (level == MARIO_LEVEL_TAIL) res = RenderTailMario();
@@ -748,6 +750,11 @@ int CMario::RenderSmallMario()
 
 	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
 		res = MARIO_ANI_SMALL_SWICHING_SCENE;
+	else if (levelTransform)
+	{
+		if (nx > 0) res = MARIO_ANI_SMALL_IDLE_RIGHT;
+		else res = MARIO_ANI_SMALL_IDLE_LEFT;
+	}
 	else if (turning)
 	{
 		if (vx > 0) res = MARIO_ANI_SMALL_TURNING_LEFT;
@@ -852,6 +859,11 @@ int CMario::RenderBigMario()
 		res = MARIO_ANI_INTRO_LOOKING_UP;
 	else if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
 		res = MARIO_ANI_BIG_SWITCHING_SCENE;
+	else if (levelTransform)
+	{
+		if (nx > 0) res = MARIO_ANI_BIG_IDLE_RIGHT;
+		else res = MARIO_ANI_BIG_IDLE_LEFT;
+	}
 	else if (sitting)
 	{
 		if (nx > 0) res = MARIO_ANI_BIG_SITTING_RIGHT;
@@ -1143,6 +1155,11 @@ int CMario::RenderFireMario()
 
 	if (flyingDirection == FLYING_DIRECTION_UP || flyingDirection == FLYING_DIRECTION_DOWN)
 		res = MARIO_ANI_FIRE_SWITCHING_SCENE;
+	else if (levelTransform)
+	{
+		if (nx > 0) res = MARIO_ANI_FIRE_IDLE_RIGHT;
+		else res = MARIO_ANI_FIRE_IDLE_LEFT;
+	}
 	else if (sitting)
 	{
 		if (nx > 0) res = MARIO_ANI_FIRE_SITTING_RIGHT;
@@ -1483,7 +1500,6 @@ void CMario::StartLevelTransform(int lastLevel, int newLevel)
 	transform_newLevel = newLevel;
 	transformSteps = 0;
 	levelTransform = 1;
-	SetState(MARIO_STATE_IDLE);
 	stepStart = (DWORD)GetTickCount64();
 	SetLevel(transform_newLevel);
 }
