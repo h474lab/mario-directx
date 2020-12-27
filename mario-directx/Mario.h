@@ -4,13 +4,14 @@
 #include "Utils.h"
 #include "Fireball.h"
 
-#define MARIO_WALKING_SPEED			0.1f
-#define MARIO_RUNNING_SPEED			0.2f
-#define MARIO_RUNNING_FAST_SPEED	0.3f
-#define MARIO_SLIDING_SPEED_DOWN	0.02f
+#define MARIO_WALKING_SPEED			0.05f
+#define MARIO_RUNNING_SPEED			0.1f
+#define MARIO_RUNNING_FAST_SPEED	0.15f
+#define MARIO_SLIDING_SPEED_DOWN	0.002f
+#define MARIO_JUMPING_SPEED_DOWN	0.002f
 //0.1f
-#define MARIO_JUMP_SPEED_X			0.1f
-#define MARIO_JUMP_SPEED_Y			0.15f
+#define MARIO_JUMP_SPEED_X			0.05f
+#define MARIO_JUMP_SPEED_Y			0.1f
 #define MARIO_JUMP_HEIGHT			80.0f
 #define MARIO_MAX_FIREBALL_NUMBER	2
 
@@ -20,22 +21,21 @@
 #define MARIO_POWER_LEVEL_REDUCING_TIME	300
 #define MARIO_MAXIMUM_POWER_LEVEL		6.0f
 
-#define MARIO_FLY_JUMP_SPEED_Y		0.02f
+#define MARIO_FLY_JUMP_SPEED_Y		0.0048f
+#define MARIO_FLYING_JUMP_SPEED_X	0.01f
 #define MARIO_FLY_JUMP_TIME			300
 
 #define MARIO_FLY_SPEED_Y			0.06f
-#define MARIO_FLY_SPEED_X			0.4f
+#define MARIO_FLYING_SPEED_X		0.03f
 #define MARIO_FLY_TIME				500
 
 #define MARIO_SPINNING_SPEED_X		0.1f
-#define MARIO_FLYING_JUMP_SPEED_X	0.1f
-#define MARIO_FLYING_SPEED_X		0.3f
 
 #define MARIO_THROW_TIME			200
 
-#define MARIO_JUMP_DEFLECT_SPEED	0.3f
-#define MARIO_GRAVITY				0.03f
-#define MARIO_DIE_DEFLECT_SPEED		0.3f
+#define MARIO_JUMP_DEFLECT_SPEED	0.15f
+#define MARIO_GRAVITY				0.005f
+#define MARIO_DIE_DEFLECT_SPEED		0.2f
 #define MARIO_RUNNING_TIME			1000
 
 #define MARIO_SWITCHING_SCENE_SPEED	0.02f
@@ -308,11 +308,12 @@ class CMario : public CGameObject
 	int lastState;
 
 	// When Mario changes his direction, he may be turned into turning state
-	int turning;	// turn left - 1, turn right - 2
-	DWORD turning_start;
+	int turning;
+	int slowingDown;
 
 	// Indicate whether Mario is on the ground or not
 	int jumping;
+	float jumpingSpeed;
 
 	// "Jumping Up" is the state that Mario can jump higher (or further) than normal jumping state
 	int jumpingUp;

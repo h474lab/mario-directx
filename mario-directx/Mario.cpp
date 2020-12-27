@@ -59,6 +59,8 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	DebugOut(L"\nMario position: %f, %f", x, y);
+
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
@@ -111,7 +113,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			if (!jumping)
 				flyJump = 0;
-			vy = -MARIO_FLY_JUMP_SPEED_Y;
+			vy -= MARIO_FLY_JUMP_SPEED_Y;
 		}
 
 		if (flyJump && (DWORD)GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
@@ -181,8 +183,40 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (gainedMagicWings) powerLevel = MAXIMUM_POWER_LEVEL;
 
+	// Mario changes his walking/running direction
+	if (turning || slowingDown)
+	{
+		if (vx > 0)
+		{
+			if (vx > MARIO_SLIDING_SPEED_DOWN) vx -= MARIO_SLIDING_SPEED_DOWN;
+			else
+			{
+				vx = 0;
+				turning = 0;
+				slowingDown = 0;
+			}
+		}
+		else if (vx < 0)
+		{
+			if (vx < -MARIO_SLIDING_SPEED_DOWN) vx += MARIO_SLIDING_SPEED_DOWN;
+			else
+			{
+				vx = 0;
+				turning = 0;
+				slowingDown = 0;
+			}
+		}
+		else
+		{
+			turning = 0;
+			slowingDown = 0;
+		}
+	}
+
 	// Simple fall down
 	vy += MARIO_GRAVITY;
+
+	DebugOut(L"\nVy = %f", vy);
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -208,30 +242,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		kicking = 0;
 		kicking_start = 0;
-	}
-
-	// Mario changes his walking/running direction
-	if (turning)
-	{
-		if (vx > 0)
-		{
-			if (vx > MARIO_SLIDING_SPEED_DOWN) vx -= MARIO_SLIDING_SPEED_DOWN;
-			else
-			{
-				vx = 0;
-				turning = 0;
-			}
-		}
-		else if (vx < 0)
-		{
-			if (vx < -MARIO_SLIDING_SPEED_DOWN) vx += MARIO_SLIDING_SPEED_DOWN;
-			else
-			{
-				vx = 0;
-				turning = 0;
-			}
-		}
-		else turning = 0;
 	}
 
 	// when Mario is attacking using his tail
@@ -349,8 +359,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//	x += nx*abs(rdx); 
 		
 		// block every object first!
-		x += min_tx*dx + nx*0.4f;
-		y += min_ty*dy + ny*0.4f;
+		x += min_tx*dx + nx*0.004f;
+		y += min_ty*dy + ny*0.004f;
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
@@ -1607,22 +1617,26 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_JUMPING:
-		background = 0;
-		running = 0;
-		if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT || gainedMagicWings)/* && !jumping*/)
+		if (!turning)
 		{
-			jumping = 1;
-			FlyJump();
-			fly = MARIO_FLYING_STATE_UP;
+			background = 0;
+			running = 0;
+			jumpingSpeed = MARIO_JUMP_SPEED_Y;
+			if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT || gainedMagicWings))
+			{
+				jumping = 1;
+				FlyJump();
+				fly = MARIO_FLYING_STATE_UP;
+			}
+			stateCanBeChanged = 1;
 		}
-		stateCanBeChanged = 1;
 		break; 
 	case MARIO_STATE_IDLE:
 		background = 0;
 		running = 0;
 		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
-		vx = 0;
-		stateCanBeChanged = 1;
+		if (vx == 0) stateCanBeChanged = 1;
+		else if (!slowingDown) slowingDown = 1;
 		break;
 	case MARIO_STATE_IDLE_LEFT:
 		background = 0;
