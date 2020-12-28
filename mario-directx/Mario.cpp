@@ -59,8 +59,6 @@ CMario::CMario(float x, float y) : CGameObject()
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"\nMario position: %f, %f", x, y);
-
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 
@@ -215,8 +213,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
-
-	DebugOut(L"\nVy = %f", vy);
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);

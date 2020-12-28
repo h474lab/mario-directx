@@ -45,6 +45,9 @@ void CTilemap::LoadTiles()
 
 void CTilemap::LoadMap()
 {
+	// clear everything in the map before loading
+	tilemap.clear();
+
 	ifstream f;
 	f.open(tileFilePath);
 	bool result = tilemap.empty();
