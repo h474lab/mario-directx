@@ -459,6 +459,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							koopa->SetState(KOOPA_STATE_LYING_DOWN);
 						else if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT)
 							koopa->SetState(KOOPA_STATE_LYING_DOWN);
+						else if (koopaState == KOOPA_STATE_ROLLING_UP_LEFT || koopaState == KOOPA_STATE_ROLLING_UP_RIGHT)
+							koopa->SetState(KOOPA_STATE_LYING_UP);
 						vy = -MARIO_JUMP_DEFLECT_SPEED;
 					}
 					else if (e->ny > 0)
@@ -751,7 +753,7 @@ int CMario::RenderSmallMario()
 		if (nx > 0) res = MARIO_ANI_SMALL_IDLE_RIGHT;
 		else res = MARIO_ANI_SMALL_IDLE_LEFT;
 	}
-	else if (turning)
+	else if (turning && !holdenKoopa && !jumping)
 	{
 		if (vx > 0) res = MARIO_ANI_SMALL_TURNING_LEFT;
 		else res = MARIO_ANI_SMALL_TURNING_RIGHT;
@@ -865,7 +867,7 @@ int CMario::RenderBigMario()
 		if (nx > 0) res = MARIO_ANI_BIG_SITTING_RIGHT;
 		else res = MARIO_ANI_BIG_SITTING_LEFT;
 	}
-	else if (turning)
+	else if (turning && !holdenKoopa && !jumping)
 	{
 		if (vx > 0) res = MARIO_ANI_BIG_TURNING_LEFT;
 		else res = MARIO_ANI_BIG_TURNING_RIGHT;
@@ -1013,7 +1015,7 @@ int CMario::RenderTailMario()
 		if (nx > 0) res = MARIO_ANI_TAIL_SITTING_RIGHT;
 		else MARIO_ANI_TAIL_SITTING_LEFT;
 	}
-	else if (turning)
+	else if (turning && !holdenKoopa && !jumping)
 	{
 		if (vx > 0) res = MARIO_ANI_TAIL_TURNING_LEFT;
 		else res = MARIO_ANI_TAIL_TURNING_RIGHT;
@@ -1161,7 +1163,7 @@ int CMario::RenderFireMario()
 		if (nx > 0) res = MARIO_ANI_FIRE_SITTING_RIGHT;
 		else MARIO_ANI_FIRE_SITTING_LEFT;
 	}
-	else if (turning)
+	else if (turning && !holdenKoopa && !jumping)
 	{
 		if (vx > 0) res = MARIO_ANI_FIRE_TURNING_LEFT;
 		else res = MARIO_ANI_FIRE_TURNING_RIGHT;
