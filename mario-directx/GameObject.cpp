@@ -9,6 +9,7 @@
 #include "ColoredBlock.h"
 #include "VenusFireTrap.h"
 #include "ShortFireTrap.h"
+#include "FloatingBlock.h"
 
 CGameObject::CGameObject()
 {
@@ -130,7 +131,11 @@ void CGameObject::FilterCollision(
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 
-		if (dynamic_cast<CMario*>(c->obj)) continue;
+		if (dynamic_cast<CFloatingBlock*>(c->obj))
+		{
+			if (!dynamic_cast<CMario*>(this))
+				continue;
+		}
 
 		if (c->t < 1.0f /*min_tx*/ && c->nx != 0) {
 			if (dynamic_cast<CColoredBlock*>(c->obj))

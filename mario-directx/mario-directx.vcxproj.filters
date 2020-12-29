@@ -196,6 +196,9 @@
     <Filter Include="Objects\SwitchBlock">
       <UniqueIdentifier>{3bd7a927-b568-4ca2-a5f6-ac924ea95389}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\FloatingBlock">
+      <UniqueIdentifier>{7f361f5f-d468-481e-9731-87d437d5612b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -384,6 +387,9 @@
     <ClCompile Include="SwitchBlock.cpp">
       <Filter>Objects\SwitchBlock</Filter>
     </ClCompile>
+    <ClCompile Include="FloatingBlock.cpp">
+      <Filter>Objects\FloatingBlock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -571,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="SwitchBlock.h">
       <Filter>Objects\SwitchBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatingBlock.h">
+      <Filter>Objects\FloatingBlock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

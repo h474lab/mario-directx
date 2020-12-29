@@ -26,6 +26,7 @@
 #include "Camera.h"
 #include "Score.h"
 #include "MapGate.h"
+#include "FloatingBlock.h"
 
 using namespace std;
 
@@ -366,6 +367,12 @@ void CPlayScene::ParseObjects(string line)
 	case OBJECT_TYPE_REWARD:
 		{
 			obj = new CReward();
+			obj->SetPosition(x, y);
+			break;
+		}
+	case OBJECT_TYPE_FLOATING_BLOCK:
+		{
+			obj = new CFloatingBlock();
 			obj->SetPosition(x, y);
 			break;
 		}

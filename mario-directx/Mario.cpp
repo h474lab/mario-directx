@@ -24,6 +24,7 @@
 #include "Score.h"
 #include "HUD.h"
 #include "Reward.h"
+#include "FloatingBlock.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -640,6 +641,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CSwitchBlock* switchBlock = dynamic_cast<CSwitchBlock*>(e->obj);
 				if (e->ny < 0) switchBlock->Switch();
 			}
+			else if (dynamic_cast<CFloatingBlock*>(e->obj))
+			{
+				CFloatingBlock* floatingBlock = dynamic_cast<CFloatingBlock*>(e->obj);
+
+				if (e->ny < 0)
+				{
+					if (floatingBlock->GetState() != FLOATING_BLOCK_STATE_DROP)
+						floatingBlock->SetState(FLOATING_BLOCK_STATE_DROP);
+				}
+			}
 		}
 
 		if (keepMoving)
@@ -655,7 +666,32 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	if (jumping) floor = NULL;
+	if (jumping)
+	{
+		if (dynamic_cast<CFloatingBlock*>(floor))
+		{
+			float fx, fy;
+			floor->GetPosition(fx, fy);
+
+			float l, t, r, b;
+			GetBoundingBox(l, t, r, b);
+
+			float cx, cy;
+			CCamera::GetInstance()->GetPosition(cx, cy);
+
+			float sw, sh;
+			sw = (float)CGame::GetInstance()->GetScreenWidth();
+			sh = (float)GAME_PLAY_HEIGHT;
+
+			float fl, ft, fr, fb;
+			floor->GetBoundingBox(fl, ft, fr, fb);
+
+			if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl))
+				floor = NULL;
+			else jumping = 0;
+		}
+		else floor = NULL;
+	}
 
 	if (floor)
 	{
@@ -666,6 +702,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float height = bottom - top;
 
 		if (y > floor_y - height)
+			y = floor_y - height;
+		else if (y < floor_y - height && dynamic_cast<CFloatingBlock*>(floor))
 			y = floor_y - height;
 	}
 

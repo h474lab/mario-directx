@@ -151,6 +151,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="FloatingBlock.cpp" />
     <ClCompile Include="GameOverBox.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="IntroTree.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="FloatingBlock.h" />
     <ClInclude Include="GameOverBox.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IntroTree.h" />
