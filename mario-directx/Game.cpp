@@ -441,10 +441,13 @@ void CGame::_ParseSection_SCENES(string line)
 			float marioStartingY = (float)atof(tokens[i + 5].c_str());
 			playZone.SetPlayerStartPosition(marioStartingX, marioStartingY);
 
+			int floatingCamera = atoi(tokens[i + 6].c_str());
+			playZone.SetFloatingCamera(floatingCamera);
+
 			//playZone.SetAllowSavingPosition(atoi(tokens[i + 6].c_str()));
 
 			playZones.push_back(playZone);
-			i += 6;
+			i += 7;
 		}
 		
 

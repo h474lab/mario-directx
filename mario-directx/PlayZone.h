@@ -2,12 +2,17 @@
 class CPlayZone
 {
 private:
+	int floatingCamera;
+
 	float min_px_x, max_px_x;
 	float min_px_y, max_px_y;
 
 	//int allowSavingPosition;
 	float player_x, player_y;	// player's start position
 public:
+	void SetFloatingCamera(int state) { floatingCamera = state; }
+	int GetFloatingCamera() { return floatingCamera; }
+
 	void SetHorizontalBounds(float start, float end) { min_px_x = start; max_px_x = end; }
 	void GetHorizontalBounds(float& start, float& end) { start = min_px_x; end = max_px_x; }
 

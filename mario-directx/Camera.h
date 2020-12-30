@@ -1,5 +1,7 @@
 #pragma once
 
+#define CAMERA_FLOATING_SPEED_X	0.5f
+
 class CCamera
 {
 private:

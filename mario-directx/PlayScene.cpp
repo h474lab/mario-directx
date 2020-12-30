@@ -574,31 +574,39 @@ void CPlayScene::Update(DWORD dt)
 	int screenWidth = game->GetScreenWidth();
 	int screenHeight = game->GetScreenHeight();
 
-	cx -= screenWidth / 2;
-	if (cx < minPixelWidth) cx = minPixelWidth;
-	else if (cx > maxPixelWidth - screenWidth) cx = maxPixelWidth - screenWidth;
-
 	CCamera* camera = CCamera::GetInstance();
 	float cameraX, cameraY;
 	camera->GetPosition(cameraX, cameraY);
 
-	int marioFlyingDirection = player->GetMarioFlyingState();
-	if (cameraY + screenHeight < maxPixelHeight ||
-		marioFlyingDirection == MARIO_FLYING_STATE_UP || marioFlyingDirection == MARIO_FLYING_STATE_DOWN)
+	if (!playZones[currentZone].GetFloatingCamera())
 	{
-		cy -= screenHeight / 2;
-		if (cy > maxPixelHeight - screenHeight) cy = maxPixelHeight - screenHeight;
-		else if (cy < minPixelHeight) cy = minPixelHeight;
+		cx -= screenWidth / 2;
+		if (cx < minPixelWidth) cx = minPixelWidth;
+		else if (cx > maxPixelWidth - screenWidth) cx = maxPixelWidth - screenWidth;
+
+		int marioFlyingDirection = player->GetMarioFlyingState();
+		if (cameraY + screenHeight < maxPixelHeight ||
+			marioFlyingDirection == MARIO_FLYING_STATE_UP || marioFlyingDirection == MARIO_FLYING_STATE_DOWN)
+		{
+			cy -= screenHeight / 2;
+			if (cy > maxPixelHeight - screenHeight) cy = maxPixelHeight - screenHeight;
+			else if (cy < minPixelHeight) cy = minPixelHeight;
+		}
+		else
+		{
+			cy = maxPixelHeight - screenHeight;
+		}
+
+		// set camera lower to spare space for HUD
+		cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
+
+		camera->SetPosition((float)(int)(cx), (float)(int)cy);
 	}
 	else
 	{
-		cy = maxPixelHeight - screenHeight;
+		cameraX += CAMERA_FLOATING_SPEED_X;
+		camera->SetPosition(cameraX, cameraY);
 	}
-
-	// set camera lower to spare space for HUD
-	cy = (cy + (game->GetScreenHeight() - GAME_PLAY_HEIGHT));
-
-	camera->SetPosition((float)((int)cx), (float)((int)cy));
 
 	if (endGamePanel)
 		endGamePanel->SetPosition(cx, cy);
