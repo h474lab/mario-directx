@@ -752,7 +752,11 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 void CPlaySceneKeyHandler::OnKeyUp(int KeyCode)
 {
 	CMario* mario = ((CPlayScene*)scene)->GetPlayer();
-	mario->SetJumpingUp(0);
+	if (KeyCode == DIK_S)
+	{
+		mario->ClearFloor();
+		mario->SetJumpingUp(0);
+	}
 	if (KeyCode == DIK_A)
 	{
 		mario->SetAllowHoldingKoopa(0);

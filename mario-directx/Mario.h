@@ -451,6 +451,7 @@ public:
 	void SetInIntro(int value) { isInIntro = value; }
 	int GetInIntro(int value) { return isInIntro; }
 
+	void ClearFloor() { floor = NULL; }
 	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

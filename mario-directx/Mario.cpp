@@ -647,8 +647,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (e->ny < 0)
 				{
+					// floating block start dropping
 					if (floatingBlock->GetState() != FLOATING_BLOCK_STATE_DROP)
 						floatingBlock->SetState(FLOATING_BLOCK_STATE_DROP);
+				}
+				else if (e->ny > 0)
+				{
+					keepMoving = 1;	// allow Mario to move through floating block from the bottom
 				}
 			}
 		}
@@ -686,8 +691,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			float fl, ft, fr, fb;
 			floor->GetBoundingBox(fl, ft, fr, fb);
 
+			// when Mario is outside floating block, remove the floor that he is marked
 			if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl))
 				floor = NULL;
+			// on the other hand, he is standing -> which means he is not jumping
 			else jumping = 0;
 		}
 		else floor = NULL;
@@ -703,7 +710,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		if (y > floor_y - height)
 			y = floor_y - height;
-		else if (y < floor_y - height && dynamic_cast<CFloatingBlock*>(floor))
+		else if (y < floor_y - height && !jumpingUp && dynamic_cast<CFloatingBlock*>(floor))
 			y = floor_y - height;
 	}
 
