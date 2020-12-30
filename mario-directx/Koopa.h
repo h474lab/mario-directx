@@ -1,8 +1,9 @@
 #pragma once
 #include "GameObject.h"
 
-#define KOOPA_LEVEL_TROOPA		0
-#define KOOPA_LEVEL_PARATROOPA	1
+#define KOOPA_LEVEL_TROOPA				0
+#define KOOPA_LEVEL_PARATROOPA			1
+#define KOOPA_LEVEL_PARATROOPA_UP_DOWN	2
 
 #define KOOPA_LYING_TIME		10000
 
@@ -13,6 +14,10 @@
 
 #define KOOPA_JUMPING_SPEED_X		0.05f
 #define KOOPA_JUMPING_SPEED_Y		0.3f
+
+#define KOOPA_UP_DOWN_SPEED_X		0.0f
+#define KOOPA_UP_DOWN_SPEED_Y		0.05f
+#define KOOPA_UP_DOWN_HEIGHT		128
 
 #define KOOPA_INTRO_JUMP_SPEED_X	0.09f
 #define KOOPA_INTRO_JUMP_SPEED_Y	0.1f
@@ -40,6 +45,8 @@
 #define KOOPA_STATE_DROPPING				12
 #define KOOPA_STATE_INTRO_JUMP_LEFT			13
 #define KOOPA_STATE_RUNNING_RIGHT			14
+#define KOOPA_STATE_UP						15
+#define KOOPA_STATE_DOWN					16
 
 #define KOOPA_ANI_WALKING_RIGHT			0
 #define KOOPA_ANI_WALKING_LEFT			1
@@ -78,14 +85,15 @@ private:
 	
 	int flying;
 	DWORD flying_start;
-
 	DWORD lying_start;
+	
+	float topBound, bottomBound;
 
 	int isHolden;
 public:
 	CKoopa();
 
-	void SetLevel(int level) { this->level = level; }
+	void SetLevel(int level);
 	void LevelDown();
 
 	virtual void SetState(int state);

@@ -18,9 +18,20 @@ CKoopa::CKoopa()
 	renderScore = RENDER_SCORE_KOOPA;
 }
 
+void CKoopa::SetLevel(int level)
+{
+	this->level = level;
+	if (level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
+	{
+		topBound = y;
+		bottomBound = topBound + KOOPA_UP_DOWN_HEIGHT;
+		SetState(KOOPA_STATE_DOWN);
+	}
+}
+
 void CKoopa::LevelDown()
 {
-	if (level == KOOPA_LEVEL_PARATROOPA)
+	if (level == KOOPA_LEVEL_PARATROOPA || level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
 	{
 		SetLevel(KOOPA_LEVEL_TROOPA);
 		if (nx > 0)
@@ -90,6 +101,16 @@ void CKoopa::SetState(int state)
 		vx = KOOPA_RUNNING_RIGHT_SPEED;
 		nx = 1;
 		break;
+	case KOOPA_STATE_UP:
+		vx = KOOPA_UP_DOWN_SPEED_X;
+		vy = -KOOPA_UP_DOWN_SPEED_Y;
+		nx = -1;
+		break;
+	case KOOPA_STATE_DOWN:
+		vx = KOOPA_UP_DOWN_SPEED_X;
+		vy = KOOPA_UP_DOWN_SPEED_Y;
+		nx = -1;
+		break;
 	}
 }
 
@@ -152,6 +173,20 @@ void CKoopa::ChangeDirection()
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
+	{
+		// when Mario is outside moving area
+		if (y <= topBound && state == KOOPA_STATE_UP)
+			SetState(KOOPA_STATE_DOWN);
+		else if (y >= bottomBound && state == KOOPA_STATE_DOWN)
+			SetState(KOOPA_STATE_UP);
+		// update Koopa position
+		CGameObject::Update(dt);
+		x += dx;
+		y += dy;
+		return;
+	}
+
 	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
 	{
 		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
@@ -301,7 +336,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		CGameObject::Update(dt, coObjects);
+		CGameObject::Update(dt);
 
 		float l, t, r, b;
 		GetBoundingBox(l, t, r, b);
@@ -323,6 +358,11 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
 	if (state == KOOPA_STATE_UNAVAILABLE) return;
+	if (level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
+	{
+		animation_set->at(KOOPA_ANI_JUMPING_LEFT)->Render(x, y);
+		return;
+	}
 
 	int ani = -1;
 	switch (state)

@@ -454,7 +454,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (e->ny < 0)
 					{
 						AddStreakScore(koopa);
-						if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT)
+						if (koopaState == KOOPA_STATE_JUMPING_LEFT || koopaState == KOOPA_STATE_JUMPING_RIGHT ||
+							koopaState == KOOPA_STATE_UP || koopaState == KOOPA_STATE_DOWN)
 							koopa->LevelDown();
 						else if (koopaState == KOOPA_STATE_WALKING_LEFT || koopaState == KOOPA_STATE_WALKING_RIGHT)
 							koopa->SetState(KOOPA_STATE_LYING_DOWN);
