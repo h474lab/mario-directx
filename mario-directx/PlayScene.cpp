@@ -543,7 +543,7 @@ void CPlayScene::Update(DWORD dt)
 	float px, py;
 	player->GetPosition(px, py);
 
-	// set camera position
+	// calculate Mario width
 	float pLeft, pTop, pRight, pBottom;
 	player->GetBoundingBox(pLeft, pTop, pRight, pBottom);
 	float pWidth = pRight - pLeft;
@@ -604,17 +604,28 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else
 	{
+		float lastCameraX = cameraX;
 		// moving camera position horizontally
-		cameraX += CAMERA_FLOATING_SPEED_X;
+		cameraX += CAMERA_FLOATING_SPEED_X * dt;
 		// if camera has reached its end, re-set its position
 		if (cameraX + screenWidth > maxPixelWidth)
 			cameraX = maxPixelWidth - screenWidth;
+		else if (cameraX < minPixelWidth)
+			cameraX = minPixelWidth;
+
+		float camera_pos_x = (float)((int)cameraX);
+		float camera_pos_y = (float)((int)maxPixelHeight - GAME_PLAY_HEIGHT);
 		// set camera position
-		camera->SetPosition(cameraX, maxPixelHeight - GAME_PLAY_HEIGHT);
+		if (camera_pos_x == (float)((int)lastCameraX))
+			camera->SetPosition(cameraX, camera_pos_y);
+		else
+			camera->SetPosition(camera_pos_x, camera_pos_y);
 
 		// push Mario (in order to keep Mario in range) if Mario is out to the left
-		if (cx < cameraX)
-			cx = cameraX;
+		if (cx < camera_pos_x)
+			cx = camera_pos_x;
+		else if (cx + pWidth > camera_pos_x + screenWidth)
+			cx = camera_pos_x + screenWidth - pWidth;
 		player->SetPosition(cx, cy);
 	}
 
