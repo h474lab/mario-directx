@@ -451,6 +451,8 @@ public:
 	void SetInIntro(int value) { isInIntro = value; }
 	int GetInIntro(int value) { return isInIntro; }
 
+	int GetMarioFlyingState() { return fly; }
+
 	void ClearFloor() { floor = NULL; }
 	void Reset();
 
