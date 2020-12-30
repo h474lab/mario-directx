@@ -604,8 +604,18 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else
 	{
+		// moving camera position horizontally
 		cameraX += CAMERA_FLOATING_SPEED_X;
-		camera->SetPosition(cameraX, cameraY);
+		// if camera has reached its end, re-set its position
+		if (cameraX + screenWidth > maxPixelWidth)
+			cameraX = maxPixelWidth - screenWidth;
+		// set camera position
+		camera->SetPosition(cameraX, maxPixelHeight - GAME_PLAY_HEIGHT);
+
+		// push Mario (in order to keep Mario in range) if Mario is out to the left
+		if (cx < cameraX)
+			cx = cameraX;
+		player->SetPosition(cx, cy);
 	}
 
 	if (endGamePanel)
