@@ -703,16 +703,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (floor)
 	{
-		float floor_x, floor_y;
-		floor->GetPosition(floor_x, floor_y);
-		float left, top, right, bottom;
-		GetBoundingBox(left, top, right, bottom);
-		float height = bottom - top;
+		if (jumping) floor = NULL;
+		else
+		{
+			float floor_x, floor_y;
+			floor->GetPosition(floor_x, floor_y);
+			float left, top, right, bottom;
+			GetBoundingBox(left, top, right, bottom);
+			float height = bottom - top;
 
-		if (y > floor_y - height)
-			y = floor_y - height;
-		else if (y < floor_y - height && !jumpingUp && dynamic_cast<CFloatingBlock*>(floor))
-			y = floor_y - height;
+			if (y > floor_y - height)
+				y = floor_y - height;
+			else if (y < floor_y - height && !jumpingUp && dynamic_cast<CFloatingBlock*>(floor))
+				y = floor_y - height;
+		}
 	}
 
 	if (holdenKoopa != NULL)
