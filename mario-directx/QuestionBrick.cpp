@@ -5,11 +5,14 @@
 CQuestionBrick::CQuestionBrick()
 {
 	background = 0;
+	unemptiable = 0;
 
 	flyingSpeedY = MOVEMENT_SPEED_Y;
 	SetState(QUESTIONBRICK_STATE_CONTAINING_OBJECTS);
+
 	delayAfterMovingUp = 0;
 	disappear = 0;
+	bottom_y = 0;
 
 	renderScore = RENDER_SCORE_QUESTIONBRICK;
 }
@@ -48,12 +51,14 @@ int CQuestionBrick::HitQuestionBrick(int side)
 		if (dynamic_cast<CCoin*>(obj)) ((CCoin*)obj)->Affect(COIN_AFFECT_TYPE_GAINED);
 		return 1;
 	}
+
 	return 0;
 }
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if ((flyingDirection != FLYING_DIRECTION_NOMOVE || y != maxFlyingY) && !(y == maxFlyingY && state == QUESTIONBRICK_STATE_NONE_OBJECTS))
+	if (((flyingDirection != FLYING_DIRECTION_NOMOVE || y != maxFlyingY) &&
+		!(y == maxFlyingY && state == QUESTIONBRICK_STATE_NONE_OBJECTS)) || unemptiable)
 		UpdateFlying(dt);
 
 	if (objects.size() == 0)
@@ -70,7 +75,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CQuestionBrick::Render()
 {
 	int ani = -1;
-	if (state == QUESTIONBRICK_STATE_CONTAINING_OBJECTS)
+	if (state == QUESTIONBRICK_STATE_CONTAINING_OBJECTS || unemptiable)
 		ani = QUESTIONBRICK_ANI_CONTAINING_OBJECTS;
 	else
 		ani = QUESTIONBRICK_ANI_NONE_OBJECTS;

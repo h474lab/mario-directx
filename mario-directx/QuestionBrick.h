@@ -14,6 +14,9 @@
 
 class CQuestionBrick : public CGameObject
 {
+	// state in which Question Brick can be hit as normal
+	int unemptiable;
+	// objects that included in Question Brick
 	vector<CGameObject*> objects;
 
 	float bottom_y;
@@ -21,6 +24,9 @@ public:
 	CQuestionBrick();
 
 	virtual void SetPosition(float x, float y);
+
+	int GetUnemptiable() { return unemptiable; }
+	void SetUnemptiable(int value) { unemptiable = value; }
 
 	void AddNewObject(CGameObject* obj);
 	int HitQuestionBrick(int side);

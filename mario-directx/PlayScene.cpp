@@ -273,7 +273,9 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CQuestionBrick();
 			CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(obj);
-			unsigned int i = 4;
+			brick->SetUnemptiable(atoi(tokens[4].c_str())); // set unemptiable state for question brick
+
+			unsigned int i = 5;
 			while (i < tokens.size())
 			{
 				
