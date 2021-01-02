@@ -399,7 +399,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (e->ny > 0)
 			{
 				// ignore disallowing jumping up when Mario collides with Coin, Leaf, Mushroom and Reward
-				if (!dynamic_cast<CCoin*>(e->obj) || dynamic_cast<CLeaf*>(e->obj) || dynamic_cast<CMushroom*>(e->obj) || dynamic_cast<CReward*>(e->obj))
+				if (!dynamic_cast<CCoin*>(e->obj) || dynamic_cast<CLeaf*>(e->obj) || dynamic_cast<CMushroom*>(e->obj) ||
+					dynamic_cast<CReward*>(e->obj) || dynamic_cast<CFloatingBlock*>(e->obj))
 				{
 					fly = 0;
 					jumpingUp = 0;
@@ -651,10 +652,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					// floating block start dropping
 					if (floatingBlock->GetState() != FLOATING_BLOCK_STATE_DROP)
 						floatingBlock->SetState(FLOATING_BLOCK_STATE_DROP);
-				}
-				else if (e->ny > 0)
-				{
-					keepMoving = 1;	// allow Mario to move through floating block from the bottom
 				}
 			}
 		}
@@ -1464,6 +1461,7 @@ void CMario::SetSittingState(int state)
 
 void CMario::SetJumpingUp(int jumpingUp)
 {
+	if (this->jumpingUp && !jumpingUp) floor = NULL;
 	this->jumpingUp = jumpingUp;
 	if (jumpingUp) lastStandingHeight = this->y;
 }
