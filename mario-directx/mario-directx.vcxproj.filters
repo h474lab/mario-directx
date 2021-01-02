@@ -199,6 +199,9 @@
     <Filter Include="Objects\FloatingBlock">
       <UniqueIdentifier>{7f361f5f-d468-481e-9731-87d437d5612b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\BoomerangBro">
+      <UniqueIdentifier>{99c8af26-472b-4ae0-b6a1-78ed67e53635}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -390,6 +393,9 @@
     <ClCompile Include="FloatingBlock.cpp">
       <Filter>Objects\FloatingBlock</Filter>
     </ClCompile>
+    <ClCompile Include="BoomerangBro.cpp">
+      <Filter>Objects\BoomerangBro</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -580,6 +586,9 @@
     </ClInclude>
     <ClInclude Include="FloatingBlock.h">
       <Filter>Objects\FloatingBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="BoomerangBro.h">
+      <Filter>Objects\BoomerangBro</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

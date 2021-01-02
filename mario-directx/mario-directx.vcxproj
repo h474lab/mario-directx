@@ -146,6 +146,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Beetle.cpp" />
+    <ClCompile Include="BoomerangBro.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickFragment.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Beetle.h" />
+    <ClInclude Include="BoomerangBro.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickFragment.h" />
     <ClInclude Include="Bullet.h" />
