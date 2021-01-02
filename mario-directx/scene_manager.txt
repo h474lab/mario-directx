@@ -11,4 +11,4 @@ grid_list	Resources\GRIDLIST.txt
 0	0	Scenes\Intro\	objects.txt
 1	2	1	Scenes\World1_1\	Scenes\World1_1\tileset.png	Scenes\World1_1\tiled_background.txt	-10	4	11	0	-230	objects.txt	1	0	0	2816	-230	202	50	154	0	1984	2512	200	410	2144	300	0
 2	1	1	Scenes\map1_1\	Scenes\map1_1\tileset.png	Scenes\map1_1\tiled_background.txt	-11	4	16	objects.txt
-3	2	1	Scenes\World1_4\	Scenes\World1_4\tileset.png	Scenes\World1_4\tiled_background.txt	-12	4	10	0	0	objects.txt	2	0	0	2048	0	192	50	80	1	2064	2576	0	192	112	2200	0
+3	2	1	Scenes\World1_4\	Scenes\World1_4\tileset.png	Scenes\World1_4\tiled_background.txt	-12	4	10	0	0	objects.txt	2	1	0	2048	0	192	50	80	1	2064	2576	0	192	112	2200	0

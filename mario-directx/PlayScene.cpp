@@ -27,6 +27,7 @@
 #include "Score.h"
 #include "MapGate.h"
 #include "FloatingBlock.h"
+#include "BoomerangBro.h"
 
 using namespace std;
 
@@ -376,6 +377,13 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CFloatingBlock();
 			obj->SetPosition(x, y);
+			break;
+		}
+	case OBJECT_TYPE_BOOMERANG_BRO:
+		{
+			obj = new CBoomerangBro();
+			obj->SetPosition(x, y);
+			((CBoomerangBro*)obj)->SetFollowingObject(player);
 			break;
 		}
 	default:

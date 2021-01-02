@@ -10,7 +10,7 @@
 #define BOOMERANG_BRO_WALKING_SPEED_Y	0.0f
 
 #define BOOMERANG_BRO_JUMPING_SPEED_X	0.05f
-#define BOOMERANG_BRO_JUMPING_SPEED_Y	0.005f
+#define BOOMERANG_BRO_JUMPING_SPEED_Y	0.05f
 
 #define BOOMERANG_BRO_DYING_SPEED_X		0.0f
 #define BOOMERANG_BRO_DYING_SPEED_Y		0.0f
@@ -31,7 +31,7 @@
 class CBoomerangBro : public CGameObject
 {
 	float leftBound, rightBound;
-
+	float ix, iy; // initial position of Boomerang Bro
 	int jumping;
 	int walkingCount;
 	CGameObject* followingObject;
@@ -40,6 +40,8 @@ public:
 
 	virtual void SetState(int state);
 	virtual void SetPosition(float x, float y);
+	
+	void SetFollowingObject(CGameObject* object) { this->followingObject = object; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL);
