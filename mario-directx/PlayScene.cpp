@@ -381,6 +381,15 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CBoomerangBro();
 			obj->SetPosition(x, y);
+
+			for (int i = 0; i < 10; i++)
+			{
+				includedObj = new CBoomerang();
+				includedObj->SetAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
+				((CBoomerangBro*)obj)->InsertBoomerang((CBoomerang*)includedObj);
+				weapons.push_back(includedObj);
+			}
+
 			((CBoomerangBro*)obj)->SetFollowingObject(player);
 			break;
 		}

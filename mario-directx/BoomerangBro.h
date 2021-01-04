@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Boomerang.h"
 
 #define BOOMERANG_BRO_ANI_WALKING_LEFT		0
 #define BOOMERANG_BRO_ANI_WALKING_RIGHT		1
@@ -40,10 +41,15 @@ class CBoomerangBro : public CGameObject
 	int walkingCount;
 	CGameObject* followingObject;
 
+	int currentBoomerang;
+	vector<CBoomerang*> boomerangs;
+
 	int throwing;
 	DWORD throwing_start, throwing_delay_start;
 public:
 	CBoomerangBro();
+
+	void InsertBoomerang(CBoomerang* boomerang);
 
 	virtual void SetState(int state);
 	virtual void SetPosition(float x, float y);

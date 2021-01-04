@@ -5,6 +5,7 @@ CBoomerangBro::CBoomerangBro()
 	background = 0;
 	walkingCount = 0;
 	jumping = 0;
+	currentBoomerang = 0;
 	nx = 0;
 	followingObject = NULL;
 	renderScore = RENDER_SCORE_BOOMERANG_BRO;
@@ -78,6 +79,20 @@ void CBoomerangBro::ThrowBoomerang()
 	throwing = 1;
 	throwing_start = (DWORD)GetTickCount64();
 	throwing_delay_start = (DWORD)GetTickCount64();
+
+	// throw boomerang at current position if possible
+	if (boomerangs.size() > 0)
+	{
+		if (++currentBoomerang == boomerangs.size())
+			currentBoomerang = 0;
+
+		boomerangs[currentBoomerang]->SetPosition(x, y - 4);
+	}
+}
+
+void CBoomerangBro::InsertBoomerang(CBoomerang *boomerang)
+{
+	boomerangs.push_back(boomerang);
 }
 
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -132,7 +147,20 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((DWORD)GetTickCount64() - throwing_delay_start > BOOMERANG_BRO_THROWING_DELAY)
 		ThrowBoomerang();
 	if ((DWORD)GetTickCount64() - throwing_start > BOOMERANG_BRO_THROWING_TIME)
+	{
+		int throwingDirection;
+		if (nx > 0)
+			throwingDirection = BOOMERANG_DIRECTION_RIGHT;
+		else
+			throwingDirection = BOOMERANG_DIRECTION_LEFT;
+		boomerangs[currentBoomerang]->Throw(throwingDirection);
+
 		throwing = 0;
+	}
+	else
+	{
+		boomerangs[currentBoomerang]->SetPosition(x, y - 4);
+	}
 	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
