@@ -37,6 +37,9 @@ protected:
 	// all cells in current grid including in the camera
 	vector<LPGAMEOBJECT> workingCellsInGrid;
 
+	// weapons will be splited and update/render seperately
+	vector<LPGAMEOBJECT> weapons;
+
 	int world;
 	float tile_x, tile_y;
 	

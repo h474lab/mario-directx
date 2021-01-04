@@ -96,7 +96,7 @@ void CPlayScene::ParseObjects(string line)
 				fireball = new CFireball();
 				fireball->SetAnimationSet(animation_sets->Get(fireball_ani_set));
 				player->AddFireball(fireball);
-				queuedObject.push_back(fireball);
+				weapons.push_back(fireball);
 			}
 
 			playZones[currentZone].GetPlayerStartPosition(x, y);
@@ -235,8 +235,7 @@ void CPlayScene::ParseObjects(string line)
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CVenusFireTrap*)includedObj)->SetBullet(bullet);
-
-					queuedObject.push_back(bullet);
+					weapons.push_back(bullet);
 					break;
 				case OBJECT_TYPE_SHORT_FIRE_TRAP:
 					includedObj = new CShortFireTrap();
@@ -249,8 +248,7 @@ void CPlayScene::ParseObjects(string line)
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CShortFireTrap*)includedObj)->SetBullet(bullet);
-
-					queuedObject.push_back(bullet);
+					weapons.push_back(bullet);
 					break;
 				case OBJECT_TYPE_PIRANHA_PLANT:
 					includedObj = new CPiranhaPlant();
@@ -507,6 +505,7 @@ void CPlayScene::Update(DWORD dt)
 	// get working cells (inside the camera area) in the grid in order to update objects that are contained in them
 	workingCellsInGrid = CGrids::GetInstance()->Get(gridId)->LoadCellsWithinCamera();
 
+	// add all objects in cells and weapons into collision objects set
 	vector<LPGAMEOBJECT> coObjects;
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
@@ -517,10 +516,13 @@ void CPlayScene::Update(DWORD dt)
 			currentObject = currentObject->GetNextObject();
 		}
 	}
+	for (LPGAMEOBJECT weapon : weapons) coObjects.push_back(weapon);
 
+	// update Mario
 	player->Update(dt, &coObjects);
 	if (player->GetLevelTransform()) return;	// while Mario is transforming his level -> skip updating
 
+	// update objects in cells
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)
 	{
 		LPGAMEOBJECT currentObject = workingCell;
@@ -532,6 +534,10 @@ void CPlayScene::Update(DWORD dt)
 			CGrids::GetInstance()->Get(gridId)->UpdateObject(temp);
 		}
 	}
+
+	// update weapons
+	for (LPGAMEOBJECT weapon : weapons)
+		weapon->Update(dt, &coObjects);
 
 	// update score animations
 	CScores::GetInstance()->Update(dt);
@@ -719,6 +725,7 @@ void CPlayScene::Render()
 			currentObject = currentObject->GetNextObject();
 		}
 	}
+	for (LPGAMEOBJECT weapon : weapons) renderObjects.push_back(weapon);
 	
 	// because there are objects needs to be set in front of others and behind other ones, each of them is created a rendering score (or priority)
 	std::sort(renderObjects.begin(), renderObjects.end(), RenderCompare);
