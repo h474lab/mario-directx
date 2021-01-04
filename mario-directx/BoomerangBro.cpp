@@ -73,6 +73,13 @@ void CBoomerangBro::SetState(int state)
 	CGameObject::SetState(state);
 }
 
+void CBoomerangBro::ThrowBoomerang()
+{
+	throwing = 1;
+	throwing_start = (DWORD)GetTickCount64();
+	throwing_delay_start = (DWORD)GetTickCount64();
+}
+
 void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
@@ -121,6 +128,11 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// exit collision calculation when Boomerang Bro has been dead
 	if (state == BOOMERANG_BRO_STATE_DYING) return;
+
+	if ((DWORD)GetTickCount64() - throwing_delay_start > BOOMERANG_BRO_THROWING_DELAY)
+		ThrowBoomerang();
+	if ((DWORD)GetTickCount64() - throwing_start > BOOMERANG_BRO_THROWING_TIME)
+		throwing = 0;
 	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -193,6 +205,8 @@ void CBoomerangBro::Render()
 	{
 		if (state == BOOMERANG_BRO_STATE_DYING)
 			animation_set->at(BOOMERANG_BRO_ANI_DYING_RIGHT)->Render(x, y);
+		else if (throwing)
+			animation_set->at(BOOMERANG_BRO_ANI_THROWING_RIGHT)->Render(x, y);
 		else
 			animation_set->at(BOOMERANG_BRO_ANI_WALKING_RIGHT)->Render(x, y);
 	}
@@ -200,6 +214,8 @@ void CBoomerangBro::Render()
 	{
 		if (state == BOOMERANG_BRO_STATE_DYING)
 			animation_set->at(BOOMERANG_BRO_ANI_DYING_LEFT)->Render(x, y);
+		else if (throwing)
+			animation_set->at(BOOMERANG_BRO_ANI_THROWING_LEFT)->Render(x, y);
 		else
 			animation_set->at(BOOMERANG_BRO_ANI_WALKING_LEFT)->Render(x, y);
 	}
