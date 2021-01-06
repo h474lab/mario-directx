@@ -25,6 +25,8 @@
 #include "HUD.h"
 #include "Reward.h"
 #include "FloatingBlock.h"
+#include "Boomerang.h"
+#include "BoomerangBro.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -356,8 +358,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//	x += nx*abs(rdx); 
 		
 		// block every object first!
-		x += min_tx*dx + nx*0.004f;
-		y += min_ty*dy + ny*0.004f;
+		x += min_tx*dx + nx*0.00004f;
+		y += min_ty*dy + ny*0.00004f;
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
@@ -377,14 +379,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			float obj_l, obj_t, obj_r, obj_b;
 			e->obj->GetBoundingBox(obj_l, obj_t, obj_r, obj_b);
-			
+
 			float obj_w = obj_r - obj_l;
 			float obj_h = obj_b - obj_t;
 
 			int canBeHitBySpinning = (e->nx != 0 && spinning && obj_y <= y + MARIO_TAIL_HEAD_TO_TAIL &&
 				obj_y + obj_h >= y + MARIO_TAIL_HEAD_TO_TAIL + MARIO_TAIL_TAIL_WIDTH) ? 1 : 0;
 
-			CGame *game = CGame::GetInstance();
+			CGame* game = CGame::GetInstance();
 
 			if (e->ny < 0)
 			{
@@ -417,9 +419,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				keepMoving = 1;
 			}
-			else if (dynamic_cast<CGoomba *>(e->obj))
+			else if (dynamic_cast<CGoomba*>(e->obj))
 			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 				if (e->ny < 0)
 				{
 					if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_AND_FLY)
@@ -437,7 +439,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 					else if (untouchable == 0)
 					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
+						if (goomba->GetState() != GOOMBA_STATE_DIE)
 						{
 							LevelDown();
 						}
@@ -478,7 +480,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							LevelDown();
 						}
 					}
-					
+
 					if (koopaState == KOOPA_STATE_LYING_DOWN || koopaState == KOOPA_STATE_LYING_UP)
 					{
 						float left, top, right, bottom;
@@ -549,6 +551,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
+			else if (dynamic_cast<CBoomerangBro*>(e->obj))
+			{
+				CBoomerangBro* boomerangBro = dynamic_cast<CBoomerangBro*>(e->obj);
+
+				if (boomerangBro->GetState() == BOOMERANG_BRO_STATE_DYING)
+				{
+					keepMoving = 1;
+					continue;
+				}
+
+				if (e->ny < 0)
+					boomerangBro->SetState(BOOMERANG_BRO_STATE_DYING);
+				else
+					LevelDown();
+
+				keepMoving = 1;
+			}
 			else if (dynamic_cast<CQuestionBrick*>(e->obj) && !acquiredQuestionBrick)
 			{
 				float l, t, b, r;
@@ -572,14 +591,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (result) acquiredQuestionBrick = 1;
 			}
-			else if (dynamic_cast<CPortal *>(e->obj))
+			else if (dynamic_cast<CPortal*>(e->obj))
 			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
+				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 				return;
 			}
-			else if (dynamic_cast<CBullet*>(e->obj))
+			else if (dynamic_cast<CBullet*>(e->obj) || dynamic_cast<CBoomerang*>(e->obj) || dynamic_cast<CTubeEnemy*>(e->obj))
 			{
 				if (!untouchable)
 					this->LevelDown();
@@ -590,13 +609,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 				mushroom->Gain(this);
-
-				keepMoving = 1;
-			}
-			else if (dynamic_cast<CTubeEnemy*>(e->obj))
-			{
-				if (!untouchable)
-					this->LevelDown();
 
 				keepMoving = 1;
 			}

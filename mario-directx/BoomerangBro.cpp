@@ -142,7 +142,12 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 
 	// exit collision calculation when Boomerang Bro has been dead
-	if (state == BOOMERANG_BRO_STATE_DYING) return;
+	if (state == BOOMERANG_BRO_STATE_DYING)
+	{
+		x += dx;
+		y += dy;
+		return;
+	}
 
 	if ((DWORD)GetTickCount64() - throwing_delay_start > BOOMERANG_BRO_THROWING_DELAY)
 		ThrowBoomerang();
@@ -188,6 +193,12 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (event->ny < 0)
 				jumping = 0;
+
+			if (CBoomerang* boomerang = dynamic_cast<CBoomerang*>(event->obj))
+			{
+				// destroy boomerang when it goes back to BoomerangBro
+				boomerang->SetState(BOOMERANG_STATE_HIDE);
+			}
 		}
 
 		if (state == BOOMERANG_BRO_STATE_JUMPING && !jumping)
