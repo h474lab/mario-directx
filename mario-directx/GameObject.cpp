@@ -10,6 +10,7 @@
 #include "VenusFireTrap.h"
 #include "ShortFireTrap.h"
 #include "FloatingBlock.h"
+#include "Leaf.h"
 
 CGameObject::CGameObject()
 {
@@ -134,6 +135,11 @@ void CGameObject::FilterCollision(
 		if (dynamic_cast<CFloatingBlock*>(c->obj))
 		{
 			if (!dynamic_cast<CMario*>(this))
+				continue;
+		}
+		else if (dynamic_cast<CLeaf*>(this))
+		{
+			if (!dynamic_cast<CMario*>(c->obj))
 				continue;
 		}
 
