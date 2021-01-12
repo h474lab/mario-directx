@@ -61,11 +61,17 @@ void CPlayScene::ParseObjects(string line)
 
 	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
 
+	// Get object type and its position
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 
-	int ani_set_id = atoi(tokens[3].c_str());
+	// Get grid row and column
+	float grid_row = atoi(tokens[3].c_str());
+	float grid_column = atoi(tokens[4].c_str());
+
+	// Get animation set id
+	int ani_set_id = atoi(tokens[5].c_str());
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
@@ -87,7 +93,7 @@ void CPlayScene::ParseObjects(string line)
 	{
 	case OBJECT_TYPE_MARIO:
 		{
-			fireball_ani_set = atoi(tokens[4].c_str());
+			fireball_ani_set = atoi(tokens[6].c_str());
 			obj = player;
 			obj->SetPosition(x, y);
 
@@ -108,14 +114,14 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CGoomba();
 			obj->SetPosition(x, y);
-			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[4].c_str()));
+			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
 			break;
 		}
 	case OBJECT_TYPE_BRICK: 
 		{
-			int numRows = atoi(tokens[4].c_str());
-			int numColumns = atoi(tokens[5].c_str());
+			int numRows = atoi(tokens[6].c_str());
+			int numColumns = atoi(tokens[7].c_str());
 			for (int i = 0; i < numRows; i++)
 				for (int j = 0; j < numColumns; j++)
 				{
@@ -130,8 +136,8 @@ void CPlayScene::ParseObjects(string line)
 	// create a group of ground bricks
 	case OBJECT_TYPE_GROUNDBRICK:
 		{
-			int numRows = atoi(tokens[4].c_str());
-			int numColumns = atoi(tokens[5].c_str());
+			int numRows = atoi(tokens[6].c_str());
+			int numColumns = atoi(tokens[7].c_str());
 			int position = 0;
 			// define each brick's position in the group
 			for (int i = 0; i < numRows; i++)
@@ -164,8 +170,8 @@ void CPlayScene::ParseObjects(string line)
 		}
 	case OBJECT_TYPE_COLORED_BLOCK:
 		{
-			int numRows = atoi(tokens[4].c_str());
-			int numColumns = atoi(tokens[5].c_str());
+			int numRows = atoi(tokens[6].c_str());
+			int numColumns = atoi(tokens[7].c_str());
 
 			for (int i = 0; i < numRows; i++)
 				for (int j = 0; j < numColumns; j++)
@@ -206,19 +212,19 @@ void CPlayScene::ParseObjects(string line)
 		}
 	case OBJECT_TYPE_TUBE:
 		{
-			int numRows = atoi(tokens[4].c_str());
-			int lidType = atoi(tokens[5].c_str());
-			int zoneID = atoi(tokens[6].c_str());
-			float xSwitch = (float)atof(tokens[7].c_str());
-			float ySwitch = (float)atof(tokens[8].c_str());
+			int numRows = atoi(tokens[6].c_str());
+			int lidType = atoi(tokens[7].c_str());
+			int zoneID = atoi(tokens[8].c_str());
+			float xSwitch = (float)atof(tokens[9].c_str());
+			float ySwitch = (float)atof(tokens[10].c_str());
 			obj = new CTube(numRows, lidType, zoneID, xSwitch, ySwitch);
 			CTube* tube = dynamic_cast<CTube*>(obj);
 			tube->SetFollowingObject(player);
 
-			if (tokens.size() > 9)
+			if (tokens.size() > 11)
 			{
-				int obj_type = atoi(tokens[9].c_str());
-				int obj_ani_set = atoi(tokens[10].c_str());
+				int obj_type = atoi(tokens[11].c_str());
+				int obj_ani_set = atoi(tokens[12].c_str());
 				int bullet_ani_set;
 				CBullet* bullet = NULL;
 
@@ -231,7 +237,7 @@ void CPlayScene::ParseObjects(string line)
 					if (player)
 						dynamic_cast<CVenusFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[11].c_str());
+					bullet_ani_set = atoi(tokens[13].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CVenusFireTrap*)includedObj)->SetBullet(bullet);
@@ -244,7 +250,7 @@ void CPlayScene::ParseObjects(string line)
 					if (player)
 						dynamic_cast<CShortFireTrap*>(includedObj)->SetFollowingObject(player);
 
-					bullet_ani_set = atoi(tokens[11].c_str());
+					bullet_ani_set = atoi(tokens[13].c_str());
 					bullet = new CBullet();
 					bullet->SetAnimationSet(animation_sets->Get(bullet_ani_set));
 					((CShortFireTrap*)includedObj)->SetBullet(bullet);
@@ -272,9 +278,9 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CQuestionBrick();
 			CQuestionBrick* brick = dynamic_cast<CQuestionBrick*>(obj);
-			brick->SetUnemptiable(atoi(tokens[4].c_str())); // set unemptiable state for question brick
+			brick->SetUnemptiable(atoi(tokens[6].c_str())); // set unemptiable state for question brick
 
-			unsigned int i = 5;
+			unsigned int i = 7;
 			while (i < tokens.size())
 			{
 				
@@ -330,8 +336,8 @@ void CPlayScene::ParseObjects(string line)
 	case OBJECT_TYPE_SQUARE_BRICK:
 		{
 			CSquareBrick* brick = new CSquareBrick;
-			brick->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
-			brick->SetCoinAnimationSet(animation_sets->Get(atoi(tokens[5].c_str())));
+			brick->SetFragmentAnimationSet(animation_sets->Get(atoi(tokens[6].c_str())));
+			brick->SetCoinAnimationSet(animation_sets->Get(atoi(tokens[7].c_str())));
 
 			obj = brick;
 			obj->SetPosition(x, y);
@@ -347,7 +353,7 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CKoopa();
 			obj->SetPosition(x, y);
-			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[4].c_str()));
+			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			break;
 		}
 	case OBJECT_TYPE_BACKGROUND:
@@ -358,9 +364,9 @@ void CPlayScene::ParseObjects(string line)
 		}
 	case OBJECT_TYPE_PORTAL:
 		{	
-			float r = (float)atof(tokens[4].c_str());
-			float b = (float)atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
+			float r = (float)atof(tokens[6].c_str());
+			float b = (float)atof(tokens[7].c_str());
+			int scene_id = atoi(tokens[8].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 			obj->SetPosition(x, y);
 			break;
@@ -385,7 +391,7 @@ void CPlayScene::ParseObjects(string line)
 			for (int i = 0; i < 10; i++)
 			{
 				includedObj = new CBoomerang();
-				includedObj->SetAnimationSet(animation_sets->Get(atoi(tokens[4].c_str())));
+				includedObj->SetAnimationSet(animation_sets->Get(atoi(tokens[6].c_str())));
 				((CBoomerangBro*)obj)->InsertBoomerang((CBoomerang*)includedObj);
 				weapons.push_back(includedObj);
 			}
