@@ -26,7 +26,11 @@ private:
 	void RemoveFromGrid(LPGAMEOBJECT object, int row, int column);
 public:
 	CGrid(float start_x, float start_y, float end_x, float end_y, int numRows, int numColumns);
+	
+	// Add object into grid with/without cell position
 	void AddObject(LPGAMEOBJECT object);
+	void AddObjectWithCell(LPGAMEOBJECT object, int row, int column);
+
 	void UpdateObject(CGameObject* object);	// re-set object's position in the grid
 	void ReplaceObject(CGameObject* object_1, CGameObject* object_2);	// replace object_1 in the grid by object_2
 	void ClearCells();	// set all cells in the grid to NULL value

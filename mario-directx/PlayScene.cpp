@@ -73,10 +73,14 @@ void CPlayScene::ParseObjects(string line)
 	// Get animation set id
 	int ani_set_id = atoi(tokens[5].c_str());
 
+	// Define animation sets variable
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
-	// temporary variable that used to store adding object
+	// Temporary variable that used to store adding object
 	CGameObject *obj = NULL;
+
+	// Define Grid variable
+	CGrid *grid = CGrids::GetInstance()->Get(gridId);
 
 	CFireball* fireball = NULL;
 	int nFireballs = MARIO_MAX_FIREBALL_NUMBER; // define the maximum number of Mario fireballs which are not destroyed at a time
@@ -114,6 +118,9 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CGoomba();
 			obj->SetPosition(x, y);
+
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
+
 			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
 			break;
@@ -272,6 +279,7 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_QUESTIONBRICK: 
@@ -331,6 +339,7 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_SQUARE_BRICK:
@@ -341,18 +350,22 @@ void CPlayScene::ParseObjects(string line)
 
 			obj = brick;
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_COIN:
 		{
 			obj = new CCoin();
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_KOOPA:
 		{
 			obj = new CKoopa();
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+
 			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			break;
 		}
@@ -360,6 +373,7 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CBackground();
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_PORTAL:
@@ -369,18 +383,21 @@ void CPlayScene::ParseObjects(string line)
 			int scene_id = atoi(tokens[8].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_REWARD:
 		{
 			obj = new CReward();
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_FLOATING_BLOCK:
 		{
 			obj = new CFloatingBlock();
 			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_BOOMERANG_BRO:
@@ -397,6 +414,8 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			((CBoomerangBro*)obj)->SetFollowingObject(player);
+
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	default:
@@ -409,6 +428,7 @@ void CPlayScene::ParseObjects(string line)
 		LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 		obj->SetAnimationSet(ani_set);
 		objects.push_back(obj);
+
 		obj->SetObjectPriority(objects.size());
 	}
 
@@ -417,7 +437,9 @@ void CPlayScene::ParseObjects(string line)
 		for (LPGAMEOBJECT object : queuedObject)
 		{
 			objects.push_back(object);
+
 			object->SetObjectPriority(objects.size());
+			//grid->AddObjectWithCell(object, grid_row, grid_column);
 		}
 	}
 }

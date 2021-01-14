@@ -77,6 +77,12 @@ void CGrid::AddObject(LPGAMEOBJECT object)
 	InsertToGrid(object, row, column);
 }
 
+void CGrid::AddObjectWithCell(LPGAMEOBJECT object, int row, int column)
+{
+	object->SetGridPosition(row, column);
+	InsertToGrid(object, row, column);
+}
+
 void CGrid::UpdateObject(CGameObject* object)
 {
 	// get last position in grid
