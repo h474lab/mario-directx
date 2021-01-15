@@ -294,6 +294,9 @@
 #define MARIO_FLYING_STATE_DOWN	-1
 #define MARIO_FLYING_STATE_NONE	0
 
+#define MARIO_FACING_LEFT	0
+#define MARIO_FACING_RIGHT	1
+
 class CMario : public CGameObject
 {
 	int level;
@@ -479,6 +482,7 @@ public:
 	int GetInIntro(int value) { return isInIntro; }
 
 	int GetMarioFlyingState() { return fly; }
+	int GetMarioFacingDirection() { return (nx > 0.0f) ? MARIO_FACING_RIGHT : MARIO_FACING_LEFT; }
 
 	void ClearFloor() { floor = NULL; }
 	void Reset();

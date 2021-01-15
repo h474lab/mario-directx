@@ -323,7 +323,7 @@ bool CGame::CheckPlayerOverlap(CGameObject* object)
 	player->GetBoundingBox(pl, pt, pr, pb);
 
 	// return if player is "not" seperate from object
-	return !(r < pl || l > pr || b < pt || t > pb);
+	return !(r <= pl || l >= pr || b <= pt || t >= pb);
 }
 
 void CGame::SetPlayer(CMario* player)

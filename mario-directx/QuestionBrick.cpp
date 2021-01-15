@@ -1,6 +1,7 @@
 #include "QuestionBrick.h"
 #include "Utils.h"
 #include "Coin.h"
+#include "Game.h"
 
 CQuestionBrick::CQuestionBrick()
 {
@@ -69,6 +70,29 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		int dir = CanBeHitByTail();
 		if (dir)
 			HitQuestionBrick(dir);
+	}
+
+	// Avoid Mario overlaps question brick
+	CGame* game = CGame::GetInstance();
+	if (game->CheckPlayerOverlap(this))
+	{
+		CMario* mario = game->GetPlayer();
+
+		float mx, my;
+		mario->GetPosition(mx, my);
+
+		float l, t, r, b;
+		GetBoundingBox(l, t, r, b);
+
+		float ml, mt, mr, mb;
+		mario->GetBoundingBox(ml, mt, mr, mb);
+
+		if (mario->GetMarioFacingDirection() == MARIO_FACING_LEFT)
+			mx = x + (r - l);
+		else
+			mx = x - (mr - ml);
+
+		mario->SetPosition(mx, my);
 	}
 }
 
