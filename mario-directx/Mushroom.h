@@ -5,7 +5,7 @@
 #include "Brick.h"
 #include "Tube.h"
 
-#define MUSHROOM_GRAVITY		0.001f
+#define MUSHROOM_GRAVITY		0.0008f
 #define MUSHROOM_FLYING_SPEED_Y	0.025f
 #define MUSHROOM_MOVING_SPEED_X	0.05f
 
