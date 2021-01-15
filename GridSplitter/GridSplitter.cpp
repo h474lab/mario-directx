@@ -120,17 +120,19 @@ bool GetCellPosition(float x, float y, int &cellRow, int &cellColumn)
     int gridHeight = endVertical - startVertical;
         
     // calculate cell width and height
-    float cellWidth = (float)gridWidth / gridRows;
-    float cellHeight = (float)gridHeight / gridColumns;
+    float cellWidth = (float)gridWidth / gridColumns;
+    float cellHeight = (float)gridHeight / gridRows;
 
     // calculate cell contains object initially
     cellColumn = (int)((y - startVertical) / cellHeight);
     cellRow = (int)((x - startHorizontal) / cellWidth);
     
-    // return true when cell is within grid
-    if (cellRow < gridRows && cellColumn < gridColumns) return true;
-    // object position is out of grid range
-    return false;
+    //// return true when cell is within grid
+    //if (cellRow < gridRows && cellColumn < gridColumns) return true;
+    //// object position is out of grid range
+    //return false;
+
+    return true;
 }
 
 // get new object parameters (with cell row and cell column in addition)

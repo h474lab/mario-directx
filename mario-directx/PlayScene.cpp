@@ -67,8 +67,8 @@ void CPlayScene::ParseObjects(string line)
 	float y = (float)atof(tokens[2].c_str());
 
 	// Get grid row and column
-	float grid_row = atoi(tokens[3].c_str());
-	float grid_column = atoi(tokens[4].c_str());
+	float grid_column = atoi(tokens[3].c_str());
+	float grid_row = atoi(tokens[4].c_str());
 
 	// Get animation set id
 	int ani_set_id = atoi(tokens[5].c_str());
@@ -119,7 +119,7 @@ void CPlayScene::ParseObjects(string line)
 			obj = new CGoomba();
 			obj->SetPosition(x, y);
 
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 
 			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
@@ -129,7 +129,7 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CBrick();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_GROUNDBRICK:
@@ -137,6 +137,7 @@ void CPlayScene::ParseObjects(string line)
 			int cellPosition = atoi(tokens[6].c_str());
 			obj = new CGroundBricks(cellPosition);
 			obj->SetPosition(x, y);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_COLORED_BLOCK:
@@ -144,6 +145,7 @@ void CPlayScene::ParseObjects(string line)
 			int cellPosition = atoi(tokens[6].c_str());
 			obj = new CColoredBlock(cellPosition);
 			obj->SetPosition(x, y);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_TUBE:
@@ -208,7 +210,7 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_QUESTIONBRICK: 
@@ -268,7 +270,7 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_SQUARE_BRICK:
@@ -279,21 +281,21 @@ void CPlayScene::ParseObjects(string line)
 
 			obj = brick;
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_COIN:
 		{
 			obj = new CCoin();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_KOOPA:
 		{
 			obj = new CKoopa();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 
 			dynamic_cast<CKoopa*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			break;
@@ -302,7 +304,7 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CBackground();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_PORTAL:
@@ -312,21 +314,21 @@ void CPlayScene::ParseObjects(string line)
 			int scene_id = atoi(tokens[8].c_str());
 			obj = new CPortal(x, y, r, b, scene_id);
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_REWARD:
 		{
 			obj = new CReward();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_FLOATING_BLOCK:
 		{
 			obj = new CFloatingBlock();
 			obj->SetPosition(x, y);
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	case OBJECT_TYPE_BOOMERANG_BRO:
@@ -344,7 +346,7 @@ void CPlayScene::ParseObjects(string line)
 
 			((CBoomerangBro*)obj)->SetFollowingObject(player);
 
-			//grid->AddObjectWithCell(obj, grid_row, grid_column);
+			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
 	default:
@@ -368,7 +370,7 @@ void CPlayScene::ParseObjects(string line)
 			objects.push_back(object);
 
 			object->SetObjectPriority(objects.size());
-			//grid->AddObjectWithCell(object, grid_row, grid_column);
+			grid->AddObjectWithCell(object, grid_row, grid_column);
 		}
 	}
 }
@@ -458,7 +460,7 @@ void CPlayScene::Load()
 		}
 
 		// add objects to grid
-		CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
+		//CGrids::GetInstance()->Get(gridId)->AddObject(objects[i]);
 	}
 	
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneDirectory);
