@@ -119,7 +119,7 @@ void CPlayScene::ParseObjects(string line)
 			obj = new CGoomba();
 			obj->SetPosition(x, y);
 
-			grid->AddObjectWithCell(obj, grid_row, grid_column);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 
 			dynamic_cast<CGoomba*>(obj)->SetLevel(atoi(tokens[6].c_str()));
 			dynamic_cast<CGoomba*>(obj)->SetFollowingObject(player);
@@ -127,94 +127,23 @@ void CPlayScene::ParseObjects(string line)
 		}
 	case OBJECT_TYPE_BRICK: 
 		{
-			int numRows = atoi(tokens[6].c_str());
-			int numColumns = atoi(tokens[7].c_str());
-			for (int i = 0; i < numRows; i++)
-				for (int j = 0; j < numColumns; j++)
-				{
-					obj = new CBrick();
-					obj->SetPosition(x + BRICK_BBOX_WIDTH * j, y + BRICK_BBOX_HEIGHT * i);
-					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-					queuedObject.push_back(obj);
-				}
-			obj = NULL;
+			obj = new CBrick();
+			obj->SetPosition(x, y);
+			//grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
-	// create a group of ground bricks
 	case OBJECT_TYPE_GROUNDBRICK:
 		{
-			int numRows = atoi(tokens[6].c_str());
-			int numColumns = atoi(tokens[7].c_str());
-			int position = 0;
-			// define each brick's position in the group
-			for (int i = 0; i < numRows; i++)
-				for (int j = 0; j < numColumns; j++)
-				{
-					if (i == 0)
-					{
-						if (j == 0)
-							obj = new CGroundBricks(BRICK_POSITION_TOPLEFT);
-						else if (j == numColumns - 1)
-							obj = new CGroundBricks(BRICK_POSITION_TOPRIGHT);
-						else
-							obj = new CGroundBricks(BRICK_POSITION_TOPMID);
-					}
-					else if (i == numRows - 1)
-					{
-						if (j == 0)
-							obj = new CGroundBricks(BRICK_POSITION_BOTLEFT);
-						else if (j == numColumns - 1)
-							obj = new CGroundBricks(BRICK_POSITION_BOTRIGHT);
-						else
-							obj = new CGroundBricks(BRICK_POSITION_BOTMID);
-					}
-					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-					obj->SetPosition(x + j * BRICK_BBOX_WIDTH, y + i * BRICK_BBOX_HEIGHT);
-					queuedObject.push_back(obj);
-				}
-			obj = NULL;
+			int cellPosition = atoi(tokens[6].c_str());
+			obj = new CGroundBricks(cellPosition);
+			obj->SetPosition(x, y);
 			break;
 		}
 	case OBJECT_TYPE_COLORED_BLOCK:
 		{
-			int numRows = atoi(tokens[6].c_str());
-			int numColumns = atoi(tokens[7].c_str());
-
-			for (int i = 0; i < numRows; i++)
-				for (int j = 0; j < numColumns; j++)
-				{
-					if (i == 0)
-					{
-						if (j == 0)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_LEFT);
-						else if (j == numColumns - 1)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_RIGHT);
-						else
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_TOP_MID);
-					}
-					else if (i == numRows - 1)
-					{
-						if (j == 0)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_LEFT);
-						else if (j == numColumns - 1)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_RIGHT);
-						else
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_BOT_MID);
-					}
-					else
-					{
-						if (j == 0)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_LEFT);
-						else if (j == numColumns - 1)
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_RIGHT);
-						else
-							obj = new CColoredBlock(COLORED_BLOCK_TYPE_MID_MID);
-					}
-					obj->SetAnimationSet(animation_sets->Get(ani_set_id));
-					obj->SetPosition(x + j * COLORED_BLOCK_CELL_WIDTH, y + i * COLORED_BLOCK_CELL_HEIGHT);
-					queuedObject.push_back(obj);
-				}
-			obj = NULL;
+			int cellPosition = atoi(tokens[6].c_str());
+			obj = new CColoredBlock(cellPosition);
+			obj->SetPosition(x, y);
 			break;
 		}
 	case OBJECT_TYPE_TUBE:
