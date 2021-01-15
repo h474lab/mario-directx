@@ -374,6 +374,9 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
+		vector<LPCOLLISIONEVENT> floorList;
+		floorList.clear();
+
 		//
 		// Collision logic with other objects
 		//
@@ -401,7 +404,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 			if (e->ny < 0)
 			{
 				jumping = 0;
-				floor = e->obj;
+				floorList.push_back(e);
 				// reset score streak
 				if (dynamic_cast<CQuestionBrick*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
 					dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CTube*>(e->obj) ||
@@ -678,6 +681,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 			}
 		}
 
+		// If Mario is allowed to continue moving, set his speed back to previous value
 		if (keepMoving)
 		{
 			x = lastX + dx;
@@ -687,6 +691,17 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 			{
 				y = lastY + dy;
 				vy = lastVy;
+			}
+		}
+
+		float min_t = 1.0f;
+		// Set the nearest object to Mario as floor
+		for (LPCOLLISIONEVENT event : floorList)
+		{
+			if (event->t < min_t)
+			{
+				floor = event->obj;
+				min_t = event->t;
 			}
 		}
 	}
