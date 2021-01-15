@@ -28,49 +28,24 @@
 #include "Boomerang.h"
 #include "BoomerangBro.h"
 
-CMario::CMario(float x, float y) : CGameObject()
+void CMario::CheckReleasingKoopa()
 {
-	level = MARIO_LEVEL_SMALL;
-	levelTransform = 0;
-	untouchable = 0;
-	turning = 0;
-	kicking = 0;
-
-	holdenKoopa = NULL;
-
-	SetState(MARIO_STATE_IDLE);
-
-	flyingDirection = lastFlyingDirection = FLYING_DIRECTION_NOMOVE;
-
-	jumping = 0;
-	background = 0;
-
-	gainedMagicWings = 0;
-
-	running = 0;
-	lastRunning = 0;
-	allowSwichingZone = 0;
-
-	scoreStreak = 0;
-	isInIntro = 0;
-
-	start_x = x; 
-	start_y = y; 
-	this->x = x; 
-	this->y = y;
-}
-
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
-{
-	if (state == MARIO_STATE_UNAVAILABLE) return;
-	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
-
+	// Mario does not hold Koopa
 	if (holdenKoopa && !isInIntro)
 	{
 		if (holdenKoopa->GetState() != KOOPA_STATE_LYING_DOWN && holdenKoopa->GetState() != KOOPA_STATE_LYING_UP)
 			releaseKoopa();
 	}
+}
 
+void CMario::UpdateMarioPassingLevel()
+{
+	// When Mario has passed current level, let him run to the right
+	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
+}
+
+void CMario::UpdateMarioLevelTransformation()
+{
 	if (levelTransform)
 	{
 		if (GetTickCount64() - stepStart > MARIO_LEVEL_TRANSFORMING_TIME)
@@ -94,15 +69,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		return;
 	}
+}
 
+bool CMario::UpdateMarioSwitchingZone(DWORD dt)
+{
+	// Update Mario flying when he is up/down the tube
 	if (flyingDirection != FLYING_DIRECTION_NOMOVE)
 	{
 		UpdateFlying(dt);
 		if (flyingDirection == FLYING_DIRECTION_NOMOVE)
 			allowSwichingZone = 1;
-		return;
+		return true;
 	}
 
+	return false;
+}
+
+void CMario::UpdateMarioJumpingState()
+{
 	float _lastVy = vy;
 
 	if (jumping) running = 0;
@@ -157,13 +141,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (lastStandingHeight - this->y > MARIO_JUMP_HEIGHT)
 			SetJumpingUp(0);
 	}
+}
 
-	float lastX = x, lastY = y;
-	float lastVx = vx, lastVy = vy;
-
+void CMario::CheckMarioRunningCondition()
+{
 	if (!lastRunning && running)
 		StartRunning();
+}
 
+void CMario::UpdateRunningState()
+{
 	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
 
 	if (running)
@@ -181,9 +168,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * MAXIMUM_POWER_LEVEL);
 	}
 	else if (fly != MARIO_FLYING_STATE_UP) ReducePowerLevel();
+}
 
+void CMario::CheckAndSetMagicWings()
+{
 	if (gainedMagicWings) powerLevel = MAXIMUM_POWER_LEVEL;
+}
 
+void CMario::CheckMarioSlowingDown()
+{
 	// Mario changes his walking/running direction
 	if (turning || slowingDown)
 	{
@@ -213,21 +206,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			slowingDown = 0;
 		}
 	}
+}
+
+void CMario::UpdateMarioSpeed(DWORD dt)
+{
+	UpdateMarioJumpingState();
+	CheckMarioRunningCondition();
+	UpdateRunningState();
+	CheckMarioSlowingDown();
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
 
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
+}
 
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-	coEvents.clear();
-
-	// turn off collision when die 
-	if (state!=MARIO_STATE_DIE)
-		CalcPotentialCollisions(coObjects, coEvents);
-
+void CMario::CheckMarioThrowingFireballs()
+{
 	// Fire Mario throws fireballs
 	if (throwing && (DWORD)GetTickCount64() - throwing_start > MARIO_THROW_TIME)
 	{
@@ -235,14 +231,20 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		throwing_start = 0;
 		ThrowFireball();
 	}
+}
 
+void CMario::CheckMarioKickingState()
+{
 	// Mario stops kicking Koopa
 	if (GetTickCount64() - kicking_start > MARIO_KICKING_TIME)
 	{
 		kicking = 0;
 		kicking_start = 0;
 	}
+}
 
+void CMario::CheckMarioSpinningState()
+{
 	// when Mario is attacking using his tail
 	if (spinning)
 	{
@@ -328,38 +330,46 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 	else CCamera::GetInstance()->LockCamera(0);
+}
 
+void CMario::CheckMarioUntouchableState()
+{
 	// reset untouchable timer if untouchable time has passed
-	if ( (DWORD)GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
+	if ((DWORD)GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 		background = 0;
 	}
+}
+
+void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGAMEOBJECT>* coObjects, float lastX, float lastY, float lastVx, float lastVy)
+{
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	coEvents.clear();
+
+	// turn off collision when Mario is dead 
+	if (state != MARIO_STATE_DIE)
+		CalcPotentialCollisions(coObjects, coEvents);
 
 	// No collision occured, proceed normally
-	if (coEvents.size()==0)
+	if (coEvents.size() == 0)
 	{
 		jumping = 1;
-		x += dx; 
+		x += dx;
 		y += dy;
 	}
 	else
 	{
 		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0; 
+		float rdx = 0;
 		float rdy = 0;
 
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-		
 		// block every object first!
-		x += min_tx*dx + nx*0.00004f;
-		y += min_ty*dy + ny*0.00004f;
+		x += min_tx * dx + nx * 0.04f;
+		y += min_ty * dy + ny * 0.04f;
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
@@ -614,7 +624,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			else if (dynamic_cast<CLeaf*>(e->obj))
 			{
-				CLeaf *leaf = dynamic_cast<CLeaf*>(e->obj);
+				CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
 				this->LevelUp();
 				leaf->SetState(LEAF_STATE_UNAVAILABLE);
 
@@ -639,7 +649,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CSquareBrick*>(e->obj))
 			{
 				CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
-				
+
 				if (canBeHitBySpinning || e->ny > 0)
 					squareBrick->Destroy();
 			}
@@ -680,7 +690,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		}
 	}
+}
 
+void CMario::FixFloor()
+{
 	if (jumping)
 	{
 		if (dynamic_cast<CFloatingBlock*>(floor))
@@ -727,7 +740,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				y = floor_y - height;
 		}
 	}
+}
 
+void CMario::SetKoopaPosition()
+{
 	if (holdenKoopa != NULL)
 	{
 		float l, t, r, b;
@@ -738,9 +754,77 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else
 			holdenKoopa->SetPosition(l + 5 - KOOPA_LYING_WIDTH, b - KOOPA_LYING_HEIGHT - 1);
 	}
+}
 
+void CMario::CleanUpCollisionEvents(vector<LPCOLLISIONEVENT> coEvents)
+{
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+}
+
+CMario::CMario(float x, float y) : CGameObject()
+{
+	level = MARIO_LEVEL_SMALL;
+	levelTransform = 0;
+	untouchable = 0;
+	turning = 0;
+	kicking = 0;
+
+	holdenKoopa = NULL;
+
+	SetState(MARIO_STATE_IDLE);
+
+	flyingDirection = lastFlyingDirection = FLYING_DIRECTION_NOMOVE;
+
+	jumping = 0;
+	background = 0;
+
+	gainedMagicWings = 0;
+
+	running = 0;
+	lastRunning = 0;
+	allowSwichingZone = 0;
+
+	scoreStreak = 0;
+	isInIntro = 0;
+
+	start_x = x; 
+	start_y = y; 
+	this->x = x; 
+	this->y = y;
+}
+
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+{
+	if (state == MARIO_STATE_UNAVAILABLE) return;
+
+	float lastX = x, lastY = y;
+	float lastVx = vx, lastVy = vy;
+
+	UpdateMarioPassingLevel();
+	CheckReleasingKoopa();
+
+	UpdateMarioLevelTransformation();
+	CheckAndSetMagicWings();
+	
+	// Check if Mario is switching zone or not
+	if (UpdateMarioSwitchingZone(dt)) return;
+	
+	// Update Mario moving speed
+	UpdateMarioSpeed(dt);
+	
+	// Check and update Mario special states
+	CheckMarioThrowingFireballs();
+	CheckMarioKickingState();
+	CheckMarioSpinningState();
+	CheckMarioUntouchableState();
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	UpdateMarioCollision(coEvents, coObjects, lastX, lastY, lastVx, lastVy);
+	FixFloor();
+	SetKoopaPosition();
+
+	CleanUpCollisionEvents(coEvents);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)

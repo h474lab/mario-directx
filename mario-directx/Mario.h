@@ -377,6 +377,33 @@ class CMario : public CGameObject
 	CGameObject* floor;
 
 	DWORD now;
+
+
+	void CheckReleasingKoopa();
+
+	void UpdateMarioPassingLevel();
+	void UpdateMarioLevelTransformation();
+	bool UpdateMarioSwitchingZone(DWORD dt);
+	void UpdateMarioJumpingState();
+
+	void CheckMarioRunningCondition();
+	void UpdateRunningState();
+	void CheckAndSetMagicWings();
+	void CheckMarioSlowingDown();
+	void UpdateMarioSpeed(DWORD dt);
+
+	void CheckMarioThrowingFireballs();
+	void CheckMarioKickingState();
+	void CheckMarioSpinningState();
+	void CheckMarioUntouchableState();
+
+	void UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGAMEOBJECT> *coObjects,
+		float lastX, float lastY, float lastVx, float lastVy);
+
+	void FixFloor();
+	void SetKoopaPosition();
+
+	void CleanUpCollisionEvents(vector<LPCOLLISIONEVENT> coEvents);
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
 
