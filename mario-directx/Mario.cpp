@@ -593,7 +593,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 				if (e->ny > 0)
 				{
 					if ((x <= obj_x && x + width - obj_x >= width / 2.5f) || (x >= obj_x && obj_x + width - x >= width / 2.5f))
-						brick->HitQuestionBrick((this->x > obj_x) ? 1 : -1);
+						brick->HitQuestionBrick((l > obj_x) ? 1 : -1);
 
 					continue;
 				}
