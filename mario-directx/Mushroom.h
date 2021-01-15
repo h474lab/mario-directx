@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Game.h"
 #include "Mario.h"
 #include "Utils.h"
 #include "Brick.h"

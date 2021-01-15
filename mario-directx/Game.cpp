@@ -312,6 +312,20 @@ void CGame::SweptAABB(
 
 }
 
+bool CGame::CheckPlayerOverlap(CGameObject* object)
+{
+	// Get object's bounding box
+	float l, t, r, b;
+	object->GetBoundingBox(l, t, r, b);
+
+	// Get player's bounding box
+	float pl, pt, pr, pb;
+	player->GetBoundingBox(pl, pt, pr, pb);
+
+	// return if player is "not" seperate from object
+	return !(r < pl || l > pr || b < pt || t > pb);
+}
+
 void CGame::SetPlayer(CMario* player)
 {
 	this->player = player;

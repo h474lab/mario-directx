@@ -1,4 +1,5 @@
 #include "Mushroom.h"
+#include "SquareBrick.h"
 
 CMushroom::CMushroom(int level)
 {
@@ -120,7 +121,8 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			
-			if (dynamic_cast<CTube*>(e->obj) && e->nx != 0)
+			if ((dynamic_cast<CTube*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
+				dynamic_cast<CSquareBrick*>(e->obj)) && e->nx != 0)
 			{
 				if (state == MUSHROOM_STATE_MOVING_LEFT)
 					SetState(MUSHROOM_STATE_MOVING_RIGHT);
@@ -146,6 +148,17 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt, coObjects);
 		x += dx;
 		y += dy;
+	}
+
+	// If swapAABB does not work, trigger this!!
+	if (state != MUSHROOM_STATE_UNAVAILABLE)
+	{
+		CGame* game = CGame::GetInstance();
+		if (game->CheckPlayerOverlap(this))
+		{
+			SetState(MUSHROOM_STATE_UNAVAILABLE);
+			Gain(game->GetPlayer());
+		}
 	}
 }
 

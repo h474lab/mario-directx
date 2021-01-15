@@ -1,6 +1,7 @@
 #include "Leaf.h"
 #include "Utils.h"
 #include "Mario.h"
+#include "Game.h"
 
 CLeaf::CLeaf()
 {
@@ -116,7 +117,17 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CGameObject::Update(dt, coObjects);
 		x += dx;
 		y += dy;
+	}
 
+	// If swapAABB does not work, trigger this!!
+	if (state != LEAF_STATE_UNAVAILABLE)
+	{
+		CGame* game = CGame::GetInstance();
+		if (game->CheckPlayerOverlap(this))
+		{
+			SetState(LEAF_STATE_UNAVAILABLE);
+			game->GetPlayer()->LevelUp();
+		}
 	}
 }
 
