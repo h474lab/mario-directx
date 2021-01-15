@@ -10,6 +10,203 @@
 #include "Beetle.h"
 #include "HUD.h"
 
+bool CKoopa::UpdateKoopaParatroopaUpDown(DWORD dt)
+{
+	if (level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
+	{
+		// when Mario is outside moving area
+		if (y <= topBound && state == KOOPA_STATE_UP)
+			SetState(KOOPA_STATE_DOWN);
+		else if (y >= bottomBound && state == KOOPA_STATE_DOWN)
+			SetState(KOOPA_STATE_UP);
+		// update Koopa position
+		CGameObject::Update(dt);
+		x += dx;
+		y += dy;
+		return true;
+	}
+	return false;
+}
+
+void CKoopa::CheckWakingKoopa()
+{
+	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
+	{
+		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
+			WakeUp();
+	}
+}
+
+bool CKoopa::CheckKoopaUpdatable()
+{
+	if (isHolden || state == KOOPA_STATE_UNAVAILABLE) return false;
+	return true;
+}
+
+void CKoopa::UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
+	{
+		if (nx > 0)
+			SetState(KOOPA_STATE_JUMPING_RIGHT);
+		else
+			SetState(KOOPA_STATE_JUMPING_LEFT);
+	}
+
+	if (flying == 1)
+	{
+		if (GetTickCount64() - flying_start > KOOPA_FLYING_TIME || vy == 0.0f)
+		{
+			flying = 0;
+			vx = 0.0f;
+		}
+	}
+
+	vy += KOOPA_GRAVITY * dt;
+
+	CGameObject::Update(dt, coObjects);
+
+	if (state == KOOPA_STATE_FLYING_OUT)
+	{
+		x += dx;
+		y += dy;
+		background = 1;
+		return;
+	}
+}
+
+void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT> coEvents)
+{
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+
+	CalcPotentialCollisions(coObjects, coEvents);
+
+	if (coEvents.size() == 0)
+	{
+		jumping = 1;
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx, ny;
+		float rdx, rdy;
+
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
+
+		jumping = 1;
+		int applyEdges = 0;
+		for (unsigned int i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (e->ny < 0)
+			{
+				jumping = 0;
+
+				float l, t, r, b;
+				e->obj->GetBoundingBox(l, t, r, b);
+
+				if (dynamic_cast<CColoredBlock*>(e->obj))
+				{
+					if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_LEFT_EDGE)
+						leftEdge = l - 7;
+					else if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_RIGHT_EDGE)
+						rightEdge = r + 7;
+					applyEdges = 1;
+				}
+				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				{
+					leftEdge = l - 7;
+					rightEdge = r + 7;
+					applyEdges = 1;
+				}
+			}
+			else if (e->nx != 0)
+			{
+				if (dynamic_cast<CGoomba*>(e->obj))
+				{
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+					{
+						goomba->HitGoomba(nx);
+						SetState(state);
+					}
+					else if (state == KOOPA_STATE_WALKING_RIGHT)
+						SetState(state);
+					else if (state == KOOPA_STATE_WALKING_LEFT)
+						SetState(state);
+				}
+				else if (dynamic_cast<CMario*>(e->obj))
+				{
+					SetState(state);
+				}
+				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CHUD*>(e->obj))
+				{
+					float brick_x, brick_y;
+					e->obj->GetPosition(brick_x, brick_y);
+
+					if (this->y + 10 > brick_y && !jumping)
+						ChangeDirection();
+					else if (jumping) ChangeDirection();
+					else SetState(state);
+				}
+				else if (dynamic_cast<CTube*>(e->obj))
+				{
+					ChangeDirection();
+				}
+				else if (dynamic_cast<CQuestionBrick*>(e->obj))
+				{
+					CQuestionBrick* questionbrick = dynamic_cast<CQuestionBrick*>(e->obj);
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+						questionbrick->HitQuestionBrick(this->nx);
+					ChangeDirection();
+				}
+				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				{
+					CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+						squareBrick->Destroy();
+					ChangeDirection();
+				}
+				else if (dynamic_cast<CBeetle*>(e->obj))
+				{
+					CBeetle* beetle = dynamic_cast<CBeetle*>(e->obj);
+					beetle->KickBeetleOut((int)nx);
+					SetState(state);
+				}
+				else SetState(state);
+			}
+		}
+
+		CGameObject::Update(dt);
+
+		float l, t, r, b;
+		GetBoundingBox(l, t, r, b);
+		float width = r - l;
+
+		if ((state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT) && applyEdges)
+		{
+			if (x < leftEdge) SetState(KOOPA_STATE_WALKING_RIGHT);
+			else if (x + width > rightEdge) SetState(KOOPA_STATE_WALKING_LEFT);
+		}
+		x += dx;
+		y += dy;
+
+		int dir = CanBeHitByTail();
+		if (dir) HitKoopa(dir);
+	}
+}
+
 CKoopa::CKoopa()
 {
 	background = 0;
@@ -173,186 +370,15 @@ void CKoopa::ChangeDirection()
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (level == KOOPA_LEVEL_PARATROOPA_UP_DOWN)
-	{
-		// when Mario is outside moving area
-		if (y <= topBound && state == KOOPA_STATE_UP)
-			SetState(KOOPA_STATE_DOWN);
-		else if (y >= bottomBound && state == KOOPA_STATE_DOWN)
-			SetState(KOOPA_STATE_UP);
-		// update Koopa position
-		CGameObject::Update(dt);
-		x += dx;
-		y += dy;
-		return;
-	}
+	if (UpdateKoopaParatroopaUpDown(dt)) return;
+	CheckWakingKoopa();
 
-	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
-	{
-		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
-			WakeUp();
-	}
+	if (!CheckKoopaUpdatable()) return;
 
-	if (isHolden || state == KOOPA_STATE_UNAVAILABLE) return;
-
-	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
-	{
-		if (nx > 0)
-			SetState(KOOPA_STATE_JUMPING_RIGHT);
-		else
-			SetState(KOOPA_STATE_JUMPING_LEFT);
-	}
-
-	if (flying == 1)
-	{
-		if (GetTickCount64() - flying_start > KOOPA_FLYING_TIME || vy == 0.0f)
-		{
-			flying = 0;
-			vx = 0.0f;
-		}
-	}
-
-	vy += KOOPA_GRAVITY * dt;
-
-	CGameObject::Update(dt, coObjects);
-
-	if (state == KOOPA_STATE_FLYING_OUT)
-	{
-		x += dx;
-		y += dy;
-		background = 1;
-		return;
-	}
+	UpdateKoopaPosition(dt, coObjects);
 
 	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-
-	coEvents.clear();
-
-	CalcPotentialCollisions(coObjects, coEvents);
-
-	if (coEvents.size() == 0)
-	{
-		jumping = 1;
-		x += dx;
-		y += dy;
-	}
-	else
-	{
-		float min_tx, min_ty, nx, ny;
-		float rdx, rdy;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
-
-		jumping = 1;
-		int applyEdges = 0;
-		for (unsigned int i = 0; i < coEventsResult.size(); i++)
-		{
-			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (e->ny < 0)
-			{
-				jumping = 0;
-
-				float l, t, r, b;
-				e->obj->GetBoundingBox(l, t, r, b);
-
-				if (dynamic_cast<CColoredBlock*>(e->obj))
-				{
-					if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_LEFT_EDGE)
-						leftEdge = l - 7;
-					else if (((CColoredBlock*)e->obj)->IsEdge() == COLORED_CELL_RIGHT_EDGE)
-						rightEdge = r + 7;
-					applyEdges = 1;
-				}
-				else if (dynamic_cast<CSquareBrick*>(e->obj))
-				{
-					leftEdge = l - 7;
-					rightEdge = r + 7;
-					applyEdges = 1;
-				}
-			}
-			else if (e->nx != 0)
-			{
-				if (dynamic_cast<CGoomba*>(e->obj))
-				{
-					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
-					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
-						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
-					{
-						goomba->HitGoomba(nx);
-						SetState(state);
-					}
-					else if (state == KOOPA_STATE_WALKING_RIGHT)
-						SetState(state);
-					else if (state == KOOPA_STATE_WALKING_LEFT)
-						SetState(state);
-				}
-				else if (dynamic_cast<CMario*>(e->obj))
-				{
-					SetState(state);
-				}
-				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CHUD*>(e->obj))
-				{
-					float brick_x, brick_y;
-					e->obj->GetPosition(brick_x, brick_y);
-
-					if (this->y + 10 > brick_y && !jumping)
-						ChangeDirection();
-					else if (jumping) ChangeDirection();
-					else SetState(state);
-				}
-				else if (dynamic_cast<CTube*>(e->obj))
-				{
-					ChangeDirection();
-				}
-				else if (dynamic_cast<CQuestionBrick*>(e->obj))
-				{
-					CQuestionBrick* questionbrick = dynamic_cast<CQuestionBrick*>(e->obj);
-					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
-						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
-						questionbrick->HitQuestionBrick(this->nx);
-					ChangeDirection();
-				}
-				else if (dynamic_cast<CSquareBrick*>(e->obj))
-				{
-					CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
-					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
-						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
-						squareBrick->Destroy();
-					ChangeDirection();
-				}
-				else if (dynamic_cast<CBeetle*>(e->obj))
-				{
-					CBeetle* beetle = dynamic_cast<CBeetle*>(e->obj);
-					beetle->KickBeetleOut((int)nx);
-					SetState(state);
-				}
-				else SetState(state);
-			}
-		}
-
-		CGameObject::Update(dt);
-
-		float l, t, r, b;
-		GetBoundingBox(l, t, r, b);
-		float width = r - l;
-
-		if ((state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT) && applyEdges)
-		{
-			if (x < leftEdge) SetState(KOOPA_STATE_WALKING_RIGHT);
-			else if (x + width > rightEdge) SetState(KOOPA_STATE_WALKING_LEFT);
-		}
-		x += dx;
-		y += dy;
-
-		int dir = CanBeHitByTail();
-		if (dir) HitKoopa(dir);
-	}
+	UpdateKoopaCollision(dt, coObjects, coEvents);
 }
 
 void CKoopa::Render()

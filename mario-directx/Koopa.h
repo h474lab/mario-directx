@@ -90,6 +90,13 @@ private:
 	float topBound, bottomBound;
 
 	int isHolden;
+
+	bool UpdateKoopaParatroopaUpDown(DWORD dt);
+	void CheckWakingKoopa();
+	bool CheckKoopaUpdatable();
+
+	void UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT> coEvents);
 public:
 	CKoopa();
 
