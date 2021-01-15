@@ -11,7 +11,7 @@ private:
 public:
 	void LockCamera(int value) { lock = value; }
 
-	void SetPosition(float x, float y) { if (!lock) { this->x = x; this->y = y; } }
+	void SetPosition(float x, float y);
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 
 	static CCamera* GetInstance();

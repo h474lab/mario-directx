@@ -23,7 +23,10 @@ CSprites *CSprites::GetInstance()
 void CSprite::Draw(float x, float y, int alpha)
 {
 	CGame * game = CGame::GetInstance();
-	game->Draw(x, y, texture, left, top, right, bottom, alpha);
+	
+	// Fix rendering in order to avoid 'real value' render position
+	game->Draw((x - (int)x >= 0.5f) ? (int)x + 1 : (int)x,
+		(y - (int)y >= 0.5f) ? (int)y + 1 : (int)y, texture, left, top, right, bottom, alpha);
 }
 
 void CSprites::Add(int id, int left, int top, int right, int bottom, LPDIRECT3DTEXTURE9 tex)
