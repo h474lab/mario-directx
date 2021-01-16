@@ -748,7 +748,7 @@ void CMario::FixFloor()
 			floor->GetBoundingBox(fl, ft, fr, fb);
 
 			// when Mario is outside floating block, remove the floor that he is marked
-			if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl))
+			if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl) || jumpingUp)
 				floor = NULL;
 			// on the other hand, he is standing -> which means he is not jumping
 			else jumping = 0;

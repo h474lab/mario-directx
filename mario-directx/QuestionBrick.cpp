@@ -77,22 +77,24 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (game->CheckPlayerOverlap(this))
 	{
 		CMario* mario = game->GetPlayer();
+		if (!mario->IsJumping())
+		{
+			float mx, my;
+			mario->GetPosition(mx, my);
 
-		float mx, my;
-		mario->GetPosition(mx, my);
+			float l, t, r, b;
+			GetBoundingBox(l, t, r, b);
 
-		float l, t, r, b;
-		GetBoundingBox(l, t, r, b);
+			float ml, mt, mr, mb;
+			mario->GetBoundingBox(ml, mt, mr, mb);
 
-		float ml, mt, mr, mb;
-		mario->GetBoundingBox(ml, mt, mr, mb);
+			if (mario->GetMarioFacingDirection() == MARIO_FACING_LEFT)
+				mx = x + (r - l);
+			else
+				mx = x - (mr - ml);
 
-		if (mario->GetMarioFacingDirection() == MARIO_FACING_LEFT)
-			mx = x + (r - l);
-		else
-			mx = x - (mr - ml);
-
-		mario->SetPosition(mx, my);
+			mario->SetPosition(mx, my);
+		}
 	}
 }
 
