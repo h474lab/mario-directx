@@ -488,7 +488,7 @@ void CPlayScene::Update(DWORD dt)
 
 	// update Mario
 	player->Update(dt, &coObjects);
-	if (player->GetLevelTransform()) return;	// while Mario is transforming his level -> skip updating
+	if (player->GetLevelTransform() || player->GetDyingDelay()) return;	// while Mario is transforming his level -> skip updating
 
 	// update objects in cells
 	for (LPGAMEOBJECT workingCell : workingCellsInGrid)

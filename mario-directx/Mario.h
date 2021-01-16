@@ -35,7 +35,8 @@
 
 #define MARIO_JUMP_DEFLECT_SPEED	0.15f
 #define MARIO_GRAVITY				0.012f
-#define MARIO_DIE_DEFLECT_SPEED		0.2f
+#define MARIO_DIE_DEFLECT_SPEED		0.3f
+#define MARIO_DIE_DELAY				500
 #define MARIO_RUNNING_TIME			1000
 
 #define MARIO_SWITCHING_SCENE_SPEED	0.02f
@@ -381,11 +382,14 @@ class CMario : public CGameObject
 
 	DWORD now;
 
+	int dying_delay;
+	DWORD dying_delay_start;
 
+	bool UpdateDyingDelay();
 	void CheckReleasingKoopa();
 
 	void UpdateMarioPassingLevel();
-	void UpdateMarioLevelTransformation();
+	bool UpdateMarioLevelTransformation();
 	bool UpdateMarioSwitchingZone(DWORD dt);
 	void UpdateMarioJumpingState();
 
@@ -483,6 +487,9 @@ public:
 
 	int GetMarioFlyingState() { return fly; }
 	int GetMarioFacingDirection() { return (nx > 0.0f) ? MARIO_FACING_RIGHT : MARIO_FACING_LEFT; }
+
+	void StartDyingDelay() { dying_delay = 1; dying_delay_start = (DWORD)GetTickCount64(); }
+	int GetDyingDelay() { return dying_delay; }
 
 	void ClearFloor() { floor = NULL; }
 	void Reset();

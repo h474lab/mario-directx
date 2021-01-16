@@ -28,6 +28,20 @@
 #include "Boomerang.h"
 #include "BoomerangBro.h"
 
+bool CMario::UpdateDyingDelay()
+{
+	if (dying_delay)
+	{
+		if ((DWORD)GetTickCount64() - dying_delay_start > MARIO_DIE_DELAY)
+		{
+			dying_delay = 0;
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
 void CMario::CheckReleasingKoopa()
 {
 	// Mario does not hold Koopa
@@ -44,7 +58,7 @@ void CMario::UpdateMarioPassingLevel()
 	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
 }
 
-void CMario::UpdateMarioLevelTransformation()
+bool CMario::UpdateMarioLevelTransformation()
 {
 	if (levelTransform)
 	{
@@ -67,8 +81,10 @@ void CMario::UpdateMarioLevelTransformation()
 			SetLevel(transform_newLevel);
 			levelTransform = 0;
 		}
-		return;
+		return true;
 	}
+
+	return false;
 }
 
 bool CMario::UpdateMarioSwitchingZone(DWORD dt)
@@ -214,6 +230,8 @@ void CMario::UpdateMarioSpeed(DWORD dt)
 	CheckMarioRunningCondition();
 	UpdateRunningState();
 	CheckMarioSlowingDown();
+
+	if (state == MARIO_STATE_DIE) vx = 0.0f;
 
 	// Simple fall down
 	vy += MARIO_GRAVITY;
@@ -368,8 +386,8 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.04f;
-		y += min_ty * dy + ny * 0.04f;
+		x += min_tx * dx + nx * 0.08f;
+		y += min_ty * dy + ny * 0.08f;
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
@@ -813,17 +831,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (state == MARIO_STATE_UNAVAILABLE) return;
 
+	if (UpdateDyingDelay()) return;
+
 	float lastX = x, lastY = y;
 	float lastVx = vx, lastVy = vy;
 
 	UpdateMarioPassingLevel();
 	CheckReleasingKoopa();
-
-	UpdateMarioLevelTransformation();
 	CheckAndSetMagicWings();
-	
-	// Check if Mario is switching zone or not
-	if (UpdateMarioSwitchingZone(dt)) return;
+
+	if (UpdateMarioLevelTransformation() || UpdateMarioSwitchingZone(dt)) return;
 	
 	// Update Mario moving speed
 	UpdateMarioSpeed(dt);
@@ -1835,7 +1852,9 @@ void CMario::SetState(int state)
 	case MARIO_STATE_DIE:
 		running = 0;
 		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
+		vx = 0.0f;
 		vy = -MARIO_DIE_DEFLECT_SPEED;
+		StartDyingDelay();
 		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_JUMPING_OUT:

@@ -73,6 +73,9 @@ void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture, int left, int top
 	float cam_x, cam_y;
 	CCamera::GetInstance()->GetPosition(cam_x, cam_y);
 
+	cam_x = (cam_x - (int)cam_x >= 0.5f) ? (int)cam_x + 1 : (int)cam_x;
+	cam_y = (cam_y - (int)cam_y >= 0.5f) ? (int)cam_y + 1 : (int)cam_y;
+
 	D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
 	RECT r; 
 	r.left = left;
