@@ -4,13 +4,17 @@
 #include "Utils.h"
 #include "Fireball.h"
 
-#define MARIO_WALKING_SPEED			0.1f
-#define MARIO_RUNNING_SPEED			0.15f
+#define MARIO_ACCELERATION			0.0003f
+#define MARIO_ACCELERATION_POSITIVE	1
+#define MARIO_ACCELERATION_NEGATIVE	-1
+
+#define MARIO_WALKING_SPEED			0.13f
+#define MARIO_RUNNING_SPEED			0.16f
 #define MARIO_RUNNING_FAST_SPEED	0.2f
-#define MARIO_SLIDING_SPEED_DOWN	0.003f
+#define MARIO_SLIDING_SPEED_DOWN	0.001f
 #define MARIO_JUMPING_SPEED_DOWN	0.002f
-//0.1f
-#define MARIO_JUMP_SPEED_X			0.07f
+
+#define MARIO_JUMP_SPEED_X			0.13f
 #define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			64.0f
 #define MARIO_MAX_FIREBALL_NUMBER	2
@@ -304,6 +308,9 @@ class CMario : public CGameObject
 	int untouchable;
 	DWORD untouchable_start;
 
+	float v0;
+	DWORD speed_up_start;
+
 	// Koopa that Mario is holding
 	CKoopa* holdenKoopa;
 	int allowHodingKoopa;
@@ -396,7 +403,7 @@ class CMario : public CGameObject
 	void CheckMarioRunningCondition();
 	void UpdateRunningState();
 	void CheckAndSetMagicWings();
-	void CheckMarioSlowingDown();
+	void CheckMarioTurning();
 	void UpdateMarioSpeed(DWORD dt);
 
 	void CheckMarioThrowingFireballs();
@@ -474,6 +481,9 @@ public:
 	void StartSwitchingZone(int direction);
 	int GetAllowSwitchingZone() { return allowSwichingZone; }
 	void SetAllowSwitchingZone(int value) { allowSwichingZone = value; }
+
+	void StartSpeedUp() { speed_up_start = (DWORD)GetTickCount64(); v0 = vx; }
+	float GetMarioExpectedSpeedX(float limit_speed_x);
 
 	void SetMagicWings(int state) { gainedMagicWings = state; }
 

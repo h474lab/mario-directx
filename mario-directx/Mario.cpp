@@ -171,15 +171,6 @@ void CMario::UpdateRunningState()
 
 	if (running)
 	{
-		// when Mario running for an enough amount of time -> Start running fast
-		if (runningTime > MARIO_RUNNING_TIME)
-		{
-			if (nx > 0)
-				SetState(MARIO_STATE_RUNNING_FAST_RIGHT);
-			else
-				SetState(MARIO_STATE_RUNNING_FAST_LEFT);
-		}
-
 		// set Power Level for displaying and identify flying ability of Mario
 		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * MAXIMUM_POWER_LEVEL);
 	}
@@ -191,45 +182,21 @@ void CMario::CheckAndSetMagicWings()
 	if (gainedMagicWings) powerLevel = MAXIMUM_POWER_LEVEL;
 }
 
-void CMario::CheckMarioSlowingDown()
+void CMario::CheckMarioTurning()
 {
-	// Mario changes his walking/running direction
-	if (turning || slowingDown)
+	// Check if Mario has stopped turning process
+	if (turning)
 	{
-		if (vx > 0)
-		{
-			if (vx > MARIO_SLIDING_SPEED_DOWN) vx -= MARIO_SLIDING_SPEED_DOWN;
-			else
-			{
-				vx = 0;
-				turning = 0;
-				slowingDown = 0;
-			}
-		}
-		else if (vx < 0)
-		{
-			if (vx < -MARIO_SLIDING_SPEED_DOWN) vx += MARIO_SLIDING_SPEED_DOWN;
-			else
-			{
-				vx = 0;
-				turning = 0;
-				slowingDown = 0;
-			}
-		}
-		else
-		{
-			turning = 0;
-			slowingDown = 0;
-		}
+		if (vx == 0.0f) turning = 0;
 	}
 }
 
 void CMario::UpdateMarioSpeed(DWORD dt)
 {
+	CheckMarioTurning();
 	UpdateMarioJumpingState();
 	CheckMarioRunningCondition();
 	UpdateRunningState();
-	CheckMarioSlowingDown();
 
 	if (state == MARIO_STATE_DIE) vx = 0.0f;
 
@@ -860,12 +827,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	SetKoopaPosition();
 
 	CleanUpCollisionEvents(coEvents);
+
+	DebugOut(L"\nvx=%f", vx);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
 {
+	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
+
 	if (skillButtonPressed)
-		SetState(MARIO_STATE_RUNNING_LEFT);
+	{
+		if (runningTime > MARIO_RUNNING_TIME)
+			SetState(MARIO_STATE_RUNNING_FAST_LEFT);
+		else
+			SetState(MARIO_STATE_RUNNING_LEFT);
+	}
 	else
 		SetState(MARIO_STATE_WALKING_LEFT);
 
@@ -876,8 +852,15 @@ void CMario::SetMovingLeft(int skillButtonPressed)
 
 void CMario::SetMovingRight(int skillButtonPressed)
 {
+	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
+
 	if (skillButtonPressed)
-		SetState(MARIO_STATE_RUNNING_RIGHT);
+	{
+		if (runningTime > MARIO_RUNNING_TIME)
+			SetState(MARIO_STATE_RUNNING_FAST_RIGHT);
+		else
+			SetState(MARIO_STATE_RUNNING_RIGHT);
+	}
 	else
 		SetState(MARIO_STATE_WALKING_RIGHT);
 
@@ -1593,6 +1576,7 @@ void CMario::SetSittingState(int state)
 void CMario::SetJumpingUp(int jumpingUp)
 {
 	if (this->jumpingUp && !jumpingUp) floor = NULL;
+	StartSpeedUp();
 	this->jumpingUp = jumpingUp;
 	if (jumpingUp) lastStandingHeight = this->y;
 }
@@ -1737,76 +1721,131 @@ void CMario::SetState(int state)
 		background = 0;
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
+			if (this->state != MARIO_STATE_WALKING_RIGHT) StartSpeedUp();
+
 			running = 0;
 			if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
-			vx = MARIO_WALKING_SPEED;
+			vx = GetMarioExpectedSpeedX(MARIO_WALKING_SPEED);
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
-		else if (!turning) turning = 1;
+		else
+		{
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
+		}
 		break;
 	case MARIO_STATE_WALKING_LEFT:
 		background = 0;
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
+			if (this->state != MARIO_STATE_WALKING_LEFT) StartSpeedUp();
+
 			running = 0;
 			if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
-			vx = -MARIO_WALKING_SPEED;
+			vx = GetMarioExpectedSpeedX(-MARIO_WALKING_SPEED);
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
-		else  if (!turning) turning = 1;
+		else
+		{
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
+		}
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		background = 0;
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
+			if (this->state != MARIO_STATE_RUNNING_RIGHT) StartSpeedUp();
+
 			running = 1;
-			vx = MARIO_RUNNING_SPEED;
+			vx = GetMarioExpectedSpeedX(MARIO_RUNNING_SPEED);
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
-		else  if (!turning) turning = 1;
+		else
+		{
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
+		}
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		background = 0;
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
+			if (this->state != MARIO_STATE_RUNNING_LEFT) StartSpeedUp();
+
 			running = 1;
-			vx = -MARIO_RUNNING_SPEED;
+			vx = GetMarioExpectedSpeedX(-MARIO_RUNNING_SPEED);
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
-		else if (!turning) turning = 1;
+		else
+		{
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
+		}
+
 		break;
 	case MARIO_STATE_RUNNING_FAST_RIGHT:
 		background = 0;
 		if ((last_nx > 0 && !turning) || jumping)
 		{
+			if (this->state != MARIO_STATE_RUNNING_FAST_RIGHT) StartSpeedUp();
+
 			running = 1;
-			vx = MARIO_RUNNING_FAST_SPEED;
+			vx = GetMarioExpectedSpeedX(MARIO_RUNNING_FAST_SPEED);
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
 		else
 		{
 			StartRunning();
-			if (!turning) turning = 1;
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
 		}
 		break;
 	case MARIO_STATE_RUNNING_FAST_LEFT:
 		background = 0;
 		if (last_nx < 0 && !turning)
 		{
+			if (this->state != MARIO_STATE_RUNNING_FAST_LEFT) StartSpeedUp();
+
 			running = 1;
-			vx = -MARIO_RUNNING_FAST_SPEED;
+			vx = GetMarioExpectedSpeedX(-MARIO_RUNNING_FAST_SPEED);
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
 		else
 		{
 			StartRunning();
-			if (!turning) turning = 1;
+			if (!turning)
+			{
+				StartSpeedUp();
+				turning = 1;
+			}
+			vx = GetMarioExpectedSpeedX(0.0f);
 		}
 		break;
 	case MARIO_STATE_JUMPING:
@@ -1826,10 +1865,12 @@ void CMario::SetState(int state)
 		break; 
 	case MARIO_STATE_IDLE:
 		background = 0;
+		if (this->state != MARIO_STATE_IDLE) StartSpeedUp();
+
 		running = 0;
 		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
-		if (vx == 0) stateCanBeChanged = 1;
-		else if (!slowingDown) slowingDown = 1;
+		vx = GetMarioExpectedSpeedX(0.0f);
+		stateCanBeChanged = 1;
 		break;
 	case MARIO_STATE_IDLE_LEFT:
 		background = 0;
@@ -1892,9 +1933,9 @@ void CMario::SetState(int state)
 	if (jumping && vx != 0)
 	{
 		if (nx > 0)
-			vx = MARIO_JUMP_SPEED_X;
+			vx = GetMarioExpectedSpeedX(MARIO_JUMP_SPEED_X);
 		else
-			vx = -MARIO_JUMP_SPEED_X;
+			vx = GetMarioExpectedSpeedX(-MARIO_JUMP_SPEED_X);
 	}
 
 	if (last_nx != nx)
@@ -2163,6 +2204,29 @@ void CMario::StartSwitchingZone(int direction)
 		maxFlyingY = y + height;
 		flyingDirection = FLYING_DIRECTION_DOWN;
 	}
+}
+
+float CMario::GetMarioExpectedSpeedX(float limit_speed_x)
+{
+	float result = 0.0f;
+	DWORD t = (DWORD)GetTickCount64() - speed_up_start;	// Time range since Mario starting speed-up
+
+	// Calculate acceleration sign to reach target speed
+	float accelerationSign = 0;
+	if (v0 > limit_speed_x)
+		accelerationSign = MARIO_ACCELERATION_NEGATIVE;
+	else
+		accelerationSign = MARIO_ACCELERATION_POSITIVE;
+
+	// Calculate expected speed (vx = v0 + a * t)
+	result = v0 + accelerationSign * t * MARIO_ACCELERATION;
+
+	// Limit result if it is exceeded expected velocity
+	if ((accelerationSign == MARIO_ACCELERATION_POSITIVE && result > limit_speed_x) ||
+		(accelerationSign == MARIO_ACCELERATION_NEGATIVE && result < limit_speed_x))
+		result = limit_speed_x;
+
+	return result;
 }
 
 void CMario::AddStreakScore(CGameObject* coObject)
