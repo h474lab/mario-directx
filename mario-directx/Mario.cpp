@@ -1744,7 +1744,7 @@ void CMario::SetState(int state)
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			if (!turning)
 			{
@@ -1766,7 +1766,7 @@ void CMario::SetState(int state)
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			if (!turning)
 			{
@@ -1787,7 +1787,7 @@ void CMario::SetState(int state)
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			if (!turning)
 			{
@@ -1808,7 +1808,7 @@ void CMario::SetState(int state)
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			if (!turning)
 			{
@@ -1830,7 +1830,7 @@ void CMario::SetState(int state)
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			StartRunning();
 			if (!turning)
@@ -1852,7 +1852,7 @@ void CMario::SetState(int state)
 			nx = -1;
 			stateCanBeChanged = 1;
 		}
-		else
+		else if (!jumping)
 		{
 			StartRunning();
 			if (!turning)
