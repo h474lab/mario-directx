@@ -100,6 +100,8 @@ void CBullet::SetState(int state)
 
 void CBullet::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (state == BULLET_STATE_ON_HOLD) return;
+
 	left = x;
 	top = y;
 	right = x + BULLET_BBOX_WIDTH;

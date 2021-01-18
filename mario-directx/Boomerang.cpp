@@ -55,6 +55,8 @@ void CBoomerang::SetState(int state)
 
 void CBoomerang::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (state == BOOMERANG_STATE_HIDE) return;
+
 	left = x;
 	top = y;
 	right = x + BOOMERANG_BBOX_WIDTH;
