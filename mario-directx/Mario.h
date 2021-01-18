@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include "Fireball.h"
 
-#define MARIO_ACCELERATION			0.0003f
+#define MARIO_ACCELERATION_X		0.00015f
 #define MARIO_ACCELERATION_POSITIVE	1
 #define MARIO_ACCELERATION_NEGATIVE	-1
 
@@ -14,7 +14,7 @@
 #define MARIO_SLIDING_SPEED_DOWN	0.001f
 #define MARIO_JUMPING_SPEED_DOWN	0.002f
 
-#define MARIO_JUMP_SPEED_X			0.13f
+#define MARIO_JUMP_SPEED_X			0.1f
 #define MARIO_JUMP_SPEED_Y			0.15f
 #define MARIO_JUMP_HEIGHT			64.0f
 #define MARIO_MAX_FIREBALL_NUMBER	2
@@ -278,7 +278,7 @@
 #define MARIO_KICKING_TIME		300
 #define MARIO_SPINNING_TIME		100
 
-#define MARIO_UNTOUCHABLE_CHANGING_ALPHA_TIME	200
+#define MARIO_UNTOUCHABLE_CHANGING_ALPHA_TIME	50
 #define MARIO_UNTOUCHABLE_ALPHA_LOW				0
 #define MARIO_UNTOUCHABLE_ALPHA_HIGH			255
 
@@ -387,7 +387,7 @@ class CMario : public CGameObject
 
 	CGameObject* floor;
 
-	DWORD now;
+	int keyFacing;	// Mario facing direction based on pressed key
 
 	int dying_delay;
 	DWORD dying_delay_start;

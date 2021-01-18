@@ -772,6 +772,7 @@ CMario::CMario(float x, float y) : CGameObject()
 	untouchable = 0;
 	turning = 0;
 	kicking = 0;
+	keyFacing = MARIO_FACING_RIGHT;
 
 	holdenKoopa = NULL;
 
@@ -833,6 +834,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CMario::SetMovingLeft(int skillButtonPressed)
 {
+	keyFacing = MARIO_FACING_LEFT;
 	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
 
 	if (skillButtonPressed)
@@ -846,12 +848,13 @@ void CMario::SetMovingLeft(int skillButtonPressed)
 		SetState(MARIO_STATE_WALKING_LEFT);
 
 	if (spinning) vx = -MARIO_SPINNING_SPEED_X;
-	else if (fly) vx = -MARIO_FLYING_SPEED_X;
-	else if (flyJump) vx = -MARIO_FLYING_JUMP_SPEED_X;
+	else if (fly) vx = GetMarioExpectedSpeedX(-MARIO_FLYING_SPEED_X);
+	else if (flyJump) vx = GetMarioExpectedSpeedX(-MARIO_FLYING_JUMP_SPEED_X);
 }
 
 void CMario::SetMovingRight(int skillButtonPressed)
 {
+	keyFacing = MARIO_FACING_RIGHT;
 	DWORD runningTime = (DWORD)GetTickCount64() - running_start;
 
 	if (skillButtonPressed)
@@ -865,8 +868,8 @@ void CMario::SetMovingRight(int skillButtonPressed)
 		SetState(MARIO_STATE_WALKING_RIGHT);
 
 	if (spinning) vx = MARIO_SPINNING_SPEED_X;
-	else if (fly) vx = MARIO_FLYING_SPEED_X;
-	else if (flyJump) vx = MARIO_FLYING_JUMP_SPEED_X;
+	else if (fly) vx = GetMarioExpectedSpeedX(MARIO_FLYING_SPEED_X);
+	else if (flyJump) vx = GetMarioExpectedSpeedX(MARIO_FLYING_JUMP_SPEED_X);
 }
 
 void CMario::Render()
@@ -1243,7 +1246,13 @@ int CMario::RenderTailMario()
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_RIGHT;
 				else if (vy < 0)
 				{
-					if (fly) res = MARIO_ANI_TAIL_FLY_RIGHT;
+					if (fly)
+					{
+						if (keyFacing == MARIO_FACING_RIGHT)
+							res = MARIO_ANI_TAIL_FLY_RIGHT;
+						else
+							res = MARIO_ANI_TAIL_FLY_LEFT;
+					}
 					else res = MARIO_ANI_TAIL_JUMPING_RIGHT;
 				}
 				else
@@ -1277,7 +1286,13 @@ int CMario::RenderTailMario()
 				if (holdenKoopa) res = MARIO_ANI_TAIL_HOLD_KOOPA_JUMPING_LEFT;
 				else if (vy < 0)
 				{
-					if (fly) res = MARIO_ANI_TAIL_FLY_LEFT;
+					if (fly)
+					{
+						if (keyFacing == MARIO_FACING_RIGHT)
+							res = MARIO_ANI_TAIL_FLY_RIGHT;
+						else
+							res = MARIO_ANI_TAIL_FLY_LEFT;
+					}
 					else res = MARIO_ANI_TAIL_JUMPING_LEFT;
 				}
 				else
@@ -1853,12 +1868,15 @@ void CMario::SetState(int state)
 		{
 			background = 0;
 			running = 0;
-			jumpingSpeed = MARIO_JUMP_SPEED_Y;
 			if ((lastState == MARIO_STATE_RUNNING_FAST_LEFT || lastState == MARIO_STATE_RUNNING_FAST_RIGHT || gainedMagicWings))
 			{
 				jumping = 1;
 				FlyJump();
-				fly = MARIO_FLYING_STATE_UP;
+				if (fly != MARIO_FLYING_STATE_UP)
+				{
+					StartSpeedUp();
+					fly = MARIO_FLYING_STATE_UP;
+				}
 			}
 			stateCanBeChanged = 1;
 		}
@@ -2218,8 +2236,12 @@ float CMario::GetMarioExpectedSpeedX(float limit_speed_x)
 	else
 		accelerationSign = MARIO_ACCELERATION_POSITIVE;
 
+	// Select appropriate acceleration value
+	float acceleration = 0.0f;
+	acceleration = MARIO_ACCELERATION_X;
+
 	// Calculate expected speed (vx = v0 + a * t)
-	result = v0 + accelerationSign * t * MARIO_ACCELERATION;
+	result = v0 + accelerationSign * t * acceleration;
 
 	// Limit result if it is exceeded expected velocity
 	if ((accelerationSign == MARIO_ACCELERATION_POSITIVE && result > limit_speed_x) ||
