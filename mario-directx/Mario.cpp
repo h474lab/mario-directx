@@ -1645,26 +1645,30 @@ void CMario::releaseKoopa()
 {
 	holdenKoopa->SetHolden(0);
 	
-	float l, t, r, b;
-	GetBoundingBox(l, t, r, b);
-
-	StartKicking();
-
-	if (nx > 0)
+	int koopaState = holdenKoopa->GetState();
+	if (koopaState == KOOPA_STATE_LYING_DOWN || koopaState == KOOPA_STATE_LYING_UP)
 	{
-		holdenKoopa->SetPosition(r + 0.0001f, b - KOOPA_LYING_HEIGHT);
-		if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
-			holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
+		float l, t, r, b;
+		GetBoundingBox(l, t, r, b);
+
+		StartKicking();
+
+		if (nx > 0)
+		{
+			holdenKoopa->SetPosition(r + 0.0001f, b - KOOPA_LYING_HEIGHT);
+			if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
+				holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_RIGHT);
+			else
+				holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
+		}
 		else
-			holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_RIGHT);
-	}
-	else
-	{
-		holdenKoopa->SetPosition(l - KOOPA_LYING_WIDTH - 0.0001f, b - KOOPA_LYING_HEIGHT);
-		if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
-			holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
-		else
-			holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
+		{
+			holdenKoopa->SetPosition(l - KOOPA_LYING_WIDTH - 0.0001f, b - KOOPA_LYING_HEIGHT);
+			if (holdenKoopa->GetState() == KOOPA_STATE_LYING_DOWN)
+				holdenKoopa->SetState(KOOPA_STATE_ROLLING_DOWN_LEFT);
+			else
+				holdenKoopa->SetState(KOOPA_STATE_ROLLING_UP_LEFT);
+		}
 	}
 
 	holdenKoopa = NULL;

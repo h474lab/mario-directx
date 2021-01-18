@@ -30,8 +30,9 @@ bool CKoopa::UpdateKoopaParatroopaUpDown(DWORD dt)
 
 void CKoopa::CheckWakingKoopa()
 {
-	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
+	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP || isHolden)
 	{
+		DebugOut(L"\nLyingTime: %d", (DWORD)GetTickCount64() - lying_start);
 		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
 			WakeUp();
 	}
