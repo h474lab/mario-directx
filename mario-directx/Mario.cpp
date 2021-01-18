@@ -729,31 +729,34 @@ void CMario::FixFloor()
 {
 	if (jumping)
 	{
-		if (dynamic_cast<CFloatingBlock*>(floor))
+		if (floor)
 		{
-			float fx, fy;
-			floor->GetPosition(fx, fy);
+			if (dynamic_cast<CFloatingBlock*>(floor))
+			{
+				float fx, fy;
+				floor->GetPosition(fx, fy);
 
-			float l, t, r, b;
-			GetBoundingBox(l, t, r, b);
+				float l, t, r, b;
+				GetBoundingBox(l, t, r, b);
 
-			float cx, cy;
-			CCamera::GetInstance()->GetPosition(cx, cy);
+				float cx, cy;
+				CCamera::GetInstance()->GetPosition(cx, cy);
 
-			float sw, sh;
-			sw = (float)CGame::GetInstance()->GetScreenWidth();
-			sh = (float)GAME_PLAY_HEIGHT;
+				float sw, sh;
+				sw = (float)CGame::GetInstance()->GetScreenWidth();
+				sh = (float)GAME_PLAY_HEIGHT;
 
-			float fl, ft, fr, fb;
-			floor->GetBoundingBox(fl, ft, fr, fb);
+				float fl, ft, fr, fb;
+				floor->GetBoundingBox(fl, ft, fr, fb);
 
-			// when Mario is outside floating block, remove the floor that he is marked
-			if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl) || jumpingUp)
-				floor = NULL;
-			// on the other hand, he is standing -> which means he is not jumping
-			else jumping = 0;
+				// when Mario is outside floating block, remove the floor that he is marked
+				if (fx < cx || fy < cy || fx > cx + sw || fy > cy + sh || x + (r - l) < fx || x > fx + (fr - fl) || jumpingUp)
+					floor = NULL;
+				// on the other hand, he is standing -> which means he is not jumping
+				else jumping = 0;
+			}
+			else floor = NULL;
 		}
-		else floor = NULL;
 	}
 
 	if (floor)

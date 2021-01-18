@@ -43,7 +43,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath, int tilemapId, float tile_start
 	this->objectsFileName = objectsFileName;
 	this->gridId = gridId;
 
-	currentZone = initialZone;
+	currentZone = defaultZone = initialZone;
 	this->playZones = playZones;
 
 	this->world = world;
@@ -429,6 +429,10 @@ void CPlayScene::Load()
 	player->SetSpeed(0.0f, 0.0f);
 	player->SetState(MARIO_STATE_IDLE);
 	player->SetPassedTheLevel(0);
+	player->SetFloor(NULL);
+
+	// Set current play zone
+	currentZone = defaultZone;
 
 	// load end game panel and hide it
 	endGamePanel->SetType(BACKGROUND_TYPE_END_GAME_PANEL);

@@ -480,8 +480,6 @@ public:
 	void AddStreakScore(CGameObject* coObject);
 	void AddScore(int score, CGameObject* coObject);
 
-	CGameObject* GetFloor() { return floor; }
-
 	void SetInIntro(int value) { isInIntro = value; }
 	int GetInIntro(int value) { return isInIntro; }
 
@@ -491,7 +489,10 @@ public:
 	void StartDyingDelay() { dying_delay = 1; dying_delay_start = (DWORD)GetTickCount64(); }
 	int GetDyingDelay() { return dying_delay; }
 
+	CGameObject* GetFloor() { return floor; }
+	void SetFloor(CGameObject* floor) { this->floor = floor; }
 	void ClearFloor() { floor = NULL; }
+
 	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

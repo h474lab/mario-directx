@@ -31,6 +31,7 @@ protected:
 
 	// game play zone that Mario is in
 	int currentZone;
+	int defaultZone;
 	// a combination of play zones in the play scene
 	vector<CPlayZone> playZones;
 
