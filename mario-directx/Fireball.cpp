@@ -9,6 +9,7 @@
 #include "GroundBricks.h"
 #include "ColoredBlock.h"
 #include "SquareBrick.h"
+#include "Game.h"
 
 CFireball::CFireball()
 {
@@ -60,6 +61,9 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == FIREBALL_STATE_ON_HOLD) return;
 
+	if (!CGame::GetInstance()->CheckInCameraState(this))
+		SetState(FIREBALL_STATE_ON_HOLD);
+
 	vy += FIREBALL_GRAVITY * dt;
 	CGameObject::Update(dt);
 
@@ -94,7 +98,7 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else
 					vx = FIREBALL_FLYING_SPEED_X;
 
-				vy -= FIREBALL_FLYING_SPEED_Y;
+				vy = -FIREBALL_FLYING_SPEED_Y;
 			}
 
 			if (dynamic_cast<CGoomba*>(event->obj))

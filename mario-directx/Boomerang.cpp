@@ -1,4 +1,5 @@
 #include "Boomerang.h"
+#include "Game.h"
 
 CBoomerang::CBoomerang()
 {
@@ -64,6 +65,10 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// no updating Boomerang when it's idling or hiding
 	if (state == BOOMERANG_STATE_HIDE || state == BOOMERANG_STATE_IDLE) return;
+
+	// Hide Boomerang if it's out of screen
+	if (!CGame::GetInstance()->CheckInCameraState(this))
+		SetState(BOOMERANG_STATE_HIDE);
 	
 	// update Boomerang movement (x axis)
 	if (direction == BOOMERANG_DIRECTION_RIGHT)

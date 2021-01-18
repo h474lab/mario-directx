@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "Utils.h"
+#include "Game.h"
 
 CBullet::CBullet()
 {
@@ -108,6 +109,9 @@ void CBullet::GetBoundingBox(float& left, float& top, float& right, float& botto
 void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == BULLET_STATE_ON_HOLD) return;
+
+	if (!CGame::GetInstance()->CheckInCameraState(this))
+		SetState(BULLET_STATE_ON_HOLD);
 
 	CGameObject::Update(dt);
 	x += dx;

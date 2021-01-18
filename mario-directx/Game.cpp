@@ -329,6 +329,29 @@ bool CGame::CheckPlayerOverlap(CGameObject* object)
 	return !(r <= pl || l >= pr || b <= pt || t >= pb);
 }
 
+bool CGame::CheckInCameraState(CGameObject* object)
+{
+	// Get object's position
+	float x, y;
+	object->GetPosition(x, y);
+
+	// Calculate object width and height
+	float l, t, b, r;
+	object->GetBoundingBox(l, t, r, b);
+	float width = r - l;
+	float height = b - t;
+
+	// Get Camera position
+	float cx, cy;
+	CCamera::GetInstance()->GetPosition(cx, cy);
+
+	// Get screen width and height
+	float sw = GetScreenWidth();
+	float sh = GetScreenHeight();
+
+	return !(x > cx + sw || x + width < cx || y > cy + sh || y + height < cy);
+}
+
 void CGame::SetPlayer(CMario* player)
 {
 	this->player = player;

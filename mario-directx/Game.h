@@ -100,6 +100,7 @@ public:
 		float &ny);
 
 	bool CheckPlayerOverlap(CGameObject* object);
+	bool CheckInCameraState(CGameObject* object);
 
 	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }
 	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
