@@ -199,6 +199,7 @@
 #define MARIO_ANI_INTRO_LOOKING_UP		113
 
 #define MARIO_ANI_DIE					114
+#define MARIO_TAIL_TURNING_OFFSET_Y		2
 
 // Luigi animations
 #define LUIGI_ANI_IDLE_RIGHT		115
