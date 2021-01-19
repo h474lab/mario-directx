@@ -121,7 +121,7 @@ void CScoreboard::SetPowerLevel(int powerLevel)
 			powerArrow[i]->SetState(POWER_OBJECT_STATE_OFF);
 	}
 
-	if (powerLevel == MAXIMUM_POWER_LEVEL)
+	if (powerLevel >= MAXIMUM_POWER_LEVEL)
 		powerSign->SetState(POWER_OBJECT_STATE_ON);
 	else
 		powerSign->SetState(POWER_OBJECT_STATE_OFF);

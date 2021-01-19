@@ -205,6 +205,9 @@
     <Filter Include="Objects\BoomerangBro\Boomerang">
       <UniqueIdentifier>{b6c14c20-1b1d-43fb-b130-a406254c8580}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Manager\Scence\PlayScene\PlatformSet">
+      <UniqueIdentifier>{b04f0a9f-a278-4b4f-99d8-874dbbb9d8e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -402,6 +405,9 @@
     <ClCompile Include="Boomerang.cpp">
       <Filter>Objects\BoomerangBro\Boomerang</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformSet.cpp">
+      <Filter>Game Manager\Scence\PlayScene\PlatformSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -598,6 +604,9 @@
     </ClInclude>
     <ClInclude Include="Boomerang.h">
       <Filter>Objects\BoomerangBro\Boomerang</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSet.h">
+      <Filter>Game Manager\Scence\PlayScene\PlatformSet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

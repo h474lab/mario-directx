@@ -166,6 +166,7 @@
     <ClCompile Include="IntroEvent.cpp" />
     <ClCompile Include="IntroOptions.cpp" />
     <ClCompile Include="MapScene.cpp" />
+    <ClCompile Include="PlatformSet.cpp" />
     <ClCompile Include="PlayZone.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="FireTrap.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="PiranhaPlant.h" />
+    <ClInclude Include="PlatformSet.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PlayZone.h" />
     <ClInclude Include="Portal.h" />
