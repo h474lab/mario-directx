@@ -55,7 +55,11 @@ void CMario::CheckReleasingKoopa()
 void CMario::UpdateMarioPassingLevel()
 {
 	// When Mario has passed current level, let him run to the right
-	if (passedTheLevel) SetState(MARIO_STATE_RUNNING_RIGHT);
+	if (passedTheLevel)
+	{
+		if (vx < 0.0f) SetState(MARIO_STATE_IDLE);
+		else SetState(MARIO_STATE_RUNNING_RIGHT);
+	}
 }
 
 bool CMario::UpdateMarioLevelTransformation()
@@ -356,7 +360,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 		x += min_tx * dx + nx * 0.08f;
 		y += min_ty * dy + ny * 0.08f;
 
-		if (nx != 0) vx = 0;
+		//if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
 		vector<LPCOLLISIONEVENT> floorList;
@@ -808,6 +812,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	float lastVx = vx, lastVy = vy;
 
 	UpdateMarioPassingLevel();
+	DebugOut(L"\n[Phase 1] vx=%f", vx);
 	CheckReleasingKoopa();
 	CheckAndSetMagicWings();
 
@@ -815,6 +820,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	// Update Mario moving speed
 	UpdateMarioSpeed(dt);
+	DebugOut(L"\n[Phase 2] vx=%f", vx);
 	
 	// Check and update Mario special states
 	CheckMarioThrowingFireballs();
@@ -829,7 +835,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	CleanUpCollisionEvents(coEvents);
 
-	DebugOut(L"\nvx=%f", vx);
+	DebugOut(L"\n[Phase 3] vx=%f", vx);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)
