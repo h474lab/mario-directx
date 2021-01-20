@@ -1,5 +1,7 @@
 #include "PlatformSet.h"
 
+CPlatformSet* CPlatformSet::__instance = NULL;
+
 CPlatform::CPlatform(float l, float r)
 {
 	left = l;
@@ -68,7 +70,7 @@ void CPlatforms::Add(float l, float r)
 	}
 
 	// Search for nearest left value
-	if (l < platforms[0]->GetLeft())
+	if (l <= platforms[0]->GetLeft())
 	{
 		platforms.insert(platforms.begin(), new CPlatform(l, r));
 	}
@@ -81,10 +83,11 @@ void CPlatforms::Add(float l, float r)
 					platforms[i + 1]->GetLeft() >= l))
 			{
 				// Insert new platform into platform list
-				platforms.insert(platforms.begin() + i, new CPlatform(l, r));
+				platforms.insert(platforms.begin() + i + 1, new CPlatform(l, r));
 				
 				// If there are overlapping platforms created before, merge them
 				MergeOverlappedPlatforms(i);
+				return;
 			}
 		}
 	}
@@ -110,25 +113,31 @@ bool CPlatforms::CheckAvalable(float x)
 	int left = 0, right = platforms.size() - 1;
 
 	int i = 0;
-	while (left < right)
+	while (left <= right)
 	{
 		// Get the mid-value
-		i = (right - left) / 2;
+		i = (right + left) / 2;
+
+		// x is contained in platform number i
+		if (platforms[i]->GetLeft() <= x && platforms[i]->GetRight() >= x)
+			return true;
 
 		// Platform might be on the right
 		if (platforms[i]->GetRight() < x)
-			left = i;
+			left = i + 1;
 		// Platform might be on the left
 		else if (platforms[i]->GetLeft() > x)
-			right = i;
+			right = i - 1;
 	}
-
-	// x is contained in platform number i
-	if (platforms[i]->GetLeft() <= x && platforms[i]->GetRight() <= x)
-		return true;
 	
 	// Can't find any platform containing x
 	return false;
+}
+
+CPlatformSet* CPlatformSet::GetInstance()
+{
+	if (__instance == NULL) __instance = new CPlatformSet();
+	return __instance;
 }
 
 void CPlatformSet::Add(CGameObject* object)
@@ -143,9 +152,9 @@ void CPlatformSet::Add(CGameObject* object)
 	float w = r - l, h = b - t;
 
 	// If platform key does not exists, create a new one
-	if (platforms.find(y) == platforms.end())
+	if (platforms.find(t) == platforms.end())
 	{
-		platforms.insert(make_pair(y, new CPlatforms(y)));
+		platforms.insert(make_pair(t, new CPlatforms(t)));
 	}
 
 	// Add new range into platform set

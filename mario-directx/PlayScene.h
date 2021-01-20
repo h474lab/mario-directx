@@ -11,6 +11,7 @@
 #include "PlayZone.h"
 #include "MapScene.h"
 #include "Background.h"
+#include "PlatformSet.h"
 
 #define GAMETIME	301000
 

@@ -9,6 +9,7 @@
 #include "SquareBrick.h"
 #include "Beetle.h"
 #include "HUD.h"
+#include "PlatformSet.h"
 
 bool CKoopa::UpdateKoopaParatroopaUpDown(DWORD dt)
 {
@@ -78,11 +79,14 @@ void CKoopa::UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT> coEvents)
 {
+	DebugOut(L"\nKoopa position: %f %f", x, y);
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
 	CalcPotentialCollisions(coObjects, coEvents);
+
+	CPlatformSet* platformSet = CPlatformSet::GetInstance();
 
 	if (coEvents.size() == 0)
 	{
@@ -106,12 +110,15 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
+			float l, t, r, b;
+			e->obj->GetBoundingBox(l, t, r, b);
+
+			float kl, kt, kr, kb;
+			GetBoundingBox(kl, kt, kr, kb);
+
 			if (e->ny < 0)
 			{
 				jumping = 0;
-
-				float l, t, r, b;
-				e->obj->GetBoundingBox(l, t, r, b);
 
 				if (dynamic_cast<CColoredBlock*>(e->obj))
 				{
@@ -121,11 +128,22 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 						rightEdge = r + 7;
 					applyEdges = 1;
 				}
-				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				else if (dynamic_cast<CSquareBrick*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
+					dynamic_cast<CQuestionBrick*>(e->obj))
 				{
-					leftEdge = l - 7;
-					rightEdge = r + 7;
-					applyEdges = 1;
+					if (!platformSet->CheckAvailable(kl, t))
+						DebugOut(L"OK");
+					if (!platformSet->CheckAvailable(kl, t))
+					{
+						if (state == KOOPA_STATE_WALKING_LEFT)
+							SetState(KOOPA_STATE_WALKING_RIGHT);
+					}
+					if (!platformSet->CheckAvailable(kr, t))
+					{
+						if (state == KOOPA_STATE_WALKING_RIGHT)
+							SetState(KOOPA_STATE_WALKING_LEFT);
+					}
+					applyEdges = 0;
 				}
 			}
 			else if (e->nx != 0)
@@ -163,7 +181,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				{
 					ChangeDirection();
 				}
-				else if (dynamic_cast<CQuestionBrick*>(e->obj))
+				else if (dynamic_cast<CQuestionBrick*>(e->obj) && (kb > t))
 				{
 					CQuestionBrick* questionbrick = dynamic_cast<CQuestionBrick*>(e->obj);
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
@@ -171,7 +189,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 						questionbrick->HitQuestionBrick(this->nx);
 					ChangeDirection();
 				}
-				else if (dynamic_cast<CSquareBrick*>(e->obj))
+				else if (dynamic_cast<CSquareBrick*>(e->obj) && (kb > t))
 				{
 					CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||

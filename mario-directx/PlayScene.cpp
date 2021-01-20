@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -93,6 +94,9 @@ void CPlayScene::ParseObjects(string line)
 	vector<LPGAMEOBJECT> queuedObject;
 	queuedObject.clear();
 
+	// Define platform set
+	CPlatformSet* platform_set = CPlatformSet::GetInstance();
+
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
@@ -129,6 +133,7 @@ void CPlayScene::ParseObjects(string line)
 		{
 			obj = new CBrick();
 			obj->SetPosition(x, y);
+			platform_set->Add(obj);
 			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
@@ -270,6 +275,7 @@ void CPlayScene::ParseObjects(string line)
 			}
 
 			obj->SetPosition(x, y);
+			platform_set->Add(obj);
 			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}
@@ -281,6 +287,7 @@ void CPlayScene::ParseObjects(string line)
 
 			obj = brick;
 			obj->SetPosition(x, y);
+			platform_set->Add(obj);
 			grid->AddObjectWithCell(obj, grid_row, grid_column);
 			break;
 		}

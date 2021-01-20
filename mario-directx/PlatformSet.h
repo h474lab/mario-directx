@@ -43,9 +43,13 @@ public:
 
 class CPlatformSet
 {
+	static CPlatformSet* __instance;
+
 	// A combination of all platforms with key is 'top' value
 	unordered_map<float, CPlatforms*> platforms;
 public:
+	static CPlatformSet* GetInstance();
+
 	void Add(CGameObject* object);
 	void Remove(CGameObject* object);
 	bool CheckAvailable(float x, float y);
