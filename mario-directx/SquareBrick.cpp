@@ -1,4 +1,5 @@
 #include "SquareBrick.h"
+#include "PlatformSet.h"
 
 CSquareBrick::CSquareBrick()
 {
@@ -10,6 +11,7 @@ CSquareBrick::CSquareBrick()
 
 void CSquareBrick::Destroy()
 {
+	CPlatformSet::GetInstance()->Remove(this);
 	background = 1;
 	SetState(SQUARE_BRICK_STATE_UNAVAILABLE);
 

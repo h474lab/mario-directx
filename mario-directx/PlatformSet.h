@@ -17,8 +17,8 @@ public:
 	void SetRight(float value) { right = value; }
 
 	// Get Left or Right value
-	float GetLeft() { return left; }
-	float GetRight() { return right; }
+	float GetLeft();
+	float GetRight();
 };
 
 typedef class CPlatform* LPPLATFORM;

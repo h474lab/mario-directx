@@ -132,8 +132,6 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 					dynamic_cast<CQuestionBrick*>(e->obj))
 				{
 					if (!platformSet->CheckAvailable(kl, t))
-						DebugOut(L"OK");
-					if (!platformSet->CheckAvailable(kl, t))
 					{
 						if (state == KOOPA_STATE_WALKING_LEFT)
 							SetState(KOOPA_STATE_WALKING_RIGHT);

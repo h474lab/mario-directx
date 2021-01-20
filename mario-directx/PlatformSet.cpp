@@ -8,6 +8,16 @@ CPlatform::CPlatform(float l, float r)
 	right = r;
 }
 
+float CPlatform::GetLeft()
+{
+	return (right - left <= 16 && right - left > 0) ? left - 8 : left;
+}
+
+float CPlatform::GetRight()
+{
+	return (right - left <= 16 && right - left > 0) ? right + 8 : right;
+}
+
 bool CPlatforms::CompareLeft(const LPPLATFORM& first, LPPLATFORM& second)
 {
 	if (first->GetLeft() == second->GetLeft())
