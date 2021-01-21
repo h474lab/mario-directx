@@ -131,6 +131,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				else if (dynamic_cast<CSquareBrick*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
 					dynamic_cast<CQuestionBrick*>(e->obj))
 				{
+					// Koopa returns if reaching the end of bricks
 					if (!platformSet->CheckAvailable(kl, t))
 					{
 						if (state == KOOPA_STATE_WALKING_LEFT)
@@ -142,6 +143,12 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 							SetState(KOOPA_STATE_WALKING_LEFT);
 					}
 					applyEdges = 0;
+
+					if (CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj))
+					{
+						if (questionBrick->GetFlyingDirection() == FLYING_DIRECTION_UP)
+							HitKoopa((l > kl) ? 1 : -1);
+					}
 				}
 			}
 			else if (e->nx != 0)
