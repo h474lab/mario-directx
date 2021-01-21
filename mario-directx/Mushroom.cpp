@@ -87,9 +87,10 @@ void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bot
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	UpdateFlying(dt);
+	if (state == MUSHROOM_STATE_UNAVAILABLE && flyingDirection == FLYING_DIRECTION_NOMOVE) return;
 
-	if (state == MUSHROOM_STATE_UNAVAILABLE || flyingDirection != 0) return;
+	UpdateFlying(dt);
+	if (state == MUSHROOM_STATE_UNAVAILABLE || flyingDirection != FLYING_DIRECTION_NOMOVE) return;
 
 	vy += MUSHROOM_GRAVITY * dt;
 
