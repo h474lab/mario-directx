@@ -233,6 +233,13 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 						squareBrick->Destroy();
 					ChangeDirection();
 				}
+				else if (CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj))
+				{
+					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT ||
+						isHolden)
+						koopa->KickKoopaOut(nx);
+				}
 				else if (dynamic_cast<CBeetle*>(e->obj))
 				{
 					CBeetle* beetle = dynamic_cast<CBeetle*>(e->obj);
