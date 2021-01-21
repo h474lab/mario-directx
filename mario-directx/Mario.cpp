@@ -759,9 +759,9 @@ void CMario::SetKoopaPosition()
 		GetBoundingBox(l, t, r, b);
 
 		if (keyFacing == MARIO_FACING_RIGHT)
-			holdenKoopa->SetPosition(r - 5, b - KOOPA_LYING_HEIGHT - 1);
+			holdenKoopa->SetPosition(r + HOLDEN_KOOPA_OFFSET_RIGHT_X, b + HOLDEN_KOOPA_OFFSET_RIGHT_Y);
 		else
-			holdenKoopa->SetPosition(l + 5 - KOOPA_LYING_WIDTH, b - KOOPA_LYING_HEIGHT - 1);
+			holdenKoopa->SetPosition(l + HOLDEN_KOOPA_OFFSET_RIGHT_X, b + HOLDEN_KOOPA_OFFSET_RIGHT_Y);
 
 		holdenKoopa->SetSpeed(vx, vy);
 	}
@@ -911,7 +911,7 @@ void CMario::Render()
 
 	if (res != -1)
 	{
-		if (level == MARIO_LEVEL_TAIL && turning)
+		if (level == MARIO_LEVEL_TAIL && turning && !spinning && !holdenKoopa)
 			animation_set->at(res)->Render(x, y - MARIO_TAIL_TURNING_OFFSET_Y, renderAlpha);
 		else
 			animation_set->at(res)->Render(x, y, renderAlpha);
@@ -1468,7 +1468,7 @@ int CMario::RenderLuigi()
 	{
 		if (vx == 0)
 		{
-			if (nx > 0)
+			if (keyFacing == MARIO_FACING_RIGHT)
 			{
 				if (jumping)
 				{
@@ -1497,7 +1497,7 @@ int CMario::RenderLuigi()
 				}
 			}
 		}
-		else if (vx > 0)
+		else if (keyFacing == MARIO_FACING_RIGHT)
 		{
 			if (jumping)
 			{
@@ -1522,7 +1522,7 @@ int CMario::RenderLuigi()
 				else res = LUIGI_ANI_RUN_FAST_RIGHT;
 			}
 		}
-		else if (vx < 0)
+		else if (keyFacing == MARIO_FACING_LEFT)
 		{
 			if (jumping)
 			{
@@ -2114,7 +2114,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		leftMargin = MARIO_TAIL_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_TAIL_BBOX_MARGIN_RIGHT;
 
-		if (nx < 0) swap(leftMargin, rightMargin);
+		if (keyFacing == MARIO_FACING_LEFT) swap(leftMargin, rightMargin);
 
 		left = x + leftMargin;
 		if (sitting)
@@ -2133,7 +2133,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		leftMargin = MARIO_BIG_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_BIG_BBOX_MARGIN_RIGHT;
 
-		if (nx < 0) swap(leftMargin, rightMargin);
+		if (keyFacing == MARIO_FACING_LEFT) swap(leftMargin, rightMargin);
 
 		if (state == MARIO_STATE_IDLE || state == MARIO_STATE_JUMPING_OUT || state == MARIO_STATE_LOOKING_UP)
 			left = x + leftMargin;
@@ -2153,7 +2153,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		leftMargin = MARIO_SMALL_BBOX_MARGIN_LEFT;
 		rightMargin = MARIO_SMALL_BBOX_MARGIN_RIGHT;
 
-		if (nx < 0) swap(leftMargin, rightMargin);
+		if (keyFacing == MARIO_FACING_LEFT) swap(leftMargin, rightMargin);
 
 		if (state == MARIO_STATE_IDLE)
 			left = x + leftMargin;
