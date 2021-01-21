@@ -16,6 +16,9 @@
 #define MUSHROOM_BBOX_WIDTH		16
 #define MUSHROOM_BBOX_HEIGHT	16
 
+#define MUSHROOM_DEFLECTING_X			0.1f
+#define MUSHROOM_DEFLECTING_Y			0.2f
+
 #define MUSHROOM_ANI_SUPER		0
 #define MUSHROOM_ANI_1UP		1
 
@@ -35,6 +38,7 @@ public:
 	void SetState(int state);
 
 	void Gain(CMario* player);
+	void HitMushroom(int direction);
 
 	void SetContainer(CGameObject* container) { this->container = container; }
 

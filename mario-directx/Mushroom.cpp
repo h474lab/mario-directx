@@ -1,5 +1,6 @@
 #include "Mushroom.h"
 #include "SquareBrick.h"
+#include "QuestionBrick.h"
 
 CMushroom::CMushroom(int level)
 {
@@ -47,6 +48,15 @@ void CMushroom::Gain(CMario* player)
 		player->AddScore(MARIO_SCORE_1000, this);
 		break;
 	}
+}
+
+void CMushroom::HitMushroom(int direction)
+{
+	if (-direction > 0)
+		vx = MUSHROOM_DEFLECTING_X;
+	else
+		vx = -MUSHROOM_DEFLECTING_X;
+	vy = -MUSHROOM_DEFLECTING_Y;
 }
 
 void CMushroom::SetPosition(float x, float y)
@@ -122,6 +132,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			
+			// Change Mushroom moving direction when collides with objects
 			if ((dynamic_cast<CTube*>(e->obj) || dynamic_cast<CBrick*>(e->obj) ||
 				dynamic_cast<CSquareBrick*>(e->obj)) && e->nx != 0)
 			{
@@ -130,12 +141,24 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (state == MUSHROOM_STATE_MOVING_RIGHT)
 					SetState(MUSHROOM_STATE_MOVING_LEFT);
 			}
-			if (dynamic_cast<CMario*>(e->obj))
+			if (CMario *mario = dynamic_cast<CMario*>(e->obj))
 			{
-				CMario* mario = dynamic_cast<CMario*>(e->obj);
 				SetState(MUSHROOM_STATE_UNAVAILABLE);
 				Gain(mario);
 				return;
+			}
+			else if (CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj))
+			{
+				if (questionBrick->GetFlyingDirection() == FLYING_DIRECTION_UP)
+				{
+					float ql, qt, qr, qb;
+					questionBrick->GetBoundingBox(ql, qt, qr, qb);
+
+					float l, t, r, b;
+					GetBoundingBox(l, t, r, b);
+
+					HitMushroom((ql < l) ? 1 : -1);
+				}
 			}
 			else
 			{
