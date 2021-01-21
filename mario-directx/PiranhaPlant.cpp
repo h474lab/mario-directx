@@ -42,7 +42,12 @@ void CPiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPiranhaPlant::Render()
 {
-	if (state == TUBE_ENEMY_STATE_DIE) return;
+	if (state == TUBE_ENEMY_STATE_DIE)
+	{
+		if (!dead)
+			animation_set->at(PIRANHA_PLANT_ANI_DEAD)->Render(x, y);
+		return;
+	}
 
-	animation_set->at(0)->Render(x, y);
+	animation_set->at(PIRANHA_PLANT_ANI_UPDOWN)->Render(x, y);
 }

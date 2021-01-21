@@ -3,6 +3,7 @@
 
 CTubeEnemy::CTubeEnemy()
 {
+	dead = 0;
 	bullet = NULL;
 }
 
@@ -54,7 +55,11 @@ void CTubeEnemy::Firing()
 
 void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state == TUBE_ENEMY_STATE_DIE) return;
+	if (state == TUBE_ENEMY_STATE_DIE)
+	{
+		if ((DWORD)GetTickCount64() - dying_start > TUBE_ENEMY_DYING_TIME) dead = 1;
+		return;
+	}
 	UpdateFlying(dt);
 
 	CGameObject::Update(dt);

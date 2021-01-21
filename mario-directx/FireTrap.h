@@ -9,6 +9,7 @@
 #define FIRE_TRAP_ANI_FIRE_TOP_LEFT			5
 #define FIRE_TRAP_ANI_POINT_TOP_RIGHT		6
 #define FIRE_TRAP_ANI_FIRE_TOP_RIGHT		7
+#define FIRE_TRAP_ANI_DEAD					8
 
 class CFireTrap : public CTubeEnemy
 {

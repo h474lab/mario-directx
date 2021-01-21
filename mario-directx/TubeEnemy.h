@@ -16,6 +16,8 @@
 #define TUBE_ENEMY_DIRECTION_TOP_LEFT		2
 #define TUBE_ENEMY_DIRECTION_TOP_RIGHT		3
 
+#define TUBE_ENEMY_DYING_TIME	500
+
 class CTubeEnemy : public CGameObject
 {
 protected:
@@ -24,6 +26,9 @@ protected:
 	CGameObject* followingObject;
 	CBullet* bullet;
 	DWORD firing_start;
+
+	int dead;
+	DWORD dying_start;
 public:
 	CTubeEnemy();
 

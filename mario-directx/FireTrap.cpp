@@ -12,7 +12,12 @@ void CFireTrap::SetState(int state)
 {
 	CGameObject::SetState(state);
 
-	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE)
+	if (state == TUBE_ENEMY_STATE_DIE)
+	{
+		dying_start = (DWORD)GetTickCount64();
+		background = 1;
+	}
+	else if (state == TUBE_ENEMY_STATE_UNAVAILABLE)
 		background = 1;
 	else
 		background = 0;
@@ -25,7 +30,13 @@ void CFireTrap::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFireTrap::Render()
 {
-	if (state == TUBE_ENEMY_STATE_DIE || state == TUBE_ENEMY_STATE_UNAVAILABLE) return;
+	if (state == TUBE_ENEMY_STATE_DIE)
+	{
+		if (!dead)
+			animation_set->at(FIRE_TRAP_ANI_DEAD)->Render(x, y);
+		return;
+	}
+	if (state == TUBE_ENEMY_STATE_UNAVAILABLE) return;
 
 	int ani = -1;
 
