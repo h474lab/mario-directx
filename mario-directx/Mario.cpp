@@ -361,7 +361,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 		x += min_tx * dx + nx * 0.08f;
 		y += min_ty * dy + ny * 0.08f;
 
-		//if (nx != 0) vx = 0;
+		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
 		vector<LPCOLLISIONEVENT> floorList;
@@ -758,7 +758,7 @@ void CMario::SetKoopaPosition()
 		float l, t, r, b;
 		GetBoundingBox(l, t, r, b);
 
-		if (nx > 0)
+		if (keyFacing == MARIO_FACING_RIGHT)
 			holdenKoopa->SetPosition(r - 5, b - KOOPA_LYING_HEIGHT - 1);
 		else
 			holdenKoopa->SetPosition(l + 5 - KOOPA_LYING_WIDTH, b - KOOPA_LYING_HEIGHT - 1);
@@ -940,7 +940,7 @@ int CMario::RenderSmallMario()
 	{
 		if (vx == 0)
 		{
-			if (nx > 0)
+			if (keyFacing == MARIO_FACING_RIGHT)
 			{
 				if (jumping)
 				{
@@ -969,7 +969,7 @@ int CMario::RenderSmallMario()
 				}
 			}
 		}
-		else if (vx > 0)
+		else if (keyFacing == MARIO_FACING_RIGHT)
 		{
 			if (jumping)
 			{
@@ -994,7 +994,7 @@ int CMario::RenderSmallMario()
 				else res = MARIO_ANI_SMALL_RUNNING_FASTER_RIGHT;
 			}
 		}
-		else if (vx < 0)
+		else if (keyFacing == MARIO_FACING_LEFT)
 		{
 			if (jumping)
 			{
@@ -1052,7 +1052,7 @@ int CMario::RenderBigMario()
 	{
 		if (vx == 0)
 		{
-			if (nx > 0)
+			if (keyFacing == MARIO_FACING_RIGHT)
 			{
 				if (jumping)
 				{
@@ -1081,7 +1081,7 @@ int CMario::RenderBigMario()
 				}
 			}
 		}
-		else if (vx > 0)
+		else if (keyFacing == MARIO_FACING_RIGHT)
 		{
 			if (jumping)
 			{
@@ -1106,7 +1106,7 @@ int CMario::RenderBigMario()
 				else res = MARIO_ANI_BIG_RUNNING_FASTER_RIGHT;
 			}
 		}
-		else if (vx < 0)
+		else if (keyFacing == MARIO_FACING_LEFT)
 		{
 			if (jumping)
 			{
@@ -1200,7 +1200,7 @@ int CMario::RenderTailMario()
 	{
 		if (vx == 0)
 		{
-			if (nx > 0)
+			if (keyFacing == MARIO_FACING_RIGHT)
 			{
 				if (jumping)
 				{
@@ -1251,7 +1251,7 @@ int CMario::RenderTailMario()
 				}
 			}
 		}
-		else if (vx > 0)
+		else if (keyFacing == MARIO_FACING_RIGHT)
 		{
 			if (jumping)
 			{
@@ -1365,7 +1365,7 @@ int CMario::RenderFireMario()
 	{
 		if (vx == 0)
 		{
-			if (nx > 0)
+			if (keyFacing == MARIO_FACING_RIGHT)
 			{
 				if (jumping)
 				{
@@ -1394,7 +1394,7 @@ int CMario::RenderFireMario()
 				}
 			}
 		}
-		else if (vx > 0)
+		else if (keyFacing == MARIO_FACING_RIGHT)
 		{
 			if (jumping)
 			{
@@ -1419,7 +1419,7 @@ int CMario::RenderFireMario()
 				else res = MARIO_ANI_FIRE_RUNNING_FASTER_RIGHT;
 			}
 		}
-		else if (vx < 0)
+		else if (keyFacing == MARIO_FACING_LEFT)
 		{
 			if (jumping)
 			{
