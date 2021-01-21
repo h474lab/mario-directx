@@ -5,7 +5,7 @@
 
 CCoin::CCoin()
 {
-	background = 0;
+	background = 1;
 	SetState(COIN_STATE_AVAILABLE);
 
 	flyingSpeedY = COIN_FLYING_SPEED_Y;
@@ -44,8 +44,17 @@ void CCoin::SetAppearingState()
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
-	if (state == COIN_STATE_UNAVAILABLE) background = 1;
 	if (flyingDirection != FLYING_DIRECTION_NOMOVE) UpdateFlying(dt);
+	if (state == COIN_STATE_AVAILABLE)
+	{
+		CGame* game = CGame::GetInstance();
+		if (game->CheckPlayerOverlap(this))
+		{
+			Affect(COIN_AFFECT_TYPE_GAINED);
+			SetState(COIN_STATE_UNAVAILABLE);
+		}
+	}
+
 }
 
 void CCoin::Render()

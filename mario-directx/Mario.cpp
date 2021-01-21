@@ -411,18 +411,8 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 					jumpingUp = 0;
 				}
 			}
-
-			if (dynamic_cast<CCoin*>(e->obj))
-			{
-				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
-
-				coin->Affect(COIN_AFFECT_TYPE_GAINED);
-				if (coin->GetState() == COIN_STATE_AVAILABLE)
-					coin->SetState(COIN_STATE_UNAVAILABLE);
-
-				keepMoving = 1;
-			}
-			else if (dynamic_cast<CGoomba*>(e->obj))
+			
+			if (dynamic_cast<CGoomba*>(e->obj))
 			{
 				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 				if (e->ny < 0)
