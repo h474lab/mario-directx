@@ -29,7 +29,7 @@
 #define MARIO_FLYING_JUMP_SPEED_X	0.07f
 #define MARIO_FLY_JUMP_TIME			300
 
-#define MARIO_FLY_SPEED_Y			0.13f
+#define MARIO_FLY_SPEED_Y			0.12f
 #define MARIO_FLYING_SPEED_X		0.1f
 #define MARIO_FLY_TIME				500
 

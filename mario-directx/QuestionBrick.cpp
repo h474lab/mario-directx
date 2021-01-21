@@ -88,7 +88,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			float ml, mt, mr, mb;
 			mario->GetBoundingBox(ml, mt, mr, mb);
 
-			if (mario->GetMarioFacingDirection() == MARIO_FACING_LEFT)
+			if (abs((mr + ml) / 2 - l) > abs((mr + ml) / 2 - r))
 				mx = x + (r - l);
 			else
 				mx = x - (mr - ml);
