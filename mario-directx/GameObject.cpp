@@ -142,6 +142,14 @@ void CGameObject::FilterCollision(
 			if (!dynamic_cast<CMario*>(c->obj))
 				continue;
 		}
+		else if (CMario* mario = dynamic_cast<CMario*>(this))
+		{
+			if (CKoopa* koopa = dynamic_cast<CKoopa*>(c->obj))
+			{
+				if (koopa == mario->GetHoldenKoopa())
+					continue;
+			}
+		}
 
 		if (c->t < 1.0f /*min_tx*/ && c->nx != 0) {
 			if (dynamic_cast<CColoredBlock*>(c->obj))

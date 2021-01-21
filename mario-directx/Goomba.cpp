@@ -190,6 +190,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			else if (dynamic_cast<CKoopa*>(e->obj))
 			{
 				CKoopa *koopa = dynamic_cast<CKoopa*>(e->obj);
+				if (koopa->GetHoldenState())
+				{
+					HitGoomba(e->nx);
+					continue;
+				}
+
 				int koopaState = koopa->GetState();
 
 				if (koopaState == KOOPA_STATE_ROLLING_DOWN_LEFT || koopaState == KOOPA_STATE_ROLLING_DOWN_RIGHT ||

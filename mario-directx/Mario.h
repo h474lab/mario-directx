@@ -446,6 +446,7 @@ public:
 
 	void SetAllowHoldingKoopa(int value) { allowHodingKoopa = value; }
 	void setHoldenKoopa(CKoopa* koopa) { holdenKoopa = koopa; koopa->SetHolden(1); }
+	CKoopa* GetHoldenKoopa() { return holdenKoopa; }
 	void releaseKoopa();
 
 	void StartLevelTransform(int lastLevel, int newLevel);

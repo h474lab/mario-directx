@@ -453,6 +453,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 			else if (dynamic_cast<CKoopa*>(e->obj))
 			{
 				CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+
 				int koopaState = koopa->GetState();
 
 				if (e->ny != 0)
@@ -761,6 +762,8 @@ void CMario::SetKoopaPosition()
 			holdenKoopa->SetPosition(r - 5, b - KOOPA_LYING_HEIGHT - 1);
 		else
 			holdenKoopa->SetPosition(l + 5 - KOOPA_LYING_WIDTH, b - KOOPA_LYING_HEIGHT - 1);
+
+		holdenKoopa->SetSpeed(vx, vy);
 	}
 }
 
@@ -813,7 +816,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	float lastVx = vx, lastVy = vy;
 
 	UpdateMarioPassingLevel();
-	DebugOut(L"\n[Phase 1] vx=%f", vx);
 	CheckReleasingKoopa();
 	CheckAndSetMagicWings();
 
@@ -821,7 +823,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 	// Update Mario moving speed
 	UpdateMarioSpeed(dt);
-	DebugOut(L"\n[Phase 2] vx=%f", vx);
 	
 	// Check and update Mario special states
 	CheckMarioThrowingFireballs();
@@ -835,8 +836,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	SetKoopaPosition();
 
 	CleanUpCollisionEvents(coEvents);
-
-	DebugOut(L"\n[Phase 3] vx=%f", vx);
 }
 
 void CMario::SetMovingLeft(int skillButtonPressed)

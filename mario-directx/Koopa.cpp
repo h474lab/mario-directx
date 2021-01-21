@@ -31,9 +31,8 @@ bool CKoopa::UpdateKoopaParatroopaUpDown(DWORD dt)
 
 void CKoopa::CheckWakingKoopa()
 {
-	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP || isHolden)
+	if (state == KOOPA_STATE_LYING_DOWN || state == KOOPA_STATE_LYING_UP)
 	{
-		DebugOut(L"\nLyingTime: %d", (DWORD)GetTickCount64() - lying_start);
 		if ((DWORD)GetTickCount64() - lying_start > KOOPA_LYING_TIME)
 			WakeUp();
 	}
@@ -41,45 +40,49 @@ void CKoopa::CheckWakingKoopa()
 
 bool CKoopa::CheckKoopaUpdatable()
 {
-	if (isHolden || state == KOOPA_STATE_UNAVAILABLE) return false;
+	if (state == KOOPA_STATE_UNAVAILABLE) return false;
 	return true;
 }
 
 void CKoopa::UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
+	if (isHolden)
+		CGameObject::Update(dt, coObjects);
+	else
 	{
-		if (nx > 0)
-			SetState(KOOPA_STATE_JUMPING_RIGHT);
-		else
-			SetState(KOOPA_STATE_JUMPING_LEFT);
-	}
-
-	if (flying == 1)
-	{
-		if (GetTickCount64() - flying_start > KOOPA_FLYING_TIME || vy == 0.0f)
+		if (level == KOOPA_LEVEL_PARATROOPA && !jumping)
 		{
-			flying = 0;
-			vx = 0.0f;
+			if (nx > 0)
+				SetState(KOOPA_STATE_JUMPING_RIGHT);
+			else
+				SetState(KOOPA_STATE_JUMPING_LEFT);
 		}
-	}
 
-	vy += KOOPA_GRAVITY * dt;
+		if (flying == 1)
+		{
+			if (GetTickCount64() - flying_start > KOOPA_FLYING_TIME || vy == 0.0f)
+			{
+				flying = 0;
+				vx = 0.0f;
+			}
+		}
 
-	CGameObject::Update(dt, coObjects);
+		vy += KOOPA_GRAVITY * dt;
 
-	if (state == KOOPA_STATE_FLYING_OUT)
-	{
-		x += dx;
-		y += dy;
-		background = 1;
-		return;
+		CGameObject::Update(dt, coObjects);
+
+		if (state == KOOPA_STATE_FLYING_OUT)
+		{
+			x += dx;
+			y += dy;
+			background = 1;
+			return;
+		}
 	}
 }
 
 void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT> coEvents)
 {
-	DebugOut(L"\nKoopa position: %f %f", x, y);
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
@@ -91,8 +94,11 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 	if (coEvents.size() == 0)
 	{
 		jumping = 1;
-		x += dx;
-		y += dy;
+		if (!isHolden)
+		{
+			x += dx;
+			y += dy;
+		}
 	}
 	else
 	{
@@ -158,7 +164,8 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
-						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT ||
+						isHolden)
 					{
 						goomba->HitGoomba(nx);
 						SetState(state);
@@ -168,12 +175,18 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 					else if (state == KOOPA_STATE_WALKING_LEFT)
 						SetState(state);
 				}
-				else if (dynamic_cast<CMario*>(e->obj))
+				else if (dynamic_cast<CMario*>(e->obj) && !isHolden)
 				{
 					SetState(state);
 				}
 				else if (dynamic_cast<CGroundBricks*>(e->obj) || dynamic_cast<CHUD*>(e->obj))
 				{
+					if (isHolden)
+					{
+						KickKoopaOut(e->nx);
+						return;
+					}
+
 					float brick_x, brick_y;
 					e->obj->GetPosition(brick_x, brick_y);
 
@@ -184,10 +197,22 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				}
 				else if (dynamic_cast<CTube*>(e->obj))
 				{
+					if (isHolden)
+					{
+						KickKoopaOut(e->nx);
+						return;
+					}
+
 					ChangeDirection();
 				}
 				else if (dynamic_cast<CQuestionBrick*>(e->obj) && (kb > t))
 				{
+					if (isHolden)
+					{
+						KickKoopaOut(e->nx);
+						return;
+					}
+
 					CQuestionBrick* questionbrick = dynamic_cast<CQuestionBrick*>(e->obj);
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
@@ -196,6 +221,12 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				}
 				else if (dynamic_cast<CSquareBrick*>(e->obj) && (kb > t))
 				{
+					if (isHolden)
+					{
+						KickKoopaOut(e->nx);
+						return;
+					}
+
 					CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
@@ -212,22 +243,25 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 			}
 		}
 
-		CGameObject::Update(dt);
-
-		float l, t, r, b;
-		GetBoundingBox(l, t, r, b);
-		float width = r - l;
-
-		if ((state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT) && applyEdges)
+		if (!isHolden)
 		{
-			if (x < leftEdge) SetState(KOOPA_STATE_WALKING_RIGHT);
-			else if (x + width > rightEdge) SetState(KOOPA_STATE_WALKING_LEFT);
-		}
-		x += dx;
-		y += dy;
+			CGameObject::Update(dt);
 
-		int dir = CanBeHitByTail();
-		if (dir) HitKoopa(dir);
+			float l, t, r, b;
+			GetBoundingBox(l, t, r, b);
+			float width = r - l;
+
+			if ((state == KOOPA_STATE_WALKING_LEFT || state == KOOPA_STATE_WALKING_RIGHT) && applyEdges)
+			{
+				if (x < leftEdge) SetState(KOOPA_STATE_WALKING_RIGHT);
+				else if (x + width > rightEdge) SetState(KOOPA_STATE_WALKING_LEFT);
+			}
+			x += dx;
+			y += dy;
+
+			int dir = CanBeHitByTail();
+			if (dir) HitKoopa(dir);
+		}
 	}
 }
 
@@ -331,6 +365,9 @@ void CKoopa::SetState(int state)
 		vx = KOOPA_UP_DOWN_SPEED_X;
 		vy = KOOPA_UP_DOWN_SPEED_Y;
 		nx = -1;
+		break;
+	case KOOPA_STATE_FLYING_OUT:
+		background = 1;
 		break;
 	}
 }

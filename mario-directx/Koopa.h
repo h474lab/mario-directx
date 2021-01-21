@@ -104,7 +104,8 @@ public:
 	void LevelDown();
 
 	virtual void SetState(int state);
-	void SetHolden(int holdenState) { isHolden = holdenState; background = isHolden; }
+	void SetHolden(int holdenState) { isHolden = holdenState; }
+	int GetHoldenState() { return isHolden; }
 
 	void WakeUp();
 
