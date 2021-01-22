@@ -286,6 +286,20 @@ LUIGI (BIG)
 4053	265	306	273	314	90
 4054	275	306	283	315	90
 
+# jump max power
+# small left
+4060	175	209	191	225	0
+# small right
+4061	215	209	231	225	0
+# big left
+4062	54	364	73	390	0
+# big right
+4063	333	364	352	390	0
+# fire left
+4064	54	804	73	830	0
+# fire right
+4065	333	804	352	830	0
+
 # jump out
 9001	425	122	448	145	90
 # look up

@@ -115,17 +115,37 @@ void CMario::UpdateMarioJumpingState()
 	if (jumpingUp && _lastVy <= 0.0f) vy = -MARIO_JUMP_SPEED_Y;
 	if (fly == MARIO_FLYING_STATE_NONE)
 	{
-		if (flyJump && _lastVy >= 0.0f)
+		if (level == MARIO_LEVEL_TAIL)
 		{
-			if (!jumping)
-				flyJump = 0;
-			vy -= MARIO_FLY_JUMP_SPEED_Y;
-		}
+			if (flyJump && _lastVy >= 0.0f)
+			{
+				if (!jumping)
+					flyJump = 0;
+				vy -= MARIO_FLY_JUMP_SPEED_Y;
+			}
 
-		if (flyJump && (DWORD)GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
+			if (flyJump && (DWORD)GetTickCount64() - flyJump_start > MARIO_FLY_JUMP_TIME)
+			{
+				flyJump = 0;
+				flyJump_start = 0;
+			}
+		}
+		else
 		{
-			flyJump = 0;
-			flyJump_start = 0;
+			if (jumpMaxPower)
+			{
+				if (jumpMaxPower == MARIO_JUMP_MAX_POWER_UP)
+					vy -= MARIO_JUMP_MAX_POWER_SPEED_Y;
+				
+				if (jumpMaxPower == MARIO_JUMP_MAX_POWER_UP &&
+					(DWORD)GetTickCount64() - jump_max_power_start > MARIO_JUMP_MAX_POWER_TIME)
+				{
+					jump_max_power_start = 0;
+					jumpMaxPower = MARIO_JUMP_MAX_POWER_DOWN;
+				}
+
+				if (!jumping) jumpMaxPower = MARIO_JUMP_MAX_POWER_NONE;
+			}
 		}
 	}
 	else if (fly == MARIO_FLYING_STATE_UP)
@@ -953,6 +973,7 @@ int CMario::RenderSmallMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_RIGHT;
+					else if (jumpMaxPower) res = MARIO_SMALL_JUMP_MAX_POWER_RIGHT;
 					else res = MARIO_ANI_SMALL_JUMPING_RIGHT;
 				}
 				else if (kicking) res = MARIO_ANI_SMALL_KICKING_RIGHT;
@@ -967,6 +988,7 @@ int CMario::RenderSmallMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_LEFT;
+					else if (jumpMaxPower) res = MARIO_SMALL_JUMP_MAX_POWER_LEFT;
 					else res = MARIO_ANI_SMALL_JUMPING_LEFT;
 				}
 				else if (kicking) res = MARIO_ANI_SMALL_KICKING_LEFT;
@@ -982,6 +1004,7 @@ int CMario::RenderSmallMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_RIGHT;
+				else if (jumpMaxPower) res = MARIO_SMALL_JUMP_MAX_POWER_RIGHT;
 				else res = MARIO_ANI_SMALL_JUMPING_RIGHT;
 
 			}
@@ -1007,6 +1030,7 @@ int CMario::RenderSmallMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_SMALL_HOLD_KOOPA_JUMPING_LEFT;
+				else if (jumpMaxPower) res = MARIO_SMALL_JUMP_MAX_POWER_LEFT;
 				else res = MARIO_ANI_SMALL_JUMPING_LEFT;
 
 			}
@@ -1065,6 +1089,7 @@ int CMario::RenderBigMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_RIGHT;
+					else if (jumpMaxPower) res = MARIO_BIG_JUMP_MAX_POWER_RIGHT;
 					else res = MARIO_ANI_BIG_JUMPING_RIGHT;
 				}
 				else if (kicking) res = MARIO_ANI_BIG_KICKING_RIGHT;
@@ -1079,6 +1104,7 @@ int CMario::RenderBigMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_LEFT;
+					else if (jumpMaxPower) res = MARIO_BIG_JUMP_MAX_POWER_LEFT;
 					else res = MARIO_ANI_BIG_JUMPING_LEFT;
 				}
 				else if (kicking) res = MARIO_ANI_BIG_KICKING_LEFT;
@@ -1094,6 +1120,7 @@ int CMario::RenderBigMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_RIGHT;
+				else if (jumpMaxPower) res = MARIO_BIG_JUMP_MAX_POWER_RIGHT;
 				else res = MARIO_ANI_BIG_JUMPING_RIGHT;
 
 			}
@@ -1119,6 +1146,7 @@ int CMario::RenderBigMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_BIG_HOLD_KOOPA_JUMPING_LEFT;
+				else if (jumpMaxPower) res = MARIO_BIG_JUMP_MAX_POWER_LEFT;
 				else res = MARIO_ANI_BIG_JUMPING_LEFT;
 
 			}
@@ -1378,6 +1406,7 @@ int CMario::RenderFireMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_RIGHT;
+					else if (jumpMaxPower) res = MARIO_FIRE_JUMP_MAX_POWER_RIGHT;
 					else res = MARIO_ANI_FIRE_JUMPING_RIGHT;
 				}
 				else if (kicking) res = MARIO_ANI_FIRE_KICKING_RIGHT;
@@ -1392,6 +1421,7 @@ int CMario::RenderFireMario()
 				if (jumping)
 				{
 					if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_LEFT;
+					else if (jumpMaxPower) res = MARIO_FIRE_JUMP_MAX_POWER_LEFT;
 					else res = MARIO_ANI_FIRE_JUMPING_LEFT;
 				}
 				else if (kicking) res = MARIO_ANI_FIRE_KICKING_LEFT;
@@ -1407,6 +1437,7 @@ int CMario::RenderFireMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_RIGHT;
+				else if (jumpMaxPower) res = MARIO_FIRE_JUMP_MAX_POWER_RIGHT;
 				else res = MARIO_ANI_FIRE_JUMPING_RIGHT;
 
 			}
@@ -1432,6 +1463,7 @@ int CMario::RenderFireMario()
 			if (jumping)
 			{
 				if (holdenKoopa) res = MARIO_ANI_FIRE_HOLD_KOOPA_JUMPING_LEFT;
+				else if (jumpMaxPower) res = MARIO_FIRE_JUMP_MAX_POWER_LEFT;
 				else res = MARIO_ANI_FIRE_JUMPING_LEFT;
 
 			}
@@ -1622,6 +1654,15 @@ void CMario::FlyJump()
 	{
 		flyJump_start = (DWORD)GetTickCount64();
 		flyJump = 1;
+	}
+}
+
+void CMario::JumpMaxPower()
+{
+	if (level != MARIO_LEVEL_TAIL && powerLevel >= MAXIMUM_POWER_LEVEL && !jumpMaxPower)
+	{
+		jump_max_power_start = (DWORD)GetTickCount64();
+		jumpMaxPower = MARIO_JUMP_MAX_POWER_UP;
 	}
 }
 
@@ -1911,12 +1952,19 @@ void CMario::SetState(int state)
 			running = 0;
 			if (powerLevel >= MAXIMUM_POWER_LEVEL)
 			{
-				jumping = 1;
-				FlyJump();
-				if (fly != MARIO_FLYING_STATE_UP)
+				if (level == MARIO_LEVEL_TAIL)
 				{
-					StartSpeedUp();
-					fly = MARIO_FLYING_STATE_UP;
+					jumping = 1;
+					FlyJump();
+					if (fly != MARIO_FLYING_STATE_UP)
+					{
+						StartSpeedUp();
+						fly = MARIO_FLYING_STATE_UP;
+					}
+				}
+				else
+				{
+					JumpMaxPower();
 				}
 			}
 			stateCanBeChanged = 1;

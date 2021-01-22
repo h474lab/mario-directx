@@ -790,6 +790,10 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_L:
 		mario->SetPosition(mario_x + 1000.0f, mario_y - 50.0f); // take Mario's position away! 
 		break;
+	case DIK_1:
+		CCamera::GetInstance()->SetPosition(1732.0f, 0.0f);
+		mario->SetPosition(1732.0f, 0.0f);
+		break;
 	}
 }
 

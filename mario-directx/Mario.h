@@ -4,7 +4,7 @@
 #include "Utils.h"
 #include "Fireball.h"
 
-#define MARIO_ACCELERATION_X		0.00015f
+#define MARIO_ACCELERATION_X		0.0005f
 #define MARIO_ACCELERATION_POSITIVE	1
 #define MARIO_ACCELERATION_NEGATIVE	-1
 
@@ -33,6 +33,14 @@
 #define MARIO_FLY_SPEED_Y			0.12f
 #define MARIO_FLYING_SPEED_X		0.1f
 #define MARIO_FLY_TIME				500
+
+#define MARIO_JUMP_MAX_POWER_SPEED_Y	0.03f
+#define MARIO_JUMP_MAX_POWER_SPEED_X	0.14f
+#define MARIO_JUMP_MAX_POWER_TIME		300
+
+#define MARIO_JUMP_MAX_POWER_NONE	0
+#define MARIO_JUMP_MAX_POWER_UP		1
+#define MARIO_JUMP_MAX_POWER_DOWN	2
 
 #define MARIO_SPINNING_SPEED_X		0.1f
 
@@ -232,6 +240,14 @@
 
 #define MARIO_ANI_TAIL_TRANSFORM			140
 
+// Mario jumps max power
+#define MARIO_SMALL_JUMP_MAX_POWER_LEFT		141
+#define MARIO_SMALL_JUMP_MAX_POWER_RIGHT	142
+#define MARIO_BIG_JUMP_MAX_POWER_LEFT		143
+#define MARIO_BIG_JUMP_MAX_POWER_RIGHT		144
+#define MARIO_FIRE_JUMP_MAX_POWER_LEFT		145
+#define MARIO_FIRE_JUMP_MAX_POWER_RIGHT		146
+
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_TAIL	3
@@ -336,6 +352,9 @@ class CMario : public CGameObject
 	// "Jumping Up" is the state that Mario can jump higher (or further) than normal jumping state
 	int jumpingUp;
 	float lastStandingHeight;
+
+	int jumpMaxPower;
+	DWORD jump_max_power_start;
 
 	int flyJump;
 	DWORD flyJump_start;
@@ -445,6 +464,7 @@ public:
 	void SetJumpingUp(int jumpingUp);
 	int GetJumpingUp() { return jumpingUp; }
 	void FlyJump();
+	void JumpMaxPower();
 
 	void AddFireball(CFireball* fireball) { this->fireballs.push_back(fireball); }
 	void SetThrowing();

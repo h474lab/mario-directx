@@ -289,6 +289,20 @@
 #switch scene fire
 263	2040	100
 
+# jump max power
+# small left
+270	4060	100
+# small right
+271	4061	100
+# big left
+272	4062	100
+# big right
+273	4063	100
+# fire left
+274	4064	100
+# fire right
+275	4065	100
+
 # jump out
 901	9001	100
 # look up
