@@ -458,6 +458,7 @@ public:
 	int GetLevelTransform() { return levelTransform; }
 	void LevelUp();
 	void LevelDown();
+	void TurnIntoFire();
 	void SetState(int state);
 	void SetLevel(int l);
 	int GetLevel() { return level; }

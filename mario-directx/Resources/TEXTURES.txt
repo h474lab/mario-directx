@@ -24,3 +24,4 @@
 230	Resources\Textures\enemies-6.png	64	144	192
 240	Resources\Textures\goal.png	0	183	239
 250	Resources\Textures\tileset1_4.png	156	252	240
+260	Resources\Textures\misc_2.png	166	185	255

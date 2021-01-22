@@ -29,6 +29,7 @@
 #include "MapGate.h"
 #include "FloatingBlock.h"
 #include "BoomerangBro.h"
+#include "FireFlower.h"
 
 using namespace std;
 
@@ -261,6 +262,13 @@ void CPlayScene::ParseObjects(string line)
 					ani_set = atoi(tokens[i + 1].c_str());
 					includedObj = new CSwitchBlock();
 					((CSwitchBlock*)includedObj)->SetGridId(gridId);
+					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
+					brick->AddNewObject(includedObj);
+					i += 2;
+					break;
+				case OBJECT_TYPE_FIRE_FLOWER:
+					ani_set = atoi(tokens[i + 1].c_str());
+					includedObj = new CFireFlower();
 					includedObj->SetAnimationSet(animation_sets->Get(ani_set));
 					brick->AddNewObject(includedObj);
 					i += 2;

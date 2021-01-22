@@ -208,6 +208,9 @@
     <Filter Include="Game Manager\Scence\PlayScene\PlatformSet">
       <UniqueIdentifier>{b04f0a9f-a278-4b4f-99d8-874dbbb9d8e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\FireFlower">
+      <UniqueIdentifier>{513247de-e2df-4602-9281-2d8775bfdfdb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -408,6 +411,9 @@
     <ClCompile Include="PlatformSet.cpp">
       <Filter>Game Manager\Scence\PlayScene\PlatformSet</Filter>
     </ClCompile>
+    <ClCompile Include="FireFlower.cpp">
+      <Filter>Objects\FireFlower</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -607,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="PlatformSet.h">
       <Filter>Game Manager\Scence\PlayScene\PlatformSet</Filter>
+    </ClInclude>
+    <ClInclude Include="FireFlower.h">
+      <Filter>Objects\FireFlower</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

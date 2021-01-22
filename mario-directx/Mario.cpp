@@ -27,6 +27,7 @@
 #include "FloatingBlock.h"
 #include "Boomerang.h"
 #include "BoomerangBro.h"
+#include "FireFlower.h"
 
 bool CMario::UpdateDyingDelay()
 {
@@ -604,6 +605,12 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 				mushroom->Gain(this);
 
+				keepMoving = 1;
+			}
+			else if (CFireFlower* fireFlower = dynamic_cast<CFireFlower*>(e->obj))
+			{
+				fireFlower->SetState(FIRE_FLOWER_STATE_UNAVAILABLE);
+				TurnIntoFire();
 				keepMoving = 1;
 			}
 			else if (dynamic_cast<CLeaf*>(e->obj))
@@ -1738,6 +1745,12 @@ void CMario::LevelDown()
 		DebugOut(L"\nDIE");
 		SetState(MARIO_STATE_DIE);
 	}
+}
+
+void CMario::TurnIntoFire()
+{
+	if (level != MARIO_LEVEL_FIRE)
+		StartLevelTransform(level, MARIO_LEVEL_FIRE);
 }
 
 void CMario::SetState(int state)
