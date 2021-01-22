@@ -1764,6 +1764,8 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_WALKING_RIGHT:
 		background = 0;
+		if (isInIntro) keyFacing = MARIO_FACING_RIGHT;
+
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			if (this->state != MARIO_STATE_WALKING_RIGHT) StartSpeedUp();
@@ -1786,6 +1788,8 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_WALKING_LEFT:
 		background = 0;
+		if (isInIntro) keyFacing = MARIO_FACING_LEFT;
+
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			if (this->state != MARIO_STATE_WALKING_LEFT) StartSpeedUp();
@@ -1808,6 +1812,8 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		background = 0;
+		if (isInIntro) keyFacing = MARIO_FACING_RIGHT;
+
 		if (((last_nx > 0 || vx == 0) && !turning) || jumping)
 		{
 			if (this->state != MARIO_STATE_RUNNING_RIGHT) StartSpeedUp();
@@ -1832,6 +1838,8 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		background = 0;
+		if (isInIntro) keyFacing = MARIO_FACING_LEFT;
+
 		if (((last_nx < 0 || vx == 0) && !turning) || jumping)
 		{
 			if (this->state != MARIO_STATE_RUNNING_LEFT) StartSpeedUp();
@@ -1925,6 +1933,7 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_IDLE_LEFT:
 		background = 0;
+		keyFacing = MARIO_FACING_LEFT;
 		running = 0;
 		SetSittingState(0);
 		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
@@ -2259,6 +2268,8 @@ void CMario::StartSwitchingZone(int direction)
 
 float CMario::GetMarioExpectedSpeedX(float limit_speed_x)
 {
+	if (isInIntro) return limit_speed_x;
+
 	float result = 0.0f;
 	DWORD t = (DWORD)GetTickCount64() - speed_up_start;	// Time range since Mario starting speed-up
 
