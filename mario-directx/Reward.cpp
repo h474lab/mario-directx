@@ -72,7 +72,7 @@ void CReward::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	y += dy;
 
 	// switching type after an amount of time
-	if ((DWORD)GetTickCount64() - switching_start > REWARD_DELAY_SWICHING_TYPE_TIME)
+	if (state != REWARD_STATE_ACQUIRED && (DWORD)GetTickCount64() - switching_start > REWARD_DELAY_SWICHING_TYPE_TIME)
 	{
 		type = GetNextRewardType();
 		switching_start = (DWORD)GetTickCount64();
