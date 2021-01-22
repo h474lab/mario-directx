@@ -26,7 +26,7 @@ bool CPlatforms::CompareLeft(const LPPLATFORM& first, LPPLATFORM& second)
 	return (first->GetLeft() < second->GetLeft());
 }
 
-void CPlatforms::MergeOverlappedPlatforms(int index)
+void CPlatforms::MergeOverlappedPlatforms(unsigned int index)
 {
 	int leftEdgeCheck = 0, rightEdgeCheck = 0;
 
@@ -86,7 +86,7 @@ void CPlatforms::Add(float l, float r)
 	}
 	else
 	{
-		for (int i = 0; i < platforms.size(); i++)
+		for (unsigned int i = 0; i < platforms.size(); i++)
 		{
 			if (i == platforms.size() - 1 ||
 				(platforms[i]->GetLeft() <= l &&
@@ -109,7 +109,7 @@ void CPlatforms::Remove(float l, float r)
 	if (platforms.empty() || l > r) return;
 
 	// Split / remove with appropriate range
-	for (int i = 0; i < platforms.size(); i++)
+	for (unsigned int i = 0; i < platforms.size(); i++)
 		if ((platforms[i]->GetLeft() <= l && platforms[i]->GetRight() >= l) ||
 			(platforms[i]->GetLeft() <= r && platforms[i]->GetRight() >= r) ||
 			(platforms[i]->GetLeft() >= l && platforms[i]->GetRight() <= r))

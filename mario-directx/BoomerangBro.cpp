@@ -113,12 +113,12 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->nx != 1.0f)
 		{
-			this->nx = 1.0f;
+			this->nx = 1;
 			SetPosition(x, y);
 			SetState(BOOMERANG_BRO_STATE_MOVING_FORWARD);
 		}
 
-		this->nx = 1.0f;
+		this->nx = 1;
 		leftBound = ix;
 		rightBound = ix + BOOMERANG_BRO_WALKING_DISTANCE;
 	}
@@ -126,12 +126,12 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (this->nx != -1.0f)
 		{
-			this->nx = -1.0f;
+			this->nx = -1;
 			SetPosition(x, y);
 			SetState(BOOMERANG_BRO_STATE_MOVING_FORWARD);
 		}
 
-		this->nx = -1.0f;
+		this->nx = -1;
 		leftBound = ix - BOOMERANG_BRO_WALKING_DISTANCE;
 		rightBound = ix;
 	}

@@ -177,7 +177,7 @@ void CMario::UpdateRunningState()
 	if (running)
 	{
 		// set Power Level for displaying and identify flying ability of Mario
-		powerLevel = ((float)runningTime / MARIO_RUNNING_TIME) * MAXIMUM_POWER_LEVEL;
+		powerLevel = (int)(((float)runningTime / MARIO_RUNNING_TIME) * MAXIMUM_POWER_LEVEL);
 		powerLevel = (powerLevel > MAXIMUM_POWER_LEVEL) ? MAXIMUM_POWER_LEVEL : (int)powerLevel;
 	}
 	else if (fly != MARIO_FLYING_STATE_UP) ReducePowerLevel();

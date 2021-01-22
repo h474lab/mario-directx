@@ -31,7 +31,7 @@ class CPlatforms
 	vector<LPPLATFORM> platforms;
 
 	static bool CompareLeft(const LPPLATFORM& first, LPPLATFORM& second);
-	void MergeOverlappedPlatforms(int index);
+	void MergeOverlappedPlatforms(unsigned int index);
 	void SplitPlatformWithRange(int index, float end_1, float begin_2);
 public:
 	CPlatforms(float t) { top = t; }

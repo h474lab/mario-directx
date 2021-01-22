@@ -370,7 +370,7 @@ void GetNewObjectDefinition(std::string line)
         objectDefinition.push_back(to_string(ani_set));
 
         // Push remaining properties into vector
-        for (int i = 4; i < tokens.size(); i++)
+        for (unsigned int i = 4; i < tokens.size(); i++)
             objectDefinition.push_back(tokens[i]);
 
         // Add new object definition to object list
@@ -386,7 +386,7 @@ void GetNewObjectDefinition(std::string line)
 std::string VectorToString(std::vector<std::string> v)
 {
     std::string result = "";
-    for (int i = 0; i < v.size(); i++)
+    for (unsigned int i = 0; i < v.size(); i++)
     {
         // when str is not the first element, add space before it
         if (i > 0) result += "\t";

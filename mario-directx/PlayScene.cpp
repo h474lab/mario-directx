@@ -69,8 +69,8 @@ void CPlayScene::ParseObjects(string line)
 	float y = (float)atof(tokens[2].c_str());
 
 	// Get grid row and column
-	float grid_column = atoi(tokens[3].c_str());
-	float grid_row = atoi(tokens[4].c_str());
+	int grid_column = atoi(tokens[3].c_str());
+	int grid_row = atoi(tokens[4].c_str());
 
 	// Get animation set id
 	int ani_set_id = atoi(tokens[5].c_str());

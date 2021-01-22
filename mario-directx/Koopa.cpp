@@ -183,7 +183,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				{
 					if (isHolden)
 					{
-						KickKoopaOut(e->nx);
+						KickKoopaOut((int)e->nx);
 						return;
 					}
 
@@ -199,7 +199,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				{
 					if (isHolden)
 					{
-						KickKoopaOut(e->nx);
+						KickKoopaOut((int)e->nx);
 						return;
 					}
 
@@ -209,7 +209,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				{
 					if (isHolden)
 					{
-						KickKoopaOut(e->nx);
+						KickKoopaOut((int)e->nx);
 						return;
 					}
 
@@ -223,7 +223,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 				{
 					if (isHolden)
 					{
-						KickKoopaOut(e->nx);
+						KickKoopaOut((int)e->nx);
 						return;
 					}
 
@@ -238,7 +238,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 					if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_UP_LEFT ||
 						state == KOOPA_STATE_ROLLING_DOWN_RIGHT || state == KOOPA_STATE_ROLLING_UP_RIGHT ||
 						isHolden)
-						koopa->KickKoopaOut(nx);
+						koopa->KickKoopaOut((int)nx);
 				}
 				else if (dynamic_cast<CBeetle*>(e->obj))
 				{
