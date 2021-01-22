@@ -58,8 +58,8 @@ void CMario::UpdateMarioPassingLevel()
 	// When Mario has passed current level, let him run to the right
 	if (passedTheLevel)
 	{
-		if (vx < 0.0f) SetState(MARIO_STATE_IDLE);
-		else SetState(MARIO_STATE_RUNNING_RIGHT);
+		SetState(MARIO_STATE_RUNNING_RIGHT);
+		keyFacing = MARIO_FACING_RIGHT;
 	}
 }
 
@@ -1813,7 +1813,10 @@ void CMario::SetState(int state)
 			if (this->state != MARIO_STATE_RUNNING_RIGHT) StartSpeedUp();
 
 			running = 1;
-			vx = GetMarioExpectedSpeedX(MARIO_RUNNING_SPEED);
+			if (passedTheLevel)
+				vx = MARIO_RUNNING_AFTERSCENE_SPEED;
+			else
+				vx = GetMarioExpectedSpeedX(MARIO_RUNNING_SPEED);
 			nx = 1;
 			stateCanBeChanged = 1;
 		}
