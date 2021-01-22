@@ -195,7 +195,7 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 					else if (jumping) ChangeDirection();
 					else SetState(state);
 				}
-				else if (dynamic_cast<CTube*>(e->obj))
+				else if (dynamic_cast<CTube*>(e->obj) || dynamic_cast<CBrick*>(e->obj))
 				{
 					if (isHolden)
 					{

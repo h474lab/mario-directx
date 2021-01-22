@@ -10,6 +10,7 @@
 #include "ColoredBlock.h"
 #include "SquareBrick.h"
 #include "Game.h"
+#include "BoomerangBro.h"
 
 CFireball::CFireball()
 {
@@ -139,9 +140,16 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(FIREBALL_STATE_ON_HOLD);
 				koopa->KickKoopaOut(-this->nx);
 			}
-			else if (!dynamic_cast<CGroundBricks*>(event->obj) && !dynamic_cast<CColoredBlock*>(event->obj) && !dynamic_cast<CSquareBrick*>(event->obj))
+			else if (!dynamic_cast<CGroundBricks*>(event->obj) &&
+				!dynamic_cast<CColoredBlock*>(event->obj) &&
+				!dynamic_cast<CSquareBrick*>(event->obj))
 			{
-				SetState(FIREBALL_STATE_ON_HOLD);
+				if (nx != 0)
+					SetState(FIREBALL_STATE_ON_HOLD);
+			}
+			else if (CBoomerangBro* boomerangBro = dynamic_cast<CBoomerangBro*>(event->obj))
+			{
+				boomerangBro->SetState(BOOMERANG_BRO_STATE_DYING);
 			}
 		}
 
