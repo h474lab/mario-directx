@@ -37,6 +37,27 @@ void CFloatingBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		vx = FLOAT_BLOCK_FLOATING_SPEED_X;
 		vy = FLOAT_BLOCK_FLOATING_SPEED_Y;
+
+		// Float block pushes player
+		CGame* game = CGame::GetInstance();
+		if (game->CheckPlayerOverlap(this))
+		{
+			CMario* mario = game->GetPlayer();
+
+			if (mario->GetFloor() != this)
+			{
+				float l, t, r, b;
+				GetBoundingBox(l, t, r, b);
+
+				float ml, mt, mr, mb;
+				mario->GetBoundingBox(ml, mt, mr, mb);
+
+				float mx, my;
+				mario->GetPosition(mx, my);
+
+				mario->SetPosition(l - (mr - mx), my);
+			}
+		}
 	}
 	else if (state == FLOATING_BLOCK_STATE_DROP)
 	{
