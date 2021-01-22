@@ -676,13 +676,24 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 		}
 
 		float min_t = 1.0f;
+		LPCOLLISIONEVENT min_event = NULL;
 		// Set the nearest object to Mario as floor
 		for (LPCOLLISIONEVENT event : floorList)
 		{
 			if (event->t < min_t)
 			{
+				if (min_event)
+				{
+					if (dynamic_cast<CFloatingBlock*>(event->obj) &&
+						(dynamic_cast<CBrick*>(min_event->obj) ||
+							dynamic_cast<CQuestionBrick*>(min_event->obj) ||
+							dynamic_cast<CSquareBrick*>(min_event->obj)))
+						continue;
+				}
+
 				floor = event->obj;
 				min_t = event->t;
+				min_event = event;
 			}
 		}
 	}
