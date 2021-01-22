@@ -88,6 +88,14 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	x += dx;
 	y += dy;
+
+	CGame* game = CGame::GetInstance();
+	if (game->CheckPlayerOverlap(this))
+	{
+		CMario* mario = game->GetPlayer();
+		if (!mario->GetUntouchable())
+			mario->LevelDown();
+	}
 }
 
 void CBoomerang::Render()
