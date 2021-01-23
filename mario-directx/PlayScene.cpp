@@ -768,6 +768,7 @@ void CPlaySceneKeyHandler::OnKeyDown(int KeyCode)
 			mario->FlyJump();
 		else
 			mario->SetJumpingUp(1);
+		mario->SetFlyClicking();
 		break;
 	case DIK_A:
 		mario->StartSpinning();

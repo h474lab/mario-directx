@@ -169,7 +169,8 @@ void CMario::UpdateMarioJumpingState()
 			vy = (float)-MARIO_FLY_SPEED_Y;
 		}
 
-		if (GetTickCount64() - flyJump_start > MARIO_FLY_TIME)
+		if ((DWORD)GetTickCount64() - flyJump_start > MARIO_FLY_TIME ||
+			(DWORD)GetTickCount64() - fly_clicking_start > MARIO_FLY_CLICKING_TIME)
 		{
 			SetJumpingUp(0);
 			flyJump = 0;

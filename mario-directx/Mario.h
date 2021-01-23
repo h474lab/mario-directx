@@ -33,6 +33,7 @@
 #define MARIO_FLY_SPEED_Y			0.12f
 #define MARIO_FLYING_SPEED_X		0.1f
 #define MARIO_FLY_TIME				500
+#define MARIO_FLY_CLICKING_TIME		800
 
 #define MARIO_JUMP_MAX_POWER_SPEED_Y	0.03f
 #define MARIO_JUMP_MAX_POWER_SPEED_X	0.14f
@@ -367,6 +368,7 @@ class CMario : public CGameObject
 	int flyJump;
 	DWORD flyJump_start;
 	int fly;
+	DWORD fly_clicking_start;
 
 	int sitting;
 
@@ -475,7 +477,9 @@ public:
 	int RenderLuigi();
 	
 	void SetJumping(int jumpingState) { jumping = jumpingState; }
+	void SetFlyClicking() { fly_clicking_start = (DWORD)GetTickCount64(); }
 	int IsJumping() { return jumping; }
+
 	void SetSittingState(int state);
 	void SetJumpingUp(int jumpingUp);
 	int GetJumpingUp() { return jumpingUp; }
