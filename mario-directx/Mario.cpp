@@ -801,10 +801,11 @@ void CMario::SetKoopaPosition()
 		float l, t, r, b;
 		GetBoundingBox(l, t, r, b);
 
+		DebugOut(L"\nFacing: %d", keyFacing);
 		if (keyFacing == MARIO_FACING_RIGHT)
 			holdenKoopa->SetPosition(r + HOLDEN_KOOPA_OFFSET_RIGHT_X, b + HOLDEN_KOOPA_OFFSET_RIGHT_Y);
 		else
-			holdenKoopa->SetPosition(l + HOLDEN_KOOPA_OFFSET_RIGHT_X, b + HOLDEN_KOOPA_OFFSET_RIGHT_Y);
+			holdenKoopa->SetPosition(l + HOLDEN_KOOPA_OFFSET_LEFT_X, b + HOLDEN_KOOPA_OFFSET_LEFT_Y);
 
 		holdenKoopa->SetSpeed(vx, vy);
 	}
