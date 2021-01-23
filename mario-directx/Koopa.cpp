@@ -82,14 +82,24 @@ void CKoopa::UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	if (vx == KOOPA_IDLING_SPEED)
+	{
+		if (state == KOOPA_STATE_ROLLING_UP_LEFT || state == KOOPA_STATE_ROLLING_UP_RIGHT)
+			SetState(KOOPA_STATE_LYING_UP);
+		else if (state == KOOPA_STATE_ROLLING_DOWN_LEFT || state == KOOPA_STATE_ROLLING_DOWN_RIGHT)
+			SetState(KOOPA_STATE_LYING_DOWN);
+	}
+
 	// Check if Koopa is out of camera
 	float camera_x, camera_y;
 	CCamera::GetInstance()->GetPosition(camera_x, camera_y);
 
-	float screenWidth = (float)CGame::GetInstance()->GetScreenWidth();
-	float screenHeight = (float)CGame::GetInstance()->GetScreenHeight();
+	CGame* game = CGame::GetInstance();
 
-	if (y > camera_y + screenHeight)
+	float screenWidth = (float)game->GetScreenWidth();
+	float screenHeight = (float)game->GetScreenHeight();
+
+	if (y > camera_y + screenHeight && game->GetPlayer()->GetAllowSwitchingZone() == 1)
 		SetState(KOOPA_STATE_UNAVAILABLE);
 }
 
@@ -345,11 +355,11 @@ void CKoopa::SetState(int state)
 		nx = 1;
 		break;
 	case KOOPA_STATE_LYING_DOWN:
-		vx = 0.0f;
+		vx = KOOPA_IDLING_SPEED;
 		lying_start = (DWORD)GetTickCount64();
 		break;
 	case KOOPA_STATE_LYING_UP:
-		vx = 0.0f;
+		vx = KOOPA_IDLING_SPEED;
 		lying_start = (DWORD)GetTickCount64();
 		break;
 	case KOOPA_STATE_ROLLING_UP_LEFT:

@@ -7,6 +7,7 @@
 
 #define KOOPA_LYING_TIME		8000
 
+#define KOOPA_IDLING_SPEED			0.0f
 #define KOOPA_WALKING_SPEED			0.030f
 #define KOOPA_ROLLING_SPEED			0.2f
 #define KOOPA_GRAVITY				0.001f
