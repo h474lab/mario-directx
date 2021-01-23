@@ -37,17 +37,23 @@ void CFireball::SetDirection(int direction)
 
 void CFireball::SetState(int state)
 {
-	CGameObject::SetState(state);
-
 	switch (state)
 	{
 	case FIREBALL_STATE_ON_HOLD:
 		background = 1;
+		if (this->state != FIREBALL_STATE_ON_HOLD)
+		{
+			destroyed_x = x;
+			destroyed_y = y;
+			on_hold_start = (DWORD)GetTickCount64();
+		}
 		break;
 	case FIREBALL_STATE_FLY:
 		background = 0;
 		break;
 	}
+
+	CGameObject::SetState(state);
 }
 
 void CFireball::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -163,5 +169,10 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CFireball::Render()
 {
 	if (state != FIREBALL_STATE_ON_HOLD)
-		animation_set->at(0)->Render(x, y);
+		animation_set->at(FIREBALL_ANI_FLYING)->Render(x, y);
+	else
+	{
+		if ((DWORD)GetTickCount64() - on_hold_start < FIREBALL_AFTER_DESTROY_RENDER_TIME)
+			animation_set->at(FIREBALL_ANI_DESTROYED)->Render(destroyed_x, destroyed_y);
+	}
 }

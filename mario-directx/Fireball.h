@@ -14,9 +14,17 @@
 #define FIREBALL_BBOX_WIDTH		8
 #define FIREBALL_BBOX_HEIGHT	8
 
+#define FIREBALL_ANI_FLYING		0
+#define FIREBALL_ANI_DESTROYED	1
+
+#define FIREBALL_AFTER_DESTROY_RENDER_TIME 200
+
 class CFireball : public CGameObject
 {
 	int direction;
+	
+	float destroyed_x, destroyed_y;
+	DWORD on_hold_start;
 public:
 	CFireball();
 
