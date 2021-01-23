@@ -105,6 +105,12 @@ void CBoomerangBro::GetBoundingBox(float& left, float& top, float& right, float&
 
 void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state != BOOMERANG_BRO_STATE_DYING && CanBeHitByTail())
+	{
+		SetState(BOOMERANG_BRO_STATE_DYING);
+		SetPlayerSpinningSparkle();
+	}
+
 	// get Mario's position
 	float fx, fy;
 	followingObject->GetPosition(fx, fy);

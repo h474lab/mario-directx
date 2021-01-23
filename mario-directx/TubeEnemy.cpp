@@ -117,5 +117,8 @@ void CTubeEnemy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	if (state != TUBE_ENEMY_STATE_DIE && state != TUBE_ENEMY_STATE_UNAVAILABLE && CanBeHitByTail())
+	{
+		SetPlayerSpinningSparkle();
 		SetState(TUBE_ENEMY_STATE_DIE);
+	}
 }

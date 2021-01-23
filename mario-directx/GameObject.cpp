@@ -40,6 +40,11 @@ void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	dy = vy*dt;
 }
 
+void CGameObject::SetPlayerSpinningSparkle()
+{
+	CGame::GetInstance()->GetPlayer()->SetSparkling();
+}
+
 /*
 	Extension of original SweptAABB to deal with two moving objects
 */

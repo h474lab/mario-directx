@@ -240,13 +240,15 @@
 
 #define MARIO_ANI_TAIL_TRANSFORM			140
 
-// Mario jumps max power
+// Mario jumps max power animations
 #define MARIO_SMALL_JUMP_MAX_POWER_LEFT		141
 #define MARIO_SMALL_JUMP_MAX_POWER_RIGHT	142
 #define MARIO_BIG_JUMP_MAX_POWER_LEFT		143
 #define MARIO_BIG_JUMP_MAX_POWER_RIGHT		144
 #define MARIO_FIRE_JUMP_MAX_POWER_LEFT		145
 #define MARIO_FIRE_JUMP_MAX_POWER_RIGHT		146
+
+#define MARIO_ANI_SPARKLE					147
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
@@ -324,6 +326,12 @@
 #define HOLDEN_KOOPA_OFFSET_RIGHT_Y	-KOOPA_LYING_HEIGHT - 1
 #define HOLDEN_KOOPA_OFFSET_LEFT_X	5 - KOOPA_LYING_WIDTH
 #define HOLDEN_KOOPA_OFFSET_LEFT_Y	-KOOPA_LYING_HEIGHT - 1
+
+#define MARIO_TAIL_SPARKLE_OFFSET_LEFT_X	0
+#define MARIO_TAIL_SPARKLE_OFFSET_LEFT_Y	5
+#define MARIO_TAIL_SPARKLE_OFFSET_RIGHT_X	16
+#define MARIO_TAIL_SPARKLE_OFFSET_RIGHT_Y	5
+#define MARIO_TAIL_SPARKLE_TIME				100
 
 class CMario : public CGameObject
 {
@@ -418,8 +426,13 @@ class CMario : public CGameObject
 	int dying_delay;
 	DWORD dying_delay_start;
 
+	int sparkle;
+	DWORD sparkle_start;
+	float sparkle_x, sparkle_y;
+
 	bool UpdateDyingDelay();
 	void CheckReleasingKoopa();
+	void UpdateSparkling();
 
 	void UpdateMarioPassingLevel();
 	bool UpdateMarioLevelTransformation();
@@ -444,6 +457,8 @@ class CMario : public CGameObject
 	void SetKoopaPosition();
 
 	void CleanUpCollisionEvents(vector<LPCOLLISIONEVENT> coEvents);
+
+	void GetSparklePosition(float &x, float &y);
 public:
 	CMario(float x = 0.0f, float y = 0.0f);
 
@@ -490,6 +505,8 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
 	void StartKicking() { kicking = 1; kicking_start = (DWORD)GetTickCount64(); };
 	void StartRunning() { running_start = (DWORD)GetTickCount64(); }
+
+	void SetSparkling();
 
 	void StartSpinning();
 	int GetHittableTail();

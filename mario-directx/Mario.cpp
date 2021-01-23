@@ -53,6 +53,15 @@ void CMario::CheckReleasingKoopa()
 	}
 }
 
+void CMario::UpdateSparkling()
+{
+	if (sparkle && (DWORD)GetTickCount64() - sparkle_start > MARIO_TAIL_SPARKLE_TIME)
+	{
+		sparkle = 0;
+		sparkle_start = 0;
+	}
+}
+
 void CMario::UpdateMarioPassingLevel()
 {
 	// When Mario has passed current level, let him run to the right
@@ -450,6 +459,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 					if (canBeHitBySpinning)
 					{
 						goomba->HitGoomba(nx);
+						SetSparkling();
 					}
 					else if (untouchable == 0)
 					{
@@ -533,6 +543,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 					{
 						koopa->HitKoopa((int)nx);
 						AddStreakScore(koopa);
+						SetSparkling();
 					}
 					else if ((koopaState == KOOPA_STATE_LYING_UP || koopaState == KOOPA_STATE_LYING_DOWN) &&
 						(state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_RUNNING_LEFT ||
@@ -602,6 +613,7 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 				if (canBeHitBySpinning)
 				{
 					result = brick->HitQuestionBrick(this->nx);
+					SetSparkling();
 				}
 
 				if (result) acquiredQuestionBrick = 1;
@@ -662,7 +674,10 @@ void CMario::UpdateMarioCollision(vector<LPCOLLISIONEVENT> coEvents, vector<LPGA
 				CSquareBrick* squareBrick = dynamic_cast<CSquareBrick*>(e->obj);
 
 				if (canBeHitBySpinning || e->ny > 0)
+				{
 					squareBrick->Destroy();
+					SetSparkling();
+				}
 			}
 			else if (dynamic_cast<CReward*>(e->obj))
 			{
@@ -801,6 +816,21 @@ void CMario::CleanUpCollisionEvents(vector<LPCOLLISIONEVENT> coEvents)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
+void CMario::GetSparklePosition(float &x, float &y)
+{
+	if ((keyFacing == MARIO_FACING_LEFT && (spinningPhase == 1 || spinningPhase == 5)) ||
+		(keyFacing == MARIO_FACING_RIGHT && spinningPhase == 2))
+	{
+		x = this->x + MARIO_TAIL_SPARKLE_OFFSET_LEFT_X;
+		y = this->y + MARIO_TAIL_SPARKLE_OFFSET_LEFT_Y;
+	}
+	else
+	{
+		x = this->x + MARIO_TAIL_SPARKLE_OFFSET_RIGHT_X;
+		y = this->y + MARIO_TAIL_SPARKLE_OFFSET_RIGHT_Y;
+	}
+}
+
 CMario::CMario(float x, float y) : CGameObject()
 {
 	level = MARIO_LEVEL_SMALL;
@@ -845,6 +875,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	UpdateMarioPassingLevel();
 	CheckReleasingKoopa();
+	UpdateSparkling();
 	CheckAndSetMagicWings();
 
 	if (UpdateMarioLevelTransformation() || UpdateMarioSwitchingZone(dt)) return;
@@ -923,6 +954,9 @@ void CMario::Render()
 	else if (level == MARIO_LEVEL_TAIL) res = RenderTailMario();
 	else if (level == MARIO_LEVEL_FIRE) res = RenderFireMario();
 	else if (level == MARIO_LEVEL_LUIGI) res = RenderLuigi();
+
+	if (sparkle)
+		animation_set->at(MARIO_ANI_SPARKLE)->Render(sparkle_x, sparkle_y);
 
 	renderAlpha = MARIO_UNTOUCHABLE_ALPHA_HIGH;
 	if (untouchable)
@@ -1751,7 +1785,7 @@ void CMario::LevelUp()
 	{
 		StartLevelTransform(level, MARIO_LEVEL_BIG);
 	}
-	else if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_FIRE)
 	{
 		StartLevelTransform(level, MARIO_LEVEL_TAIL);
 	}
@@ -2234,6 +2268,13 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		right = x + MARIO_SMALL_BBOX_WIDTH - rightMargin;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
 	}
+}
+
+void CMario::SetSparkling()
+{
+	sparkle = 1;
+	sparkle_start = (DWORD)GetTickCount64();
+	GetSparklePosition(sparkle_x, sparkle_y);
 }
 
 void CMario::StartSpinning()

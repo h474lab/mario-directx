@@ -205,6 +205,8 @@ public:
 	virtual void Render() = 0;
 	virtual void SetState(int state) { this->state = state; }
 
+	void SetPlayerSpinningSparkle();
+
 	int GetRenderScore() { return renderScore; }
 	void SetObjectPriority(int priority) { objectPriority = priority; }
 	int GetObjectPriority() { return objectPriority; }

@@ -416,9 +416,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Objects\Mario</Filter>
     </ClInclude>
@@ -616,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="FireFlower.h">
       <Filter>Objects\FireFlower</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

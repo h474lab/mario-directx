@@ -42,7 +42,11 @@ CSquareBrick* CSquareBrick::Duplicate()
 
 void CSquareBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state == SQUARE_BRICK_STATE_AVAILABLE && CanBeHitByTail()) Destroy();
+	if (state == SQUARE_BRICK_STATE_AVAILABLE && CanBeHitByTail())
+	{
+		SetPlayerSpinningSparkle();
+		Destroy();
+	}
 
 	if (fragments[0])
 	{

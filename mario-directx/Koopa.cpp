@@ -267,7 +267,11 @@ void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vec
 			y += dy;
 
 			int dir = CanBeHitByTail();
-			if (dir) HitKoopa(dir);
+			if (dir)
+			{
+				SetPlayerSpinningSparkle();
+				HitKoopa(dir);
+			}
 		}
 	}
 }
