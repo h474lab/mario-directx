@@ -608,6 +608,9 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else
 	{
+		// Unlock camera constantly
+		camera->LockCamera(0);
+
 		float lastCameraX = cameraX;
 		// moving camera position horizontally
 		cameraX += CAMERA_FLOATING_SPEED_X * dt;
