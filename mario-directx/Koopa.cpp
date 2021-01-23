@@ -10,6 +10,8 @@
 #include "Beetle.h"
 #include "HUD.h"
 #include "PlatformSet.h"
+#include "Camera.h"
+#include "Game.h"
 
 bool CKoopa::UpdateKoopaParatroopaUpDown(DWORD dt)
 {
@@ -79,6 +81,16 @@ void CKoopa::UpdateKoopaPosition(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			return;
 		}
 	}
+
+	// Check if Koopa is out of camera
+	float camera_x, camera_y;
+	CCamera::GetInstance()->GetPosition(camera_x, camera_y);
+
+	float screenWidth = (float)CGame::GetInstance()->GetScreenWidth();
+	float screenHeight = (float)CGame::GetInstance()->GetScreenHeight();
+
+	if (y > camera_y + screenHeight)
+		SetState(KOOPA_STATE_UNAVAILABLE);
 }
 
 void CKoopa::UpdateKoopaCollision(DWORD dt, vector<LPGAMEOBJECT>* coObjects, vector<LPCOLLISIONEVENT> coEvents)
