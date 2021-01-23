@@ -473,7 +473,8 @@ public:
 	int RenderTailMario();
 	int RenderFireMario();
 	int RenderLuigi();
-
+	
+	void SetJumping(int jumpingState) { jumping = jumpingState; }
 	int IsJumping() { return jumping; }
 	void SetSittingState(int state);
 	void SetJumpingUp(int jumpingUp);

@@ -801,7 +801,6 @@ void CMario::SetKoopaPosition()
 		float l, t, r, b;
 		GetBoundingBox(l, t, r, b);
 
-		DebugOut(L"\nFacing: %d", keyFacing);
 		if (keyFacing == MARIO_FACING_RIGHT)
 			holdenKoopa->SetPosition(r + HOLDEN_KOOPA_OFFSET_RIGHT_X, b + HOLDEN_KOOPA_OFFSET_RIGHT_Y);
 		else
@@ -2006,13 +2005,16 @@ void CMario::SetState(int state)
 		}
 		break; 
 	case MARIO_STATE_IDLE:
-		background = 0;
-		if (this->state != MARIO_STATE_IDLE) StartSpeedUp();
+		if (!jumping)
+		{
+			background = 0;
+			if (this->state != MARIO_STATE_IDLE) StartSpeedUp();
 
-		running = 0;
-		if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
-		vx = GetMarioExpectedSpeedX(0.0f);
-		stateCanBeChanged = 1;
+			running = 0;
+			if (holdenKoopa && !allowHodingKoopa) releaseKoopa();
+			vx = GetMarioExpectedSpeedX(0.0f);
+			stateCanBeChanged = 1;
+		}
 		break;
 	case MARIO_STATE_IDLE_LEFT:
 		background = 0;

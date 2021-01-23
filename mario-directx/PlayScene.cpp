@@ -442,6 +442,7 @@ void CPlayScene::Load()
 	// set initial state of Mario
 	player = CGame::GetInstance()->GetPlayer();
 	player->SetSpeed(0.0f, 0.0f);
+	player->SetJumping(0);
 	player->SetState(MARIO_STATE_IDLE);
 	player->SetPassedTheLevel(0);
 	player->SetFloor(NULL);
