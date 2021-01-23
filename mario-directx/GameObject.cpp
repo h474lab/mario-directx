@@ -11,6 +11,8 @@
 #include "ShortFireTrap.h"
 #include "FloatingBlock.h"
 #include "Leaf.h"
+#include "Goomba.h"
+#include "BoomerangBro.h"
 
 CGameObject::CGameObject()
 {
@@ -152,6 +154,15 @@ void CGameObject::FilterCollision(
 			if (CKoopa* koopa = dynamic_cast<CKoopa*>(c->obj))
 			{
 				if (koopa == mario->GetHoldenKoopa())
+					continue;
+			}
+		}
+		else if (CMario* mario = dynamic_cast<CMario*>(c->obj))
+		{
+			if (mario->GetUntouchable())
+			{
+				if (dynamic_cast<CKoopa*>(this) || dynamic_cast<CGoomba*>(this) ||
+					dynamic_cast<CBoomerangBro*>(this))
 					continue;
 			}
 		}
